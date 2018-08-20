@@ -82,9 +82,50 @@ always@(posedge CLK100MHZ)begin
 
     
     // TODO : hacer un case testeando el valor de la operacion y en base a eso operar operando1 y operando2.
-
+    case (reg_operacion)
+        
+        //SRL
+        6'b000010 : begin
+           //TODO
+        end
+        
+        //SRA
+        6'b000011 : begin
+           //TODO
+        end
+        
+        //ADD
+        6'b100000 : begin
+           //TODO
+        end
+        
+        //SUB
+        6'b100010 : begin
+           //TODO
+        end
+        
+        //AND
+        6'b100100 : begin
+           //TODO
+        end
+        
+        //OR
+        6'b100101 : begin
+           //TODO
+        end
+        
+        //XOR
+        6'b100110 : begin
+           //TODO
+        end
+        
+        //NOR
+        6'b100111 : begin
+           //TODO
+        end
+        
+    endcase
 end 
 
 assign {o_leds}=resultado_operacion;
 endmodule
-
