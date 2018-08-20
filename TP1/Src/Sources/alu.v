@@ -20,7 +20,7 @@
 //////////////////////////////////////////////////////////////////////////////////
 
 `define CANT_SWITCHES 4
-`define CANT_BOTONES 3
+`define CANT_BOTONES 4
 `define CANT_LEDS 4
 
 module alu(CLK100MHZ, 
@@ -43,12 +43,41 @@ output [CANT_LEDS-1:0] o_leds;
 reg signed [CANT_SWITCHES-1:0] reg_operando_1;  
 reg signed [CANT_SWITCHES-1:0] reg_operando_2; 
 reg [CANT_SWITCHES-1:0] reg_operacion;
-reg [CANT_LEDS-1:0] reg_leds; 
+reg [CANT_LEDS-1:0] reg_leds;
+
+reg [CANT_LEDS-1:0] resultado_operacion; 
 
 always@(posedge CLK100MHZ)begin
-   
+    
+    //se resetean los registros
+    if (i_reset) begin
+        reg_operando_1<=0;
+        reg_operando_2<=0;
+        reg_operacion<=0;
+        reg_leds<=0;
+        resultado_operacion<=0;
+    end
+
+    //si se presiona el boton 1 (001), se guarda el valor del switch en el reg operando 1
+    if (i_enable==1) begin 
+        reg_operando_1<=i_switch;		
+    end
+    
+    // boton 2 (010)
+    if (i_enable==2) begin 
+        reg_operando_2<=i_switch;		
+    end
+    
+    // boton 3 (100)
+    if (i_enable==4) begin  
+        reg_operacion<=i_switch;		
+    end
+
+    
+    // TODO : hacer un case testeando el valor de la operacion y en base a eso operar operando1 y operando2.
 
 end 
-//assign {o_symbol}=symbol;
+
+assign {o_leds}=resultado_operacion;
 endmodule
 
