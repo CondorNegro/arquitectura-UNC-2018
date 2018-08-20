@@ -19,11 +19,11 @@
 // 
 //////////////////////////////////////////////////////////////////////////////////
 
-`define CANT_SWITCHES 4
+`define CANT_SWITCHES 6
 `define CANT_BOTONES 4
-`define CANT_LEDS 4
+`define CANT_LEDS 6
 
-module alu(CLK100MHZ, 
+module alu(   CLK100MHZ, 
               i_switch, 
               i_reset, 
               i_enable,
@@ -45,7 +45,7 @@ reg signed [CANT_SWITCHES-1:0] reg_operando_2;
 reg [CANT_SWITCHES-1:0] reg_operacion;
 reg [CANT_LEDS-1:0] reg_leds;
 
-reg [CANT_LEDS-1:0] resultado_operacion; 
+reg signed [CANT_LEDS-1:0] resultado_operacion; 
 
 always@(posedge CLK100MHZ)begin
     
@@ -57,75 +57,78 @@ always@(posedge CLK100MHZ)begin
         reg_leds<=0;
         resultado_operacion<=0;
     end
-
-    //si se presiona el boton 1 (001), se guarda el valor del switch en el reg operando 1
-    if (i_enable==1) begin 
-        reg_operando_1<=i_switch;		
-    end
     
-    // boton 2 (010)
-    if (i_enable==2) begin 
-        reg_operando_2<=i_switch;		
-    end
+    else begin
+        //si se presiona el boton 1 (001), se guarda el valor del switch en el reg operando 1
+        if (i_enable==1) begin 
+            reg_operando_1<=i_switch;		
+        end
+        
+        // boton 2 (010)
+        if (i_enable==2) begin 
+            reg_operando_2<=i_switch;		
+        end
+        
+        // boton 3 (100)
+        if (i_enable==4) begin  
+            reg_operacion<=i_switch;        
+        end
+        
+        // boton 0 (000) - los registros mantienen su valor
+        if (i_enable==4) begin  
+            reg_operacion<=reg_operacion;
+            reg_operando_1<=reg_operando_1;	   
+            reg_operando_2<=reg_operando_2;	      
+        end
     
-    // boton 3 (100)
-    if (i_enable==4) begin  
-        reg_operacion<=i_switch;        
+        
+        // TODO : hacer un case testeando el valor de la operacion y en base a eso operar operando1 y operando2.
+        case (reg_operacion)
+            
+            //SRL
+            6'b000010 : begin
+               //TODO
+            end
+            
+            //SRA
+            6'b000011 : begin
+               //TODO
+            end
+            
+            //ADD
+            6'b100000 : begin
+               resultado_operacion <= reg_operando_1 + reg_operando_2;
+            end
+            
+            //SUB
+            6'b100010 : begin
+               //TODO
+            end
+            
+            //AND
+            6'b100100 : begin
+               resultado_operacion<= reg_operando_1 & reg_operando_2;
+            end
+            
+            //OR
+            6'b100101 : begin
+               resultado_operacion<= reg_operando_1 | reg_operando_2;
+            end
+            
+            //XOR
+            6'b100110 : begin
+               //TODO
+            end
+            
+            //NOR
+            6'b100111 : begin
+               //TODO
+            end
+            
+        endcase
     end
-    
-    // boton 0 (000) - los registros mantienen su valor
-    if (i_enable==4) begin  
-        reg_operacion<=reg_operacion;
-        reg_operando_1<=reg_operando_1;	   
-        reg_operando_2<=reg_operando_2;	      
-    end
-
-    
-    // TODO : hacer un case testeando el valor de la operacion y en base a eso operar operando1 y operando2.
-    case (reg_operacion)
-        
-        //SRL
-        6'b000010 : begin
-           //TODO
-        end
-        
-        //SRA
-        6'b000011 : begin
-           //TODO
-        end
-        
-        //ADD
-        6'b100000 : begin
-           //TODO
-        end
-        
-        //SUB
-        6'b100010 : begin
-           //TODO
-        end
-        
-        //AND
-        6'b100100 : begin
-           //TODO
-        end
-        
-        //OR
-        6'b100101 : begin
-           //TODO
-        end
-        
-        //XOR
-        6'b100110 : begin
-           //TODO
-        end
-        
-        //NOR
-        6'b100111 : begin
-           //TODO
-        end
-        
-    endcase
 end 
 
 assign {o_leds}=resultado_operacion;
 endmodule
+
