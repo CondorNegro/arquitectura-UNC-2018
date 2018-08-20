@@ -70,7 +70,14 @@ always@(posedge CLK100MHZ)begin
     
     // boton 3 (100)
     if (i_enable==4) begin  
-        reg_operacion<=i_switch;		
+        reg_operacion<=i_switch;        
+    end
+    
+    // boton 0 (000) - los registros mantienen su valor
+    if (i_enable==4) begin  
+        reg_operacion<=reg_operacion;
+        reg_operando_1<=reg_operando_1;	   
+        reg_operando_2<=reg_operando_2;	      
     end
 
     
