@@ -53,18 +53,24 @@ always@(posedge i_clock) begin
     
     else begin
         //Si se presiona el boton 1 (001), se guarda el valor del switch en reg_operando_1
-        if (i_enable  == 1) begin 
-            reg_operando_1 <= i_switch;		
+        if (i_enable  == 3'b001) begin 
+            reg_operando_1 <= i_switch;
+            reg_operando_2 <= reg_operando_2;
+            reg_operacion <= reg_operacion;		
         end
         
         //Si se presiona el boton 2 (010), se guarda el valor del switch en reg_operacion.
-        if (i_enable == 2) begin 
-            reg_operacion <= i_switch; 	
+        else if (i_enable == 3'b010) begin 
+            reg_operacion <= i_switch;
+            reg_operando_1 <= reg_operando_1;
+            reg_operando_2 <= reg_operando_2;	
         end
         
         //Si se presiona el boton 3 (100), se guarda el valor del switch en reg_operando_2
-        if (i_enable == 4) begin  
-            reg_operando_2 <= i_switch;	      
+        else if (i_enable == 3'b100) begin  
+            reg_operando_2 <= i_switch;
+            reg_operando_1 <= reg_operando_1;
+            reg_operacion <= reg_operacion;
         end
         
         // De otra forma, los registros mantienen su valor.
@@ -116,7 +122,7 @@ always@(posedge i_clock) begin
             
             //NOR
             6'b100111 : begin
-               reg_resultado_operacion <= ! (reg_operando_1 | reg_operando_2);
+               reg_resultado_operacion <= ~ (reg_operando_1 | reg_operando_2);
             end
             
             default : begin
