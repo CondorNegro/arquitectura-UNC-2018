@@ -10,8 +10,8 @@
 //////////////////////////////////////////////////////////////////////////////////
 
 
-`define BUS_DATOS           6   // Tamaño del bus de entrada. (Por ejemplo, cantidad de switches).
-`define BUS_SALIDA          6   // Tamaño del bus de salida. (Por ejemplo, cantidad de leds).
+`define BUS_DATOS           4   // Tamaño del bus de entrada. (Por ejemplo, cantidad de switches).
+`define BUS_SALIDA          4   // Tamaño del bus de salida. (Por ejemplo, cantidad de leds).
 `define CANT_BOTONES_ALU    4   // Cantidad de botones.
 
 module top_arquitectura(

@@ -9,8 +9,8 @@
 // Año 2018.
 //////////////////////////////////////////////////////////////////////////////////
 
-`define BUS_DATOS           6   // Tamaño del bus de entrada. (Por ejemplo, cantidad de switches).
-`define BUS_SALIDA          6   // Tamaño del bus de salida. (Por ejemplo, cantidad de leds).
+`define BUS_DATOS           4   // Tamaño del bus de entrada. (Por ejemplo, cantidad de switches).
+`define BUS_SALIDA          4   // Tamaño del bus de salida. (Por ejemplo, cantidad de leds).
 `define CANT_BOTONES_ALU    4   // Cantidad de botones.
 
 module TestBenchAlu();
@@ -35,127 +35,127 @@ module TestBenchAlu();
 	initial	begin
 		clock = 1'b0;
 		hard_reset = 1'b1; // Reset en 1.
-		switches = 6'b000000; 
+		switches = 4'b0000; 
 		botones = 4'b0000;
 		#10 hard_reset = 1'b0; // Bajo el reset.
 		
 		// Test 1: cargar primer operando.
 		#10 botones[0] = 1'b1;
-		#10 switches = 6'b010101;
+		#10 switches = 4'b0101;
 		#10 botones[0] = 1'b0;
 		
 		// Test 2: cargar segundo operando.
 		#10 botones[1] = 1'b1;
-        #10 switches = 6'b100000; //ADD
+        #10 switches = 4'b1000; //ADD
         #10 botones[1] = 1'b0;
 		
 		// Test 3: cargar tercer operando.
 		#10 botones[2] = 1'b1;
-        #10 switches = 6'b010101;
+        #10 switches = 4'b0101;
         #10 botones[2] = 1'b0;
 		
 		
 		// Test 4: ADD.
 		#50 botones[0] = 1'b1;
-        #10 switches = 6'b110101;
+        #10 switches = 4'b1101;
         #10 botones[0] = 1'b0;
         #10 botones[1] = 1'b1;
-        #10 switches = 6'b100000; //ADD
+        #10 switches = 4'b1000; //ADD
         #10 botones[1] = 1'b0;
         #10 botones[2] = 1'b1;
-        #10 switches = 6'b000101;
+        #10 switches = 4'b0101;
         #10 botones[2] = 1'b0;
 		
 		
 		// Test 5: SUB.
 		#50 botones[0] = 1'b1;
-        #10 switches = 6'b010101;
+        #10 switches = 4'b0101;
         #10 botones[0] = 1'b0;
         #10 botones[1] = 1'b1;
-        #10 switches = 6'b100010; //SUB
+        #10 switches = 4'b1010; //SUB
         #10 botones[1] = 1'b0;
         #10 botones[2] = 1'b1;
-        #10 switches = 6'b000101;
+        #10 switches = 4'b0001;
         #10 botones[2] = 1'b0;
 		
 		
 		// Test 6: AND.
         #50 botones[0] = 1'b1;
-        #10 switches = 6'b110101;
+        #10 switches = 4'b1101;
         #10 botones[0] = 1'b0;
         #10 botones[1] = 1'b1;
-        #10 switches = 6'b100100; //AND
+        #10 switches = 4'b1100; //AND
         #10 botones[1] = 1'b0;
         #10 botones[2] = 1'b1;
-        #10 switches = 6'b000101;
+        #10 switches = 4'b0101;
         #10 botones[2] = 1'b0;        
         
         
         // Test 7: OR.
          #50 botones[0] = 1'b1;
-         #10 switches = 6'b110101;
+         #10 switches = 4'b1101;
          #10 botones[0] = 1'b0;
          #10 botones[1] = 1'b1;
-         #10 switches = 6'b100101; //OR
+         #10 switches = 4'b1101; //OR
          #10 botones[1] = 1'b0;
          #10 botones[2] = 1'b1;
-         #10 switches = 6'b000101;
+         #10 switches = 4'b0101;
          #10 botones[2] = 1'b0;       
 		
         // Test 8: XOR.
          #50 botones[0] = 1'b1;
-         #10 switches = 6'b110101;
+         #10 switches = 4'b1101;
          #10 botones[0] = 1'b0;
          #10 botones[1] = 1'b1;
-         #10 switches = 6'b100110; //XOR
+         #10 switches = 4'b1110; //XOR
          #10 botones[1] = 1'b0;
          #10 botones[2] = 1'b1;
-         #10 switches = 6'b000101;
+         #10 switches = 4'b0101;
          #10 botones[2] = 1'b0;       
           
                 
         // Test 9: SRA.
 		 #50 botones[0] = 1'b1;
-         #10 switches = 6'b110101;
+         #10 switches = 4'b1101;
          #10 botones[0] = 1'b0;
          #10 botones[1] = 1'b1;
-         #10 switches = 6'b000011; //SRA
+         #10 switches = 4'b0011; //SRA
          #10 botones[1] = 1'b0;
          #10 botones[2] = 1'b1;
-         #10 switches = 6'b000011;
+         #10 switches = 4'b0011;
          #10 botones[2] = 1'b0;       
 		
 		// Test 10: SRL.
 		 #50 botones[0] = 1'b1;
-         #10 switches = 6'b110101;
+         #10 switches = 4'b1101;
          #10 botones[0] = 1'b0;
          #10 botones[1] = 1'b1;
-         #10 switches = 6'b000010; //SRL
+         #10 switches = 4'b0010; //SRL
          #10 botones[1] = 1'b0;
          #10 botones[2] = 1'b1;
-         #10 switches = 6'b000011;
+         #10 switches = 4'b0011;
          #10 botones[2] = 1'b0;       
 		
 		// Test 11: NOR.
 		 #50 botones[0] = 1'b1;
-         #10 switches = 6'b110101;
+         #10 switches = 4'b1101;
          #10 botones[0] = 1'b0;
          #10 botones[1] = 1'b1;
-         #10 switches = 6'b100111; //NOR
+         #10 switches = 4'b1111; //NOR
          #10 botones[1] = 1'b0;
          #10 botones[2] = 1'b1;
-         #10 switches = 6'b000101;
+         #10 switches = 4'b0101;
          #10 botones[2] = 1'b0;       
 		
 		// Test 12: Operación falsa.
         #50 botones[0] = 1'b1;
-        #10 switches = 6'b110101;
+        #10 switches = 4'b1101;
         #10 botones[0] = 1'b0;
         #10 botones[1] = 1'b1;
-        #10 switches = 6'b111111; //Falsa.
+        #10 switches = 4'b0000; //Falsa.
         #10 botones[1] = 1'b0;
         #10 botones[2] = 1'b1;
-        #10 switches = 6'b000101;
+        #10 switches = 4'b0101;
         #10 botones[2] = 1'b0;      
 		
 		// Test 13: Prueba reset.

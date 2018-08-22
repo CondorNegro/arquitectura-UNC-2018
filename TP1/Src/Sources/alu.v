@@ -86,42 +86,42 @@ always@(posedge i_clock) begin
         case (reg_operacion)
             
             //ADD
-            6'b100000 : begin
+            4'b1000 : begin
                reg_resultado_operacion <= reg_operando_1 + reg_operando_2;
             end
              
              //SUB
-             6'b100010 : begin
+             4'b1010 : begin
                reg_resultado_operacion <= reg_operando_1 - reg_operando_2;
              end
             
             //AND
-             6'b100100 : begin
+             4'b1100 : begin
                 reg_resultado_operacion <= reg_operando_1 & reg_operando_2;
              end
              
              //OR
-             6'b100101 : begin
+             4'b1101 : begin
                 reg_resultado_operacion <= reg_operando_1 | reg_operando_2;
              end
             
             //XOR
-             6'b100110 : begin
+             4'b1110 : begin
                reg_resultado_operacion <= reg_operando_1 ^ reg_operando_2;
              end
              
              //SRA (Shift Right Aritmethic).
-             6'b000011 : begin
+             4'b0011 : begin
                  reg_resultado_operacion <= reg_operando_1 >>> reg_operando_2;
              end
                          
             //SRL  (Shift Right Logical).
-            6'b000010 : begin
+            4'b0010 : begin
                reg_resultado_operacion <= reg_operando_1 >> reg_operando_2;
             end
             
             //NOR
-            6'b100111 : begin
+            4'b1111 : begin
                reg_resultado_operacion <= ~ (reg_operando_1 | reg_operando_2);
             end
             
