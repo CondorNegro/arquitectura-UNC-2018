@@ -15,7 +15,7 @@
 `define CANT_BOTONES_ALU    4   // Cantidad de botones.
 `define CANT_BITS_OPCODE     4
 
-module test_bench_top();
+module test_bench_configurador();
 	
 	
 	// Par�metros
@@ -32,7 +32,11 @@ module test_bench_top();
     reg hard_reset;                             // Reset.
     reg [BUS_DATOS - 1 : 0] switches;           // Switches.
     reg [CANT_BOTONES_ALU - 1 : 0] botones;     // Botones.
-    wire [BUS_SALIDA - 1 : 0] leds;             // Leds.
+    
+    wire [BUS_DATOS - 1 : 0] dato_A;
+    wire [BUS_DATOS - 1 : 0] dato_B;
+    wire [CANT_BITS_OPCODE - 1 : 0] opcode;
+    
 	
 	
 	initial	begin
@@ -70,21 +74,23 @@ module test_bench_top();
 
 
 //M�dulo para pasarle los est�mulos del banco de pruebas.
-top_arquitectura
+configurador
     #(
-         .BUS_DATOS (BUS_DATOS),
-         .BUS_SALIDA (BUS_SALIDA),
-         .CANT_BOTONES_ALU (CANT_BOTONES_ALU),
-         .CANT_BIT_OPCODE (CANT_BITS_OPCODE)
+         .CANT_BUS_ENTRADA (BUS_DATOS),
+         .CANT_BUS_SALIDA (BUS_SALIDA),
+         .CANT_BITS_OPCODE (CANT_BOTONES_ALU),
+         .CANT_BOTONES_ALU (CANT_BITS_OPCODE)
      ) 
-   u_top_arquitectura_1    // Una sola instancia de este m�dulo
-   (
-   .i_clock (clock),
-   .i_reset (hard_reset),
-   .i_switches (switches),
-   .i_botones (botones),
-   .o_leds (leds)
-   );
+   u_configurador_1    // Una sola instancia de este m�dulo
+  (
+      .i_clock (clock),
+      .i_reset (hard_reset),
+      .i_switches (switches),
+      .i_botones (botones),
+      .o_reg_dato_A (dato_A),
+      .o_reg_dato_B (dato_B),
+      .o_reg_opcode (opcode)
+      );
    
 endmodule
 

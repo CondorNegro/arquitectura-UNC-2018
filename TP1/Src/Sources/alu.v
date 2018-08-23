@@ -1,17 +1,17 @@
 `timescale 1ns / 1ps
 
 //////////////////////////////////////////////////////////////////////////////////
-// Trabajo Práctico N° 1. ALU.
+// Trabajo Prï¿½ctico Nï¿½ 1. ALU.
 // ALU.
-// Integrantes: Kleiner Matías, López Gastón.
+// Integrantes: Kleiner Matï¿½as, Lï¿½pez Gastï¿½n.
 // Materia: Arquitectura de Computadoras.
 // FCEFyN. UNC.
-// Año 2018.
+// Aï¿½o 2018.
 //////////////////////////////////////////////////////////////////////////////////
 
 // Constantes.
-`define CANT_BUS_ENTRADA 6
-`define CANT_BUS_SALIDA 6
+`define CANT_BUS_ENTRADA 4
+`define CANT_BUS_SALIDA 4
 `define CANT_BITS_OPCODE 4
 
 module alu(
@@ -21,7 +21,7 @@ module alu(
     o_resultado
     );
 
-// Parámetros.
+// Parï¿½metros.
 parameter CANT_BUS_ENTRADA = `CANT_BUS_ENTRADA;
 parameter CANT_BUS_SALIDA = `CANT_BUS_SALIDA;
 parameter CANT_BITS_OPCODE = `CANT_BITS_OPCODE;
@@ -31,16 +31,16 @@ parameter CANT_BITS_OPCODE = `CANT_BITS_OPCODE;
 
 input signed [CANT_BUS_ENTRADA - 1 : 0] i_operando_1;     
 input signed [CANT_BUS_ENTRADA - 1 : 0] i_operando_2; 
-input [CANT_BITS_OPCODE - 1 : 0] i_opcode;             // Código de operación.
+input [CANT_BITS_OPCODE - 1 : 0] i_opcode;             // Cï¿½digo de operaciï¿½n.
 output signed [CANT_BUS_SALIDA - 1 : 0] o_resultado;                
 
 
 // Registro.
 reg signed [CANT_BUS_SALIDA - 1 : 0] reg_resultado;
 
-always@(*) begin
+always@(i_opcode or i_operando_1 or i_operando_2) begin
          
-        // Case donde se testea el valor del código de operación y en base a eso se opera entre operando1 y operando2.
+        // Case donde se testea el valor del cï¿½digo de operaciï¿½n y en base a eso se opera entre operando1 y operando2.
         // Operaciones basadas en MIPS IV Instruction Set.
         case (i_opcode)
             
@@ -92,7 +92,7 @@ always@(*) begin
 
 end
 
-// Asignación.
+// Asignaciï¿½n.
 assign o_resultado = reg_resultado;
 
 endmodule

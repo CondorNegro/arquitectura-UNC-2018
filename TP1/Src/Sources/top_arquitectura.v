@@ -36,22 +36,36 @@ input [BUS_DATOS - 1 : 0] i_switches;           // Switches.
 input [CANT_BOTONES_ALU - 1 : 0] i_botones;     // Botones.
 output [BUS_SALIDA - 1 : 0] o_leds;             // Leds.
 
-// Registros.
-reg [BUS_DATOS - 1 : 0] reg_dato_A;
-reg [BUS_DATOS - 1 : 0] reg_dato_B;
-reg [CANT_BIT_OPCODE - 1 : 0] reg_opcode;
+
 
 // Wires.
 wire [BUS_DATOS - 1 : 0] wire_operando_1;
 wire [BUS_DATOS - 1 : 0] wire_operando_2;
 wire [CANT_BIT_OPCODE - 1 : 0] wire_opcode;
 
-// Asignación.
-assign wire_operando_1 = reg_dato_A; 
-assign wire_operando_2 = reg_dato_B;
-assign wire_opcode = reg_opcode;
+
+// Módulo Configurador.
+
+configurador
+    #(
+         .CANT_BUS_ENTRADA (BUS_DATOS),
+         .CANT_BUS_SALIDA (BUS_SALIDA),
+         .CANT_BITS_OPCODE (CANT_BIT_OPCODE)
+     ) 
+   u_configurador1    // Una sola instancia de este módulo
+   (
+   .i_clock (i_clock),
+   .i_reset (i_reset),
+   .i_switches (i_switches),
+   .i_botones (i_botones),
+   .o_reg_dato_A (wire_operando_1),
+   .o_reg_dato_B (wire_operando_2),
+   .o_reg_opcode (wire_opcode)
+   );
+
 
 // Módulo ALU.
+
 alu
     #(
          .CANT_BUS_ENTRADA (BUS_DATOS),
@@ -66,34 +80,7 @@ alu
    .o_resultado (o_leds)
    );
 
-always@( posedge i_clock) begin
-     // Se resetean los registros.
-     if (i_reset) begin
-        reg_dato_A <= 0;
-        reg_dato_B <= 0;
-        reg_opcode <= 0;
-     end 
-     
-     else begin
-        // Si se presiona el botón 1
-        if (i_botones == 3'b001) begin
-            reg_dato_A <= i_switches;
-            reg_dato_B <= reg_dato_B;
-            reg_opcode <= reg_opcode;
-        end
-        // Si se presiona el botón 2
-        else  if (i_botones == 3'b010) begin
-           reg_dato_A <= reg_dato_A;
-           reg_dato_B <= i_switches;
-           reg_opcode <= reg_opcode;
-        end
-        // Si se presiona el botón 3
-        else  if (i_botones == 3'b100) begin
-           reg_dato_A <= reg_dato_A;
-           reg_dato_B <= reg_dato_B;
-           reg_opcode <= i_switches;
-        end        
-     end   
-end
+
+
 
 endmodule
