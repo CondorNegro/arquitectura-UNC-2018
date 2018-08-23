@@ -1,19 +1,19 @@
 `timescale 1ns / 1ps
 
 //////////////////////////////////////////////////////////////////////////////////
-// Trabajo Práctico N° 1. ALU.
+// Trabajo PrÃ¡ctico NÂ° 1. ALU.
 // TOP.
-// Integrantes: Kleiner Matías, López Gastón.
+// Integrantes: Kleiner MatÃ­as, LÃ³pez GastÃ³n.
 // Materia: Arquitectura de Computadoras.
 // FCEFyN. UNC.
-// Año 2018.
+// AÃ±o 2018.
 //////////////////////////////////////////////////////////////////////////////////
 
 
-`define BUS_DATOS           4   // Tamaño del bus de entrada. (Por ejemplo, cantidad de switches).
-`define BUS_SALIDA          4   // Tamaño del bus de salida. (Por ejemplo, cantidad de leds).
+`define BUS_DATOS           4   // TamaÃ±o del bus de entrada. (Por ejemplo, cantidad de switches).
+`define BUS_SALIDA          4   // TamaÃ±o del bus de salida. (Por ejemplo, cantidad de leds).
 `define CANT_BOTONES_ALU    4   // Cantidad de botones.
-`define CANT_BIT_OPCODE    4   // Número de bits del código de operación de la ALU.
+`define CANT_BIT_OPCODE    4   // NÃºmero de bits del cÃ³digo de operaciÃ³n de la ALU.
 
 module top_arquitectura(
   i_clock, 
@@ -23,7 +23,7 @@ module top_arquitectura(
   o_leds 
   );
 
-// Parámetros
+// ParÃ¡metros
 parameter BUS_DATOS = `BUS_DATOS;
 parameter BUS_SALIDA = `BUS_SALIDA;
 parameter CANT_BOTONES_ALU = `CANT_BOTONES_ALU;
@@ -46,19 +46,19 @@ wire [BUS_DATOS - 1 : 0] wire_operando_1;
 wire [BUS_DATOS - 1 : 0] wire_operando_2;
 wire [CANT_BIT_OPCODE - 1 : 0] wire_opcode;
 
-// Asignación.
+// AsignaciÃ³n.
 assign wire_operando_1 = reg_dato_A; 
 assign wire_operando_2 = reg_dato_B;
 assign wire_opcode = reg_opcode;
 
-// Módulo ALU.
+// MÃ³dulo ALU.
 alu
     #(
          .CANT_BUS_ENTRADA (BUS_DATOS),
          .CANT_BUS_SALIDA (BUS_SALIDA),
          .CANT_BITS_OPCODE (CANT_BIT_OPCODE)
      ) 
-   u_alu1    // Una sola instancia de este módulo
+   u_alu1    // Una sola instancia de este mÃ³dulo
    (
    .i_operando_1 (wire_operando_1),
    .i_operando_2 (wire_operando_2),
@@ -75,19 +75,19 @@ always@( posedge i_clock) begin
      end 
      
      else begin
-        // Si se presiona el botón 1
+        // Si se presiona el botÃ³n 1
         if (i_botones == 3'b001) begin
             reg_dato_A <= i_switches;
             reg_dato_B <= reg_dato_B;
             reg_opcode <= reg_opcode;
         end
-        // Si se presiona el botón 2
+        // Si se presiona el botÃ³n 2
         else  if (i_botones == 3'b010) begin
            reg_dato_A <= reg_dato_A;
            reg_dato_B <= i_switches;
            reg_opcode <= reg_opcode;
         end
-        // Si se presiona el botón 3
+        // Si se presiona el botÃ³n 3
         else  if (i_botones == 3'b100) begin
            reg_dato_A <= reg_dato_A;
            reg_dato_B <= reg_dato_B;
