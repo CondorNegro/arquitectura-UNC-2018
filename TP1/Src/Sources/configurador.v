@@ -10,8 +10,7 @@
 //////////////////////////////////////////////////////////////////////////////////
 
 // Constantes.
-`define CANT_BUS_ENTRADA 6
-`define CANT_BUS_SALIDA 6
+`define CANT_DATOS_ENTRADA 6
 `define CANT_BITS_OPCODE 4
 `define CANT_BOTONES_ALU    4   // Cantidad de botones.
 
@@ -26,7 +25,7 @@ module configurador(
     );
 
 // Par�metros.
-parameter CANT_BUS_ENTRADA = `CANT_BUS_ENTRADA;
+parameter CANT_DATOS_ENTRADA = `CANT_DATOS_ENTRADA;
 parameter CANT_BUS_SALIDA = `CANT_BUS_SALIDA;
 parameter CANT_BITS_OPCODE = `CANT_BITS_OPCODE;
 parameter CANT_BOTONES_ALU = `CANT_BOTONES_ALU;
@@ -36,17 +35,17 @@ parameter CANT_BOTONES_ALU = `CANT_BOTONES_ALU;
 
 input i_clock;     
 input i_reset; 
-input [CANT_BUS_ENTRADA - 1 : 0] i_switches; 
+input [CANT_DATOS_ENTRADA - 1 : 0] i_switches; 
 input [CANT_BOTONES_ALU - 1 : 0] i_botones; 
-output [CANT_BUS_ENTRADA - 1 : 0] o_reg_dato_A;             // C�digo de operaci�n.
-output [CANT_BUS_ENTRADA - 1 : 0] o_reg_dato_B; 
+output [CANT_DATOS_ENTRADA - 1 : 0] o_reg_dato_A;             // C�digo de operaci�n.
+output [CANT_DATOS_ENTRADA - 1 : 0] o_reg_dato_B; 
 output [CANT_BITS_OPCODE - 1 : 0] o_reg_opcode;                
 
 
 
 // Registros.
-reg [CANT_BUS_ENTRADA - 1 : 0] reg_dato_A;
-reg [CANT_BUS_ENTRADA - 1 : 0] reg_dato_B;
+reg [CANT_DATOS_ENTRADA - 1 : 0] reg_dato_A;
+reg [CANT_DATOS_ENTRADA - 1 : 0] reg_dato_B;
 reg [CANT_BITS_OPCODE - 1 : 0] reg_opcode;
 
 always@( posedge i_clock) begin

@@ -48,8 +48,7 @@ wire [CANT_BIT_OPCODE - 1 : 0] wire_opcode;
 
 configurador
     #(
-         .CANT_BUS_ENTRADA (BUS_DATOS),
-         .CANT_BUS_SALIDA (BUS_SALIDA),
+         .CANT_DATOS_ENTRADA (BUS_DATOS),
          .CANT_BITS_OPCODE (CANT_BIT_OPCODE)
      ) 
    u_configurador1    // Una sola instancia de este módulo
