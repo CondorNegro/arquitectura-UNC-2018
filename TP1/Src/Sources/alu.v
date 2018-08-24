@@ -10,131 +10,90 @@
 //////////////////////////////////////////////////////////////////////////////////
 
 // Constantes.
-`define CANT_SWITCHES 6
-`define CANT_BOTONES 4
-`define CANT_LEDS 6
+`define CANT_BUS_ENTRADA 6
+`define CANT_BUS_SALIDA 6
+`define CANT_BITS_OPCODE 4
 
-module alu(   
-    i_clock,
-    i_reset,  
-    i_switch, 
-    i_enable,
-    o_leds
+module alu(
+    i_operando_1, 
+    i_operando_2,
+    i_opcode,
+    o_resultado
     );
 
 // Parámetros.
-parameter CANT_SWITCHES=`CANT_SWITCHES;
-parameter CANT_BOTONES=`CANT_BOTONES;
-parameter CANT_LEDS=`CANT_LEDS;
+parameter CANT_BUS_ENTRADA = `CANT_BUS_ENTRADA;
+parameter CANT_BUS_SALIDA = `CANT_BUS_SALIDA;
+parameter CANT_BITS_OPCODE = `CANT_BITS_OPCODE;
+
 
 // Entradas - Salidas.
-input i_clock;                              // Clock.
-input [CANT_SWITCHES - 1 : 0] i_switch;     // Switches (para introducir operandos y operadores).
-input i_reset;                              // Reset (hard reset).
-input [CANT_BOTONES - 1 : 0] i_enable;      // Botones para indicar qué elemento de la operación es lo que se señala con los switches (primer operando, operador o segundo operando).
-output [CANT_LEDS - 1 : 0] o_leds;          // Leds para indicar el resultado binario.
 
-// Registros.
-reg signed [CANT_SWITCHES - 1 : 0] reg_operando_1;  
-reg signed [CANT_SWITCHES - 1 : 0] reg_operando_2; 
-reg [CANT_SWITCHES - 1 : 0] reg_operacion;
-reg signed [CANT_LEDS - 1 : 0] reg_resultado_operacion;
+input signed [CANT_BUS_ENTRADA - 1 : 0] i_operando_1;     
+input signed [CANT_BUS_ENTRADA - 1 : 0] i_operando_2; 
+input [CANT_BITS_OPCODE - 1 : 0] i_opcode;             // Código de operación.
+output signed [CANT_BUS_SALIDA - 1 : 0] o_resultado;                
 
 
-always@(posedge i_clock) begin
-    
-    //Se resetean los registros
-    if (i_reset) begin
-        reg_operando_1 <= 0;
-        reg_operando_2 <= 0;
-        reg_operacion <= 0;
-        reg_resultado_operacion <= 0;
-    end
-    
-    else begin
-        //Si se presiona el boton 1 (001), se guarda el valor del switch en reg_operando_1
-        if (i_enable  == 3'b001) begin 
-            reg_operando_1 <= i_switch;
-            reg_operando_2 <= reg_operando_2;
-            reg_operacion <= reg_operacion;		
-        end
-        
-        //Si se presiona el boton 2 (010), se guarda el valor del switch en reg_operacion.
-        else if (i_enable == 3'b010) begin 
-            reg_operacion <= i_switch;
-            reg_operando_1 <= reg_operando_1;
-            reg_operando_2 <= reg_operando_2;	
-        end
-        
-        //Si se presiona el boton 3 (100), se guarda el valor del switch en reg_operando_2
-        else if (i_enable == 3'b100) begin  
-            reg_operando_2 <= i_switch;
-            reg_operando_1 <= reg_operando_1;
-            reg_operacion <= reg_operacion;
-        end
-        
-        // De otra forma, los registros mantienen su valor.
-        else begin  
-            reg_operacion <= reg_operacion;
-            reg_operando_1 <= reg_operando_1;	   
-            reg_operando_2 <= reg_operando_2;	      
-        end
-    
-        
-        // Case donde se testea el valor de la operación y en base a eso se opera entre operando1 y operando2.
+// Registro.
+reg signed [CANT_BUS_SALIDA - 1 : 0] reg_resultado;
+
+always@(*) begin
+         
+        // Case donde se testea el valor del código de operación y en base a eso se opera entre operando1 y operando2.
         // Operaciones basadas en MIPS IV Instruction Set.
-        case (reg_operacion)
+        case (i_opcode)
             
             //ADD
             4'b1000 : begin
-               reg_resultado_operacion <= reg_operando_1 + reg_operando_2;
+               reg_resultado = i_operando_1 + i_operando_2;
             end
              
              //SUB
              4'b1010 : begin
-               reg_resultado_operacion <= reg_operando_1 - reg_operando_2;
+               reg_resultado = i_operando_1 - i_operando_2;
              end
             
             //AND
              4'b1100 : begin
-                reg_resultado_operacion <= reg_operando_1 & reg_operando_2;
+                reg_resultado = i_operando_1 & i_operando_2;
              end
              
              //OR
              4'b1101 : begin
-                reg_resultado_operacion <= reg_operando_1 | reg_operando_2;
+                reg_resultado = i_operando_1 | i_operando_2;
              end
             
             //XOR
              4'b1110 : begin
-               reg_resultado_operacion <= reg_operando_1 ^ reg_operando_2;
+               reg_resultado = i_operando_1 ^ i_operando_2;
              end
              
              //SRA (Shift Right Aritmethic).
              4'b0011 : begin
-                 reg_resultado_operacion <= reg_operando_1 >>> reg_operando_2;
+                reg_resultado = i_operando_1 >>> i_operando_2;
              end
                          
             //SRL  (Shift Right Logical).
             4'b0010 : begin
-               reg_resultado_operacion <= reg_operando_1 >> reg_operando_2;
+                reg_resultado = i_operando_1 >> i_operando_2;
             end
             
             //NOR
             4'b1111 : begin
-               reg_resultado_operacion <= ~ (reg_operando_1 | reg_operando_2);
+                reg_resultado = ~ (i_operando_1 | i_operando_2);
             end
             
             default : begin
-                reg_resultado_operacion <= reg_resultado_operacion;
+                reg_resultado = i_operando_1;
             end
             
         endcase
-    end
-end 
 
-// Asignación de salida.
-assign {o_leds} = reg_resultado_operacion;
+end
+
+// Asignación.
+assign o_resultado = {reg_resultado};
 
 endmodule
 
