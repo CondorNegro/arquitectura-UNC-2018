@@ -81,10 +81,10 @@ module TestBenchAlu();
          #10 reg_operando_2 = 4'b0101;
           
 		
-		// Test 12: Operación falsa.
+		// Test 12: Operacion falsa.
          #50 reg_operando_1 = 4'b1101;
          #10 reg_opcode = 4'b0000; //Ninguna operacion.
-         #10 reg_operando_2 = 4'b1101;
+         #10 reg_operando_2 = 4'b1001;
 		
 	
 		
