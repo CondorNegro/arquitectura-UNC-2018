@@ -93,7 +93,7 @@ always@(*) begin
 end
 
 // Asignación.
-assign o_resultado = {reg_resultado};
+assign o_resultado = reg_resultado;
 
 endmodule
 
