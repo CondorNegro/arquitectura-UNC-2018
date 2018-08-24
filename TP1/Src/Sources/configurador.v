@@ -65,14 +65,14 @@ always@( posedge i_clock) begin
         // Si se presiona el botón 2
         else  if (i_botones == 2) begin
            reg_dato_A <= reg_dato_A;
-           reg_dato_B <= i_switches;
-           reg_opcode <= reg_opcode;
+           reg_dato_B <= reg_dato_B;
+           reg_opcode <= i_switches;
         end
         // Si se presiona el botón 3
         else  if (i_botones == 4) begin
            reg_dato_A <= reg_dato_A;
-           reg_dato_B <= reg_dato_B;
-           reg_opcode <= i_switches;
+           reg_dato_B <= i_switches;
+           reg_opcode <= reg_opcode;
         end
         else begin
             reg_dato_A <= reg_dato_A;
