@@ -30,25 +30,11 @@ parameter CANT_BOTONES_ALU = `CANT_BOTONES_ALU;
 // Entradas - Salidas
 input i_clock;                                  // Clock.
 input i_reset;                                  // Reset.
-input [BUS_DATOS - 1 : 0] i_switches;             // Switches.
+input [BUS_DATOS - 1 : 0] i_switches;           // Switches.
 input [CANT_BOTONES_ALU - 1 : 0] i_botones;     // Botones.
 output [BUS_SALIDA - 1 : 0] o_leds;             // Leds.
 
 
-
-// Wires.
-wire wire_clock;                                  
-wire wire_reset;
-wire [BUS_DATOS - 1 : 0] wire_switches;             
-wire [CANT_BOTONES_ALU - 1 : 0] wire_botones;     
-wire [BUS_SALIDA - 1 : 0] wire_leds;
-
-// Assign.
-assign wire_clock = i_clock;
-assign wire_reset = i_reset;
-assign wire_switches = i_switches;
-assign wire_botones = i_botones;
-assign wire_leds = o_leds;
 
 // Módulo ALU.
 alu
@@ -59,11 +45,11 @@ alu
      ) 
    u_alu1    // Una sola instancia de este módulo
    (
-   .i_clock (wire_clock),
-   .i_reset (wire_reset),
-   .i_switch (wire_switches),
-   .i_enable (wire_botones),
-   .o_leds (wire_leds)
+   .i_clock (i_clock),
+   .i_reset (i_reset),
+   .i_switch (i_switches),
+   .i_enable (i_botones),
+   .o_leds (o_leds)
    );
     
 
