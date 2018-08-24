@@ -26,7 +26,6 @@ module configurador(
 
 // Par�metros.
 parameter CANT_DATOS_ENTRADA = `CANT_DATOS_ENTRADA;
-parameter CANT_BUS_SALIDA = `CANT_BUS_SALIDA;
 parameter CANT_BITS_OPCODE = `CANT_BITS_OPCODE;
 parameter CANT_BOTONES_ALU = `CANT_BOTONES_ALU;
 
@@ -50,7 +49,7 @@ reg [CANT_BITS_OPCODE - 1 : 0] reg_opcode;
 
 always@( posedge i_clock) begin
      // Se resetean los registros.
-     if (i_reset) begin
+     if (~ i_reset) begin
         reg_dato_A <= 0;
         reg_dato_B <= 0;
         reg_opcode <= 0;

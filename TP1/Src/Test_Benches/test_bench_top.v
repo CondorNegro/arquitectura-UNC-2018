@@ -41,10 +41,10 @@ module test_bench_configurador();
 	
 	initial	begin
 		clock = 1'b0;
-		hard_reset = 1'b1; // Reset en 1.
+		hard_reset = 1'b0; // Reset en 1.
 		switches = 4'b0000; 
 		botones = 4'b0000;
-		#10 hard_reset = 1'b0; // Bajo el reset.
+		#10 hard_reset = 1'b1; // Bajo el reset.
 		
 		// Test 1: cargar primer operando.
 		#10 botones[0] = 1'b1;
@@ -62,8 +62,8 @@ module test_bench_configurador();
         #10 botones[2] = 1'b0;
 		
 		// Test 13: Prueba reset.
-		#100 hard_reset = 1'b1; // Reset.
-		#10 hard_reset = 1'b0; // Bajo el reset.
+		#100 hard_reset = 1'b0; // Reset.
+		#10 hard_reset = 1'b1; // Bajo el reset.
 		
 		
 		#1000000000 $finish;
