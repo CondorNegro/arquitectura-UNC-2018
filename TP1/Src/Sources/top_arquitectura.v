@@ -1,19 +1,19 @@
 `timescale 1ns / 1ps
 
 //////////////////////////////////////////////////////////////////////////////////
-// Trabajo Práctico N° 1. ALU.
+// Trabajo Practico Nro. 1. ALU.
 // TOP.
-// Integrantes: Kleiner Matías, López Gastón.
+// Integrantes: Kleiner Matias, Lopez Gaston.
 // Materia: Arquitectura de Computadoras.
 // FCEFyN. UNC.
-// Año 2018.
+// Anio 2018.
 //////////////////////////////////////////////////////////////////////////////////
 
 
-`define BUS_DATOS           4   // Tamaño del bus de entrada. (Por ejemplo, cantidad de switches).
-`define BUS_SALIDA          4   // Tamaño del bus de salida. (Por ejemplo, cantidad de leds).
+`define BUS_DATOS           4   // Tamanio del bus de entrada. (Por ejemplo, cantidad de switches).
+`define BUS_SALIDA          4   // Tamanio del bus de salida. (Por ejemplo, cantidad de leds).
 `define CANT_BOTONES_ALU    4   // Cantidad de botones.
-`define CANT_BIT_OPCODE    4   // Número de bits del código de operación de la ALU.
+`define CANT_BIT_OPCODE    4    // Numero de bits del codigo de operacion de la ALU.
 
 module top_arquitectura(
   i_clock, 
@@ -23,7 +23,7 @@ module top_arquitectura(
   o_leds 
   );
 
-// Parámetros
+// Parametros
 parameter BUS_DATOS = `BUS_DATOS;
 parameter BUS_SALIDA = `BUS_SALIDA;
 parameter CANT_BOTONES_ALU = `CANT_BOTONES_ALU;
@@ -44,14 +44,14 @@ wire [BUS_DATOS - 1 : 0] wire_operando_2;
 wire [CANT_BIT_OPCODE - 1 : 0] wire_opcode;
 
 
-// Módulo Configurador.
+// Modulo Configurador. (Logica de seteo de operandos y del codigo de operacion en los registros).
 
 configurador
     #(
          .CANT_DATOS_ENTRADA (BUS_DATOS),
-         .CANT_BITS_OPCODE (CANT_BIT_OPCODE)
+         .CANT_BITS_OPCODE_ALU (CANT_BIT_OPCODE)
      ) 
-   u_configurador1    // Una sola instancia de este módulo
+   u_configurador1    // Una sola instancia de este modulo
    (
    .i_clock (i_clock),
    .i_reset (i_reset),
@@ -63,7 +63,7 @@ configurador
    );
 
 
-// Módulo ALU.
+// Modulo ALU.
 
 alu
     #(
@@ -71,7 +71,7 @@ alu
          .CANT_BUS_SALIDA (BUS_SALIDA),
          .CANT_BITS_OPCODE (CANT_BIT_OPCODE)
      ) 
-   u_alu1    // Una sola instancia de este módulo
+   u_alu1    // Una sola instancia de este modulo
    (
    .i_operando_1 (wire_operando_1),
    .i_operando_2 (wire_operando_2),

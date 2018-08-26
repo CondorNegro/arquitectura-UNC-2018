@@ -1,50 +1,47 @@
- 
-`timescale 1ns / 100ps
+ `timescale 1ns / 100ps
 
 //////////////////////////////////////////////////////////////////////////////////
-// Trabajo Pr�ctico N� 1. ALU.
-// Test bench del TOP.
-// Integrantes: Kleiner Mat�as, L�pez Gast�n.
+// Trabajo Practico Nro. 1. ALU.
+// Test bench del modulo configurador.
+// Integrantes: Kleiner Matias, Lopez Gaston.
 // Materia: Arquitectura de Computadoras.
 // FCEFyN. UNC.
-// A�o 2018.
+// Anio 2018.
 //////////////////////////////////////////////////////////////////////////////////
 
-`define BUS_DATOS           4   // Tama�o del bus de entrada. (Por ejemplo, cantidad de switches).
-`define BUS_SALIDA          4   // Tama�o del bus de salida. (Por ejemplo, cantidad de leds).
-`define CANT_BOTONES_ALU    4   // Cantidad de botones.
-`define CANT_BITS_OPCODE     4
+`define CANT_DATOS_ENTRADA      4   // Tamanio del bus de entrada. (Por ejemplo, cantidad de switches).
+`define CANT_BOTONES_OPCODE     4   // Cantidad de botones.
+`define CANT_BITS_OPCODE_ALU    4   // Cantidad de bits del codigo de operacion.
 
 module test_bench_configurador();
+		
+	// Parametros
+    parameter CANT_DATOS_ENTRADA = `CANT_DATOS_ENTRADA;
+    parameter CANT_BOTONES_OPCODE = `CANT_BOTONES_OPCODE;
+    parameter CANT_BITS_OPCODE_ALU = `CANT_BITS_OPCODE_ALU;
 	
+	//Todo puerto de salida del modulo es un cable.
+	//Todo puerto de estimulo o generacion de entrada es un registro.
 	
-	// Par�metros
-    parameter BUS_DATOS = `BUS_DATOS;
-    parameter BUS_SALIDA = `BUS_SALIDA;
-    parameter CANT_BOTONES_ALU = `CANT_BOTONES_ALU;
-    parameter CANT_BITS_OPCODE = `CANT_BITS_OPCODE;
-	
-	//Todo puerto de salida del m�dulo es un cable.
-	//Todo puerto de est�mulo o generaci�n de entrada es un registro.
-	
-	// Entradas - Salidas
+	// Entradas.
     reg clock;                                  // Clock.
     reg hard_reset;                             // Reset.
-    reg [BUS_DATOS - 1 : 0] switches;           // Switches.
-    reg [CANT_BOTONES_ALU - 1 : 0] botones;     // Botones.
+    reg [CANT_DATOS_ENTRADA - 1 : 0] switches;           // Switches.
+    reg [CANT_BOTONES_OPCODE - 1 : 0] botones;     // Botones.
     
-    wire [BUS_DATOS - 1 : 0] dato_A;
-    wire [BUS_DATOS - 1 : 0] dato_B;
-    wire [CANT_BITS_OPCODE - 1 : 0] opcode;
+    // Salidas.
+    wire [CANT_DATOS_ENTRADA - 1 : 0] dato_A;
+    wire [CANT_DATOS_ENTRADA - 1 : 0] dato_B;
+    wire [CANT_BITS_OPCODE_ALU - 1 : 0] opcode;
     
 	
 	
 	initial	begin
 		clock = 1'b0;
-		hard_reset = 1'b0; // Reset en 1.
+		hard_reset = 1'b0; // Reset en 0. (Normal cerrado el boton del reset).
 		switches = 4'b0000; 
 		botones = 4'b0000;
-		#10 hard_reset = 1'b1; // Bajo el reset.
+		#10 hard_reset = 1'b1; // Desactivo la accion del reset.
 		
 		// Test 1: cargar primer operando.
 		#10 botones[0] = 1'b1;
@@ -63,25 +60,24 @@ module test_bench_configurador();
 		
 		// Test 13: Prueba reset.
 		#100 hard_reset = 1'b0; // Reset.
-		#10 hard_reset = 1'b1; // Bajo el reset.
+		#10 hard_reset = 1'b1; // Desactivo el reset.
 		
 		
-		#1000000000 $finish;
+		#10000 $finish;
 	end
 	
-	always #2.5 clock=~clock;  // Simulaci�n de clock.
+	always #2.5 clock=~clock;  // Simulacion de clock.
 
 
 
-//M�dulo para pasarle los est�mulos del banco de pruebas.
+//Modulo para pasarle los estimulos del banco de pruebas.
 configurador
     #(
-         .CANT_BUS_ENTRADA (BUS_DATOS),
-         .CANT_BUS_SALIDA (BUS_SALIDA),
-         .CANT_BITS_OPCODE (CANT_BOTONES_ALU),
-         .CANT_BOTONES_ALU (CANT_BITS_OPCODE)
+         .CANT_DATOS_ENTRADA (CANT_DATOS_ENTRADA),
+         .CANT_BOTONES_OPCODE (CANT_BOTONES_OPCODE),
+         .CANT_BITS_OPCODE_ALU (CANT_BITS_OPCODE_ALU)
      ) 
-   u_configurador_1    // Una sola instancia de este m�dulo
+   u_configurador_1    // Una sola instancia de este modulo.
   (
       .i_clock (clock),
       .i_reset (hard_reset),

@@ -1,18 +1,19 @@
  `timescale 1ns / 1ps
 
-//////////////////////////////////////////////////////////////////////////////////
-// Trabajo Pr�ctico N� 1. ALU.
-// ALU.
-// Integrantes: Kleiner Mat�as, L�pez Gast�n.
+//////////////////////////////////////////////////////////////////////////////////////////////////
+// Trabajo Practico Nro. 1. ALU.
+// Configurador. (Logica de seteo de operandos y del codigo de operacion en los registros).
+// Integrantes: Kleiner Matias, Lopez Gaston.
 // Materia: Arquitectura de Computadoras.
 // FCEFyN. UNC.
-// A�o 2018.
-//////////////////////////////////////////////////////////////////////////////////
+// Anio 2018.
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
 
 // Constantes.
-`define CANT_DATOS_ENTRADA 6
-`define CANT_BITS_OPCODE 4
-`define CANT_BOTONES_ALU    4   // Cantidad de botones.
+`define CANT_DATOS_ENTRADA      4       // Tamanio del bus de entrada. (Idem a tamanio del bus de salida).
+`define CANT_BITS_OPCODE_ALU    4       // Numero de bits del codigo de operacion de la ALU.
+`define CANT_BOTONES_OPCODE     4       // Cantidad de botones.
 
 module configurador(
     i_clock, 
@@ -24,10 +25,10 @@ module configurador(
     o_reg_opcode
     );
 
-// Par�metros.
-parameter CANT_DATOS_ENTRADA = `CANT_DATOS_ENTRADA;
-parameter CANT_BITS_OPCODE = `CANT_BITS_OPCODE;
-parameter CANT_BOTONES_ALU = `CANT_BOTONES_ALU;
+// Parametros.
+parameter CANT_DATOS_ENTRADA    = `CANT_DATOS_ENTRADA;
+parameter CANT_BITS_OPCODE_ALU  = `CANT_BITS_OPCODE_ALU;
+parameter CANT_BOTONES_OPCODE   = `CANT_BOTONES_OPCODE;
 
 
 // Entradas - Salidas.
@@ -35,17 +36,17 @@ parameter CANT_BOTONES_ALU = `CANT_BOTONES_ALU;
 input i_clock;     
 input i_reset; 
 input [CANT_DATOS_ENTRADA - 1 : 0] i_switches; 
-input [CANT_BOTONES_ALU - 1 : 0] i_botones; 
-output [CANT_DATOS_ENTRADA - 1 : 0] o_reg_dato_A;             // C�digo de operaci�n.
+input [CANT_BOTONES_OPCODE - 1 : 0] i_botones; 
+output [CANT_DATOS_ENTRADA - 1 : 0] o_reg_dato_A;             
 output [CANT_DATOS_ENTRADA - 1 : 0] o_reg_dato_B; 
-output [CANT_BITS_OPCODE - 1 : 0] o_reg_opcode;                
+output [CANT_BITS_OPCODE_ALU - 1 : 0] o_reg_opcode;  // Codigo de operacion.      
 
 
 
 // Registros.
 reg [CANT_DATOS_ENTRADA - 1 : 0] reg_dato_A;
 reg [CANT_DATOS_ENTRADA - 1 : 0] reg_dato_B;
-reg [CANT_BITS_OPCODE - 1 : 0] reg_opcode;
+reg [CANT_BITS_OPCODE_ALU - 1 : 0] reg_opcode;
 
 always@( posedge i_clock) begin
      // Se resetean los registros.
@@ -56,19 +57,19 @@ always@( posedge i_clock) begin
      end 
      
      else begin
-        // Si se presiona el botón 1
+        // Si se presiona el boton 1
         if (i_botones == 1) begin
             reg_dato_A <= i_switches;
             reg_dato_B <= reg_dato_B;
             reg_opcode <= reg_opcode;
         end
-        // Si se presiona el botón 2
+        // Si se presiona el boton 2
         else  if (i_botones == 2) begin
            reg_dato_A <= reg_dato_A;
            reg_dato_B <= reg_dato_B;
            reg_opcode <= i_switches;
         end
-        // Si se presiona el botón 3
+        // Si se presiona el boton 3
         else  if (i_botones == 4) begin
            reg_dato_A <= reg_dato_A;
            reg_dato_B <= i_switches;
@@ -82,7 +83,7 @@ always@( posedge i_clock) begin
      end   
 end
 
-// Asignaci�n.
+// Asignacion.
 assign o_reg_dato_A = reg_dato_A;
 assign o_reg_dato_B = reg_dato_B;
 assign o_reg_opcode = reg_opcode;

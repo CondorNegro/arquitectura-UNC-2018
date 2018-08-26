@@ -1,34 +1,34 @@
 `timescale 1ns / 100ps
 
 //////////////////////////////////////////////////////////////////////////////////
-// Trabajo Práctico N° 1. ALU.
+// Trabajo Practico Nro. 1. ALU.
 // Test bench de la ALU.
-// Integrantes: Kleiner Matías, López Gastón.
+// Integrantes: Kleiner Matias, Lopez Gaston.
 // Materia: Arquitectura de Computadoras.
 // FCEFyN. UNC.
-// Año 2018.
+// Anio 2018.
 //////////////////////////////////////////////////////////////////////////////////
 
-`define BUS_DATOS               4   // Tamaño del bus de entrada. 
-`define BUS_SALIDA              4   // Tamaño del bus de salida. 
-`define CANT_BITS_OPCODE_ALU    4   // Cantidad de bits del código de operación de la ALU.
+`define BUS_DATOS               4   // Tamanio del bus de entrada. 
+`define BUS_SALIDA              4   // Tamanio del bus de salida. 
+`define CANT_BITS_OPCODE_ALU    4   // Cantidad de bits del codigo de operacion de la ALU.
+
 
 module TestBenchAlu();
-	
-	
-	// Parámetros
+
+	// Parametros
     parameter BUS_DATOS = `BUS_DATOS;
     parameter BUS_SALIDA = `BUS_SALIDA;
     parameter CANT_BITS_OPCODE_ALU = `CANT_BITS_OPCODE_ALU;
 	
-	//Todo puerto de salida del módulo es un cable.
-	//Todo puerto de estímulo o generación de entrada es un registro.
+	//Todo puerto de salida del modulo es un cable.
+	//Todo puerto de estimulo o generacion de entrada es un registro.
 	
 	// Entradas - Salidas
     reg [BUS_DATOS - 1 : 0] reg_operando_1;  
     reg [BUS_DATOS - 1 : 0] reg_operando_2;           
-    reg [CANT_BITS_OPCODE_ALU - 1 : 0] reg_opcode;   
-    wire [BUS_SALIDA - 1 : 0] leds;             // Leds.
+    reg [CANT_BITS_OPCODE_ALU - 1 : 0] reg_opcode;   // Codigo de operacion.
+    wire [BUS_SALIDA - 1 : 0] leds;            
 	
 	
 	initial	begin
@@ -86,24 +86,22 @@ module TestBenchAlu();
          #10 reg_opcode = 4'b0000; //Ninguna operacion.
          #10 reg_operando_2 = 4'b1001;
 		
-	
-		
 		
 		#1000 $finish;
 	end
 	
-	//always #2.5 clock=~clock;  // Simulación de clock.
+	//always #2.5 clock=~clock;  // Simulacion de clock.
 
 
 
-//Módulo para pasarle los estímulos del banco de pruebas.
+// Modulo para pasarle los estimulos del banco de pruebas.
 alu
     #(
          .CANT_BUS_ENTRADA (BUS_DATOS),
          .CANT_BUS_SALIDA (BUS_SALIDA),
          .CANT_BITS_OPCODE (CANT_BITS_OPCODE_ALU)
      ) 
-   u_alu1    // Una sola instancia de este módulo
+   u_alu1    // Una sola instancia de este modulo
    (
    .i_operando_1 (reg_operando_1),
    .i_operando_2 (reg_operando_2),

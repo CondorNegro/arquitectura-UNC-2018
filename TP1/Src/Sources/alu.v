@@ -1,18 +1,18 @@
 `timescale 1ns / 1ps
 
 //////////////////////////////////////////////////////////////////////////////////
-// Trabajo Pr�ctico N� 1. ALU.
+// Trabajo Practico Nro. 1. ALU.
 // ALU.
-// Integrantes: Kleiner Mat�as, L�pez Gast�n.
+// Integrantes: Kleiner Matias, Lopez Gaston.
 // Materia: Arquitectura de Computadoras.
 // FCEFyN. UNC.
-// A�o 2018.
+// Anio 2018.
 //////////////////////////////////////////////////////////////////////////////////
 
 // Constantes.
-`define CANT_BUS_ENTRADA 4
-`define CANT_BUS_SALIDA 4
-`define CANT_BITS_OPCODE 4
+`define CANT_BUS_ENTRADA    4
+`define CANT_BUS_SALIDA     4
+`define CANT_BITS_OPCODE    4
 
 module alu(
     i_operando_1, 
@@ -21,26 +21,27 @@ module alu(
     o_resultado
     );
 
-// Par�metros.
-parameter CANT_BUS_ENTRADA = `CANT_BUS_ENTRADA;
-parameter CANT_BUS_SALIDA = `CANT_BUS_SALIDA;
-parameter CANT_BITS_OPCODE = `CANT_BITS_OPCODE;
+// Parametros.
+parameter CANT_BUS_ENTRADA  = `CANT_BUS_ENTRADA;
+parameter CANT_BUS_SALIDA   = `CANT_BUS_SALIDA;
+parameter CANT_BITS_OPCODE  = `CANT_BITS_OPCODE;
 
 
 // Entradas - Salidas.
 
 input signed [CANT_BUS_ENTRADA - 1 : 0] i_operando_1;     
 input signed [CANT_BUS_ENTRADA - 1 : 0] i_operando_2; 
-input [CANT_BITS_OPCODE - 1 : 0] i_opcode;             // C�digo de operaci�n.
+input [CANT_BITS_OPCODE - 1 : 0] i_opcode;             // Codigo de operacion.
 output signed [CANT_BUS_SALIDA - 1 : 0] o_resultado;                
 
 
 // Registro.
 reg signed [CANT_BUS_SALIDA - 1 : 0] reg_resultado;
 
+// Combinacional.
 always@(i_opcode or i_operando_1 or i_operando_2) begin
          
-        // Case donde se testea el valor del c�digo de operaci�n y en base a eso se opera entre operando1 y operando2.
+        // Case donde se testea el valor del codigo de operacion y en base a eso se opera entre operando1 y operando2.
         // Operaciones basadas en MIPS IV Instruction Set.
         case (i_opcode)
             
@@ -92,7 +93,7 @@ always@(i_opcode or i_operando_1 or i_operando_2) begin
 
 end
 
-// Asignaci�n.
+// Asignacion.
 assign o_resultado = reg_resultado;
 
 endmodule
