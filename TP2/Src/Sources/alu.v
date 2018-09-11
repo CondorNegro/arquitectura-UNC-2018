@@ -10,9 +10,9 @@
 //////////////////////////////////////////////////////////////////////////////////
 
 // Constantes.
-`define CANT_BUS_ENTRADA    4
-`define CANT_BUS_SALIDA     4
-`define CANT_BITS_OPCODE    4
+`define CANT_BUS_ENTRADA    8
+`define CANT_BUS_SALIDA     8
+`define CANT_BITS_OPCODE    8
 
 module alu(
     i_operando_1, 
@@ -46,42 +46,42 @@ always@(i_opcode or i_operando_1 or i_operando_2) begin
         case (i_opcode)
             
             //ADD
-            4'b1000 : begin
+            8'b00100000 : begin
                reg_resultado = i_operando_1 + i_operando_2;
             end
              
              //SUB
-             4'b1010 : begin
+             8'b00100010 : begin
                reg_resultado = i_operando_1 - i_operando_2;
              end
             
             //AND
-             4'b1100 : begin
+             8'b00100100 : begin
                 reg_resultado = i_operando_1 & i_operando_2;
              end
              
              //OR
-             4'b1101 : begin
+             8'b00100101 : begin
                 reg_resultado = i_operando_1 | i_operando_2;
              end
             
             //XOR
-             4'b1110 : begin
+             8'b00100110 : begin
                reg_resultado = i_operando_1 ^ i_operando_2;
              end
              
              //SRA (Shift Right Aritmethic).
-             4'b0011 : begin
+             8'b00000011 : begin
                 reg_resultado = i_operando_1 >>> i_operando_2;
              end
                          
             //SRL  (Shift Right Logical).
-            4'b0010 : begin
+            8'b00000010 : begin
                 reg_resultado = i_operando_1 >> i_operando_2;
             end
             
             //NOR
-            4'b1111 : begin
+            8'b00100111 : begin
                 reg_resultado = ~ (i_operando_1 | i_operando_2);
             end
             
