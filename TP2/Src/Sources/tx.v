@@ -1,20 +1,21 @@
  `timescale 1ns / 1ps
 
 // Constantes.
-`define WIDTH_WORD             8              // Tamanio de palabra
+`define WIDTH_WORD_TX             8              // Tamanio de palabra
 `define CANT_BIT_STOP          2              // Cantidad de bit de parada
 
 
-module rx(
+module tx(
     i_rate,
     i_data_in,
     i_reset,
+    i_tx_start,
     o_bit_tx,
     o_tx_done
     );
 
 // Parametros.
-parameter WIDTH_WORD    = `WIDTH_WORD;
+parameter WIDTH_WORD_TX    = `WIDTH_WORD_TX;
 parameter CANT_BIT_STOP  = `CANT_BIT_STOP;
 
 // Local Param
@@ -27,7 +28,7 @@ localparam STOP = 4'b1000;
 // Entradas - Salidas.
 
 input i_rate;
-input [ WIDTH_WORD - 1 : 0 ] i_data_in;       
+input [ WIDTH_WORD_TX - 1 : 0 ] i_data_in;       
 input i_reset; 
 input  i_tx_start;  
 output reg o_bit_tx;  
@@ -39,7 +40,7 @@ output reg o_tx_done;
 reg [ 3 : 0 ] reg_state;
 reg [ 3 : 0 ] reg_next_state;
 reg [ 5 : 0] reg_contador_ticks;
-reg [$clog2 (WIDTH_WORD) - 1 : 0] reg_contador_bits;
+reg [$clog2 (WIDTH_WORD_TX) - 1 : 0] reg_contador_bits;
 reg [$clog2 (CANT_BIT_STOP) - 1 : 0] reg_contador_bits_stop;
 
 
@@ -126,7 +127,7 @@ always@( * ) begin //NEXT - STATE logic
         end
         
         READ : begin
-            if (reg_contador_bits == WIDTH_WORD) begin
+            if (reg_contador_bits == WIDTH_WORD_TX) begin
                 reg_next_state = STOP;
                 reg_contador_ticks = 0;
                 reg_contador_bits = reg_contador_bits;
