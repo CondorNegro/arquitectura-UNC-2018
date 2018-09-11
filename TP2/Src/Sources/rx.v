@@ -38,6 +38,9 @@ output reg [ WIDTH_WORD - 1 : 0 ] o_data_out;
 reg [ 3 : 0 ] reg_state;
 reg [ 3 : 0 ] reg_next_state;
 reg [ WIDTH_WORD - 1 : 0 ] reg_buffer;
+reg [ 15 : 0] reg_contador_ticks;
+reg [$clog2 (WIDTH_WORD) - 1 : 0] reg_contador_bits;
+reg [$clog2 (CANT_BIT_STOP) - 1 : 0] reg_contador_bits_stop;
 
 
 always@( posedge i_rate ) begin //Memory
@@ -46,10 +49,27 @@ always@( posedge i_rate ) begin //Memory
         reg_state <= 0;
         reg_next_state <= 0;
         reg_buffer <= 0;
+        reg_contador_bits <= 0;
+        reg_contador_ticks <= 0;
+        reg_contador_bits_stop <= 0;
     end 
 
     else begin
         reg_state <= reg_next_state;
+        reg_contador_ticks <= reg_contador_ticks + 1;
+        if ((reg_state == READ) && ((reg_contador_ticks % 16) == 0)) begin
+            reg_contador_bits <= reg_contador_bits + 1;
+        end
+        else begin 
+            reg_contador_bits <= 0;
+        end
+        if ((reg_state == STOP) && ((reg_contador_ticks % 16) == 0)) begin
+            reg_contador_bits_stop <= reg_contador_bits_stop + 1;
+        end
+        else begin 
+            reg_contador_bits_stop <= 0;
+        end
+        
     end
 end
 
@@ -59,38 +79,62 @@ always@( * ) begin //NEXT - STATE logic
     case (reg_state)
         
         ESPERA : begin
-            if () begin
+            if (i_bit_rx == 0) begin
                 reg_next_state = START;
+                reg_contador_ticks = 0;
+                reg_contador_bits =  reg_contador_bits;
+                reg_contador_bits_stop = reg_contador_bits_stop;
             end
             else begin
                 reg_next_state = ESPERA;
+                reg_contador_ticks = reg_contador_ticks;
+                reg_contador_bits =  reg_contador_bits;
+                reg_contador_bits_stop = reg_contador_bits_stop;
             end  
         end
         
         START : begin
-            if () begin
+            if (reg_contador_ticks == 7) begin
                 reg_next_state = READ;
+                reg_contador_ticks = 0;
+                reg_contador_bits =  reg_contador_bits;
+                reg_contador_bits_stop = reg_contador_bits_stop;
             end
             else begin
                 reg_next_state = START;
+                reg_contador_ticks = reg_contador_ticks;
+                reg_contador_bits =  reg_contador_bits;
+                reg_contador_bits_stop = reg_contador_bits_stop;
             end  
         end
         
         READ : begin
-            if () begin
+            if (reg_contador_bits == WIDTH_WORD) begin
                 reg_next_state = STOP;
+                reg_contador_ticks = 0;
+                reg_contador_bits = reg_contador_bits;
+                reg_contador_bits_stop = reg_contador_bits_stop;
             end
             else begin
                 reg_next_state = READ;
+                reg_contador_ticks = reg_contador_ticks;
+                reg_contador_bits = reg_contador_bits;
+                reg_contador_bits_stop = reg_contador_bits_stop;
             end  
         end
         
         STOP : begin
-            if () begin
+            if ( reg_contador_bits_stop == CANT_BIT_STOP) begin
                 reg_next_state = ESPERA;
+                reg_contador_bits = reg_contador_bits;
+                reg_contador_bits_stop = reg_contador_bits_stop;
+                reg_contador_ticks = reg_contador_ticks;
             end
             else begin
                 reg_next_state = STOP;
+                reg_contador_bits = reg_contador_bits;
+                reg_contador_ticks = reg_contador_ticks;
+                reg_contador_bits_stop = reg_contador_bits_stop;
             end  
         end
         
