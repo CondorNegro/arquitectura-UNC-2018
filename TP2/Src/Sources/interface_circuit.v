@@ -24,6 +24,7 @@ module interface_circuit(
     i_data_rx,
     i_rx_done,
     i_tx_done,
+    i_clock,
     o_tx_start,
     o_data_tx,
     o_reg_dato_A,
@@ -35,66 +36,144 @@ module interface_circuit(
 parameter CANT_DATOS_ENTRADA_ALU    = `CANT_DATOS_ENTRADA_ALU;
 parameter CANT_BITS_OPCODE_ALU      = `CANT_BITS_OPCODE_ALU;
 parameter CANT_DATOS_SALIDA_ALU     = `CANT_DATOS_SALIDA_ALU;
-parameter CANT_DATOS_SALIDA_ALU     = `CANT_DATOS_SALIDA_ALU;
+parameter WIDTH_WORD                = `WIDTH_WORD;
 
+// Local Param
+localparam ESPERA = 4'b0001;
+localparam OPERANDO1 = 4'b0010;
+localparam OPERACION = 4'b0100;
+localparam OPERANDO2 = 4'b1000;
 
 // Entradas - Salidas.
-
-input i_clock;     
-input i_reset; 
-input [CANT_DATOS_ENTRADA_ALU - 1 : 0] i_switches; 
-input [CANT_BOTONES_OPCODE - 1 : 0] i_botones; 
-output [CANT_DATOS_ENTRADA_ALU - 1 : 0] o_reg_dato_A;             
-output [CANT_DATOS_ENTRADA_ALU - 1 : 0] o_reg_dato_B; 
-output [CANT_BITS_OPCODE_ALU - 1 : 0] o_reg_opcode;  // Codigo de operacion.      
+input i_clock;
+input  i_rx_done;
+input  i_tx_done;
+input  [CANT_DATOS_SALIDA_ALU - 1 : 0]   i_resultado_alu;
+input  [WIDTH_WORD - 1 : 0]  i_data_rx;
+input  i_reset;  
+output [WIDTH_WORD - 1 : 0]  o_data_tx;
+output o_tx_start;
+output reg [CANT_DATOS_ENTRADA_ALU - 1 : 0] o_reg_dato_A;             
+output reg [CANT_DATOS_ENTRADA_ALU - 1 : 0] o_reg_dato_B; 
+output reg [CANT_BITS_OPCODE_ALU - 1 : 0] o_reg_opcode;  // Codigo de operacion.      
 
 
 
 // Registros.
-reg [CANT_DATOS_ENTRADA_ALU - 1 : 0] reg_dato_A;
-reg [CANT_DATOS_ENTRADA_ALU - 1 : 0] reg_dato_B;
-reg [CANT_BITS_OPCODE_ALU - 1 : 0] reg_opcode;
+reg [ 3 : 0 ] reg_state;
+reg [ 3 : 0 ] reg_next_state;
 
-always@( posedge i_clock) begin
+
+always@( posedge i_clock ) begin //Memory
      // Se resetean los registros.
-     if (~ i_reset) begin
+    if (~ i_reset) begin
+        reg_state <= 1;
+        reg_next_state <= 1;
         reg_dato_A <= 0;
         reg_dato_B <= 0;
         reg_opcode <= 0;
-     end 
-     
-     else begin
-        // Si se presiona el boton 1
-        if (i_botones == 1) begin
-            reg_dato_A <= i_switches;
-            reg_dato_B <= reg_dato_B;
-            reg_opcode <= reg_opcode;
-        end
-        // Si se presiona el boton 2
-        else  if (i_botones == 2) begin
-           reg_dato_A <= reg_dato_A;
-           reg_dato_B <= reg_dato_B;
-           reg_opcode <= i_switches;
-        end
-        // Si se presiona el boton 3
-        else  if (i_botones == 4) begin
-           reg_dato_A <= reg_dato_A;
-           reg_dato_B <= i_switches;
-           reg_opcode <= reg_opcode;
-        end
-        else begin
-            reg_dato_A <= reg_dato_A;
-            reg_dato_B <= reg_dato_B;
-            reg_opcode <= reg_opcode;
-        end        
-     end   
+    end 
+
+    else begin
+        reg_state <= reg_next_state;       
+    end
 end
 
-// Asignacion.
-assign o_reg_dato_A = reg_dato_A;
-assign o_reg_dato_B = reg_dato_B;
-assign o_reg_opcode = reg_opcode;
+
+
+
+always@( i_rx_done, i_tx_done ) begin //NEXT - STATE logic
+    
+    case (reg_state)
+        
+        ESPERA : begin
+            if (i_rx_done == 1) begin
+                reg_next_state = OPERANDO1;
+            end
+            else begin
+                reg_next_state = ESPERA;
+            end  
+        end
+        
+        OPERANDO1 : begin
+            if (i_rx_done == 1) begin
+                reg_next_state = OPERACION;
+            end
+            else begin
+                reg_next_state = OPERANDO1;
+            end  
+        end
+        
+        OPERACION : begin
+           if (i_rx_done == 1) begin
+                reg_next_state = OPERANDO2;
+            end
+            else begin
+                reg_next_state = OPERACION;
+            end  
+        end
+        
+        OPERANDO2 : begin
+            if (i_tx_done == 1) begin
+                reg_next_state = ESPERA;
+            end
+            else begin
+                reg_next_state = OPERANDO2;
+            end        
+        end
+        
+        default begin
+            reg_next_state = ESPERA;
+        end
+    endcase 
+end
+
+
+always@( * ) begin //Output logic
+    
+    case (reg_state)
+        
+        ESPERA : begin
+            o_tx_start = 0;
+            o_data_tx = o_data_tx;
+            o_reg_dato_A = o_reg_dato_A;
+            o_reg_dato_B = o_reg_dato_B;
+            o_reg_opcode = o_reg_opcode;
+        end
+        
+        OPERANDO1 : begin
+            o_tx_start = 0;
+            o_data_tx = o_data_tx;
+            o_reg_dato_A = i_data_rx;
+            o_reg_dato_B = o_reg_dato_B;
+            o_reg_opcode = o_reg_opcode;
+        end
+        
+        OPERACION : begin
+            o_tx_start = 0;
+            o_data_tx = o_data_tx;
+            o_reg_dato_A = o_reg_dato_A;
+            o_reg_dato_B = o_reg_dato_B;
+            o_reg_opcode = i_data_rx;
+        end
+        
+        OPERANDO2 : begin
+            o_tx_start = 1;
+            o_data_tx = i_resultado_alu; 
+            o_reg_dato_A = o_reg_dato_A;
+            o_reg_dato_B = i_data_rx;
+            o_reg_opcode = o_reg_opcode;    
+        end
+        
+        default : begin
+            o_tx_start = 0;
+            o_data_tx = o_data_tx;
+            o_reg_dato_A = o_reg_dato_A;
+            o_reg_dato_B = o_reg_dato_B;
+            o_reg_opcode = o_reg_opcode;
+        end
+    
+    endcase 
+end
 
 endmodule
-
-

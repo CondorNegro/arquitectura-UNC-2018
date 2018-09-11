@@ -49,8 +49,8 @@ reg [$clog2 (CANT_BIT_STOP) - 1 : 0] reg_contador_bits_stop;
 always@( posedge i_rate ) begin //Memory
      // Se resetean los registros.
     if (~ i_reset) begin
-        reg_state <= 0;
-        reg_next_state <= 0;
+        reg_state <= 1;
+        reg_next_state <= 1;
         reg_contador_bits <= 0;
         reg_contador_ticks <= 0;
         reg_contador_bits_stop <= 0;
@@ -156,7 +156,12 @@ always@( * ) begin //NEXT - STATE logic
             end              
         end
         
-        default : reg_next_state = ESPERA;
+        default : begin
+            reg_next_state = ESPERA;
+            reg_contador_bits = reg_contador_bits;
+            reg_contador_ticks = reg_contador_ticks;
+            reg_contador_bits_stop = reg_contador_bits_stop;
+        end
     
     endcase 
 end
