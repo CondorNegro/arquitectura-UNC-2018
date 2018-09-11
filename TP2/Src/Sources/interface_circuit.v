@@ -51,8 +51,8 @@ input  i_tx_done;
 input  [CANT_DATOS_SALIDA_ALU - 1 : 0]   i_resultado_alu;
 input  [WIDTH_WORD - 1 : 0]  i_data_rx;
 input  i_reset;  
-output [WIDTH_WORD - 1 : 0]  o_data_tx;
-output o_tx_start;
+output reg [WIDTH_WORD - 1 : 0]  o_data_tx;
+output reg o_tx_start;
 output reg [CANT_DATOS_ENTRADA_ALU - 1 : 0] o_reg_dato_A;             
 output reg [CANT_DATOS_ENTRADA_ALU - 1 : 0] o_reg_dato_B; 
 output reg [CANT_BITS_OPCODE_ALU - 1 : 0] o_reg_opcode;  // Codigo de operacion.      
@@ -69,9 +69,9 @@ always@( posedge i_clock ) begin //Memory
     if (~ i_reset) begin
         reg_state <= 1;
         reg_next_state <= 1;
-        reg_dato_A <= 0;
-        reg_dato_B <= 0;
-        reg_opcode <= 0;
+        o_reg_dato_A <= 0;
+        o_reg_dato_B <= 0;
+        o_reg_opcode <= 0;
     end 
 
     else begin
