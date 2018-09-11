@@ -38,7 +38,7 @@ output reg [ WIDTH_WORD - 1 : 0 ] o_data_out;
 reg [ 3 : 0 ] reg_state;
 reg [ 3 : 0 ] reg_next_state;
 reg [ WIDTH_WORD - 1 : 0 ] reg_buffer;
-reg [ 15 : 0] reg_contador_ticks;
+reg [ 5 : 0] reg_contador_ticks;
 reg [$clog2 (WIDTH_WORD) - 1 : 0] reg_contador_bits;
 reg [$clog2 (CANT_BIT_STOP) - 1 : 0] reg_contador_bits_stop;
 
