@@ -166,7 +166,7 @@ always@( * ) begin //Output logic
     case (reg_state)
         
         ESPERA : begin
-            o_tx_done = 0;
+            o_tx_done = 1;
             o_bit_tx = 1; 
         end
         
@@ -193,7 +193,7 @@ always@( * ) begin //Output logic
         end
         
         default : begin
-                o_tx_done = 0;
+                o_tx_done = 1;
                 o_bit_tx = 1;
         end
     
