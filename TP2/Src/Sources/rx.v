@@ -60,10 +60,12 @@ always@( posedge i_rate ) begin //Memory
         
         if (reg_state == READ) begin
             if ( (reg_contador_ticks % 16) == 0 ) begin
+                reg_buffer[reg_contador_bits] <=  i_bit_rx;
                 reg_contador_bits <= reg_contador_bits + 1;
                 reg_contador_bits_stop <= 0;
             end
             else begin
+                reg_buffer <= reg_buffer;
                 reg_contador_bits <= reg_contador_bits;
                 reg_contador_bits_stop <= reg_contador_bits_stop;
             end
@@ -73,14 +75,17 @@ always@( posedge i_rate ) begin //Memory
             if ( (reg_contador_ticks % 16) == 0 ) begin
                 reg_contador_bits <= 0;
                 reg_contador_bits_stop <= reg_contador_bits_stop + 1;
+                reg_buffer <= reg_buffer;
             end
             else begin
                 reg_contador_bits <= reg_contador_bits;
                 reg_contador_bits_stop <= reg_contador_bits_stop;
+                reg_buffer <= reg_buffer;
             end
         end
 
-        else begin 
+        else begin
+            reg_buffer <= reg_buffer; 
             reg_contador_bits <= 0;
             reg_contador_bits_stop <= 0;
         end
@@ -139,18 +144,29 @@ always@( * ) begin //NEXT - STATE logic
         end
         
         STOP : begin
-            if ( reg_contador_bits_stop == CANT_BIT_STOP) begin
-                reg_next_state = ESPERA;
-                reg_contador_bits = reg_contador_bits;
-                reg_contador_bits_stop = reg_contador_bits_stop;
-                reg_contador_ticks = reg_contador_ticks;
+
+            if (i_bit_rx == 1) begin
+                if ( reg_contador_bits_stop == CANT_BIT_STOP) begin
+                    reg_next_state = ESPERA;
+                    reg_contador_bits = reg_contador_bits;
+                    reg_contador_bits_stop = reg_contador_bits_stop;
+                    reg_contador_ticks = reg_contador_ticks;
+                end
+                else begin
+                    reg_next_state = STOP;
+                    reg_contador_bits = reg_contador_bits;
+                    reg_contador_ticks = reg_contador_ticks;
+                    reg_contador_bits_stop = reg_contador_bits_stop;
+                end  
             end
+
             else begin
-                reg_next_state = STOP;
-                reg_contador_bits = reg_contador_bits;
-                reg_contador_ticks = reg_contador_ticks;
-                reg_contador_bits_stop = reg_contador_bits_stop;
-            end  
+                    reg_next_state = ESPERA;
+                    reg_contador_bits = reg_contador_bits;
+                    reg_contador_bits_stop = reg_contador_bits_stop;
+                    reg_contador_ticks = reg_contador_ticks;
+            end
+            
         end
         
         default : reg_next_state = ESPERA;
@@ -179,8 +195,16 @@ always@( * ) begin //Output logic
         end
         
         STOP : begin
-            o_rx_done = 1;
-            o_data_out = reg_buffer; 
+
+            if ( reg_contador_bits_stop == CANT_BIT_STOP) begin
+                o_rx_done = 1;
+                o_data_out = reg_buffer;
+            end
+            else begin
+                o_rx_done = 0;
+                o_data_out = 0;
+            end  
+            
         end
         
         default : begin
