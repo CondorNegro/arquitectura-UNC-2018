@@ -57,16 +57,19 @@ always@( posedge i_rate ) begin //Memory
     else begin
         reg_state <= reg_next_state;
         reg_contador_ticks <= reg_contador_ticks + 1;
+        
         if ((reg_state == READ) && ((reg_contador_ticks % 16) == 0)) begin
             reg_contador_bits <= reg_contador_bits + 1;
+            reg_contador_bits_stop <= 0;
         end
-        else begin 
+
+        else if ((reg_state == STOP) && ((reg_contador_ticks % 16) == 0)) begin
+            reg_contador_bits_stop <= reg_contador_bits_stop + 1;
             reg_contador_bits <= 0;
         end
-        if ((reg_state == STOP) && ((reg_contador_ticks % 16) == 0)) begin
-            reg_contador_bits_stop <= reg_contador_bits_stop + 1;
-        end
+
         else begin 
+            reg_contador_bits <= 0;
             reg_contador_bits_stop <= 0;
         end
         
