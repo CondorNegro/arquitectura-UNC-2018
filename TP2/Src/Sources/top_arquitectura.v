@@ -46,12 +46,12 @@ wire [CANT_BIT_OPCODE - 1 : 0] wire_opcode;
 
 // Modulo Configurador. (Logica de seteo de operandos y del codigo de operacion en los registros).
 
-configurador
+interface_circuit
     #(
          .CANT_DATOS_ENTRADA (BUS_DATOS),
          .CANT_BITS_OPCODE_ALU (CANT_BIT_OPCODE)
      ) 
-   u_configurador1    // Una sola instancia de este modulo
+   u_interface_circuit1    // Una sola instancia de este modulo
    (
    .i_clock (i_clock),
    .i_reset (i_reset),
