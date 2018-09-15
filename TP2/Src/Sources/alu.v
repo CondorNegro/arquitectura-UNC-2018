@@ -1,7 +1,7 @@
 `timescale 1ns / 1ps
 
 //////////////////////////////////////////////////////////////////////////////////
-// Trabajo Practico Nro. 2. ALU.
+// Trabajo Practico Nro. 2. UART.
 // ALU.
 // Integrantes: Kleiner Matias, Lopez Gaston.
 // Materia: Arquitectura de Computadoras.
