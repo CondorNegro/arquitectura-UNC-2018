@@ -7,7 +7,6 @@ except ImportError:
 import time
 import serial
 from serial import *
-import random
 import os
 import threading  
 
@@ -16,7 +15,7 @@ import threading
 BAUDRATE = 9600
 WIDTH_WORD = 8
 CANT_STOP_BITS = 2
-
+ESTADOS = ["PrimerOperando", "SegundoOperando", "CodigoOperacion"]
 
 
 # Variables globales
@@ -26,25 +25,39 @@ banderaPuertoLoop = 0
 estadoPuerto = "NO CONECTADO"
 etiquetaResultadoImpresion = "Resultado"
 lock = threading.Lock()
+currentState = ESTADOS [0]
 
 # Funcion para desactivar botones
 
 def desactivarBotones():
 	lock.acquire()
 	botonDesconectarFPGA.config (state = DISABLED)
-	botonaPrimerOperando.config (state = DISABLED)
-	botonaSegundoOperando.config (state = DISABLED)
-	botonaOperacion.config (state = DISABLED)
+	botonPrimerOperando.config (state = DISABLED)
+	botonSegundoOperando.config (state = DISABLED)
+	botonOperacion.config (state = DISABLED)
 	lock.release()
 
 # Funcion para activar botones
 
 def activarBotones():
 	lock.acquire()
-	botonaPrimerOperando.config (state = ACTIVE)
-	botonaSegundoOperando.config (state = ACTIVE)
-	botonaOperacion.config (state = ACTIVE)
 	botonDesconectarFPGA.config (state = ACTIVE)
+	if (currentState == ESTADOS[0]):
+		botonPrimerOperando.config (state = ACTIVE)
+		botonSegundoOperando.config (state = DISABLED)
+		botonOperacion.config (state = DISABLED)
+	elif (currentState == ESTADOS[1]):
+		botonPrimerOperando.config (state = DISABLED)
+		botonSegundoOperando.config (state = DISABLED)
+		botonOperacion.config (state = ACTIVE)
+	elif (currentState == ESTADOS[2]):
+		botonPrimerOperando.config (state = DISABLED)
+		botonSegundoOperando.config (state = ACTIVE)
+		botonOperacion.config (state = DISABLED)
+	else:
+		botonPrimerOperando.config (state = DISABLED)
+		botonSegundoOperando.config (state = DISABLED)
+		botonOperacion.config (state = DISABLED)
 	lock.release()
 
 
@@ -64,12 +77,13 @@ def conexionViaThread(puerto):
 	global banderaPuertoLoop
 	global ser
 	global estadoPuerto
+	global currentState
 	
 	print 'Thread de conexion/desconexion OK.'
 	try:
-		if (puerto == "disconnect" and estado_puerto != "NO CONECTADO"):
-			estadoPuerto="NO CONECTADO"
-			etiquetaPuertoEstado.config (text = estado_puerto, fg = "red")
+		if (puerto == "disconnect" and estadoPuerto != "NO CONECTADO"):
+			estadoPuerto = "NO CONECTADO"
+			etiquetaPuertoEstado.config (text = estadoPuerto, fg = "red")
 			desactivarBotones()
 			botonConectarFPGA.config (state = ACTIVE)
 			banderaPuertoLoop = 0
@@ -84,6 +98,7 @@ def conexionViaThread(puerto):
 				ser.flushOutput()
 				estadoPuerto = "loop - OK"
 				etiquetaPuertoEstado.config (text = estadoPuerto, fg = "dark green")
+				currentState = ESTADOS[0]
 				activarBotones()
 				print 'Loop-ok: ', puerto
 			else:
@@ -102,201 +117,74 @@ def conexionViaThread(puerto):
 					ser.timeout = None    	#Siempre escucha
 					ser.flushInput()		#Limpieza de buffers
 					ser.flushOutput()
+					currentState = ESTADOS[0]
 					activarBotones()
 					print 'Conexion OK en puerto : ', puerto
 				except SerialException:
 					estadoPuerto = str (puerto) + " - ERROR"
-					etiquetaPuertoEstado.config (text = estado_puerto, fg = "red")
+					etiquetaPuertoEstado.config (text = estadoPuerto, fg = "red")
 					desactivarBotones()
-					botonConectarFPGA.config(state=ACTIVE)
+					botonConectarFPGA.config(state = ACTIVE)
 					print 'Error al tratar de abrir el puerto:', puerto
 		else :
 			print "Puerto ya configurado"
 	except: 
 		print 'Error en la conexion/desconexion.'
 		activarBotones()
-		#exit(1)
 
 
+# Funcion que recibe el resultado obtenido de la ALU
 
-
-		
-
-	
-	
-def loguear():
-	activarBotonesOperacionLog()
-
-def loguearModuloEspecifico(numeroModulo):
-	try:
-		HiloLogModulo = threading.Thread(target=loguearModuloViaThread, args=(numeroModulo,)) 
-		HiloLogModulo.start()
-	except:
-		print 'Sistema operativo denego acceso a recursos.'
-		desactivarBotonesOperacionLog()
-		activarBotones()
-		
-	
-
-def loguearModuloViaThread(numeroModulo):
-	desactivarBotones()
-	desactivarBotonesOperacionLog()
-	print 'Thread de logueo OK.'
-	global etiqueta_Resulado_impreIon
-	try:
-		ser.flushInput()
-		ser.flushOutput()
-		entry='0b101'
-		final='0b010'
-		
-		StrTramaPrimerByte=chr(int(entry[2:5]+'0'+'0001',2)) #Cabecera.
-		StrTramaUltimoByte=chr(int(final[2:5]+'0'+'0001',2)) #Cola.
-		StrLHigh=chr(0x00) #Long
-		StrLLow=chr(0x00) #Long
-		strDeviceLogueo=chr(numeroModulo) #Device
-		strOperacion='1'
-		strTrama=StrTramaPrimerByte+StrLHigh+StrLLow+strDeviceLogueo+strOperacion+StrTramaUltimoByte
-		ser.write(strTrama)
-		time.sleep(0.5) #Para esperar que fpga me mande de vuelta los datos.(2 segundos)	
-		while ser.inWaiting()>7: #inWaiting-> cantidad de bytes en buffer esperando.
-			lectura=ser.read(8)
+def readResultado():
+	while ser.inWaiting() > 1: #inWaiting -> cantidad de bytes en buffer esperando.
+			lectura = ser.read(1)
 			print '>>',
 			print lectura
-			etiqueta_Resultad_impresioIlectura
-			etiquetaResultado.config(text=etiqueta_Resultado_impresion, fg="dark green")
-		activarBotones()
-	except: 
-		print 'Error en el logueo.'
-		etiquetaResultado.config(text="ERROR_LOG", fg="red")
-		activarBotones()
-		
-		
-	
-def leer():
-	if(flagBER):
-		cantDatos=cantDatosBER
-		leerCantDatos(cantDatosBER)
-	else:
-		activarBotonStartLectura()
+			etiquetaResultadoImpresion = lectura
+			etiquetaResultado.config (text = etiquetaResultadoImpresion, fg = "dark green")
 
-	
-def leerCantDatos(cantDatos):
-	if(cantDatos<1 or cantDatos > 16384):
-		print 'Ingrese un valor correcto (del 1 al 16384).'
+		
+
+# Funcion para setear los datos que forman parte de la operacion
+# @param: dato 	Dato a cargar
+# @param: tipo 	1 (primer operando), 2 (segundo operando), 3 (codigo de operacion)
+def setDato (dato, tipo):
+	try:
+		hiloSetDato = threading.Thread (target = setDatoViaThread, args = (dato, tipo,)) 
+		hiloSetDato.start()
+	except:
+		print 'Sistema operativo denego acceso a recursos.'
 		activarBotones()
-		desactivarBotonStartLectura()
-		etiqueta_lectura_impresion="Valor incorrecto (del 1 al 16384)"
-		etiquetaLectura.config(text=etiqueta_lectura_impresion, fg="red",font = "TkDefaultFont 12")
-		etiquetaLectura.place(x=950, y=70)
-			
-	else:
-		etiqueta_lectura_impresion="Valor correcto"
-		etiquetaLectura.config( text=etiqueta_lectura_impresion, fg="dark green",font = "TkDefaultFont 12")
-		etiquetaLectura.place(x=950, y=70)
-		desactivarBotonStartLectura()
-		try:
-			HiloLeerModulo = threading.Thread(target=leerViaThread, args=(cantDatos,)) 
-			HiloLeerModulo.start()
 		
-		except:
-			print 'Sistema operativo denego acceso a recursos.'
-			activarBotones()
-			
-		
-		
-def leerViaThread(cantDatos):
+	
+# Funcion que ejecuta el hilo que setea los datos que forman parte de la operacion
+# @param: dato 	Dato a cargar
+# @param: tipo 	1 (primer operando), 2 (segundo operando), 3 (codigo de operacion)
+def setDatoViaThread (dato, tipo):
 	desactivarBotones()
-
-	print 'Thread de lectura OK.'
-	global etiqueta_Resulado_impreIon
-	global cadenaDeArchivo
+	print 'Thread de seteo de datos OK.'
+	global etiquetaResultadoImpresion
+	global currentState
 	try:
 		ser.flushInput()
 		ser.flushOutput()
-			
-		StrDevice=chr(0x00) #Device
-		
-		entry='0b101'
-		final='0b010'
-		strOperacion='2'
-		direccionDeLecturaLSB=0x00
-		direccionDeLecturaMSB=0x00
-		contadorTramasInvalidasPorPosicion=0
-		contadorDatos=0
-		numberOfSequence=0x00 #prueba de device
-		while(contadorDatos <= (cantDatos-1)):
-				StrDeviceLectura=chr(numberOfSequence) #Device
-				StrTramaPrimerByteLectura=chr(int(entry[2:5]+'0'+'0011',2)) #Cabecera.
-				StrTramaUltimoByteLectura=chr(int(final[2:5]+'0'+'0011',2)) #Cola.
-				StrLHighLectura=chr(0x00) #Long
-				StrLLowLectura=chr(0x00) #Long
-				strTramaLectura=StrTramaPrimerByteLectura+StrLHighLectura+StrLLowLectura+StrDeviceLectura+strOperacion+chr(direccionDeLecturaMSB)+chr(direccionDeLecturaLSB)+StrTramaUltimoByteLectura
-				ser.write(strTramaLectura)
-				time.sleep(0.03)
-				if (ser.inWaiting()>8): #inWaiting-> cantidad de bytes en buffer esperando.
-					#print "pido direccion ", direccionDeLecturaMSB, direccionDeLecturaLSB
-					lectura=ser.read(9)
-					h=lectura[0] #header
-					l=lectura[1] #largo
-					j=lectura[2]
-					d=lectura[3] #device
-					dato0=lectura[4]
-					dato1=lectura[5]
-					dato2=lectura[6]
-					dato3=lectura[7]
-					t=lectura[8] #tail.
-					hex1=h.encode("hex")
-					hex2=l.encode("hex")
-					hex3=d.encode("hex")  #device in hex!
-					hex4=dato0.encode("hex")
-					hex5=dato1.encode("hex")
-					hex6=dato2.encode("hex")
-					hex7=dato3.encode("hex")
-					hex8=t.encode("hex")
-
-
-					flagTramaValida=0
-					if(hex1=='a4' and hex8=='41'): 
-						flagTramaValida=1
-						#print cantDatos-1
-						#print contadorDatos
-					if((flagTramaValida!=0) and (hex3==chr(numberOfSequence).encode("hex"))):
-						contadorDatos=contadorDatos+1
-						if(direccionDeLecturaLSB==0xFF):
-							numberOfSequence=0
-							direccionDeLecturaLSB=0x00
-							direccionDeLecturaMSB=direccionDeLecturaMSB+2
-							print 'Aumento de direccionLecturaMSB: ',
-							print direccionDeLecturaMSB
-						else:
-							numberOfSequence=numberOfSequence+1
-							direccionDeLecturaLSB=direccionDeLecturaLSB+1
-						
-						contadorTramasInvalidasPorPosicion=0
-						#print hex4+hex5+hex6+hex7
-						cadenaDeArchivo+=hex4+hex5+hex6+hex7+'\n'
-					elif(flagTramaValida==0):
-						print 'Trama invalida.'
-						contadorTramasInvalidasPorPosicion=contadorTramasInvalidasPorPosicion+1
-						if(contadorTramasInvalidasPorPosicion>20):
-							print 'Mas de 20 tramas invalidas en la misma posicion de memoria.'
-							print 'Fin del programa.'
-							exit(1)					
-					
-
-		print "Termino la lectura de ", contadorDatos, " datos de la memoria."			
-		FileHandler(cadenaDeArchivo)
-		cadeaDeArchivo=""
-		
-		etiqueta_Resultado_impresion="Lectura_OK"
-		etiquetaResultado.config(text=etiqueta_Resultado_impresion, fg="dark green")
+		if (tipo == 1 or tipo == 3):
+			ser.write (dato)
+			time.sleep (0.5) #Espera.
+			if (tipo == 1):
+				currentState = ESTADOS [2]
+			else:
+				currentState = ESTADOS [1]	
+		elif (tipo == 2):
+			ser.write (dato)
+			time.sleep (0.5) #Espera.
+			readResultado() # Lectura de resultado
+			currentState = ESTADOS [0]
 		activarBotones()
 	except: 
-		print 'Error en la lectura.'
-		etiquetaResultado.config(text="ERROR_LECTURA", fg="red")
+		print 'Error en el seteo de los datos.'
+		etiquetaResultado.config (text = "ERROR_LOG", fg = "red")
 		activarBotones()
-		
-
 		
 
 # Funcion al presionar el boton salir.	
@@ -350,11 +238,11 @@ menuOpCode.place (x = 170, y = 270)
 
 # Botones
 
-botonPrimerOperando = Button (root, text = "Cargar Primer operando", command = lambda: setPrimerOperando())
+botonPrimerOperando = Button (root, text = "Cargar Primer operando", command = lambda: setDato (str (campoPrimerOperando.get()), 1))
 botonPrimerOperando.place (x = 10, y = 190, width = 150, height = 30)
-botonSegundoOperando = Button (root, text="Cargar Segundo operando", command = lambda: setSegundoOperando())
+botonSegundoOperando = Button (root, text="Cargar Segundo operando", command = lambda: setDato (str (campoSegundoOperando.get()), 2))
 botonSegundoOperando.place (x = 10, y = 230, width = 150, height = 30)
-botonOperacion = Button (root, text = "Cargar Operacion", command = lambda: setCodigoOperacion())
+botonOperacion = Button (root, text = "Cargar Operacion", command = lambda: setDato (str (var.get()), 3))
 botonOperacion.place (x = 10, y = 270, width = 150, height = 30)
 
 ### Conexion y desconexion FPGA
