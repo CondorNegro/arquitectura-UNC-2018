@@ -1,8 +1,8 @@
  `timescale 1ns / 1ps
 
 // Constantes.
-`define BAUD_RATE           9600               // Tamanio del bus de entrada. (Idem a tamanio del bus de salida).
-`define FREC_CLOCK_MHZ      100                // Tamanio del bus de entrada. (Idem a tamanio del bus de salida).
+`define BAUD_RATE           9600        // Baud rate a generar.
+`define FREC_CLOCK_MHZ      100         // Frecuencia del clock en MHZ.
 
 module baud_rate_generator(
     i_clock, 
@@ -27,7 +27,7 @@ output reg o_rate;
 
 
 // Registros.
-reg [ $clog2(MODULO_CONTADOR) - 1 : 0 ] reg_contador;
+reg [ $clog2 (MODULO_CONTADOR) - 1 : 0 ] reg_contador;
 
 
 always@( posedge i_clock) begin

@@ -1,16 +1,16 @@
  `timescale 1ns / 100ps
 
 //////////////////////////////////////////////////////////////////////////////////
-// Trabajo Practico Nro. 1. ALU.
-// Test bench del modulo configurador.
+// Trabajo Practico Nro. 2. UART.
+// Test bench del modulo baud_rate_generator.
 // Integrantes: Kleiner Matias, Lopez Gaston.
 // Materia: Arquitectura de Computadoras.
 // FCEFyN. UNC.
 // Anio 2018.
 //////////////////////////////////////////////////////////////////////////////////
 
-`define BAUD_RATE           9600               // Tamanio del bus de entrada. (Idem a tamanio del bus de salida).
-`define FREC_CLOCK_MHZ      100                // Tamanio del bus de entrada. (Idem a tamanio del bus de salida).
+`define BAUD_RATE           9600            // Baud rate a generar.             
+`define FREC_CLOCK_MHZ      100             // Frecuencia del clock en MHZ.
 
 module test_bench_baud_rate_generator();
 		
@@ -34,7 +34,7 @@ module test_bench_baud_rate_generator();
 		
 		#10 hard_reset = 1'b1; // Desactivo la accion del reset.
 		
-		// Test 13: Prueba reset.
+		// Test 1: Prueba reset.
 		#100 hard_reset = 1'b0; // Reset.
 		#10 hard_reset = 1'b1; // Desactivo el reset.
 		
@@ -52,12 +52,12 @@ baud_rate_generator
          .BAUD_RATE (BAUD_RATE),
          .FREC_CLOCK_MHZ (FREC_CLOCK_MHZ)
      ) 
-   u_baud_rate_generator_1    // Una sola instancia de este modulo.
-  (
+    u_baud_rate_generator_1    // Una sola instancia de este modulo.
+    (
       .i_clock (clock),
       .i_reset (hard_reset),
       .o_rate (rate)
-      );
+    );
    
 endmodule
 
