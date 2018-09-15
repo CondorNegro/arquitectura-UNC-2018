@@ -27,6 +27,20 @@ etiquetaResultadoImpresion = "Resultado"
 lock = threading.Lock()
 currentState = ESTADOS [0]
 
+
+def getOPCODE (x):
+    return {
+        'ADD': '00100000',
+        'SUB': '00100010',
+		'AND': '00100100',
+		'OR' : '00100101',
+		'XOR': '00100110',
+		'SRA': '00000011',
+		'SRL': '00000010',
+		'NOR': '00100111',
+    }.get (x, '11111111')  #11111111 es el por defecto
+
+
 # Funcion para desactivar botones
 
 def desactivarBotones():
@@ -171,18 +185,24 @@ def setDatoViaThread (dato, tipo):
 	try:
 		ser.flushInput()
 		ser.flushOutput()
-		if (tipo == 1 or tipo == 3):
-			ser.write (dato)
-			time.sleep (0.5) #Espera.
-			if (tipo == 1):
-				currentState = ESTADOS [2]
+		if (dato != ""):
+			if (tipo == 1 and len (dato) == 8):
+				ser.write (chr(int (dato, 2)))
+				time.sleep (0.5) #Espera.
+				currentState = ESTADOS [2]	
+			elif (tipo == 2 and len (dato) == 8):
+				ser.write (chr(int (dato, 2)))
+				time.sleep (0.5) #Espera.
+				readResultado() # Lectura de resultado
+				currentState = ESTADOS [0]
+			elif (tipo == 3 and len (dato) == 3):
+				opcode = getOPCODE (dato)	
+				ser.write (chr(int (opcode, 2)))
+				time.sleep (0.5) #Espera.
+				currentState = ESTADOS [1]
 			else:
-				currentState = ESTADOS [1]	
-		elif (tipo == 2):
-			ser.write (dato)
-			time.sleep (0.5) #Espera.
-			readResultado() # Lectura de resultado
-			currentState = ESTADOS [0]
+				print 'Warning: Deben ser 8 bits.'
+				etiquetaResultado.config (text = "Warning: Deben ser 8 bits", fg = "red")
 		activarBotones()
 	except: 
 		print 'Error en el seteo de los datos.'
@@ -241,11 +261,11 @@ menuOpCode.place (x = 170, y = 270)
 
 # Botones
 
-botonPrimerOperando = Button (root, text = "Cargar Primer operando", command = lambda: setDato (str (campoPrimerOperando.get()), 1))
+botonPrimerOperando = Button (root, text = "Cargar Primer operando", command = lambda: setDato (str (campoPrimerOperando.get()), 1), state = DISABLED)
 botonPrimerOperando.place (x = 10, y = 190, width = 150, height = 30)
-botonSegundoOperando = Button (root, text="Cargar Segundo operando", command = lambda: setDato (str (campoSegundoOperando.get()), 2))
+botonSegundoOperando = Button (root, text="Cargar Segundo operando", command = lambda: setDato (str (campoSegundoOperando.get()), 2), state = DISABLED)
 botonSegundoOperando.place (x = 10, y = 230, width = 150, height = 30)
-botonOperacion = Button (root, text = "Cargar Operacion", command = lambda: setDato (str (var.get()), 3))
+botonOperacion = Button (root, text = "Cargar Operacion", command = lambda: setDato (str (var.get()), 3), state = DISABLED)
 botonOperacion.place (x = 10, y = 270, width = 150, height = 30)
 
 ### Conexion y desconexion FPGA
