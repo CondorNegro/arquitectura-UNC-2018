@@ -2,7 +2,7 @@
 
 // Constantes.
 `define BAUD_RATE           9600        // Baud rate a generar.
-`define FREC_CLOCK_MHZ      100         // Frecuencia del clock en MHZ.
+`define FREC_CLOCK_MHZ      100.0       // Frecuencia del clock en MHZ.
 
 module baud_rate_generator(
     i_clock, 

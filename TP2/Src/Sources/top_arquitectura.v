@@ -14,7 +14,7 @@
 `define BUS_SALIDA_ALU      8       // Tamanio del bus de salida.
 `define CANT_BIT_OPCODE     8       // Numero de bits del codigo de operacion de la ALU.
 `define WIDTH_WORD_TOP      8       // Tamanio de palabra.    
-`define FREC_CLK_MHZ      100       // Frecuencia del clock en MHZ.
+`define FREC_CLK_MHZ    100.0       // Frecuencia del clock en MHZ.
 `define BAUD_RATE_TOP    9600       // Baud rate.
 `define CANT_BIT_STOP_TOP   2       // Cantidad de bits de parada en trama uart.     
 

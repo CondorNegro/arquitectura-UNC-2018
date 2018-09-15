@@ -10,7 +10,7 @@
 //////////////////////////////////////////////////////////////////////////////////
 
 `define BAUD_RATE           9600            // Baud rate a generar.             
-`define FREC_CLOCK_MHZ      100             // Frecuencia del clock en MHZ.
+`define FREC_CLOCK_MHZ      100.0           // Frecuencia del clock en MHZ.
 
 module test_bench_baud_rate_generator();
 		
@@ -35,11 +35,11 @@ module test_bench_baud_rate_generator();
 		#10 hard_reset = 1'b1; // Desactivo la accion del reset.
 		
 		// Test 1: Prueba reset.
-		#100 hard_reset = 1'b0; // Reset.
+		#10000 hard_reset = 1'b0; // Reset.
 		#10 hard_reset = 1'b1; // Desactivo el reset.
 		
 		
-		#10000 $finish;
+		#50000 $finish;
 	end
 	
 	always #2.5 clock=~clock;  // Simulacion de clock.
