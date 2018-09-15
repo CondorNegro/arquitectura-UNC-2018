@@ -4,11 +4,11 @@ except ImportError:
     raise ImportError,"Se requiere el modulo Tkinter"
 
 # coding: utf-8
-import time
-import serial
-from serial import *
-import os
-import threading  
+import time 			# Para sleeps
+import serial			# Comunicacion serie
+from serial import *	# Comunicacion serie
+import os				# Funciones del Sistema Operativo
+import threading  		# Para uso de threads
 
  
 #Constantes 
@@ -27,7 +27,7 @@ etiquetaResultadoImpresion = "Resultado"
 lock = threading.Lock()
 currentState = ESTADOS [0]
 
-
+# Funcion de traduccion del nombre de la operacion a su opcode correspondiente.
 def getOPCODE (x):
     return {
         'ADD': '00100000',
@@ -51,7 +51,7 @@ def desactivarBotones():
 	botonOperacion.config (state = DISABLED)
 	lock.release()
 
-# Funcion para activar botones
+# Funcion para activar botones, sigue el comportamiento de una maquina de estados
 
 def activarBotones():
 	lock.acquire()
@@ -108,7 +108,7 @@ def conexionViaThread(puerto):
 			print 'Desconexion de puerto.'
 		elif banderaPuertoLoop == 0:
 			if puerto == "loop":
-				ser = serial.serial_for_url ('loop://', timeout=1)  #Configuracion del loopback test de esta forma
+				ser = serial.serial_for_url ('loop://', timeout = 1)  #Configuracion del loopback test de esta forma
 				ser.isOpen()        #Abertura del puerto.
 				ser.timeout = None  #Siempre escucha
 				ser.flushInput()	#Limpieza de buffers
@@ -187,17 +187,17 @@ def setDatoViaThread (dato, tipo):
 		ser.flushOutput()
 		if (dato != ""):
 			if (tipo == 1 and len (dato) == 8):
-				ser.write (chr(int (dato, 2)))
+				ser.write (chr (int (dato, 2)))
 				time.sleep (0.5) #Espera.
 				currentState = ESTADOS [2]	
 			elif (tipo == 2 and len (dato) == 8):
-				ser.write (chr(int (dato, 2)))
+				ser.write (chr (int (dato, 2)))
 				time.sleep (0.5) #Espera.
 				readResultado() # Lectura de resultado
 				currentState = ESTADOS [0]
 			elif (tipo == 3 and len (dato) == 3):
 				opcode = getOPCODE (dato)	
-				ser.write (chr(int (opcode, 2)))
+				ser.write (chr (int (opcode, 2)))
 				time.sleep (0.5) #Espera.
 				currentState = ESTADOS [1]
 			else:
@@ -268,13 +268,14 @@ botonSegundoOperando.place (x = 10, y = 230, width = 150, height = 30)
 botonOperacion = Button (root, text = "Cargar Operacion", command = lambda: setDato (str (var.get()), 3), state = DISABLED)
 botonOperacion.place (x = 10, y = 270, width = 150, height = 30)
 
-### Conexion y desconexion FPGA
+### Botones - Conexion y desconexion FPGA
+
 botonConectarFPGA = Button (root, text = "Conectar", command = lambda: conectarFPGA (str (campoPuerto.get())))
 botonConectarFPGA.place (x = 250, y = 10, width = 80, height = 30)
 botonDesconectarFPGA = Button (root, text = "Desconectar", state = DISABLED, command = lambda: conectarFPGA ("disconnect"))
 botonDesconectarFPGA.place (x = 250, y = 40, width = 80, height = 30)
 
-### Finalizar programa
+### Boton - Finalizar programa
 botonSalir = Button (root, text = "Exit", command = lambda: salir(), state = ACTIVE)
 botonSalir.place (x = 150, y = 550, width = 80, height = 30)
 
