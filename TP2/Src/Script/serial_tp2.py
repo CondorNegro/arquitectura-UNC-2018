@@ -41,20 +41,23 @@ def desactivarBotones():
 
 def activarBotones():
 	lock.acquire()
-	botonDesconectarFPGA.config (state = ACTIVE)
 	if (currentState == ESTADOS[0]):
+		botonDesconectarFPGA.config (state = ACTIVE)
 		botonPrimerOperando.config (state = ACTIVE)
 		botonSegundoOperando.config (state = DISABLED)
 		botonOperacion.config (state = DISABLED)
-	elif (currentState == ESTADOS[1]):
+	elif (currentState == ESTADOS[2]):
+		botonDesconectarFPGA.config (state = DISABLED)
 		botonPrimerOperando.config (state = DISABLED)
 		botonSegundoOperando.config (state = DISABLED)
 		botonOperacion.config (state = ACTIVE)
-	elif (currentState == ESTADOS[2]):
+	elif (currentState == ESTADOS[1]):
+		botonDesconectarFPGA.config (state = DISABLED)
 		botonPrimerOperando.config (state = DISABLED)
 		botonSegundoOperando.config (state = ACTIVE)
 		botonOperacion.config (state = DISABLED)
 	else:
+		botonDesconectarFPGA.config (state = ACTIVE)
 		botonPrimerOperando.config (state = DISABLED)
 		botonSegundoOperando.config (state = DISABLED)
 		botonOperacion.config (state = DISABLED)
