@@ -72,10 +72,18 @@ always@( posedge i_clock ) begin //Memory
         o_reg_dato_A <= 0;
         o_reg_dato_B <= 0;
         o_reg_opcode <= 0;
+        o_tx_start <= 0;
+        o_data_tx <= 0;
     end 
 
     else begin
-        reg_state <= reg_next_state;       
+        reg_state <= reg_next_state;
+        reg_next_state <= reg_next_state;
+        o_reg_dato_A <= o_reg_dato_A;
+        o_reg_dato_B <= o_reg_dato_B;
+        o_reg_opcode <= o_reg_opcode;
+        o_tx_start <= o_tx_start;
+        o_data_tx <= o_data_tx;       
     end
 end
 

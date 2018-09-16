@@ -72,6 +72,7 @@ module test_bench_interface_circuit();
 		// Test 4: Tx done. OPERANDO2 -> ESPERA.
 		#900 reg_resultado_alu = 3;
 		#1000 reg_tx_done = 1'b1;
+		#10 reg_resultado_alu = 4;
 		#1500 reg_tx_done = 1'b0;
 
 		// Test 5: Prueba reset.
