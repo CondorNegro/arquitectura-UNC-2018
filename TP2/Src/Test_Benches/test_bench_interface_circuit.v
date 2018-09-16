@@ -10,10 +10,10 @@
 //////////////////////////////////////////////////////////////////////////////////
 
 // Constantes.
-`define CANT_DATOS_ENTRADA_ALU      8       // Tamanio del bus de entrada. (Idem a tamanio del bus de salida).
+`define CANT_DATOS_ENTRADA_ALU      8       // Tamanio del bus de entrada de la ALU.
 `define CANT_BITS_OPCODE_ALU        8       // Numero de bits del codigo de operacion de la ALU.
-`define CANT_DATOS_SALIDA_ALU       8       // Numero de bits del codigo de operacion de la ALU.
-`define WIDTH_WORD                  8       // Tamanio de palabra
+`define CANT_DATOS_SALIDA_ALU       8       // Tamanio del bus de salida de la ALU.
+`define WIDTH_WORD                  8       // Tamanio de palabra de la trama UART.
 
 module test_bench_interface_circuit();
 		
@@ -74,7 +74,7 @@ module test_bench_interface_circuit();
 		#1000 reg_tx_done = 1'b1;
 		#1500 reg_tx_done = 1'b0;
 
-		// Test 1: Prueba reset.
+		// Test 5: Prueba reset.
 		#50000 reg_reset = 1'b0; // Reset.
 		#10 reg_reset = 1'b1; // Desactivo el reset.
 

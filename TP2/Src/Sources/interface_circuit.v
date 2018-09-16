@@ -1,8 +1,8 @@
  `timescale 1ns / 1ps
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
-// Trabajo Practico Nro. 1. ALU.
-// Configurador. (Logica de seteo de operandos y del codigo de operacion en los registros).
+// Trabajo Practico Nro. 2. UART.
+// Interface_circuit.
 // Integrantes: Kleiner Matias, Lopez Gaston.
 // Materia: Arquitectura de Computadoras.
 // FCEFyN. UNC.
@@ -11,10 +11,10 @@
 
 
 // Constantes.
-`define CANT_DATOS_ENTRADA_ALU      8       // Tamanio del bus de entrada. (Idem a tamanio del bus de salida).
+`define CANT_DATOS_ENTRADA_ALU      8       // Tamanio del bus de entrada de la ALU.
 `define CANT_BITS_OPCODE_ALU        8       // Numero de bits del codigo de operacion de la ALU.
-`define CANT_DATOS_SALIDA_ALU       8       // Numero de bits del codigo de operacion de la ALU.
-`define WIDTH_WORD                  8       // Tamanio de palabra
+`define CANT_DATOS_SALIDA_ALU       8       // Tamanio del bus de salida de la ALU.
+`define WIDTH_WORD                  8       // Tamanio de palabra de la trama UART.
 
 
 
