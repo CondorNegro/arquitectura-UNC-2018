@@ -39,12 +39,12 @@ module test_bench_tx();
         tx_start = 1'b0;
 		#10 hard_reset = 1'b1; // Desactivo la accion del reset.
 		
-		#80 data_in = 8'b10010110; //bit inicio
+		#80 data_in = 8'b10010110; //dato a enviar
 		
-        #80 tx_start = 1'b1;
-        #80 tx_start = 1'b0;
+        #80 tx_start = 1'b1; //enviar ahora
+        #100 tx_start = 1'b0;
 
-
+        #80 data_in = 8'b10000110; //dato a enviar
 		
 		// Test 1: Prueba reset.
 		#10000 hard_reset = 1'b0; // Reset.
