@@ -49,6 +49,23 @@ module test_bench_rx();
 		
 		#80 bit_rx = 1'b1; //bits stop
 		#80 bit_rx = 1'b1; //bits stop
+
+
+		#80 bit_rx = 1'b0; //bit inicio
+		
+		#80 bit_rx = 1'b1; // dato - 8 bits (1001 0110)
+		#80 bit_rx = 1'b0; // 80 viene dado porque cada 2.5 instantes de tiempo cambia el estado del clock (rate)
+		#80 bit_rx = 1'b0; // o sea, cada 5 instantes de tiempo hay un nuevo tick
+		#80 bit_rx = 1'b1; // entonces 16 * 5 = 80
+		#80 bit_rx = 1'b0;
+		#80 bit_rx = 1'b1;
+		#80 bit_rx = 1'b1;
+		#80 bit_rx = 1'b0;
+		
+		#80 bit_rx = 1'b1; //bits stop
+		#80 bit_rx = 1'b0; //bits stop
+
+
 		
 		// Test 1: Prueba reset.
 		#10000 hard_reset = 1'b0; // Reset.
