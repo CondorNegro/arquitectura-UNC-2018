@@ -39,7 +39,7 @@ output reg o_tx_done;
 // Registros.
 reg [ 3 : 0 ] reg_state;
 reg [ 3 : 0 ] reg_next_state;
-reg [ 5 : 0] reg_contador_ticks;
+reg [ 6 : 0] reg_contador_ticks;
 reg [$clog2 (WIDTH_WORD_TX) - 1 : 0] reg_contador_bits;
 reg [$clog2 (CANT_BIT_STOP) - 1 : 0] reg_contador_bits_stop;
 
