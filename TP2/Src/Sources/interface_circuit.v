@@ -14,7 +14,7 @@
 `define CANT_DATOS_ENTRADA_ALU      8       // Tamanio del bus de entrada de la ALU.
 `define CANT_BITS_OPCODE_ALU        8       // Numero de bits del codigo de operacion de la ALU.
 `define CANT_DATOS_SALIDA_ALU       8       // Tamanio del bus de salida de la ALU.
-`define WIDTH_WORD                  8       // Tamanio de palabra de la trama UART.
+`define WIDTH_WORD_INTERFACE        8       // Tamanio de palabra de la trama UART.
 
 
 
@@ -36,7 +36,7 @@ module interface_circuit(
 parameter CANT_DATOS_ENTRADA_ALU    = `CANT_DATOS_ENTRADA_ALU;
 parameter CANT_BITS_OPCODE_ALU      = `CANT_BITS_OPCODE_ALU;
 parameter CANT_DATOS_SALIDA_ALU     = `CANT_DATOS_SALIDA_ALU;
-parameter WIDTH_WORD                = `WIDTH_WORD;
+parameter WIDTH_WORD_INTERFACE      = `WIDTH_WORD_INTERFACE;
 
 // Local Param
 localparam ESPERA = 4'b0001;
@@ -49,9 +49,9 @@ input i_clock;
 input  i_rx_done;
 input  i_tx_done;
 input  [CANT_DATOS_SALIDA_ALU - 1 : 0]   i_resultado_alu;
-input  [WIDTH_WORD - 1 : 0]  i_data_rx;
+input  [WIDTH_WORD_INTERFACE - 1 : 0]  i_data_rx;
 input  i_reset;  
-output reg [WIDTH_WORD - 1 : 0]  o_data_tx;
+output reg [WIDTH_WORD_INTERFACE - 1 : 0]  o_data_tx;
 output reg o_tx_start;
 output reg [CANT_DATOS_ENTRADA_ALU - 1 : 0] o_reg_dato_A;             
 output reg [CANT_DATOS_ENTRADA_ALU - 1 : 0] o_reg_dato_B; 

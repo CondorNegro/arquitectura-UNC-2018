@@ -65,7 +65,7 @@ interface_circuit
          .CANT_DATOS_ENTRADA_ALU (BUS_DATOS_ALU),
          .CANT_BITS_OPCODE_ALU (CANT_BIT_OPCODE),
          .CANT_DATOS_SALIDA_ALU (BUS_SALIDA_ALU),
-         .WIDTH_WORD (WIDTH_WORD_TOP)
+         .WIDTH_WORD_INTERFACE (WIDTH_WORD_TOP)
      ) 
    u_interface_circuit1    // Una sola instancia de este modulo
    (
