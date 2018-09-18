@@ -45,7 +45,12 @@ module test_bench_tx();
         #100 tx_start = 1'b0;
 
         #80 data_in = 8'b10000110; //dato a enviar
-		
+		#80 tx_start = 1'b1; //enviar ahora
+        #100 tx_start = 1'b0; //tiene que fallar, porque no le da el tiempo al envio anterior
+        
+        #1000 tx_start = 1'b1; //enviar ahora
+        #100 tx_start = 1'b0; //tiene que fallar, porque no le da el tiempo al envio anterior
+                
 		// Test 1: Prueba reset.
 		#10000 hard_reset = 1'b0; // Reset.
 		#10000 hard_reset = 1'b1; // Desactivo el reset.
