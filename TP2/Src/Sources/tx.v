@@ -46,7 +46,7 @@ reg [$clog2 (CANT_BIT_STOP) : 0] reg_contador_bits_stop;
 
 
 
-always@( posedge i_rate ) begin //Memory
+always@( posedge i_rate , negedge i_reset  ) begin //Memory
      // Se resetean los registros.
     if (~ i_reset) begin
         reg_state <= 1;
