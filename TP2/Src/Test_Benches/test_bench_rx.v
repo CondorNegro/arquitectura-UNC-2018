@@ -2,15 +2,15 @@
 
 //////////////////////////////////////////////////////////////////////////////////
 // Trabajo Practico Nro. 2. UART.
-// Test bench del modulo baud_rate_generator.
+// Test bench del modulo rx.
 // Integrantes: Kleiner Matias, Lopez Gaston.
 // Materia: Arquitectura de Computadoras.
 // FCEFyN. UNC.
 // Anio 2018.
 //////////////////////////////////////////////////////////////////////////////////
 
-`define WIDTH_WORD_TEST           8                 
-`define CANT_BIT_STOP_TEST      2     
+`define WIDTH_WORD_TEST         8   	// Longitud de palabra útil enviada por la trama UART.              
+`define CANT_BIT_STOP_TEST      2		// Cantidad de bits de stop en la trama UART.     
 
 module test_bench_rx();
 		
@@ -22,9 +22,9 @@ module test_bench_rx();
 	//Todo puerto de estimulo o generacion de entrada es un registro.
 	
 	// Entradas.
-    reg clock;                                  // Clock rate.
+    reg clock;                                  // Clock.
     reg hard_reset;                             // Reset.
-    reg bit_rx;                                 // bit entrada al modulo rx
+    reg bit_rx;                                 // Bit de entrada al modulo rx
     wire rx_done;
     wire [WIDTH_WORD_TEST-1:0] data_out;
     
@@ -36,6 +36,8 @@ module test_bench_rx();
 		bit_rx = 1'b1;
 		#10 hard_reset = 1'b1; // Desactivo la accion del reset.
 		
+
+		// Test 1: Envío de trama correcta.
 		#80 bit_rx = 1'b0; //bit inicio
 		
 		#80 bit_rx = 1'b1; // dato - 8 bits (1001 0110)
@@ -50,7 +52,7 @@ module test_bench_rx();
 		#80 bit_rx = 1'b1; //bits stop
 		#80 bit_rx = 1'b1; //bits stop
 
-
+		// Test 2: Envío de trama errónea.
 		#80 bit_rx = 1'b0; //bit inicio
 		
 		#80 bit_rx = 1'b1; // dato - 8 bits (1001 0110)
@@ -63,11 +65,11 @@ module test_bench_rx();
 		#80 bit_rx = 1'b0;
 		
 		#80 bit_rx = 1'b1; //bits stop
-		#80 bit_rx = 1'b0; //bits stop
+		#80 bit_rx = 1'b0; //bits stop mal.
 
 
 		
-		// Test 1: Prueba reset.
+		// Test 3: Prueba reset.
 		#10000 hard_reset = 1'b0; // Reset.
 		#10000 hard_reset = 1'b1; // Desactivo el reset.
 		

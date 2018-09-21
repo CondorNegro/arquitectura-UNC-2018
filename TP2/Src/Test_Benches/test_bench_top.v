@@ -12,7 +12,7 @@
 `define BUS_DATOS_ALU_TEST       8       // Tamanio del bus de entrada de la ALU. 
 `define BUS_SALIDA_ALU_TEST      8       // Tamanio del bus de salida de la ALU.
 `define CANT_BIT_OPCODE_TEST     8       // Numero de bits del codigo de operacion de la ALU.
-`define WIDTH_WORD_TOP_TEST      8       // Tamanio de palabra de trama UART.    
+`define WIDTH_WORD_TOP_TEST      8       // Tamanio de palabra útil de trama UART.    
 `define FREC_CLK_MHZ_TEST    100.0       // Frecuencia del clock en MHZ.
 `define BAUD_RATE_TOP_TEST    9600       // Baud rate.
 `define CANT_BIT_STOP_TOP_TEST   2       // Cantidad de bits de parada en trama uart.        

@@ -3,15 +3,15 @@
 
 //////////////////////////////////////////////////////////////////////////////////
 // Trabajo Practico Nro. 2. UART.
-// Test bench del modulo baud_rate_generator.
+// Test bench del modulo tx.
 // Integrantes: Kleiner Matias, Lopez Gaston.
 // Materia: Arquitectura de Computadoras.
 // FCEFyN. UNC.
 // Anio 2018.
 //////////////////////////////////////////////////////////////////////////////////
 
-`define WIDTH_WORD_TX           8                 
-`define CANT_BIT_STOP_TEST      2     
+`define WIDTH_WORD_TX           8       // Longitud de palabra útil a enviar por la trama UART.          
+`define CANT_BIT_STOP_TEST      2       // Cantidad de bits de stop en la trama UART.
 
 module test_bench_tx();
 		
@@ -23,10 +23,10 @@ module test_bench_tx();
 	//Todo puerto de estimulo o generacion de entrada es un registro.
 	
 	// Entradas.
-    reg clock;                                  // Clock rate.
+    reg clock;                                  // Clock.
     reg hard_reset;                             // Reset.
     reg tx_start;
-    reg [WIDTH_WORD_TX-1:0] data_in;                                 // bit entrada al modulo rx
+    reg [WIDTH_WORD_TX-1:0] data_in;                                 
     wire bit_tx;
     wire tx_done;
     
@@ -39,19 +39,22 @@ module test_bench_tx();
         tx_start = 1'b0;
 		#10 hard_reset = 1'b1; // Desactivo la accion del reset.
 		
-		#80 data_in = 8'b10010110; //dato a enviar
+        // Test 1: Envío de dato.
+		#80 data_in = 8'b10010110; // Dato a enviar
 		
-        #80 tx_start = 1'b1; //enviar ahora
+        #80 tx_start = 1'b1; // Enviar ahora
         #100 tx_start = 1'b0;
 
-        #1080 data_in = 8'b10000110; //dato a enviar
-		#80 tx_start = 1'b1; //enviar ahora
-        #100 tx_start = 1'b0; //tiene que fallar, porque no le da el tiempo al envio anterior
+        // Test 2: Envío de dato.
+        #1080 data_in = 8'b10000110; // Dato a enviar
+		#80 tx_start = 1'b1; // Enviar ahora
+        #100 tx_start = 1'b0; 
         
-        #1000 tx_start = 1'b1; //enviar ahora
-        #100 tx_start = 1'b0; //tiene que fallar, porque no le da el tiempo al envio anterior
+        // Test 3: Prueba tx_start.
+        #1000 tx_start = 1'b1; // Enviar ahora
+        #100 tx_start = 1'b0; 
                 
-		// Test 1: Prueba reset.
+		// Test 4: Prueba reset.
 		#10000 hard_reset = 1'b0; // Reset.
 		#10000 hard_reset = 1'b1; // Desactivo el reset.
 		
@@ -63,13 +66,13 @@ module test_bench_tx();
 
 
 
-//Modulo para pasarle los estimulos del banco de pruebas.
+// Modulo para pasarle los estimulos del banco de pruebas.
 tx
     #(
          .WIDTH_WORD_TX (WIDTH_WORD_TX),
          .CANT_BIT_STOP (CANT_BIT_STOP_TEST)
      ) 
-    u_tx_1    // Una i_tx_startsola instancia de este modulo.
+    u_tx_1    
     (
       .i_rate (clock),
       .i_data_in (data_in),
