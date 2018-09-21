@@ -88,7 +88,7 @@ end
 
 
 
-always@( i_rx_done, i_tx_done ) begin //NEXT - STATE logic
+always@( i_rx_done, i_tx_done, i_resultado_alu ) begin //NEXT - STATE logic
     
     case (reg_state)
         
@@ -135,7 +135,7 @@ always@( i_rx_done, i_tx_done ) begin //NEXT - STATE logic
 end
 
 
-always@( i_rx_done, i_tx_done ) begin //Output logic
+always@( i_rx_done, i_tx_done, i_resultado_alu ) begin //Output logic
     
     case (reg_state)
         
