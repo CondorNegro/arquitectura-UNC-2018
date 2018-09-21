@@ -23,6 +23,7 @@ module test_bench_rx();
 	
 	// Entradas.
     reg clock;                                  // Clock.
+	reg rate; 									// Rate. (Baud rate generator).
     reg hard_reset;                             // Reset.
     reg bit_rx;                                 // Bit de entrada al modulo rx
     wire rx_done;
@@ -32,40 +33,41 @@ module test_bench_rx();
 	
 	initial	begin
 		clock = 1'b0;
+		rate = 1'b0;
 		hard_reset = 1'b0; // Reset en 0. (Normal cerrado el boton del reset).
 		bit_rx = 1'b1;
 		#10 hard_reset = 1'b1; // Desactivo la accion del reset.
 		
 
 		// Test 1: Envío de trama correcta.
-		#80 bit_rx = 1'b0; //bit inicio
+		#160 bit_rx = 1'b0; //bit inicio
 		
-		#80 bit_rx = 1'b1; // dato - 8 bits (1001 0110)
-		#80 bit_rx = 1'b0; // 80 viene dado porque cada 2.5 instantes de tiempo cambia el estado del clock (rate)
-		#80 bit_rx = 1'b0; // o sea, cada 5 instantes de tiempo hay un nuevo tick
-		#80 bit_rx = 1'b1; // entonces 16 * 5 = 80
-		#80 bit_rx = 1'b0;
-		#80 bit_rx = 1'b1;
-		#80 bit_rx = 1'b1;
-		#80 bit_rx = 1'b0;
+		#160 bit_rx = 1'b1; // dato - 8 bits (1001 0110)
+		#160 bit_rx = 1'b0; // 160 viene dado porque cada 5 instantes de tiempo cambia el estado del rate
+		#160 bit_rx = 1'b0; // o sea, cada 10 instantes de tiempo hay un nuevo tick
+		#160 bit_rx = 1'b1; // entonces 16 * 10 = 160
+		#160 bit_rx = 1'b0;
+		#160 bit_rx = 1'b1;
+		#160 bit_rx = 1'b1;
+		#160 bit_rx = 1'b0;
 		
-		#80 bit_rx = 1'b1; //bits stop
-		#80 bit_rx = 1'b1; //bits stop
+		#160 bit_rx = 1'b1; //bits stop
+		#160 bit_rx = 1'b1; //bits stop
 
 		// Test 2: Envío de trama errónea.
-		#80 bit_rx = 1'b0; //bit inicio
+		#160 bit_rx = 1'b0; //bit inicio
 		
-		#80 bit_rx = 1'b1; // dato - 8 bits (1001 0110)
-		#80 bit_rx = 1'b0; // 80 viene dado porque cada 2.5 instantes de tiempo cambia el estado del clock (rate)
-		#80 bit_rx = 1'b0; // o sea, cada 5 instantes de tiempo hay un nuevo tick
-		#80 bit_rx = 1'b1; // entonces 16 * 5 = 80
-		#80 bit_rx = 1'b0;
-		#80 bit_rx = 1'b1;
-		#80 bit_rx = 1'b1;
-		#80 bit_rx = 1'b0;
+		#160 bit_rx = 1'b1; // dato - 8 bits (1001 0110)
+		#160 bit_rx = 1'b0; // 160 viene dado porque cada 5 instantes de tiempo cambia el estado del rate
+		#160 bit_rx = 1'b0; // o sea, cada 10 instantes de tiempo hay un nuevo tick
+		#160 bit_rx = 1'b1; // entonces 16 * 10 = 160
+		#160 bit_rx = 1'b0;
+		#160 bit_rx = 1'b1;
+		#160 bit_rx = 1'b1;
+		#160 bit_rx = 1'b0;
 		
-		#80 bit_rx = 1'b1; //bits stop
-		#80 bit_rx = 1'b0; //bits stop mal.
+		#160 bit_rx = 1'b1; //bits stop
+		#160 bit_rx = 1'b0; //bits stop mal.
 
 
 		
@@ -78,7 +80,7 @@ module test_bench_rx();
 	end
 	
 	always #2.5 clock=~clock;  // Simulacion de clock.
-
+	always #5 rate=~rate;	   // Simulacion de rate.
 
 
 //Modulo para pasarle los estimulos del banco de pruebas.
@@ -89,10 +91,10 @@ rx
      ) 
     u_rx_1    // Una sola instancia de este modulo.
     (
-      .i_rate (clock),
+      .i_rate (rate),
       .i_bit_rx (bit_rx),
       .i_reset (hard_reset),
-      
+      .i_clock (clock),
       .o_rx_done (rx_done),
       .o_data_out (data_out)
     );

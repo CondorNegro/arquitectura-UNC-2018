@@ -16,6 +16,7 @@
 
 
 module rx(
+    i_clock,
     i_rate,
     i_bit_rx, 
     i_reset,
@@ -36,7 +37,7 @@ localparam ERROR = 5'b10000; // Estado en caso de error en bits de stop (llega u
 
 
 // Entradas - Salidas.
-
+input i_clock;
 input i_rate;  
 input i_bit_rx;   
 input i_reset; 
@@ -54,64 +55,71 @@ reg [$clog2 (WIDTH_WORD) : 0] reg_contador_bits;
 reg [($clog2 (CANT_BIT_STOP)) : 0] reg_contador_bits_stop;
 
 
-always@( posedge i_rate ) begin //Memory
+always@( posedge i_clock ) begin //Memory
      // Se resetean los registros.
     if (~ i_reset) begin
-        reg_state <= 1;
-        reg_next_state <= 1;
-        reg_buffer <= 0;
-        reg_contador_bits <= 0;
-        reg_contador_ticks <= 0;
-        reg_contador_bits_stop <= 0;
-        o_data_out <= 0;
-        o_rx_done <= 0;
-    end 
-
-    else begin
-        o_data_out <= o_data_out;
-        reg_state <= reg_next_state;
-       
-        
-        if (reg_state == READ) begin
-            // 16 ticks por bit transmitido.
-            if ( ((reg_contador_ticks % 15) == 0) && (reg_contador_ticks != 0) ) begin
-                reg_buffer[(WIDTH_WORD-1) - reg_contador_bits] <=  i_bit_rx;
-                reg_contador_bits <= reg_contador_bits + 1;
-                reg_contador_bits_stop <= 0;
-                reg_contador_ticks <= 0;
-            end
-            else begin
-                reg_buffer <= reg_buffer;
-                reg_contador_bits <= reg_contador_bits;
-                reg_contador_bits_stop <= reg_contador_bits_stop;
-                reg_contador_ticks <= reg_contador_ticks + 1;
-            end
-        end
-
-        else if ( reg_state == STOP ) begin
-            // 16 ticks por bit transmitido.
-            if ( ((reg_contador_ticks % 15) == 0) && (reg_contador_ticks != 0) ) begin
-                reg_contador_bits <= 0;
-                reg_contador_bits_stop <= reg_contador_bits_stop + 1;
-                reg_buffer <= reg_buffer;
-                reg_contador_ticks <= reg_contador_ticks + 1;
-            end
-            else begin
-                reg_contador_bits <= reg_contador_bits;
-                reg_contador_bits_stop <= reg_contador_bits_stop;
-                reg_buffer <= reg_buffer;
-                reg_contador_ticks <= reg_contador_ticks + 1;
-            end
-        end
-
-        else begin
-            reg_buffer <= reg_buffer; 
+            reg_state <= 1;
+            reg_buffer <= 0;
             reg_contador_bits <= 0;
+            reg_contador_ticks <= 0;
             reg_contador_bits_stop <= 0;
-            reg_contador_ticks <=  reg_contador_ticks + 1;
-        end
-        
+            o_data_out <= 0;
+            o_rx_done <= 0;
     end
+    else if (i_rate) begin 
+                o_data_out <= o_data_out;
+                reg_state <= reg_next_state;                
+                if (reg_state == READ) begin
+                    // 16 ticks por bit transmitido.
+                    if ( ((reg_contador_ticks % 15) == 0) && (reg_contador_ticks != 0) ) begin
+                        reg_buffer[(WIDTH_WORD-1) - reg_contador_bits] <=  i_bit_rx;
+                        reg_contador_bits <= reg_contador_bits + 1;
+                        reg_contador_bits_stop <= 0;
+                        reg_contador_ticks <= 0;
+                    end
+                    else begin
+                        reg_buffer <= reg_buffer;
+                        reg_contador_bits <= reg_contador_bits;
+                        reg_contador_bits_stop <= reg_contador_bits_stop;
+                        reg_contador_ticks <= reg_contador_ticks + 1;
+                    end
+                end
+
+                else if ( reg_state == STOP ) begin
+                    // 16 ticks por bit transmitido.
+                    if ( ((reg_contador_ticks % 15) == 0) && (reg_contador_ticks != 0) ) begin
+                        reg_contador_bits <= 0;
+                        reg_contador_bits_stop <= reg_contador_bits_stop + 1;
+                        reg_buffer <= reg_buffer;
+                        reg_contador_ticks <= reg_contador_ticks + 1;
+                    end
+                    else begin
+                        reg_contador_bits <= reg_contador_bits;
+                        reg_contador_bits_stop <= reg_contador_bits_stop;
+                        reg_buffer <= reg_buffer;
+                        reg_contador_ticks <= reg_contador_ticks + 1;
+                    end
+                end
+
+                else begin
+                    reg_buffer <= reg_buffer; 
+                    reg_contador_bits <= 0;
+                    reg_contador_bits_stop <= 0;
+                    reg_contador_ticks <=  reg_contador_ticks + 1;
+                end
+                
+            
+    end
+    else begin
+        reg_state <= reg_state;
+        reg_buffer <= reg_buffer;
+        reg_contador_bits <= reg_contador_bits;
+        reg_contador_ticks <= reg_contador_ticks;
+        reg_contador_bits_stop <= reg_contador_bits_stop;
+        o_data_out <= o_data_out;
+        o_rx_done <= o_rx_done;
+    end 
+    
 end
 
 
@@ -182,7 +190,7 @@ always@( * ) begin //NEXT - STATE logic
                 end
 
                 else begin
-                        if ( reg_contador_ticks < 23) begin // Mitad del segundo bit de stop y es cero.
+                        if ( reg_contador_ticks < 23) begin // Menos de la mitad del segundo bit de stop y es cero.
                             reg_next_state = ERROR; // Faltan 8 ticks para terminar de recorrer el bit de stop erróneo.
                             reg_contador_bits = reg_contador_bits;
                             reg_contador_bits_stop = reg_contador_bits_stop;
@@ -273,8 +281,8 @@ always@( * ) begin //Output logic
         end
         
         default : begin
-                    o_rx_done = 0;
-                    o_data_out = 0;
+            o_rx_done = 0;
+            o_data_out = 0;
         end
     
     endcase 
