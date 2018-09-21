@@ -2,17 +2,17 @@
 
 //////////////////////////////////////////////////////////////////////////////////
 // Trabajo Practico Nro. 2. UART.
-// Test bench del modulo baud_rate_generator.
+// Test bench del top.
 // Integrantes: Kleiner Matias, Lopez Gaston.
 // Materia: Arquitectura de Computadoras.
 // FCEFyN. UNC.
 // Anio 2018.
 //////////////////////////////////////////////////////////////////////////////////
 
-`define BUS_DATOS_ALU_TEST       8       // Tamanio del bus de entrada. 
-`define BUS_SALIDA_ALU_TEST      8       // Tamanio del bus de salida.
+`define BUS_DATOS_ALU_TEST       8       // Tamanio del bus de entrada de la ALU. 
+`define BUS_SALIDA_ALU_TEST      8       // Tamanio del bus de salida de la ALU.
 `define CANT_BIT_OPCODE_TEST     8       // Numero de bits del codigo de operacion de la ALU.
-`define WIDTH_WORD_TOP_TEST      8       // Tamanio de palabra.    
+`define WIDTH_WORD_TOP_TEST      8       // Tamanio de palabra de trama UART.    
 `define FREC_CLK_MHZ_TEST    100.0       // Frecuencia del clock en MHZ.
 `define BAUD_RATE_TOP_TEST    9600       // Baud rate.
 `define CANT_BIT_STOP_TOP_TEST   2       // Cantidad de bits de parada en trama uart.        
@@ -32,10 +32,10 @@ module test_bench_top_arquitectura();
    //Todo puerto de estimulo o generacion de entrada es un registro.
    
    // Entradas.
-   reg clock;                                  // Clock rate.
+   reg clock;                                  // Clock.
    reg hard_reset;                             // Reset.
-   reg uart_txd_in_reg;
-   wire uart_rxd_out_wire;
+   reg uart_txd_in_reg;                        // Tx de PC.
+   wire uart_rxd_out_wire;                     // Rx de PC.
    
    
    
@@ -46,7 +46,8 @@ module test_bench_top_arquitectura();
 
 		#2000 hard_reset = 1'b1; // Desactivo la accion del reset.
 		
-		#52080 uart_txd_in_reg = 1'b0;
+        
+        // Test 1: Transmito primer operando.
 		#52080 uart_txd_in_reg = 1'b0;
 		#52080 uart_txd_in_reg = 1'b0;
 		#52080 uart_txd_in_reg = 1'b0;
@@ -57,15 +58,18 @@ module test_bench_top_arquitectura();
 		#52080 uart_txd_in_reg = 1'b0;
 		#52080 uart_txd_in_reg = 1'b1;
 		#52080 uart_txd_in_reg = 1'b1;
-		
 		#52080 uart_txd_in_reg = 1'b1;
-		
-		#52080 uart_txd_in_reg = 1'b0;
-			
-        #52080 uart_txd_in_reg = 1'b0;
+
+
+        // Dejo un intervalo de tiempo.
+		#52080 uart_txd_in_reg = 1'b1;
+
+        // Test 2: Transmito codigo de operacion.
+		#52080 uart_txd_in_reg = 1'b0;	
         #52080 uart_txd_in_reg = 1'b0;
         #52080 uart_txd_in_reg = 1'b0;
         #52080 uart_txd_in_reg = 1'b1;
+        #52080 uart_txd_in_reg = 1'b0;
         #52080 uart_txd_in_reg = 1'b0;
         #52080 uart_txd_in_reg = 1'b0;
         #52080 uart_txd_in_reg = 1'b0;
@@ -73,8 +77,11 @@ module test_bench_top_arquitectura();
         #52080 uart_txd_in_reg = 1'b1;
         #52080 uart_txd_in_reg = 1'b1;
         
+        // Dejo un intervalo de tiempo.
         #52080 uart_txd_in_reg = 1'b1;
         
+
+        // Test 3: Transmito tercer operando.
         #52080 uart_txd_in_reg = 1'b0;
         #52080 uart_txd_in_reg = 1'b0;
         #52080 uart_txd_in_reg = 1'b0;
@@ -83,11 +90,11 @@ module test_bench_top_arquitectura();
         #52080 uart_txd_in_reg = 1'b0;
         #52080 uart_txd_in_reg = 1'b0;
         #52080 uart_txd_in_reg = 1'b0;
-        #52080 uart_txd_in_reg = 1'b0;
+        #52080 uart_txd_in_reg = 1'b1;
         #52080 uart_txd_in_reg = 1'b1;
         #52080 uart_txd_in_reg = 1'b1;
 
-		// Test 1: Prueba reset.
+		// Test 4: Prueba reset.
 		#1000000 hard_reset = 1'b0; // Reset.
 		#1000000 hard_reset = 1'b1; // Desactivo el reset.
 
@@ -110,7 +117,7 @@ top_arquitectura
        .BAUD_RATE_TOP (BAUD_RATE_TOP_TEST),
        .CANT_BIT_STOP_TOP (CANT_BIT_STOP_TOP_TEST)
     ) 
-   u_top_arquitectura_1    // Una i_tx_startsola instancia de este modulo.
+   u_top_arquitectura_1
    (
      .i_clock (clock),
      .i_reset (hard_reset),
