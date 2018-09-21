@@ -68,7 +68,6 @@ always@( posedge i_clock ) begin //Memory
      // Se resetean los registros.
     if (~ i_reset) begin
         reg_state <= 1;
-        reg_next_state <= 1;
         o_reg_dato_A <= 0;
         o_reg_dato_B <= 0;
         o_reg_opcode <= 0;
@@ -78,7 +77,6 @@ always@( posedge i_clock ) begin //Memory
 
     else begin
         reg_state <= reg_next_state;
-        reg_next_state <= reg_next_state;
         o_reg_dato_A <= o_reg_dato_A;
         o_reg_dato_B <= o_reg_dato_B;
         o_reg_opcode <= o_reg_opcode;
