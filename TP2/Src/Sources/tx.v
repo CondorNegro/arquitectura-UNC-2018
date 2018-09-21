@@ -1,8 +1,20 @@
  `timescale 1ns / 1ps
 
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+// Trabajo Practico Nro. 2. UART.
+// Modulo tx.
+// Integrantes: Kleiner Matias, Lopez Gaston.
+// Materia: Arquitectura de Computadoras.
+// FCEFyN. UNC.
+// Anio 2018.
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+
 // Constantes.
-`define WIDTH_WORD_TX             8              // Tamanio de palabra
-`define CANT_BIT_STOP          2              // Cantidad de bit de parada
+`define WIDTH_WORD_TX           8              // Tamanio de palabra util enviada por trama UART.
+`define CANT_BIT_STOP           2              // Cantidad de bits de parada de trama UART.
 
 
 module tx(
@@ -61,6 +73,7 @@ always@( posedge i_rate ) begin //Memory
         reg_contador_ticks <= reg_contador_ticks + 1;
         
         if (reg_state == READ) begin
+            // 16 ticks por bit transmitido.
             if (( (reg_contador_ticks % 16) == 0 ) && (reg_contador_ticks != 0)) begin
                 reg_contador_bits <= reg_contador_bits + 1;
                 reg_contador_bits_stop <= 0;
@@ -72,6 +85,7 @@ always@( posedge i_rate ) begin //Memory
         end
 
         else if ( reg_state == STOP ) begin
+            // 16 ticks por bit transmitido.
             if (( (reg_contador_ticks % 16) == 0 ) && (reg_contador_ticks != 0)) begin
                 reg_contador_bits <= 0;
                 reg_contador_bits_stop <= reg_contador_bits_stop + 1;  
