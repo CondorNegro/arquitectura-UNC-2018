@@ -104,6 +104,7 @@ rx
         ) 
     u_rx1    // Una sola instancia de este modulo
     (
+    .i_clock (i_clock),
     .i_rate (wire_rate_baud_generator),
     .i_bit_rx (uart_txd_in),
     .i_reset (i_reset),
@@ -120,6 +121,7 @@ tx
         ) 
     u_tx1    // Una sola instancia de este modulo
     (
+    .i_clock (i_clock),
     .i_rate (wire_rate_baud_generator),
     .i_reset (i_reset),
     .i_data_in (wire_data_tx),

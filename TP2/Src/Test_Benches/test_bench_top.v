@@ -62,7 +62,7 @@ module test_bench_top_arquitectura();
 
 
         // Dejo un intervalo de tiempo.
-		#52080 uart_txd_in_reg = 1'b1;
+		#520080 uart_txd_in_reg = 1'b1;
 
         // Test 2: Transmito codigo de operacion.
 		#52080 uart_txd_in_reg = 1'b0;	
@@ -78,7 +78,7 @@ module test_bench_top_arquitectura();
         #52080 uart_txd_in_reg = 1'b1;
         
         // Dejo un intervalo de tiempo.
-        #52080 uart_txd_in_reg = 1'b1;
+        #520080 uart_txd_in_reg = 1'b1;
         
 
         // Test 3: Transmito tercer operando.

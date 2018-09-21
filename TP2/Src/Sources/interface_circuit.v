@@ -135,7 +135,7 @@ always@( i_rx_done, i_tx_done ) begin //NEXT - STATE logic
 end
 
 
-always@( * ) begin //Output logic
+always@( i_rx_done, i_tx_done ) begin //Output logic
     
     case (reg_state)
         
@@ -150,7 +150,12 @@ always@( * ) begin //Output logic
         OPERANDO1 : begin
             o_tx_start = 0;
             o_data_tx = o_data_tx;
-            o_reg_dato_A = i_data_rx;
+            if (reg_next_state == OPERACION) begin
+                o_reg_dato_A = o_reg_dato_A;
+            end
+            else begin
+                o_reg_dato_A = i_data_rx;
+            end
             o_reg_dato_B = o_reg_dato_B;
             o_reg_opcode = o_reg_opcode;
         end
@@ -160,7 +165,13 @@ always@( * ) begin //Output logic
             o_data_tx = o_data_tx;
             o_reg_dato_A = o_reg_dato_A;
             o_reg_dato_B = o_reg_dato_B;
-            o_reg_opcode = i_data_rx;
+            if (reg_next_state == OPERANDO2) begin
+                o_reg_opcode = o_reg_opcode;
+            end
+            else begin
+                o_reg_opcode = i_data_rx;
+            end
+           
         end
         
         OPERANDO2 : begin
