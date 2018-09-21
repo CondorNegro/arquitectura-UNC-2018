@@ -24,6 +24,7 @@ module test_bench_tx();
 	
 	// Entradas.
     reg clock;                                  // Clock.
+    reg rate;
     reg hard_reset;                             // Reset.
     reg tx_start;
     reg [WIDTH_WORD_TX-1:0] data_in;                                 
@@ -33,6 +34,7 @@ module test_bench_tx();
 	
 	
 	initial	begin
+        rate = 1'b0;
 		clock = 1'b0;
 		hard_reset = 1'b0; // Reset en 0. (Normal cerrado el boton del reset).
 		data_in = 8'b00000000;
@@ -40,14 +42,14 @@ module test_bench_tx();
 		#10 hard_reset = 1'b1; // Desactivo la accion del reset.
 		
         // Test 1: Envío de dato.
-		#80 data_in = 8'b10010110; // Dato a enviar
+		#160 data_in = 8'b10010110; // Dato a enviar
 		
-        #80 tx_start = 1'b1; // Enviar ahora
+        #160 tx_start = 1'b1; // Enviar ahora
         #100 tx_start = 1'b0;
 
         // Test 2: Envío de dato.
-        #1080 data_in = 8'b10000110; // Dato a enviar
-		#80 tx_start = 1'b1; // Enviar ahora
+        #1160 data_in = 8'b10000110; // Dato a enviar
+		#160 tx_start = 1'b1; // Enviar ahora
         #100 tx_start = 1'b0; 
         
         // Test 3: Prueba tx_start.
@@ -63,7 +65,7 @@ module test_bench_tx();
 	end
 	
 	always #2.5 clock=~clock;  // Simulacion de clock.
-
+    always #5 rate=~rate;  // Simulacion de rate.
 
 
 // Modulo para pasarle los estimulos del banco de pruebas.
@@ -74,7 +76,8 @@ tx
      ) 
     u_tx_1    
     (
-      .i_rate (clock),
+      .i_clock (clock),
+      .i_rate (rate),
       .i_data_in (data_in),
       .i_reset (hard_reset),
       .i_tx_start (tx_start),

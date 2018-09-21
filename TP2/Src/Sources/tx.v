@@ -18,6 +18,7 @@
 
 
 module tx(
+    i_clock,
     i_rate,
     i_data_in,
     i_reset,
@@ -38,7 +39,7 @@ localparam STOP = 4'b1000;
 
 
 // Entradas - Salidas.
-
+input i_clock;
 input i_rate;
 input [ WIDTH_WORD_TX - 1 : 0 ] i_data_in;       
 input i_reset; 
@@ -51,24 +52,23 @@ output reg o_tx_done;
 // Registros.
 reg [ 3 : 0 ] reg_state;
 reg [ 3 : 0 ] reg_next_state;
-reg [ 7 : 0] reg_contador_ticks;
+reg [ 4 : 0] reg_contador_ticks;
 reg [$clog2 (WIDTH_WORD_TX)  : 0] reg_contador_bits;
 reg [$clog2 (CANT_BIT_STOP) : 0] reg_contador_bits_stop;
 
 
 
 
-always@( posedge i_rate ) begin //Memory
+always@( posedge i_clock ) begin //Memory
      // Se resetean los registros.
     if (~ i_reset) begin
         reg_state <= 1;
-        reg_next_state <= 1;
         reg_contador_bits <= 0;
         reg_contador_ticks <= 0;
         reg_contador_bits_stop <= 0;
     end 
 
-    else begin
+    else if (i_rate) begin
         reg_state <= reg_next_state;
         reg_contador_ticks <= reg_contador_ticks + 1;
         
@@ -102,6 +102,12 @@ always@( posedge i_rate ) begin //Memory
             reg_contador_bits_stop <= 0;
         end
         
+    end
+    else begin
+        reg_state <= reg_state;
+        reg_contador_bits <= reg_contador_bits;
+        reg_contador_ticks <= reg_contador_ticks;
+        reg_contador_bits_stop <= reg_contador_bits_stop;
     end
 end
 
