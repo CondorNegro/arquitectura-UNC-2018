@@ -123,6 +123,8 @@ always@( i_rx_done, i_tx_done, i_resultado_alu ) begin //NEXT - STATE logic
         end
         
         OPERANDO2 : begin
+            //antes estaba como deteccion de nivel. Lo que hago es detectar un flanco ascendente
+            //si detecto que el tx_done pasa de 0 a 1, paso al estado espera.
             if ( (i_tx_done == 1) && (tx_done == 0) ) begin
                 reg_next_state = ESPERA;
             end
