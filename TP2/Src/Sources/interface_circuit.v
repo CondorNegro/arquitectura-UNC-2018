@@ -62,6 +62,7 @@ output reg [CANT_BITS_OPCODE_ALU - 1 : 0] o_reg_opcode;  // Codigo de operacion.
 // Registros.
 reg [ 3 : 0 ] reg_state;
 reg [ 3 : 0 ] reg_next_state;
+reg tx_done;
 
 
 always@( posedge i_clock ) begin //Memory
@@ -73,9 +74,11 @@ always@( posedge i_clock ) begin //Memory
         o_reg_opcode <= 0;
         o_tx_start <= 0;
         o_data_tx <= 0;
+        tx_done <= 0;
     end 
 
     else begin
+        tx_done <= i_tx_done;
         reg_state <= reg_next_state;
         o_reg_dato_A <= o_reg_dato_A;
         o_reg_dato_B <= o_reg_dato_B;
@@ -120,7 +123,7 @@ always@( i_rx_done, i_tx_done, i_resultado_alu ) begin //NEXT - STATE logic
         end
         
         OPERANDO2 : begin
-            if (i_tx_done == 1) begin
+            if ( (i_tx_done == 1) && (tx_done == 0) ) begin
                 reg_next_state = ESPERA;
             end
             else begin
