@@ -52,7 +52,7 @@ output reg o_tx_done;
 // Registros.
 reg [ 3 : 0 ] reg_state;
 reg [ 3 : 0 ] reg_next_state;
-reg [ 4 : 0] reg_contador_ticks;
+reg [ 5 : 0] reg_contador_ticks;
 reg [$clog2 (WIDTH_WORD_TX)  : 0] reg_contador_bits;
 reg [$clog2 (CANT_BIT_STOP) : 0] reg_contador_bits_stop;
 
@@ -70,29 +70,50 @@ always@( posedge i_clock ) begin //Memory
 
     else if (i_rate) begin
         reg_state <= reg_next_state;
-        reg_contador_ticks <= reg_contador_ticks + 1;
-        
-        if (reg_state == READ) begin
+       
+        if (reg_state == START) begin
             // 16 ticks por bit transmitido.
-            if (( (reg_contador_ticks % 16) == 0 ) && (reg_contador_ticks != 0)) begin
+            if (( (reg_contador_ticks % 15) == 0 ) && (reg_contador_ticks != 0)) begin
                 reg_contador_bits <= reg_contador_bits + 1;
                 reg_contador_bits_stop <= 0;
+                reg_contador_ticks <= 0;
             end
             else begin
                 reg_contador_bits <= reg_contador_bits;
                 reg_contador_bits_stop <= reg_contador_bits_stop;
+                reg_contador_ticks <= reg_contador_ticks + 1;
+            end
+        end
+        if (reg_state == READ) begin
+            // 16 ticks por bit transmitido.
+            if ((reg_contador_bits == 0) && ((reg_contador_ticks % 32) == 0 )) begin
+                reg_contador_bits <= reg_contador_bits + 1;
+                reg_contador_bits_stop <= 0;
+                reg_contador_ticks <= 0;
+            end
+            else if ((reg_contador_bits != 0) && ( (reg_contador_ticks % 15) == 0 ) && (reg_contador_ticks != 0)) begin
+                reg_contador_bits <= reg_contador_bits + 1;
+                reg_contador_bits_stop <= 0;
+                reg_contador_ticks <= 0;
+            end
+            else begin
+                reg_contador_bits <= reg_contador_bits;
+                reg_contador_bits_stop <= reg_contador_bits_stop;
+                reg_contador_ticks <= reg_contador_ticks + 1;
             end
         end
 
         else if ( reg_state == STOP ) begin
             // 16 ticks por bit transmitido.
-            if (( (reg_contador_ticks % 16) == 0 ) && (reg_contador_ticks != 0)) begin
+            if (( (reg_contador_ticks % 15) == 0 ) && (reg_contador_ticks != 0)) begin
                 reg_contador_bits <= 0;
-                reg_contador_bits_stop <= reg_contador_bits_stop + 1;  
+                reg_contador_bits_stop <= reg_contador_bits_stop + 1;
+                reg_contador_ticks <= 0;  
             end
             else begin
                 reg_contador_bits <= reg_contador_bits;
                 reg_contador_bits_stop <= reg_contador_bits_stop;
+                reg_contador_ticks <= reg_contador_ticks + 1;
                
             end
         end
@@ -100,6 +121,7 @@ always@( posedge i_clock ) begin //Memory
         else begin
             reg_contador_bits <= 0;
             reg_contador_bits_stop <= 0;
+            reg_contador_ticks <= reg_contador_ticks + 1;
         end
         
     end
