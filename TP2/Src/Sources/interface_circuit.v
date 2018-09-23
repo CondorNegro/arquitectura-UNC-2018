@@ -63,6 +63,7 @@ output reg [CANT_BITS_OPCODE_ALU - 1 : 0] o_reg_opcode;  // Codigo de operacion.
 reg [ 3 : 0 ] reg_state;
 reg [ 3 : 0 ] reg_next_state;
 reg registro_tx_done;
+reg registro_rx_done;
 
 
 always@( posedge i_clock ) begin //Memory
@@ -75,10 +76,12 @@ always@( posedge i_clock ) begin //Memory
         o_tx_start <= 0;
         o_data_tx <= 0;
         registro_tx_done <= 0;
+        registro_rx_done <= 0;
     end 
 
     else begin
         registro_tx_done <= i_tx_done;
+        registro_rx_done <= i_rx_done;
         reg_state <= reg_next_state;
         o_reg_dato_A <= o_reg_dato_A;
         o_reg_dato_B <= o_reg_dato_B;
@@ -96,7 +99,7 @@ always@( i_rx_done, i_tx_done, i_data_rx, i_resultado_alu, i_reset, reg_next_sta
     case (reg_state)
         
         ESPERA : begin
-            if (i_rx_done == 1) begin
+            if ((i_rx_done == 1) && (registro_rx_done == 0)) begin  // Deteccion de flanco ascendente
                 reg_next_state = OPERANDO1;
             end
             else begin
@@ -105,7 +108,7 @@ always@( i_rx_done, i_tx_done, i_data_rx, i_resultado_alu, i_reset, reg_next_sta
         end
         
         OPERANDO1 : begin
-            if (i_rx_done == 1) begin
+            if ((i_rx_done == 1) && (registro_rx_done == 0)) begin  // Deteccion de flanco ascendente
                 reg_next_state = OPERACION;
             end
             else begin
@@ -114,7 +117,7 @@ always@( i_rx_done, i_tx_done, i_data_rx, i_resultado_alu, i_reset, reg_next_sta
         end
         
         OPERACION : begin
-           if (i_rx_done == 1) begin
+           if ((i_rx_done == 1) && (registro_rx_done == 0)) begin  // Deteccion de flanco ascendente
                 reg_next_state = OPERANDO2;
             end
             else begin
