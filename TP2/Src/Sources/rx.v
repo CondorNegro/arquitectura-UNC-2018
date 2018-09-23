@@ -63,11 +63,8 @@ always@( posedge i_clock ) begin //Memory
             reg_contador_bits <= 0;
             reg_contador_ticks <= 0;
             reg_contador_bits_stop <= 0;
-            o_data_out <= 0;
-            o_rx_done <= 0;
     end
     else if (i_rate) begin 
-                o_data_out <= o_data_out;
                 reg_state <= reg_next_state;                
                 if (reg_state == READ) begin
                     // 16 ticks por bit transmitido.
@@ -100,6 +97,11 @@ always@( posedge i_clock ) begin //Memory
                         reg_contador_ticks <= reg_contador_ticks + 1;
                     end
                 end
+                
+                else if ( (reg_state == ESPERA) || (reg_state == START && reg_next_state == READ) ) begin
+                    reg_contador_ticks <=  0;
+                    reg_contador_bits <=  0;
+               end
 
                 else begin
                     reg_buffer <= reg_buffer; 
@@ -116,8 +118,6 @@ always@( posedge i_clock ) begin //Memory
         reg_contador_bits <= reg_contador_bits;
         reg_contador_ticks <= reg_contador_ticks;
         reg_contador_bits_stop <= reg_contador_bits_stop;
-        o_data_out <= o_data_out;
-        o_rx_done <= o_rx_done;
     end 
     
 end
@@ -130,45 +130,27 @@ always@( * ) begin //NEXT - STATE logic
         ESPERA : begin
             if (i_bit_rx == 0) begin
                 reg_next_state = START;
-                reg_contador_ticks = 0;
-                reg_contador_bits =  reg_contador_bits;
-                reg_contador_bits_stop = reg_contador_bits_stop;
             end
             else begin
                 reg_next_state = ESPERA;
-                reg_contador_ticks = 0;
-                reg_contador_bits =  reg_contador_bits;
-                reg_contador_bits_stop = reg_contador_bits_stop;
             end  
         end
         
         START : begin
             if (reg_contador_ticks == 8) begin
                 reg_next_state = READ;
-                reg_contador_ticks = 0;
-                reg_contador_bits =  reg_contador_bits;
-                reg_contador_bits_stop = reg_contador_bits_stop;
             end
             else begin
                 reg_next_state = START;
-                reg_contador_ticks = reg_contador_ticks;
-                reg_contador_bits =  reg_contador_bits;
-                reg_contador_bits_stop = reg_contador_bits_stop;
             end  
         end
         
         READ : begin
             if (reg_contador_bits == WIDTH_WORD) begin
                 reg_next_state = STOP;
-                reg_contador_ticks = 0;
-                reg_contador_bits = reg_contador_bits;
-                reg_contador_bits_stop = reg_contador_bits_stop;
             end
             else begin
                 reg_next_state = READ;
-                reg_contador_ticks = reg_contador_ticks;
-                reg_contador_bits = reg_contador_bits;
-                reg_contador_bits_stop = reg_contador_bits_stop;
             end  
         end
         
@@ -177,39 +159,25 @@ always@( * ) begin //NEXT - STATE logic
                 if (i_bit_rx == 1) begin
                     if ( reg_contador_bits_stop == CANT_BIT_STOP ) begin
                         reg_next_state = ESPERA;
-                        reg_contador_bits = reg_contador_bits;
-                        reg_contador_bits_stop = reg_contador_bits_stop;
-                        reg_contador_ticks = reg_contador_ticks;
+
                     end
                     else begin
                         reg_next_state = STOP;
-                        reg_contador_bits = reg_contador_bits;
-                        reg_contador_ticks = reg_contador_ticks;
-                        reg_contador_bits_stop = reg_contador_bits_stop;
                     end  
                 end
 
                 else begin
                         if ( reg_contador_ticks < 24) begin // Menos de la mitad del segundo bit de stop y es cero.
                             reg_next_state = ERROR; // Faltan 8 ticks para terminar de recorrer el bit de stop erróneo.
-                            reg_contador_bits = reg_contador_bits;
-                            reg_contador_bits_stop = reg_contador_bits_stop;
-                            reg_contador_ticks = 0;
                         end 
                         else begin
                             reg_next_state = ESPERA;
-                            reg_contador_bits = reg_contador_bits;
-                            reg_contador_bits_stop = reg_contador_bits_stop;
-                            reg_contador_ticks = 0;
                         end
                         
                 end
             end
             else begin
                     reg_next_state = STOP;
-                    reg_contador_bits = reg_contador_bits;
-                    reg_contador_ticks = reg_contador_ticks;
-                    reg_contador_bits_stop = reg_contador_bits_stop;
             end
             
         end
@@ -218,15 +186,9 @@ always@( * ) begin //NEXT - STATE logic
             // Para salir del error se deben contar 8 ticks porque estoy a la mitad de un bit recibido.
             if (reg_contador_ticks == 8) begin
                 reg_next_state = ESPERA;
-                reg_contador_ticks = 0;
-                reg_contador_bits = 0;
-                reg_contador_bits_stop = 0;
             end
             else begin
                 reg_next_state = ERROR;
-                reg_contador_ticks = reg_contador_ticks;
-                reg_contador_bits = reg_contador_bits;
-                reg_contador_bits_stop = reg_contador_bits_stop;
             end  
         end
 
@@ -234,9 +196,6 @@ always@( * ) begin //NEXT - STATE logic
 
         default: begin
                 reg_next_state = ESPERA;
-                reg_contador_bits = reg_contador_bits;
-                reg_contador_bits_stop = reg_contador_bits_stop;
-                reg_contador_ticks = reg_contador_ticks;
             end
     
     endcase 

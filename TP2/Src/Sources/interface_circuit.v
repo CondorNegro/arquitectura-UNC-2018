@@ -70,11 +70,6 @@ always@( posedge i_clock ) begin //Memory
      // Se resetean los registros.
     if (~ i_reset) begin
         reg_state <= 1;
-        o_reg_dato_A <= 0;
-        o_reg_dato_B <= 0;
-        o_reg_opcode <= 0;
-        o_tx_start <= 0;
-        o_data_tx <= 0;
         registro_tx_done <= 0;
         registro_rx_done <= 0;
     end 
@@ -83,18 +78,16 @@ always@( posedge i_clock ) begin //Memory
         registro_tx_done <= i_tx_done;
         registro_rx_done <= i_rx_done;
         reg_state <= reg_next_state;
-        o_reg_dato_A <= o_reg_dato_A;
-        o_reg_dato_B <= o_reg_dato_B;
-        o_reg_opcode <= o_reg_opcode;
-        o_tx_start <= o_tx_start;
-        o_data_tx <= o_data_tx;       
+
+
+  
     end
 end
 
 
 
 
-always@( i_rx_done, i_tx_done, i_data_rx, i_resultado_alu, i_reset, reg_next_state ) begin //NEXT - STATE logic
+always@( reg_state, i_rx_done, registro_tx_done ,registro_rx_done , i_tx_done, i_data_rx, i_resultado_alu, i_reset, reg_next_state ) begin //NEXT - STATE logic
     
     case (reg_state)
         
@@ -149,10 +142,10 @@ always@( i_rx_done, i_tx_done, i_data_rx, i_resultado_alu, i_reset, reg_next_sta
         
         ESPERA : begin
             o_tx_start = 0;
-            o_data_tx = o_data_tx;
-            o_reg_dato_A = o_reg_dato_A;
-            o_reg_dato_B = o_reg_dato_B;
-            o_reg_opcode = o_reg_opcode;
+            o_data_tx = 0;
+            o_reg_dato_A = 0;
+            o_reg_dato_B = 0;
+            o_reg_opcode = 0;
         end
         
         OPERANDO1 : begin
