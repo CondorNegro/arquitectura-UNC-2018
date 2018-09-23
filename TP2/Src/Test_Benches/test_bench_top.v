@@ -95,8 +95,8 @@ module test_bench_top_arquitectura();
         #52080 uart_txd_in_reg = 1'b1;
 
 		// Test 4: Prueba reset.
-		#1000000 hard_reset = 1'b0; // Reset.
-		#1000000 hard_reset = 1'b1; // Desactivo el reset.
+		#3000000 hard_reset = 1'b0; // Reset.
+		#3000000 hard_reset = 1'b1; // Desactivo el reset.
 
 
 		#5000000 $finish;
