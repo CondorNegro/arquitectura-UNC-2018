@@ -50,7 +50,7 @@ module test_bench_interface_circuit();
 		reg_data_rx = 0;
 		reg_resultado_alu = 0;
 		reg_rx_done = 1'b0;
-		reg_tx_done = 1'b0;
+		reg_tx_done = 1'b1;
 
 		#10 reg_reset = 1'b1; // Desactivo la accion del reset.
 		
@@ -71,9 +71,9 @@ module test_bench_interface_circuit();
 
 		// Test 4: Tx done. OPERANDO2 -> ESPERA.
 		#900 reg_resultado_alu = 3;
-		#1000 reg_tx_done = 1'b1;
+		#1000 reg_tx_done = 1'b0;
 		#10 reg_resultado_alu = 4;
-		#1500 reg_tx_done = 1'b0;
+		#1500 reg_tx_done = 1'b1;
 
 		// Test 5: Prueba reset.
 		#50000 reg_reset = 1'b0; // Reset.

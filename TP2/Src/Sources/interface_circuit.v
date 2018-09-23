@@ -62,7 +62,7 @@ output reg [CANT_BITS_OPCODE_ALU - 1 : 0] o_reg_opcode;  // Codigo de operacion.
 // Registros.
 reg [ 3 : 0 ] reg_state;
 reg [ 3 : 0 ] reg_next_state;
-reg tx_done;
+reg registro_tx_done;
 
 
 always@( posedge i_clock ) begin //Memory
@@ -74,11 +74,11 @@ always@( posedge i_clock ) begin //Memory
         o_reg_opcode <= 0;
         o_tx_start <= 0;
         o_data_tx <= 0;
-        tx_done <= 0;
+        registro_tx_done <= 0;
     end 
 
     else begin
-        tx_done <= i_tx_done;
+        registro_tx_done <= i_tx_done;
         reg_state <= reg_next_state;
         o_reg_dato_A <= o_reg_dato_A;
         o_reg_dato_B <= o_reg_dato_B;
@@ -91,7 +91,7 @@ end
 
 
 
-always@( i_rx_done, i_tx_done, i_resultado_alu ) begin //NEXT - STATE logic
+always@( i_rx_done, i_tx_done, i_data_rx, i_resultado_alu, i_reset, reg_next_state ) begin //NEXT - STATE logic
     
     case (reg_state)
         
@@ -123,9 +123,9 @@ always@( i_rx_done, i_tx_done, i_resultado_alu ) begin //NEXT - STATE logic
         end
         
         OPERANDO2 : begin
-            //antes estaba como deteccion de nivel. Lo que hago es detectar un flanco ascendente
-            //si detecto que el tx_done pasa de 0 a 1, paso al estado espera.
-            if ( (i_tx_done == 1) && (tx_done == 0) ) begin
+            // Deteccion de flanco ascendente
+            // Si se detecta que el registro_tx_done pasa de 0 a 1, se va al estado ESPERA.
+            if ( (i_tx_done == 1) && (registro_tx_done == 0) ) begin
                 reg_next_state = ESPERA;
             end
             else begin
@@ -140,7 +140,7 @@ always@( i_rx_done, i_tx_done, i_resultado_alu ) begin //NEXT - STATE logic
 end
 
 
-always@( i_rx_done, i_tx_done, i_resultado_alu ) begin //Output logic
+always@( i_rx_done, i_tx_done, i_data_rx, i_resultado_alu, i_reset, reg_next_state, reg_state ) begin //Output logic
     
     case (reg_state)
         
@@ -155,7 +155,9 @@ always@( i_rx_done, i_tx_done, i_resultado_alu ) begin //Output logic
         OPERANDO1 : begin
             o_tx_start = 0;
             o_data_tx = o_data_tx;
-            if (reg_next_state == OPERACION) begin
+            // Hay una diferencia de tiempo entre la actualizacion del reg_next_state y la del reg_state, por lo que 
+            // puede introducir errores en la carga de los operandos y de los opcodes.
+            if (reg_next_state == OPERACION) begin  
                 o_reg_dato_A = o_reg_dato_A;
             end
             else begin
@@ -170,6 +172,8 @@ always@( i_rx_done, i_tx_done, i_resultado_alu ) begin //Output logic
             o_data_tx = o_data_tx;
             o_reg_dato_A = o_reg_dato_A;
             o_reg_dato_B = o_reg_dato_B;
+            // Hay una diferencia de tiempo entre la actualizacion del reg_next_state y la del reg_state, por lo que 
+            // puede introducir errores en la carga de los operandos y de los opcodes.
             if (reg_next_state == OPERANDO2) begin
                 o_reg_opcode = o_reg_opcode;
             end
