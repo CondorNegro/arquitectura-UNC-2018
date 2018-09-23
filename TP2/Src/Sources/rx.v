@@ -50,7 +50,7 @@ output reg [ WIDTH_WORD - 1 : 0 ] o_data_out;
 reg [ 4 : 0 ] reg_state;
 reg [ 4 : 0 ] reg_next_state;
 reg [ WIDTH_WORD - 1 : 0 ] reg_buffer;
-reg [ 4 : 0] reg_contador_ticks; // Debe contar como maximo hasta 31. (Por los dos bits de stop).
+reg [ 5 : 0] reg_contador_ticks; // Debe contar como maximo hasta 32. (Por los dos bits de stop).
 reg [$clog2 (WIDTH_WORD) : 0] reg_contador_bits;
 reg [($clog2 (CANT_BIT_STOP)) : 0] reg_contador_bits_stop;
 
@@ -173,7 +173,7 @@ always@( * ) begin //NEXT - STATE logic
         end
         
         STOP : begin
-            if (reg_contador_ticks > 15) begin // Salí de los bits de datos.
+            if (reg_contador_ticks > 16) begin // Salí de los bits de datos.
                 if (i_bit_rx == 1) begin
                     if ( reg_contador_bits_stop == CANT_BIT_STOP ) begin
                         reg_next_state = ESPERA;
@@ -190,7 +190,7 @@ always@( * ) begin //NEXT - STATE logic
                 end
 
                 else begin
-                        if ( reg_contador_ticks < 23) begin // Menos de la mitad del segundo bit de stop y es cero.
+                        if ( reg_contador_ticks < 24) begin // Menos de la mitad del segundo bit de stop y es cero.
                             reg_next_state = ERROR; // Faltan 8 ticks para terminar de recorrer el bit de stop erróneo.
                             reg_contador_bits = reg_contador_bits;
                             reg_contador_bits_stop = reg_contador_bits_stop;
