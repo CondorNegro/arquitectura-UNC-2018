@@ -136,7 +136,7 @@ tx
 alu
         #(
             .CANT_BUS_ENTRADA (BUS_DATOS_ALU),
-            .CANT_BUS_SALIDA_ALU (BUS_SALIDA_ALU),
+            .CANT_BUS_SALIDA (BUS_SALIDA_ALU),
             .CANT_BITS_OPCODE (CANT_BIT_OPCODE)
         ) 
     u_alu1    // Una sola instancia de este modulo
