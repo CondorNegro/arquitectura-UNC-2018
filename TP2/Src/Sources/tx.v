@@ -86,11 +86,13 @@ always@( posedge i_clock ) begin //Memory
         end
         if (reg_state == READ) begin
             // 16 ticks por bit transmitido.
-            if ((reg_contador_bits == 0) && ((reg_contador_ticks % 32) == 0 )) begin
+            // Primer bit a transmitir.
+            if ((reg_contador_ticks != 0) && (reg_contador_bits == 0) && ((reg_contador_ticks % 32) == 0 )) begin
                 reg_contador_bits <= reg_contador_bits + 1;
                 reg_contador_bits_stop <= 0;
                 reg_contador_ticks <= 0;
             end
+            // Demas bits a transmitir.
             else if ((reg_contador_bits != 0) && ( (reg_contador_ticks % 15) == 0 ) && (reg_contador_ticks != 0)) begin
                 reg_contador_bits <= reg_contador_bits + 1;
                 reg_contador_bits_stop <= 0;
