@@ -1,4 +1,4 @@
- `timescale 1ns / 1ps
+`timescale 1ns / 1ps
 
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
@@ -70,26 +70,11 @@ always@( posedge i_clock ) begin //Memory
 
     else if (i_rate) begin
         reg_state <= reg_next_state;
-        if (reg_state == ESPERA) begin
-            reg_contador_bits <= 0;
-            reg_contador_ticks <= 0;
-            reg_contador_bits_stop <= 0;
-        end 
-        if (reg_state == START && reg_next_state==READ) begin
-            reg_contador_bits <= 0;
-            reg_contador_bits_stop <= 0;
-        end     
-        
-        if (reg_state == READ && reg_next_state==STOP) begin
-            reg_contador_ticks <= 0;
-            reg_contador_bits <= 0;
-            reg_contador_bits_stop <= 0;
-        end
-               
+       
         if (reg_state == START) begin
             // 16 ticks por bit transmitido.
             if (( (reg_contador_ticks % 15) == 0 ) && (reg_contador_ticks != 0)) begin
-                reg_contador_bits <= reg_contador_bits + 1;
+                reg_contador_bits <= 0;
                 reg_contador_bits_stop <= 0;
                 reg_contador_ticks <= 0;
             end
@@ -102,7 +87,7 @@ always@( posedge i_clock ) begin //Memory
         if (reg_state == READ) begin
             // 16 ticks por bit transmitido.
             // Primer bit a transmitir.
-            if ((reg_contador_ticks != 0) && (reg_contador_bits == 0) && ((reg_contador_ticks % 32) == 0 )) begin
+            if ((reg_contador_ticks != 0) && (reg_contador_bits == 0) && ((reg_contador_ticks % 31) == 0 )) begin
                 reg_contador_bits <= reg_contador_bits + 1;
                 reg_contador_bits_stop <= 0;
                 reg_contador_ticks <= 0;
@@ -121,7 +106,7 @@ always@( posedge i_clock ) begin //Memory
             end
             else begin
                 reg_contador_bits <= reg_contador_bits;
-                reg_contador_bits_stop <= reg_contador_bits_stop;
+                reg_contador_bits_stop <= 0;
                 reg_contador_ticks <= reg_contador_ticks + 1;
             end
         end
@@ -144,7 +129,12 @@ always@( posedge i_clock ) begin //Memory
         else begin
             reg_contador_bits <= 0;
             reg_contador_bits_stop <= 0;
-            reg_contador_ticks <= reg_contador_ticks + 1;
+            if ( reg_state == ESPERA) begin
+                reg_contador_ticks <= 0;
+            end
+            else begin 
+                reg_contador_ticks <= reg_contador_ticks + 1;
+            end
         end
         
     end
@@ -171,8 +161,8 @@ always@( * ) begin //NEXT - STATE logic
         end
         
         START : begin
-            if (reg_contador_ticks == 16) begin
-                reg_next_state = READ;
+            if (reg_contador_ticks == 15) begin
+                reg_next_state = READ;             
             end
             else begin
                 reg_next_state = START;
@@ -182,18 +172,22 @@ always@( * ) begin //NEXT - STATE logic
         READ : begin
             if (reg_contador_bits == WIDTH_WORD_TX) begin
                 reg_next_state = STOP;
+                 
             end
             else begin
                 reg_next_state = READ;
+                
             end  
         end
         
         STOP : begin
             if ( reg_contador_bits_stop == CANT_BIT_STOP ) begin
                 reg_next_state = ESPERA;
+               
             end
             else begin
                 reg_next_state = STOP;
+               
             end              
         end
         
@@ -221,7 +215,12 @@ always@( * ) begin //Output logic
         
         READ : begin
             o_tx_done = 0;
-            o_bit_tx = i_data_in [ (WIDTH_WORD_TX-1) - reg_contador_bits];
+            if (reg_contador_bits < WIDTH_WORD_TX) begin
+                o_bit_tx = i_data_in [ (WIDTH_WORD_TX-1) - reg_contador_bits];
+            end
+            else begin
+                o_bit_tx = o_bit_tx;
+            end            
         end
         
         STOP : begin
