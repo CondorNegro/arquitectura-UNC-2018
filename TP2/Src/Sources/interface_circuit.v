@@ -142,10 +142,10 @@ always@( i_rx_done, i_tx_done, i_data_rx, i_resultado_alu, i_reset, reg_next_sta
         
         ESPERA : begin
             o_tx_start = 0;
-            o_data_tx = 0;
-            o_reg_dato_A = 0;
-            o_reg_dato_B = 0;
-            o_reg_opcode = 0;
+            o_data_tx = o_data_tx;
+            o_reg_dato_A = o_reg_dato_A;
+            o_reg_dato_B = o_reg_dato_B;
+            o_reg_opcode = o_reg_opcode;
         end
         
         OPERANDO1 : begin
