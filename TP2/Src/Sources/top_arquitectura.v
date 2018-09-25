@@ -100,12 +100,12 @@ baud_rate_generator
 rx 
     u_rx1    // Una sola instancia de este modulo
     (
-    .clk (i_clock),
-    .tick (wire_rate_baud_generator),
-    .rx (uart_txd_in),
-    .reset (i_reset),
-    .rx_done_tick (wire_rx_done),
-    .data_out (wire_data_rx)
+        .i_clock (i_clock),
+        .i_rate (wire_rate_baud_generator),
+        .i_bit_rx (uart_txd_in),
+        .i_reset (i_reset),
+        .o_rx_done (wire_rx_done),
+        .o_data_out (wire_data_rx)
     );
 
 
