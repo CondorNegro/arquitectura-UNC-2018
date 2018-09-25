@@ -22,8 +22,8 @@ module top_arquitectura(
   i_clock, 
   i_reset,
   uart_txd_in,
-  uart_rxd_out
-  //o_leds 
+  uart_rxd_out,
+  o_leds 
   );
 
 // Parametros
@@ -40,7 +40,7 @@ input i_clock;                                  // Clock.
 input i_reset;                                  // Reset.
 input uart_txd_in;                              // Transmisor de PC.
 output uart_rxd_out;                            // Receptor de PC.
-//output [BUS_SALIDA_ALU - 1 : 0] o_leds;             // Leds.
+output [4 - 1 : 0] o_leds;             // Leds.
 
 
 
@@ -56,7 +56,7 @@ wire wire_rx_done;
 wire wire_tx_start;
 wire wire_rate_baud_generator;
 
-
+assign o_leds = wire_operando_1;
 
 // Modulo interface_circuit.
 

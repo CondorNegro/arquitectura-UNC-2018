@@ -43,10 +43,10 @@ create_clock -period 10.000 -name sys_clk_pin -waveform {0.000 5.000} -add [get_
 
 ##LEDs
 
-#set_property -dict {PACKAGE_PIN H5 IOSTANDARD LVCMOS33} [get_ports {o_leds[0]}]
-#set_property -dict {PACKAGE_PIN J5 IOSTANDARD LVCMOS33} [get_ports {o_leds[1]}]
-#set_property -dict {PACKAGE_PIN T9 IOSTANDARD LVCMOS33} [get_ports {o_leds[2]}]
-#set_property -dict {PACKAGE_PIN T10 IOSTANDARD LVCMOS33} [get_ports {o_leds[3]}]
+set_property -dict {PACKAGE_PIN H5 IOSTANDARD LVCMOS33} [get_ports {o_leds[0]}]
+set_property -dict {PACKAGE_PIN J5 IOSTANDARD LVCMOS33} [get_ports {o_leds[1]}]
+set_property -dict {PACKAGE_PIN T9 IOSTANDARD LVCMOS33} [get_ports {o_leds[2]}]
+set_property -dict {PACKAGE_PIN T10 IOSTANDARD LVCMOS33} [get_ports {o_leds[3]}]
 
 ##Buttons
 
