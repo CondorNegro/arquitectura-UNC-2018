@@ -56,7 +56,7 @@ wire wire_rx_done;
 wire wire_tx_start;
 wire wire_rate_baud_generator;
 
-assign o_leds = wire_operando_1;
+assign o_leds = wire_data_rx;
 
 // Modulo interface_circuit.
 

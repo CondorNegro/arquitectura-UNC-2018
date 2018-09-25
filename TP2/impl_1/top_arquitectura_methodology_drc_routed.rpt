@@ -1,7 +1,7 @@
 Copyright 1986-2018 Xilinx, Inc. All Rights Reserved.
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 | Tool Version : Vivado v.2018.2 (lin64) Build 2258646 Thu Jun 14 20:02:38 MDT 2018
-| Date         : Tue Sep 25 16:54:58 2018
+| Date         : Tue Sep 25 17:03:06 2018
 | Host         : matias-pc running 64-bit Manjaro Linux
 | Command      : report_methodology -file top_arquitectura_methodology_drc_routed.rpt -pb top_arquitectura_methodology_drc_routed.pb -rpx top_arquitectura_methodology_drc_routed.rpx
 | Design       : top_arquitectura

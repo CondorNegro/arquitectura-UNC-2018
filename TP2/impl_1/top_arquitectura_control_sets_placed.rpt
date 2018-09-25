@@ -1,7 +1,7 @@
 Copyright 1986-2018 Xilinx, Inc. All Rights Reserved.
 ---------------------------------------------------------------------------------------------
 | Tool Version : Vivado v.2018.2 (lin64) Build 2258646 Thu Jun 14 20:02:38 MDT 2018
-| Date         : Tue Sep 25 16:54:32 2018
+| Date         : Tue Sep 25 17:02:40 2018
 | Host         : matias-pc running 64-bit Manjaro Linux
 | Command      : report_control_sets -verbose -file top_arquitectura_control_sets_placed.rpt
 | Design       : top_arquitectura
@@ -48,12 +48,12 @@ Table of Contents
 +--------------+-----------------------+------------------------+-----------------+--------------+
 | Clock Enable | Synchronous Set/Reset | Asynchronous Set/Reset | Total Registers | Total Slices |
 +--------------+-----------------------+------------------------+-----------------+--------------+
-| No           | No                    | No                     |              96 |           22 |
+| No           | No                    | No                     |              96 |           19 |
 | No           | No                    | Yes                    |               0 |            0 |
 | No           | Yes                   | No                     |              34 |            7 |
 | Yes          | No                    | No                     |               0 |            0 |
 | Yes          | No                    | Yes                    |               0 |            0 |
-| Yes          | Yes                   | No                     |              68 |           20 |
+| Yes          | Yes                   | No                     |              68 |           19 |
 +--------------+-----------------------+------------------------+-----------------+--------------+
 
 
@@ -73,17 +73,17 @@ Table of Contents
 |  i_clock_IBUF_BUFG                                | u_rx1/reg_buffer[2]_i_1_n_0                     | u_rx1/SR[0]                                    |                1 |              2 |
 |  i_clock_IBUF_BUFG                                | u_rx1/reg_buffer[3]_i_1_n_0                     | u_rx1/SR[0]                                    |                1 |              2 |
 |  i_clock_IBUF_BUFG                                | u_rx1/reg_buffer[4]_i_1_n_0                     | u_rx1/SR[0]                                    |                1 |              2 |
-|  i_clock_IBUF_BUFG                                | u_rx1/reg_contador_bits[3]_i_2_n_0              | u_rx1/reg_contador_bits[3]_i_1__0_n_0          |                2 |              8 |
+|  i_clock_IBUF_BUFG                                | u_rx1/reg_contador_bits[3]_i_2_n_0              | u_rx1/reg_contador_bits[3]_i_1__0_n_0          |                1 |              8 |
 |  i_clock_IBUF_BUFG                                | u_baud_rate_generator1/wire_rate_baud_generator | u_tx1/reg_contador_ticks[5]_i_1__0_n_0         |                2 |             12 |
-|  i_clock_IBUF_BUFG                                | u_baud_rate_generator1/wire_rate_baud_generator | u_rx1/reg_contador_ticks[5]_i_1_n_0            |                1 |             12 |
-|  i_clock_IBUF_BUFG                                |                                                 |                                                |                5 |             14 |
-|  i_clock_IBUF_BUFG                                |                                                 | u_rx1/SR[0]                                    |                4 |             14 |
-|  u_interface_circuit1/o_reg_opcode_reg[7]_i_1_n_0 |                                                 |                                                |                3 |             16 |
-|  u_rx1/o_data_out_reg[7]_i_2_n_0                  |                                                 |                                                |                4 |             16 |
-|  u_interface_circuit1/o_reg_dato_A_reg[7]_i_1_n_0 |                                                 |                                                |                2 |             16 |
-|  i_clock_IBUF_BUFG                                | u_baud_rate_generator1/wire_rate_baud_generator | u_rx1/SR[0]                                    |                6 |             18 |
-|  i_clock_IBUF_BUFG                                |                                                 | u_baud_rate_generator1/reg_contador[9]_i_1_n_0 |                3 |             20 |
-|  u_interface_circuit1/E[0]                        |                                                 |                                                |                7 |             32 |
+|  i_clock_IBUF_BUFG                                | u_baud_rate_generator1/wire_rate_baud_generator | u_rx1/reg_contador_ticks[5]_i_1_n_0            |                2 |             12 |
+|  i_clock_IBUF_BUFG                                |                                                 |                                                |                4 |             14 |
+|  i_clock_IBUF_BUFG                                |                                                 | u_rx1/SR[0]                                    |                3 |             14 |
+|  u_interface_circuit1/o_reg_opcode_reg[7]_i_1_n_0 |                                                 |                                                |                2 |             16 |
+|  u_rx1/o_data_out_reg[7]_i_2_n_0                  |                                                 |                                                |                3 |             16 |
+|  u_interface_circuit1/o_reg_dato_A_reg[7]_i_1_n_0 |                                                 |                                                |                3 |             16 |
+|  i_clock_IBUF_BUFG                                | u_baud_rate_generator1/wire_rate_baud_generator | u_rx1/SR[0]                                    |                5 |             18 |
+|  i_clock_IBUF_BUFG                                |                                                 | u_baud_rate_generator1/reg_contador[9]_i_1_n_0 |                4 |             20 |
+|  u_interface_circuit1/E[0]                        |                                                 |                                                |                6 |             32 |
 +---------------------------------------------------+-------------------------------------------------+------------------------------------------------+------------------+----------------+
 
 

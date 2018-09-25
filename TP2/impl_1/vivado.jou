@@ -2,8 +2,8 @@
 # Vivado v2018.2 (64-bit)
 # SW Build 2258646 on Thu Jun 14 20:02:38 MDT 2018
 # IP Build 2256618 on Thu Jun 14 22:10:49 MDT 2018
-# Start of session at: Tue Sep 25 16:53:25 2018
-# Process ID: 25246
+# Start of session at: Tue Sep 25 17:01:33 2018
+# Process ID: 30208
 # Current directory: /home/matias/tp2_uart_arqui/tp2_uart_arqui.runs/impl_1
 # Command line: vivado -log top_arquitectura.vdi -applog -product Vivado -messageDb vivado.pb -mode batch -source top_arquitectura.tcl -notrace
 # Log file: /home/matias/tp2_uart_arqui/tp2_uart_arqui.runs/impl_1/top_arquitectura.vdi
