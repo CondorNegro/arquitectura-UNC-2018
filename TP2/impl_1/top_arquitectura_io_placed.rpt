@@ -1,7 +1,7 @@
 Copyright 1986-2018 Xilinx, Inc. All Rights Reserved.
 -------------------------------------------------------------------------------------------------
 | Tool Version              : Vivado v.2018.2 (lin64) Build 2258646 Thu Jun 14 20:02:38 MDT 2018
-| Date                      : Tue Sep 25 17:31:10 2018
+| Date                      : Tue Sep 25 17:54:29 2018
 | Host                      : matias-pc running 64-bit Manjaro Linux
 | Command                   : report_io -file top_arquitectura_io_placed.rpt
 | Design                    : top_arquitectura
