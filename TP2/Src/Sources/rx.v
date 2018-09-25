@@ -98,10 +98,16 @@ always@( posedge i_clock ) begin //Memory
                     end
                 end
                 
-                else if ( (reg_state == ESPERA) || (reg_state == START && reg_next_state == READ) ) begin
+                else if ( (reg_state == ESPERA) ) begin
                     reg_contador_ticks <=  0;
                     reg_contador_bits <=  0;
                end
+               
+               else if ( (reg_state == START && reg_next_state == READ) ) begin
+                   reg_contador_ticks <=  0;
+                   reg_contador_bits <=  0;
+                   reg_buffer <= 0;
+              end
 
                 else begin
                     reg_buffer <= reg_buffer; 
@@ -208,17 +214,17 @@ always@( * ) begin //Output logic
         
         ESPERA : begin
             o_rx_done = 0;
-            o_data_out = o_data_out;
+            o_data_out = reg_buffer;
         end
         
         START : begin
             o_rx_done = 0;
-            o_data_out = o_data_out;
+            o_data_out = reg_buffer;
         end
         
         READ : begin
             o_rx_done = 0;
-            o_data_out = o_data_out;
+            o_data_out = reg_buffer;
         end
         
         STOP : begin
@@ -229,19 +235,19 @@ always@( * ) begin //Output logic
             end
             else begin
                 o_rx_done = 0;
-                o_data_out = o_data_out;
+                o_data_out = reg_buffer;
             end  
             
         end
 
         ERROR : begin
             o_rx_done = 0;
-            o_data_out = o_data_out;
+            o_data_out = reg_buffer;
         end
         
         default : begin
             o_rx_done = 0;
-            o_data_out = 0;
+            o_data_out = reg_buffer;
         end
     
     endcase 

@@ -1,7 +1,7 @@
 Copyright 1986-2018 Xilinx, Inc. All Rights Reserved.
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 | Tool Version : Vivado v.2018.2 (lin64) Build 2258646 Thu Jun 14 20:02:38 MDT 2018
-| Date         : Tue Sep 25 17:03:06 2018
+| Date         : Tue Sep 25 17:31:36 2018
 | Host         : matias-pc running 64-bit Manjaro Linux
 | Command      : report_methodology -file top_arquitectura_methodology_drc_routed.rpt -pb top_arquitectura_methodology_drc_routed.pb -rpx top_arquitectura_methodology_drc_routed.rpx
 | Design       : top_arquitectura
@@ -23,12 +23,12 @@ Table of Contents
           Floorplan: design_1
       Design limits: <entire design considered>
              Max violations: <unlimited>
-             Violations found: 43
+             Violations found: 39
 +-----------+----------+-------------------------------+------------+
 | Rule      | Severity | Description                   | Violations |
 +-----------+----------+-------------------------------+------------+
-| TIMING-18 | Warning  | Missing input or output delay | 2          |
-| TIMING-20 | Warning  | Non-clocked latch             | 41         |
+| TIMING-18 | Warning  | Missing input or output delay | 6          |
+| TIMING-20 | Warning  | Non-clocked latch             | 33         |
 +-----------+----------+-------------------------------+------------+
 
 2. REPORT DETAILS
@@ -41,6 +41,26 @@ Related violations: <none>
 TIMING-18#2 Warning
 Missing input or output delay  
 An input delay is missing on uart_txd_in relative to clock(s) sys_clk_pin
+Related violations: <none>
+
+TIMING-18#3 Warning
+Missing input or output delay  
+An output delay is missing on o_leds[0] relative to clock(s) sys_clk_pin
+Related violations: <none>
+
+TIMING-18#4 Warning
+Missing input or output delay  
+An output delay is missing on o_leds[1] relative to clock(s) sys_clk_pin
+Related violations: <none>
+
+TIMING-18#5 Warning
+Missing input or output delay  
+An output delay is missing on o_leds[2] relative to clock(s) sys_clk_pin
+Related violations: <none>
+
+TIMING-18#6 Warning
+Missing input or output delay  
+An output delay is missing on o_leds[3] relative to clock(s) sys_clk_pin
 Related violations: <none>
 
 TIMING-20#1 Warning
@@ -204,46 +224,6 @@ The latch u_interface_circuit1/o_reg_opcode_reg[7] cannot be properly analyzed a
 Related violations: <none>
 
 TIMING-20#33 Warning
-Non-clocked latch  
-The latch u_rx1/o_data_out_reg[0] cannot be properly analyzed as its control pin u_rx1/o_data_out_reg[0]/G is not reached by a timing clock
-Related violations: <none>
-
-TIMING-20#34 Warning
-Non-clocked latch  
-The latch u_rx1/o_data_out_reg[1] cannot be properly analyzed as its control pin u_rx1/o_data_out_reg[1]/G is not reached by a timing clock
-Related violations: <none>
-
-TIMING-20#35 Warning
-Non-clocked latch  
-The latch u_rx1/o_data_out_reg[2] cannot be properly analyzed as its control pin u_rx1/o_data_out_reg[2]/G is not reached by a timing clock
-Related violations: <none>
-
-TIMING-20#36 Warning
-Non-clocked latch  
-The latch u_rx1/o_data_out_reg[3] cannot be properly analyzed as its control pin u_rx1/o_data_out_reg[3]/G is not reached by a timing clock
-Related violations: <none>
-
-TIMING-20#37 Warning
-Non-clocked latch  
-The latch u_rx1/o_data_out_reg[4] cannot be properly analyzed as its control pin u_rx1/o_data_out_reg[4]/G is not reached by a timing clock
-Related violations: <none>
-
-TIMING-20#38 Warning
-Non-clocked latch  
-The latch u_rx1/o_data_out_reg[5] cannot be properly analyzed as its control pin u_rx1/o_data_out_reg[5]/G is not reached by a timing clock
-Related violations: <none>
-
-TIMING-20#39 Warning
-Non-clocked latch  
-The latch u_rx1/o_data_out_reg[6] cannot be properly analyzed as its control pin u_rx1/o_data_out_reg[6]/G is not reached by a timing clock
-Related violations: <none>
-
-TIMING-20#40 Warning
-Non-clocked latch  
-The latch u_rx1/o_data_out_reg[7] cannot be properly analyzed as its control pin u_rx1/o_data_out_reg[7]/G is not reached by a timing clock
-Related violations: <none>
-
-TIMING-20#41 Warning
 Non-clocked latch  
 The latch u_tx1/o_bit_tx_reg cannot be properly analyzed as its control pin u_tx1/o_bit_tx_reg/G is not reached by a timing clock
 Related violations: <none>

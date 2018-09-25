@@ -1,7 +1,7 @@
 Copyright 1986-2018 Xilinx, Inc. All Rights Reserved.
 ------------------------------------------------------------------------------------------------------------------------------------------
 | Tool Version : Vivado v.2018.2 (lin64) Build 2258646 Thu Jun 14 20:02:38 MDT 2018
-| Date         : Tue Sep 25 17:03:04 2018
+| Date         : Tue Sep 25 17:31:34 2018
 | Host         : matias-pc running 64-bit Manjaro Linux
 | Command      : report_drc -file top_arquitectura_drc_routed.rpt -pb top_arquitectura_drc_routed.pb -rpx top_arquitectura_drc_routed.rpx
 | Design       : top_arquitectura
@@ -24,12 +24,12 @@ Table of Contents
       Design limits: <entire design considered>
            Ruledeck: default
              Max violations: <unlimited>
-             Violations found: 6
+             Violations found: 5
 +----------+----------+-----------------------------------------------------+------------+
 | Rule     | Severity | Description                                         | Violations |
 +----------+----------+-----------------------------------------------------+------------+
 | CFGBVS-1 | Warning  | Missing CFGBVS and CONFIG_VOLTAGE Design Properties | 1          |
-| PDRC-153 | Warning  | Gated clock check                                   | 5          |
+| PDRC-153 | Warning  | Gated clock check                                   | 4          |
 +----------+----------+-----------------------------------------------------+------------+
 
 2. REPORT DETAILS
@@ -63,11 +63,6 @@ Net u_interface_circuit1/o_reg_opcode_reg[7]_i_1_n_0 is a gated clock net source
 Related violations: <none>
 
 PDRC-153#4 Warning
-Gated clock check  
-Net u_rx1/o_data_out_reg[7]_i_2_n_0 is a gated clock net sourced by a combinational pin u_rx1/o_data_out_reg[7]_i_2/O, cell u_rx1/o_data_out_reg[7]_i_2. This is not good design practice and will likely impact performance. For SLICE registers, for example, use the CE pin to control the loading of data.
-Related violations: <none>
-
-PDRC-153#5 Warning
 Gated clock check  
 Net u_tx1/o_bit_tx_reg_i_2_n_0 is a gated clock net sourced by a combinational pin u_tx1/o_bit_tx_reg_i_2/O, cell u_tx1/o_bit_tx_reg_i_2. This is not good design practice and will likely impact performance. For SLICE registers, for example, use the CE pin to control the loading of data.
 Related violations: <none>
