@@ -153,7 +153,7 @@ def conexionViaThread(puerto):
 # Funcion que recibe el resultado obtenido de la ALU
 
 def readResultado():
-	while ser.inWaiting() > 1: #inWaiting -> cantidad de bytes en buffer esperando.
+	while ser.inWaiting() == 1: #inWaiting -> cantidad de bytes en buffer esperando.
 			lectura = ser.read(1)
 			print '>>',
 			print lectura
@@ -195,7 +195,7 @@ def setDatoViaThread (dato, tipo):
 				time.sleep (0.5) #Espera.
 				readResultado() # Lectura de resultado
 				currentState = ESTADOS [0]
-			elif (tipo == 3 and len (dato) == 3):
+			elif (tipo == 3 and (len (dato) == 3 or dato == 'OR')):
 				opcode = getOPCODE (dato)	
 				ser.write (chr (int (opcode, 2)))
 				time.sleep (0.5) #Espera.
