@@ -156,8 +156,10 @@ def readResultado():
 	while ser.inWaiting() == 1: #inWaiting -> cantidad de bytes en buffer esperando.
 			lectura = ser.read(1)
 			print '>>',
+			print bin(ord (lectura))[2:]
+			print '>>',
 			print lectura
-			etiquetaResultadoImpresion = lectura
+			etiquetaResultadoImpresion = bin(ord (lectura))[2:]
 			etiquetaResultado.config (text = etiquetaResultadoImpresion, fg = "dark green")
 
 		
