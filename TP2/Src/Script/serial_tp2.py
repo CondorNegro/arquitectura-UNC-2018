@@ -155,11 +155,15 @@ def conexionViaThread(puerto):
 def readResultado():
 	while ser.inWaiting() == 1: #inWaiting -> cantidad de bytes en buffer esperando.
 			lectura = ser.read(1)
+			etiquetaResultadoImpresion = bin(ord (lectura))[2:][::-1]
+			
+			for i in range (0, 8 - len(etiquetaResultadoImpresion), 1):
+				if (i != 8):	
+					etiquetaResultadoImpresion = etiquetaResultadoImpresion + '0'
 			print '>>',
-			print bin(ord (lectura))[2:]
+			print etiquetaResultadoImpresion
 			print '>>',
 			print lectura
-			etiquetaResultadoImpresion = bin(ord (lectura))[2:]
 			etiquetaResultado.config (text = etiquetaResultadoImpresion, fg = "dark green")
 
 		
