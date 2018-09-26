@@ -89,9 +89,6 @@ always@( * ) begin //NEXT - STATE logic
               reg_next_state = START;
               reg_next_contador_ticks = 0;
           end
-          else begin
-              reg_next_state = ESPERA;
-          end
       end
 
       START : begin
@@ -102,7 +99,6 @@ always@( * ) begin //NEXT - STATE logic
                   reg_next_contador_ticks = 0;
               end
               else begin
-                  reg_next_state = START;
                   reg_next_contador_ticks = reg_contador_ticks + 1;
               end
            end
@@ -111,43 +107,27 @@ always@( * ) begin //NEXT - STATE logic
 
       READ : begin
            if (i_rate) begin
-                if (reg_contador_bits == WIDTH_WORD) begin
-                    reg_next_state = STOP;
-                    reg_next_contador_ticks = 0;
-                    reg_next_contador_bits_stop = 0;
-                    reg_next_contador_bits = 0;
-                end
-                else begin
-                   reg_next_state = READ;
-                   if (reg_contador_ticks == 15) begin
-                         reg_next_contador_bits = reg_next_contador_bits + 1;
-                         reg_next_contador_ticks = 0;
-                         reg_next_buffer[(WIDTH_WORD-1) - reg_contador_bits] =  i_bit_rx;
-                   end
-                   else begin
-                       reg_next_contador_ticks = reg_next_contador_ticks + 1;
-                   end
-                end
-           end
+                    if (reg_contador_ticks == 15) begin 
+                              reg_next_contador_ticks = 0; 
+                              reg_next_buffer[(WIDTH_WORD-1) - reg_contador_bits] =  i_bit_rx;
+                              if (reg_contador_bits == WIDTH_WORD) 
+                                  reg_next_state = STOP; 
+                              else 
+                                  reg_next_contador_bits = reg_contador_bits + 1; 
+                      end 
+                      else
+                          reg_next_contador_ticks = reg_contador_ticks + 1;
+            end
       end
 
       STOP : begin
            if (i_rate) begin
-               if (reg_contador_bits_stop == CANT_BIT_STOP) begin
-                 reg_next_state = ESPERA;
-                 reg_next_contador_bits = 0;
-                 reg_next_contador_ticks = 0;
-                 o_rx_done = 1;
-               end
-               else begin
-                 if (reg_contador_ticks == 15) begin
-                       reg_next_contador_bits_stop = reg_next_contador_bits_stop + 1;
-                       reg_next_contador_ticks = 0;
-                 end
-                 else begin
-                   reg_next_contador_ticks = reg_next_contador_ticks + 1;
-                 end
+               if (reg_contador_ticks == 31) begin 
+                   reg_next_state = ESPERA; 
+                   o_rx_done = 1; 
                end 
+               else 
+                   reg_next_contador_ticks = reg_contador_ticks + 1;
            end
      end
      default: begin
