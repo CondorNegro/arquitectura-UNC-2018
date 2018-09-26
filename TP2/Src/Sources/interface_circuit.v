@@ -29,8 +29,8 @@ module interface_circuit(
    o_data_tx,
    o_reg_dato_A,
    o_reg_dato_B,
-   o_reg_opcode,
-   o_prueba
+   o_reg_opcode
+   //o_prueba
    );
 
 // Parametros.
@@ -58,7 +58,7 @@ output reg [CANT_DATOS_ENTRADA_ALU - 1 : 0] o_reg_dato_A;
 output reg [CANT_DATOS_ENTRADA_ALU - 1 : 0] o_reg_dato_B; 
 output reg [CANT_BITS_OPCODE_ALU - 1 : 0] o_reg_opcode;  // Codigo de operacion.      
 
-output reg o_prueba;
+//output reg o_prueba;
 
 // Registros.
 reg [ 3 : 0 ] reg_state;
@@ -149,7 +149,7 @@ end
 
 
 always@( * ) begin //Output logic
-   o_prueba = 0;
+   //o_prueba = 0;
    case (reg_state)
        
        ESPERA : begin
@@ -170,7 +170,7 @@ always@( * ) begin //Output logic
        
        OPERACION : begin
            o_tx_start = 0;
-           o_prueba = 1;
+           //o_prueba = 1;
            o_data_tx_next = o_data_tx;
            o_reg_dato_A_next = o_reg_dato_A;
            o_reg_dato_B_next = o_reg_dato_B;
@@ -180,7 +180,7 @@ always@( * ) begin //Output logic
        
        OPERANDO2 : begin
            o_tx_start = 1;
-           o_prueba = 0;
+           //o_prueba = 0;
            o_data_tx_next = i_resultado_alu; 
            o_reg_dato_A_next = o_reg_dato_A;
            o_reg_dato_B_next = i_data_rx;
