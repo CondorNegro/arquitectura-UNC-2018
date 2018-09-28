@@ -22,7 +22,8 @@ module top_arquitectura(
   i_clock, 
   i_reset,
   uart_txd_in,
-  uart_rxd_out
+  uart_rxd_out,
+  jc
   //o_leds 
   );
 
@@ -40,7 +41,8 @@ input i_clock;                                  // Clock.
 input i_reset;                                  // Reset.
 input uart_txd_in;                              // Transmisor de PC.
 output uart_rxd_out;                            // Receptor de PC.
-//output [BUS_SALIDA_ALU - 1 : 0] o_leds;             // Leds.
+//output [4 - 1 : 0] o_leds;             // Leds.
+output [7:0] jc;
 
 
 
@@ -56,7 +58,9 @@ wire wire_rx_done;
 wire wire_tx_start;
 wire wire_rate_baud_generator;
 
-
+wire prueba;
+assign jc[0] = prueba;
+assign uart_rxd_out = prueba;
 
 // Modulo interface_circuit.
 
@@ -80,6 +84,7 @@ interface_circuit
    .o_reg_dato_A (wire_operando_1),
    .o_reg_dato_B (wire_operando_2),
    .o_reg_opcode (wire_opcode)
+   //.o_prueba (prueba)
    );
    
 
@@ -126,7 +131,7 @@ tx
     .i_reset (i_reset),
     .i_data_in (wire_data_tx),
     .i_tx_start (wire_tx_start),
-    .o_bit_tx (uart_rxd_out),
+    .o_bit_tx (prueba),
     .o_tx_done (wire_tx_done)
     );
 

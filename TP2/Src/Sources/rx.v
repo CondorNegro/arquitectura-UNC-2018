@@ -54,6 +54,8 @@ reg [ 5 : 0] reg_contador_ticks; // Debe contar como maximo hasta 32. (Por los d
 reg [$clog2 (WIDTH_WORD) : 0] reg_contador_bits;
 reg [($clog2 (CANT_BIT_STOP)) : 0] reg_contador_bits_stop;
 
+reg [ WIDTH_WORD - 1 : 0 ] o_data_out_next; 
+
 
 always@( posedge i_clock ) begin //Memory
      // Se resetean los registros.
@@ -63,13 +65,14 @@ always@( posedge i_clock ) begin //Memory
             reg_contador_bits <= 0;
             reg_contador_ticks <= 0;
             reg_contador_bits_stop <= 0;
+            o_data_out <= 0;
     end
     else if (i_rate) begin 
                 reg_state <= reg_next_state;                
                 if (reg_state == READ) begin
                     // 16 ticks por bit transmitido.
                     if ( ((reg_contador_ticks % 15) == 0) && (reg_contador_ticks != 0) ) begin
-                        reg_buffer[(WIDTH_WORD-1) - reg_contador_bits] <=  i_bit_rx;
+                        reg_buffer[reg_contador_bits] <=  i_bit_rx;
                         reg_contador_bits <= reg_contador_bits + 1;
                         reg_contador_bits_stop <= 0;
                         reg_contador_ticks <= 0;
@@ -113,6 +116,7 @@ always@( posedge i_clock ) begin //Memory
             
     end
     else begin
+        o_data_out <= o_data_out_next;
         reg_state <= reg_state;
         reg_buffer <= reg_buffer;
         reg_contador_bits <= reg_contador_bits;
@@ -125,6 +129,7 @@ end
 
 always@( * ) begin //NEXT - STATE logic
     
+   
     case (reg_state)
         
         ESPERA : begin
@@ -204,44 +209,46 @@ end
 
 always@( * ) begin //Output logic
     
+    o_data_out_next = o_data_out;
+    
     case (reg_state)
         
         ESPERA : begin
             o_rx_done = 0;
-            o_data_out = o_data_out;
+            o_data_out_next = o_data_out;
         end
         
         START : begin
             o_rx_done = 0;
-            o_data_out = o_data_out;
+            o_data_out_next = o_data_out;
         end
         
         READ : begin
             o_rx_done = 0;
-            o_data_out = o_data_out;
+            o_data_out_next = o_data_out;
         end
         
         STOP : begin
 
             if ( reg_contador_bits_stop == CANT_BIT_STOP) begin
                 o_rx_done = 1;
-                o_data_out = reg_buffer;
+                o_data_out_next = reg_buffer;
             end
             else begin
                 o_rx_done = 0;
-                o_data_out = o_data_out;
+                o_data_out_next = o_data_out;
             end  
             
         end
 
         ERROR : begin
             o_rx_done = 0;
-            o_data_out = o_data_out;
+            o_data_out_next = o_data_out;
         end
         
         default : begin
             o_rx_done = 0;
-            o_data_out = 0;
+            o_data_out_next = 0;
         end
     
     endcase 

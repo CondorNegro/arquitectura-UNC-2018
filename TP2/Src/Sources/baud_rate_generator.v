@@ -1,5 +1,15 @@
  `timescale 1ns / 1ps
 
+//////////////////////////////////////////////////////////////////////////////////////////////////
+// Trabajo Practico Nro. 2. UART.
+// Baud Rate Generator.
+// Integrantes: Kleiner Matias, Lopez Gaston.
+// Materia: Arquitectura de Computadoras.
+// FCEFyN. UNC.
+// Anio 2018.
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
+
 // Constantes.
 `define BAUD_RATE           9600        // Baud rate a generar.
 `define FREC_CLOCK_MHZ      100.0       // Frecuencia del clock en MHZ.
