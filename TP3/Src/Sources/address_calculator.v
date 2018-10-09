@@ -12,10 +12,6 @@ module address_calculator
   output [PC_CANT_BITS-1:0] o_addr
 );
 
-  wire ena = 1 ;                  // RAM Enable, for additional power savings, disable port when not in use
-  wire rsta = 0 ;                 // Output reset (does not affect memory contents)
-
-
   reg [PC_CANT_BITS-1:0] reg_PC;
   reg reg_aux_wrPC;
 
