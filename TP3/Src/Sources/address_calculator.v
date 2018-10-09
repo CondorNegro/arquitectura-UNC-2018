@@ -17,7 +17,7 @@ module address_calculator
 
 
 
-  always @(posedge i_clock)
+  always @(posedge i_clock) begin
     if (~i_reset) begin
       reg_PC <= 0;
       reg_aux_wrPC <= 0;
@@ -31,7 +31,7 @@ module address_calculator
         reg_PC <= reg_PC;
       end
     end
-
+ end
     assign o_addr = reg_PC;
 
 endmodule

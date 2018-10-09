@@ -32,7 +32,7 @@ module datapath
 
 
 
-  always @(posedge i_clock)
+  always @(posedge i_clock) begin
     if (~i_reset) begin
       reg_ACC <= 0;
       reg_aux_wrACC <= 0;
@@ -46,6 +46,7 @@ module datapath
             reg_ACC <= reg_ACC;
       end
     end
+ end
 
     always @(*) begin
         reg_signo_extendido = {{5 {i_operando [OPERANDO_LENGTH - 1]}},i_operando}; //replico el signo
