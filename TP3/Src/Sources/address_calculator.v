@@ -6,10 +6,10 @@ module address_calculator
 )
 
 (
-  input i_clock, 
+  input i_clock,
   input i_reset,
   input i_wrPC,
-  output [PC_CANT_BITS-1:0] o_addr 
+  output [PC_CANT_BITS-1:0] o_addr
 );
 
   wire ena = 1 ;                  // RAM Enable, for additional power savings, disable port when not in use
@@ -30,15 +30,12 @@ module address_calculator
       reg_aux_wrPC <= i_wrPC;
       if (i_wrPC && ~reg_aux_wrPC) begin
         reg_PC <= reg_PC + SUM_DIR;
-      end 
+      end
       else begin
         reg_PC <= reg_PC;
       end
     end
-    
+
     assign o_addr = reg_PC;
-    
+
 endmodule
-
-
-
