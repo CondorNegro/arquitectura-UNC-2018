@@ -1,3 +1,13 @@
+`timescale 1ns / 1ps
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+// Trabajo Practico Nro. 3. BIP I.
+// Memoria de datos.
+// Integrantes: Kleiner Matias, Lopez Gaston.
+// Materia: Arquitectura de Computadoras.
+// FCEFyN. UNC.
+// Anio 2018.
+//////////////////////////////////////////////////////////////////////////////////////////////////
 
 //  Xilinx Single Port No Change RAM
 //  This code implements a parameterizable single-port no-change memory where when data is written
@@ -8,18 +18,18 @@ module memoria_datos
 #(
   parameter RAM_WIDTH = 16,                       // Specify RAM data width
   parameter RAM_DEPTH = 1024,                     // Specify RAM depth (number of entries)
-  parameter RAM_PERFORMANCE = "LOW_LATENCY", // Select "HIGH_PERFORMANCE" or "LOW_LATENCY"
+  parameter RAM_PERFORMANCE = "LOW_LATENCY",      // Select "HIGH_PERFORMANCE" or "LOW_LATENCY"
   parameter INIT_FILE = ""                        // Specify name/location of RAM initialization file if using one (leave blank if not)
 )
 (
-  input [clogb2(RAM_DEPTH)-1:0] i_addr,  // Address bus, width determined from RAM_DEPTH
+  input [clogb2(RAM_DEPTH)-1:0] i_addr,   // Address bus, width determined from RAM_DEPTH
   input [RAM_WIDTH-1:0] i_data,           // RAM input data
-  input i_clk,                           // Clock
-  input wea,                            // Write enable
+  input i_clk,                            // Clock
+  input wea,                              // Write enable
   //input ena,                            // RAM Enable, for additional power savings, disable port when not in use
   //input rsta,                           // Output reset (does not affect memory contents)
-  input regcea,                         // Output register enable
-  output [RAM_WIDTH-1:0] o_data          // RAM output data
+  input regcea,                           // Output register enable
+  output [RAM_WIDTH-1:0] o_data           // RAM output data
 );
 
   wire ena = 1 ;                  // RAM Enable, for additional power savings, disable port when not in use
