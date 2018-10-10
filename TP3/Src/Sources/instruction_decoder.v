@@ -1,8 +1,17 @@
 `timescale 1ns / 1ps
 
+//////////////////////////////////////////////////////////////////////////////////////////////////
+// Trabajo Practico Nro. 3. BIP I.
+// Instruction Decoder.
+// Integrantes: Kleiner Matias, Lopez Gaston.
+// Materia: Arquitectura de Computadoras.
+// FCEFyN. UNC.
+// Anio 2018.
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
 module instruction_decoder
 #(
-  parameter OPCODE_LENGTH = 5
+  parameter OPCODE_LENGTH = 5   // Cantidad de bits del codigo de operacion
 )
 
 (
