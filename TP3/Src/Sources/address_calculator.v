@@ -1,9 +1,18 @@
 `timescale 1ns / 1ps
 
+//////////////////////////////////////////////////////////////////////////////////////////////////
+// Trabajo Practico Nro. 3. BIP I.
+// Address Calculator.
+// Integrantes: Kleiner Matias, Lopez Gaston.
+// Materia: Arquitectura de Computadoras.
+// FCEFyN. UNC.
+// Anio 2018.
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
 module address_calculator
 #(
-  parameter PC_CANT_BITS = 11,
-  parameter SUM_DIR = 1
+  parameter PC_CANT_BITS = 11,  // Cantidad de bits del PC.
+  parameter SUM_DIR = 1         // Cantidad a sumar al PC para obtener la direccion siguiente.
 )
 
 (
@@ -25,7 +34,7 @@ module address_calculator
     end
     else begin
       reg_aux_wrPC <= i_wrPC;
-      if (i_wrPC && ~reg_aux_wrPC) begin
+      if (i_wrPC && ~reg_aux_wrPC) begin  // Deteccion por flanco
         reg_PC <= reg_PC + SUM_DIR;
       end
       else begin
