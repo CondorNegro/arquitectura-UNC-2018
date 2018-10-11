@@ -2,7 +2,7 @@
 
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
-// Trabajo Practico Nro. 2. UART.
+// Trabajo Practico Nro. 3. BIP I.
 // Modulo tx.
 // Integrantes: Kleiner Matias, Lopez Gaston.
 // Materia: Arquitectura de Computadoras.
