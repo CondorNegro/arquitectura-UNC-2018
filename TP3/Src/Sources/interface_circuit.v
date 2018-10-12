@@ -25,8 +25,11 @@ module interface_circuit
    input [CC_LENGTH - 1 : 0] i_CC,                      // Contador de ciclos.
    input [ACC_LENGTH - 1 : 0] i_ACC,                    // Acumulador.
    input [CANT_BITS_OPCODE - 1 : 0] i_opcode,
+   input i_rx_done, 
+   input [OUTPUT_WORD_LENGTH - 1 : 0] i_data_rx,
    output reg o_tx_start,
-   output reg [OUTPUT_WORD_LENGTH - 1 : 0] o_data_tx
+   output reg [OUTPUT_WORD_LENGTH - 1 : 0] o_data_tx,
+   output reg o_soft_reset
   //o_prueba
   );
 
@@ -48,6 +51,15 @@ reg [ 4 : 0 ] reg_state;
 reg [ 4 : 0 ] reg_next_state;
 reg registro_tx_done;
 reg [OUTPUT_WORD_LENGTH - 1 : 0] o_data_tx_next;
+reg [OUTPUT_WORD_LENGTH - 1 : 0] reg_data_rx;
+reg [OUTPUT_WORD_LENGTH - 1 : 0] reg_next_data_rx;
+reg reg_contador_datos;   
+reg reg_next_contador_datos;
+reg registro_rx_done;
+
+// En total envio desde la PC 2 señales. 
+// Primero envio un 8'b00000001 para resetear el BIP I.
+// Segundo envio un 8'b00000010 para iniciar el funcionamiento del BIP I.
 
 
 
@@ -57,19 +69,50 @@ always@( posedge i_clock ) begin //Memory
   if (~ i_reset) begin
       reg_state <= 1;
       registro_tx_done <= 0;
+      registro_rx_done <= 0;
       o_data_tx <= 0;
-
+      reg_data_rx <= 0;
+      reg_contador_datos <= 0;
+      o_soft_reset <= 1; 
   end
 
   else begin
       registro_tx_done <= i_tx_done;
+      registro_rx_done <= i_rx_done;
       reg_state <= reg_next_state;
       o_data_tx <= o_data_tx_next;
+      reg_data_rx <= reg_next_data_rx;
+      reg_contador_datos <= reg_next_contador_datos;
+      if (reg_contador_datos == 1'b1) begin
+        o_soft_reset <= 0; // Reset BIP.
+      end
+      else begin 
+        o_soft_reset <= 1; //Levanto el reset por software. Comienza a funcionar el sistema.
+      end
   end
 end
 
 
-
+always@(*) begin //Rx y handler soft reset.
+    if (i_rx_done & ~registro_rx_done) begin  //Deteccion de flanco ascendente.
+        reg_next_data_rx = i_data_rx;
+        if (((reg_contador_datos == 0) && 
+            (reg_next_data_rx == 1)) ||
+            ((reg_contador_datos == 1) && 
+            (reg_next_data_rx == 2))) begin  //Señales validas.
+            
+            reg_next_contador_datos = reg_contador_datos + 1; // Contador con overflow.
+        
+        end
+        else begin
+            reg_next_contador_datos = reg_contador_datos;
+        end
+    end    
+    else begin
+        reg_next_data_rx = reg_data_rx;
+        reg_next_contador_datos = reg_contador_datos;
+    end
+end
 
 always@( * ) begin //NEXT - STATE logic
 
