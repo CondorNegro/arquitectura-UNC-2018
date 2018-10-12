@@ -1,7 +1,7 @@
  `timescale 1ns / 1ps
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
-// Trabajo Practico Nro. 2. UART.
+// Trabajo Practico Nro. 3. BIP I.
 // Interface_circuit.
 // Integrantes: Kleiner Matias, Lopez Gaston.
 // Materia: Arquitectura de Computadoras.
@@ -10,25 +10,20 @@
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
 
-
-`define WIDTH_WORD_INTERFACE        8       // Tamanio de palabra de la trama UART.
-
-
-
 module interface_circuit
  #(
-   parameter CANT_BITS_OPCODE = 5,
-   parameter PC_LENGTH = 11,
-   parameter ACC_LENGTH = 16,
-   parameter OUTPUT_WORD_LENGTH = 8,
-   parameter HALT_OPCODE = 0
+   parameter CANT_BITS_OPCODE = 5,      //  Cantidad de bits del opcode.
+   parameter CC_LENGTH = 11,            //  Cantidad de bits del contador de ciclos.
+   parameter ACC_LENGTH = 16,           //  Cantidad de bits del acumulador.
+   parameter OUTPUT_WORD_LENGTH = 8,    //  Cantidad de bits de la palabra a transmitir.
+   parameter HALT_OPCODE = 0            //  Opcode de la instruccion HALT.
  )
  (
    input i_clock,
    input i_reset,
    input i_tx_done,
-   input [PC_LENGTH - 1 : 0] i_PC,
-   input [ACC_LENGTH - 1 : 0] i_ACC,
+   input [CC_LENGTH - 1 : 0] i_CC,                      // Contador de ciclos.
+   input [ACC_LENGTH - 1 : 0] i_ACC,                    // Acumulador.
    input [CANT_BITS_OPCODE - 1 : 0] i_opcode,
    output reg o_tx_start,
    output reg [OUTPUT_WORD_LENGTH - 1 : 0] o_data_tx
@@ -39,8 +34,8 @@ module interface_circuit
 
 // Local Param
 localparam ESPERA = 5'b00001;
-localparam PC_L_PART = 5'b00010;
-localparam PC_H_PART = 5'b00100;
+localparam CC_L_PART = 5'b00010;    // L: parte menos significativa.      
+localparam CC_H_PART = 5'b00100;    // H: parte mas significativa.
 localparam ACC_L_PART = 5'b01000;
 localparam ACC_H_PART = 5'b10000;
 
@@ -51,9 +46,7 @@ localparam ACC_H_PART = 5'b10000;
 // Registros.
 reg [ 4 : 0 ] reg_state;
 reg [ 4 : 0 ] reg_next_state;
-
 reg registro_tx_done;
-
 reg [OUTPUT_WORD_LENGTH - 1 : 0] o_data_tx_next;
 
 
@@ -84,28 +77,28 @@ always@( * ) begin //NEXT - STATE logic
 
       ESPERA : begin
           if (i_opcode == HALT_OPCODE) begin
-              reg_next_state = PC_L_PART;
+              reg_next_state = CC_L_PART;
           end
           else begin
               reg_next_state = ESPERA;
           end
       end
 
-      PC_L_PART : begin
-         if ( (i_tx_done == 1) && (registro_tx_done == 0))  begin
-              reg_next_state = PC_H_PART;
+      CC_L_PART : begin
+         if ( (i_tx_done == 1) && (registro_tx_done == 0))  begin // Deteccion de flanco ascendente
+              reg_next_state = CC_H_PART;
           end
           else begin
-              reg_next_state = PC_L_PART;
+              reg_next_state = CC_L_PART;
           end
       end
 
-      PC_H_PART : begin
+      CC_H_PART : begin
           if ( (i_tx_done == 1) && (registro_tx_done == 0))  begin  // Deteccion de flanco ascendente
               reg_next_state = ACC_L_PART;
           end
           else begin
-              reg_next_state = PC_H_PART;
+              reg_next_state = CC_H_PART;
           end
       end
 
@@ -143,14 +136,14 @@ always@( * ) begin //Output logic
           o_data_tx_next = o_data_tx;
       end
 
-      PC_L_PART : begin
+      CC_L_PART : begin
           o_tx_start = 1;
-          o_data_tx_next = i_PC [OUTPUT_WORD_LENGTH - 1 : 0];
+          o_data_tx_next = i_CC [OUTPUT_WORD_LENGTH - 1 : 0];   // Transmito parte menos significativa.
       end
 
-      PC_H_PART : begin
-          o_tx_start = 1;
-          o_data_tx_next = {{(OUTPUT_WORD_LENGTH - (PC_LENGTH - OUTPUT_WORD_LENGTH)) {1'b0}}, i_PC [PC_LENGTH - 1 : OUTPUT_WORD_LENGTH]};
+      CC_H_PART : begin
+          o_tx_start = 1;       // Transmito parte mas significativa del contador de ciclos.
+          o_data_tx_next = {{(OUTPUT_WORD_LENGTH - (CC_LENGTH - OUTPUT_WORD_LENGTH)) {1'b0}}, i_CC [CC_LENGTH - 1 : OUTPUT_WORD_LENGTH]};
       end
 
       ACC_L_PART : begin
