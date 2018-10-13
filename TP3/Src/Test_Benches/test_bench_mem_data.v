@@ -25,7 +25,7 @@ module test_bench_memoria_datos();
    
    // Entradas.
    reg clock;                                  // Clock.
-   reg [16-1:0] reg_i_addr;
+   reg [11-1:0] reg_i_addr;
    reg [RAM_WIDTH-1:0] data_in;                                 
    reg reg_wea;
    reg reg_regcea; 
@@ -39,7 +39,7 @@ module test_bench_memoria_datos();
        reg_wea = 1'b0;
        reg_regcea = 1'b0;
        data_in = 8'b00000000;
-       reg_i_addr = 16'b0000000;
+       reg_i_addr = 11'b0000000;
         
        #100 reg_regcea = 1'b1; // leo posicion 0, tiene que haber un 0 porque no guarde nada todavia
        
@@ -53,13 +53,13 @@ module test_bench_memoria_datos();
        #100 reg_wea = 1'b0; // Ahora guardalo a guardar
        
        
-       #100 reg_i_addr = 16'b0000001; // Ahora guardalo a guardar
+       #100 reg_i_addr = 11'b0000001; // Ahora guardalo a guardar
        #160 data_in = 8'b00000010; // Dato a enviar
        #100 reg_wea = 1'b1; // Ahora guardalo a guardar
        #100 reg_wea = 1'b0; // Ahora guardalo a guardar
        
-       #100 reg_i_addr = 16'b0000000; // //leo el 1 que guarde
-       #100 reg_i_addr = 16'b0000001; // //leo el 2 que guarde
+       #100 reg_i_addr = 11'b0000000; // //leo el 1 que guarde
+       #100 reg_i_addr = 11'b0000001; // //leo el 2 que guarde
        
 
        

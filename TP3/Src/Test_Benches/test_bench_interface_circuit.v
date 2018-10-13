@@ -9,27 +9,27 @@
 // Anio 2018.
 //////////////////////////////////////////////////////////////////////////////////
 
-// Constantes.
-`define CANT_DATOS_ENTRADA_ALU      8       // Tamanio del bus de entrada de la ALU.
-`define CANT_BITS_OPCODE_ALU        8       // Numero de bits del codigo de operacion de la ALU.
-`define CANT_DATOS_SALIDA_ALU       8       // Tamanio del bus de salida de la ALU.
-`define WIDTH_WORD                  8       // Tamanio de palabra de la trama UART.
+
 
 module test_bench_interface_circuit();
 		
 	// Parametros
-    parameter CANT_DATOS_ENTRADA_ALU = `CANT_DATOS_ENTRADA_ALU;
-    parameter CANT_BITS_OPCODE_ALU = `CANT_BITS_OPCODE_ALU;
-	parameter CANT_DATOS_SALIDA_ALU = `CANT_DATOS_SALIDA_ALU;
-	parameter WIDTH_WORD = `WIDTH_WORD;
+    parameter CANT_BITS_OPCODE = 5;      //  Cantidad de bits del opcode.
+    parameter CC_LENGTH = 11;            //  Cantidad de bits del contador de ciclos.
+    parameter ACC_LENGTH = 16;           //  Cantidad de bits del acumulador.
+    parameter OUTPUT_WORD_LENGTH = 8;    //  Cantidad de bits de la palabra a transmitir.
+    parameter HALT_OPCODE = 0;            //  Opcode de la instruccion HALT.
 	
 	//Todo puerto de salida del modulo es un cable.
 	//Todo puerto de estimulo o generacion de entrada es un registro.
 	
 	// Entradas.
     reg reg_reset;
-	reg [CANT_DATOS_SALIDA_ALU - 1 : 0] reg_resultado_alu; 
-	reg [WIDTH_WORD - 1 : 0] reg_data_rx;
+	reg [CC_LENGTH - 1 : 0] reg_i_CC;
+	reg [ACC_LENGTH - 1 : 0] reg_i_ACC;
+	reg [CANT_BITS_OPCODE - 1 : 0] reg_i_opcode;
+	
+	reg [OUTPUT_WORD_LENGTH - 1 : 0] reg_data_rx;
 	reg reg_rx_done;                     
     reg reg_tx_done;
 	reg reg_clock;
@@ -37,46 +37,52 @@ module test_bench_interface_circuit();
     
 	// Salidas.
 	wire wire_tx_start;
-	wire [WIDTH_WORD - 1 : 0] wire_data_tx;
-	wire [CANT_DATOS_ENTRADA_ALU - 1 : 0] wire_dato_A;
-	wire [CANT_DATOS_ENTRADA_ALU - 1 : 0] wire_dato_B;
-	wire [CANT_BITS_OPCODE_ALU - 1 : 0] wire_opcode;
-    
+
+	wire wire_soft_reset;
+    wire [OUTPUT_WORD_LENGTH - 1 : 0] wire_data_tx;
 	
 	
 	initial	begin
 		reg_clock = 1'b0;
 		reg_reset = 1'b0; // Reset en 0. (Normal cerrado el boton del reset).
-		reg_data_rx = 0;
-		reg_resultado_alu = 0;
+		reg_data_rx = 1;
+		reg_i_opcode = 1'b1;
+		reg_i_CC = 16'b1100001011;
+		reg_i_ACC = 16'b1000001010;
 		reg_rx_done = 1'b0;
-		reg_tx_done = 1'b1;
-
+		reg_tx_done = 1'b0;
 		#10 reg_reset = 1'b1; // Desactivo la accion del reset.
 		
-		// Test 1: Rx done. ESPERA -> OPERANDO1.
-		#900 reg_data_rx = 2;
 		#1000 reg_rx_done = 1'b1;
-		#1500 reg_rx_done = 1'b0;
-
-		// Test 2: Rx done. OPERANDO1 -> OPERACION.
-		#900 reg_data_rx = 3;
+        #1000 reg_rx_done = 1'b0;
+		
+		#100 reg_data_rx = 2;
+		
+		
 		#1000 reg_rx_done = 1'b1;
-		#1500 reg_rx_done = 1'b0;
+		#1000 reg_rx_done = 1'b0;
+		
+		#100 reg_i_opcode = 1'b0; //HALT - paso a estado 1
 
-		// Test 3: Rx done. OPERACION -> OPERANDO2.
-		#900 reg_data_rx = 1;
-		#1000 reg_rx_done = 1'b1;
-		#1500 reg_rx_done = 1'b0;
-
-		// Test 4: Tx done. OPERANDO2 -> ESPERA.
-		#900 reg_resultado_alu = 3;
-		#1000 reg_tx_done = 1'b0;
-		#10 reg_resultado_alu = 4;
-		#1500 reg_tx_done = 1'b1;
+		#100 reg_tx_done = 1'b1; // paso a estado 2
+		#100 reg_tx_done = 1'b0;
+		
+		#100 reg_tx_done = 1'b1; // paso a estado 3
+        #100 reg_tx_done = 1'b0;
+                
+        #100 reg_tx_done = 1'b1; // paso a estado 4
+        #100 reg_tx_done = 1'b0;
+        
+        #100 reg_tx_done = 1'b1; // paso a estado 5
+        #100 reg_tx_done = 1'b0;
+        
+        #100 reg_tx_done = 1'b1; // paso a estado 5
+        #100 reg_tx_done = 1'b0;
+		
+		
 
 		// Test 5: Prueba reset.
-		#50000 reg_reset = 1'b0; // Reset.
+		#500000 reg_reset = 1'b0; // Reset.
 		#10 reg_reset = 1'b1; // Desactivo el reset.
 
 		#1000000 $finish;
@@ -89,24 +95,25 @@ module test_bench_interface_circuit();
 //Modulo para pasarle los estimulos del banco de pruebas.
 interface_circuit
     #(
-         .CANT_DATOS_ENTRADA_ALU (CANT_DATOS_ENTRADA_ALU),
-         .CANT_DATOS_SALIDA_ALU (CANT_DATOS_SALIDA_ALU),
-		 .CANT_BITS_OPCODE_ALU (CANT_BITS_OPCODE_ALU),
-		 .WIDTH_WORD_INTERFACE (WIDTH_WORD)
+         .CANT_BITS_OPCODE (CANT_BITS_OPCODE),
+         .CC_LENGTH (CC_LENGTH),
+		 .ACC_LENGTH (ACC_LENGTH),
+		 .OUTPUT_WORD_LENGTH (OUTPUT_WORD_LENGTH),
+		 .HALT_OPCODE (HALT_OPCODE)
      ) 
     u_interface_circuit_1    // Una sola instancia de este modulo.
     (
       	.i_clock (reg_clock),
       	.i_reset (reg_reset),
-		.i_resultado_alu (reg_resultado_alu),
-		.i_data_rx (reg_data_rx),
-		.i_rx_done (reg_rx_done),
-		.i_tx_done (reg_tx_done),
+      	.i_tx_done (reg_tx_done),
+      	.i_rx_done (reg_rx_done),
+      	.i_data_rx (reg_data_rx),
+        .i_opcode(reg_i_opcode),
+        .i_CC(reg_i_CC),
+        .i_ACC(reg_i_ACC),
 		.o_tx_start (wire_tx_start),
 		.o_data_tx (wire_data_tx),
-		.o_reg_dato_A (wire_dato_A),
-		.o_reg_dato_B (wire_dato_B),
-		.o_reg_opcode (wire_opcode)
+		.o_soft_reset (wire_soft_reset)
     );
    
 endmodule
