@@ -17,24 +17,6 @@ def FileHandler(cadenaGlobal, nombreDeArchivo):
 			exit(1)
 		
 def FraccToBin(Fracc):
-		FraccAux=(Fracc*1.0)*(2**NBF)
-		binarioStr=""
-		bit=[0]*NBT
-		ResultadoAuxiliar=0
-		if(Fracc >= 0):
-			bit[0]=0
-		else:
-			bit[0]=1
-			FraccAux-=(-2)**7
-		for ptr in range(NBT-2,-1,-1):
-			ResultadoAuxiliar=FraccAux-2**ptr
-			if(ResultadoAuxiliar>=0):
-				bit[NBT-1-ptr]=1
-				FraccAux=ResultadoAuxiliar
-			else:
-				bit[NBT-1-ptr]=0
-				
-		
 		for ptr2 in range(NBT):
 			binarioStr+=str(bit[ptr2])
 		return binarioStr

@@ -1,0 +1,16 @@
+#A 10
+#B 2
+#C 5
+LDI A;
+STO 1;
+LD B;
+STO 3;
+LD A;
+ADD B;
+ADDI 1;
+SUBI 3;
+SUB C;
+STO A;	
+HLT;
+
+
