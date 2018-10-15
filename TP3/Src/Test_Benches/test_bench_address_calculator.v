@@ -1,10 +1,8 @@
- 
- 
  `timescale 1ns / 100ps
 
 //////////////////////////////////////////////////////////////////////////////////
-// Trabajo Practico Nro. 2. UART.
-// Test bench del modulo tx.
+// Trabajo Practico Nro. 3. BIP I.
+// Test bench del modulo address_calculator.
 // Integrantes: Kleiner Matias, Lopez Gaston.
 // Materia: Arquitectura de Computadoras.
 // FCEFyN. UNC.
@@ -14,8 +12,8 @@
 
 module test_bench_address_calculator();
 		
-    parameter PC_CANT_BITS = 11;  // Cantidad de bits del PC.
-    parameter SUM_DIR = 1;         // Cantidad a sumar al PC para obtener la direccion siguiente.
+    parameter PC_CANT_BITS = 11;    // Cantidad de bits del PC.
+    parameter SUM_DIR = 1;          // Cantidad a sumar al PC para obtener la direccion siguiente.
   
     //Todo puerto de salida del modulo es un cable.
 	//Todo puerto de estimulo o generacion de entrada es un registro.

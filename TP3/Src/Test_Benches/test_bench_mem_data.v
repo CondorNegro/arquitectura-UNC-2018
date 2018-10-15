@@ -4,7 +4,7 @@
 
 //////////////////////////////////////////////////////////////////////////////////
 // Trabajo Practico Nro. 3. BIP I.
-// Test bench del modulo tx.
+// Test bench del modulo mem_data.
 // Integrantes: Kleiner Matias, Lopez Gaston.
 // Materia: Arquitectura de Computadoras.
 // FCEFyN. UNC.
