@@ -1,3 +1,8 @@
+# TP 3. BIP I.
+# Arquitectura de Computadoras. FCEFyN. UNC.
+# Anio 2018.
+# Autores: Lopez Gaston, Kleiner Matias.
+
 try:
     from Tkinter import *
 except ImportError:
@@ -15,7 +20,6 @@ import threading  		# Para uso de threads
 BAUDRATE = 9600
 WIDTH_WORD = 8
 CANT_STOP_BITS = 2
-ESTADOS = ["PrimerOperando", "SegundoOperando", "CodigoOperacion"]
 
 
 # Variables globales
@@ -25,19 +29,12 @@ banderaPuertoLoop = 0
 estadoPuerto = "NO CONECTADO"
 etiquetaResultadoImpresion = "Resultado"
 lock = threading.Lock()
-currentState = ESTADOS [0]
 
 # Funcion de traduccion del nombre de la operacion a su opcode correspondiente.
 def getOPCODE (x):
     return {
-        'ADD': '00100000',
-        'SUB': '00100010',
-		'AND': '00100100',
-		'OR' : '00100101',
-		'XOR': '00100110',
-		'SRA': '00000011',
-		'SRL': '00000010',
-		'NOR': '00100111',
+        'Soft reset': '00000001',
+        'Init': '00000010',
     }.get (x, '11111111')  #11111111 es el por defecto
 
 
@@ -46,35 +43,15 @@ def getOPCODE (x):
 def desactivarBotones():
 	lock.acquire()
 	botonDesconectarFPGA.config (state = DISABLED)
-	botonPrimerOperando.config (state = DISABLED)
-	botonSegundoOperando.config (state = DISABLED)
-	botonOperacion.config (state = DISABLED)
+	botonIniciarBIP.config (state = DISABLED)
 	lock.release()
 
 # Funcion para activar botones, sigue el comportamiento de una maquina de estados
 
 def activarBotones():
 	lock.acquire()
-	if (currentState == ESTADOS[0]):
-		botonDesconectarFPGA.config (state = ACTIVE)
-		botonPrimerOperando.config (state = ACTIVE)
-		botonSegundoOperando.config (state = DISABLED)
-		botonOperacion.config (state = DISABLED)
-	elif (currentState == ESTADOS[2]):
-		botonDesconectarFPGA.config (state = DISABLED)
-		botonPrimerOperando.config (state = DISABLED)
-		botonSegundoOperando.config (state = DISABLED)
-		botonOperacion.config (state = ACTIVE)
-	elif (currentState == ESTADOS[1]):
-		botonDesconectarFPGA.config (state = DISABLED)
-		botonPrimerOperando.config (state = DISABLED)
-		botonSegundoOperando.config (state = ACTIVE)
-		botonOperacion.config (state = DISABLED)
-	else:
-		botonDesconectarFPGA.config (state = ACTIVE)
-		botonPrimerOperando.config (state = DISABLED)
-		botonSegundoOperando.config (state = DISABLED)
-		botonOperacion.config (state = DISABLED)
+	botonDesconectarFPGA.config (state = ACTIVE)
+	botonIniciarBIP.config (state = ACTIVE)
 	lock.release()
 
 
@@ -115,7 +92,6 @@ def conexionViaThread(puerto):
 				ser.flushOutput()
 				estadoPuerto = "loop - OK"
 				etiquetaPuertoEstado.config (text = estadoPuerto, fg = "dark green")
-				currentState = ESTADOS[0]
 				activarBotones()
 				print 'Loop-ok: ', puerto
 			else:
@@ -134,7 +110,6 @@ def conexionViaThread(puerto):
 					ser.timeout = None    	#Siempre escucha
 					ser.flushInput()		#Limpieza de buffers
 					ser.flushOutput()
-					currentState = ESTADOS[0]
 					activarBotones()
 					print 'Conexion OK en puerto : ', puerto
 				except SerialException:
@@ -153,27 +128,42 @@ def conexionViaThread(puerto):
 # Funcion que recibe el resultado obtenido de la ALU
 
 def readResultado():
-	while ser.inWaiting() == 1: #inWaiting -> cantidad de bytes en buffer esperando.
-			lectura = ser.read(1)
-			etiquetaResultadoImpresion = bin(ord (lectura))[2:][::-1]
-			
-			for i in range (0, 8 - len(etiquetaResultadoImpresion), 1):
-				if (i != 8):	
-					etiquetaResultadoImpresion = etiquetaResultadoImpresion + '0'
-			print '>>',
-			print etiquetaResultadoImpresion
-			print '>>',
-			print lectura
-			etiquetaResultado.config (text = etiquetaResultadoImpresion, fg = "dark green")
+	valor_ACC = ""
+	contador_bytes = 0
+	valor_CC = ""
+	while ((ser.inWaiting() == 1) and (contador_bytes < 5)): #inWaiting -> cantidad de bytes en buffer esperando.
+		contador_bytes = contador_bytes + 1
+		lectura = ser.read (1)
+		etiquetaResultadoImpresion = bin(ord (lectura))[2:][::-1]
+		
+		for i in range (0, 8 - len(etiquetaResultadoImpresion), 1):
+			if (i != 8):	
+				etiquetaResultadoImpresion = etiquetaResultadoImpresion + '0'
+		print '>>',
+		print etiquetaResultadoImpresion
+		print '>>',
+		print lectura
+		if (contador_bytes > 4):	#Reiniciar contador
+			contador_bytes = 0
+		elif (contador_bytes < 3):	# Contador de ciclos.
+			if (contador_bytes < 2):	# Parte baja.
+				valor_CC = etiquetaResultadoImpresion
+			else:						# Parte alta.
+				valor_CC = etiquetaResultadoImpresion + valor_CC
+		else : # Valor del Acumulador
+			if (contador_bytes < 4):	# Parte baja.
+				valor_ACC = etiquetaResultadoImpresion
+			else:						# Parte alta.
+				valor_ACC = etiquetaResultadoImpresion + valor_ACC
+	etiquetaResultado.config (text = "CC: " + valor_CC + " - " + "ACC: " + valor_ACC, fg = "dark green")
 
 		
 
 # Funcion para setear los datos que forman parte de la operacion
 # @param: dato 	Dato a cargar
-# @param: tipo 	1 (primer operando), 2 (segundo operando), 3 (codigo de operacion)
-def setDato (dato, tipo):
+def setDato ():
 	try:
-		hiloSetDato = threading.Thread (target = setDatoViaThread, args = (dato, tipo,)) 
+		hiloSetDato = threading.Thread (target = setDatoViaThread) 
 		hiloSetDato.start()
 	except:
 		print 'Sistema operativo denego acceso a recursos.'
@@ -182,33 +172,29 @@ def setDato (dato, tipo):
 	
 # Funcion que ejecuta el hilo que setea los datos que forman parte de la operacion
 # @param: dato 	Dato a cargar
-# @param: tipo 	1 (primer operando), 2 (segundo operando), 3 (codigo de operacion)
-def setDatoViaThread (dato, tipo):
+def setDatoViaThread ():
 	desactivarBotones()
 	print 'Thread de seteo de datos OK.'
 	global etiquetaResultadoImpresion
-	global currentState
 	try:
 		ser.flushInput()
 		ser.flushOutput()
-		if (dato != ""):
-			if (tipo == 1 and len (dato) == 8):
-				ser.write (chr (int (dato, 2)))
-				time.sleep (0.5) #Espera.
-				currentState = ESTADOS [2]	
-			elif (tipo == 2 and len (dato) == 8):
-				ser.write (chr (int (dato, 2)))
-				time.sleep (0.5) #Espera.
-				readResultado() # Lectura de resultado
-				currentState = ESTADOS [0]
-			elif (tipo == 3 and (len (dato) == 3 or dato == 'OR')):
-				opcode = getOPCODE (dato)	
-				ser.write (chr (int (opcode, 2)))
-				time.sleep (0.5) #Espera.
-				currentState = ESTADOS [1]
-			else:
-				print 'Warning: Deben ser 8 bits.'
-				etiquetaResultado.config (text = "Warning: Deben ser 8 bits", fg = "red")
+		dato = getOPCODE ('Soft reset')
+		if (len (dato) == 8):
+			ser.write (chr (int (dato, 2)))
+			time.sleep (1.0) #Espera.
+			#readResultado() #Lectura de resultado
+		else:
+			print 'Warning: Deben ser 8 bits.'
+			etiquetaResultado.config (text = "Warning: Deben ser 8 bits", fg = "red")
+		dato = getOPCODE ('Init')
+		if (len (dato) == 8):
+			ser.write (chr (int (dato, 2)))
+			time.sleep (1.0) #Espera.
+			readResultado() #Lectura de resultado
+		else:
+			print 'Warning: Deben ser 8 bits.'
+			etiquetaResultado.config (text = "Warning: Deben ser 8 bits", fg = "red")
 		activarBotones()
 	except: 
 		print 'Error en el seteo de los datos.'
@@ -230,9 +216,9 @@ def salir():
 #Ventana principal - Configuracion
 
 root = Tk() 
-root.geometry ("380x600+0+0") #Tamanio
-root.minsize (height=600, width=380)
-root.maxsize (height=600, width=380)
+root.geometry ("350x380+0+0") #Tamanio
+root.minsize (height=350, width=380)
+root.maxsize (height=350, width=380)
 
 # Rectangulos divisorios
 
@@ -241,8 +227,8 @@ canvasPuerto.create_rectangle (5, 5, 340, 80, outline='gray60')
 canvasPuerto.place (x=1, y=1)
 
 canvasOperaciones = Canvas (root)
-canvasOperaciones.config (width=340, height=420)
-canvasOperaciones.create_rectangle (5, 5, 340, 420, outline='gray60')
+canvasOperaciones.config (width = 340, height = 300)
+canvasOperaciones.create_rectangle (5, 5, 340, 180, outline='gray60')
 canvasOperaciones.place (x=1, y=100)
 
 
@@ -251,28 +237,11 @@ canvasOperaciones.place (x=1, y=100)
 
 campoPuerto = Entry (root) #Para ingresar texto.
 campoPuerto.place (x = 87, y = 25)
-campoPrimerOperando = Entry (root) #Para ingresar texto.
-campoPrimerOperando.place (x = 200, y = 190)
-campoSegundoOperando = Entry (root) #Para ingresar texto.
-campoSegundoOperando.place (x = 200, y = 230)
-
-# Menues desplegables
-var = StringVar (root)
-var.set ('Selecciones la operacion')
-opciones = ['ADD', 'SUB', 'AND', 'OR', 'XOR', 'SRA', 'SRL', 'NOR']
-menuOpCode = OptionMenu (root, var, *opciones)
-menuOpCode.config (width = 20)
-menuOpCode.pack (side = 'left', padx = 30, pady = 30)
-menuOpCode.place (x = 170, y = 270)
 
 # Botones
 
-botonPrimerOperando = Button (root, text = "Cargar Primer operando", command = lambda: setDato (str (campoPrimerOperando.get()), 1), state = DISABLED)
-botonPrimerOperando.place (x = 10, y = 190, width = 150, height = 30)
-botonSegundoOperando = Button (root, text="Cargar Segundo operando", command = lambda: setDato (str (campoSegundoOperando.get()), 2), state = DISABLED)
-botonSegundoOperando.place (x = 10, y = 230, width = 150, height = 30)
-botonOperacion = Button (root, text = "Cargar Operacion", command = lambda: setDato (str (var.get()), 3), state = DISABLED)
-botonOperacion.place (x = 10, y = 270, width = 150, height = 30)
+botonIniciarBIP = Button (root, text = "Iniciar BIP I", command = lambda: setDato (), state = DISABLED)
+botonIniciarBIP.place (x = 100, y = 150, width = 150, height = 30)
 
 ### Botones - Conexion y desconexion FPGA
 
@@ -283,7 +252,7 @@ botonDesconectarFPGA.place (x = 250, y = 40, width = 80, height = 30)
 
 ### Boton - Finalizar programa
 botonSalir = Button (root, text = "Exit", command = lambda: salir(), state = ACTIVE)
-botonSalir.place (x = 150, y = 550, width = 80, height = 30)
+botonSalir.place (x = 150, y = 300, width = 80, height = 30)
 
 
 
@@ -296,16 +265,16 @@ etiquetaPuertoMensajeEstado = Label (root, text = "Status     : ")
 etiquetaPuertoMensajeEstado.place (x = 20, y = 50)
 etiquetaPuertoEstado = Label (root, text = estadoPuerto, fg = "red")
 etiquetaPuertoEstado.place (x = 87, y = 50)
-etiquetaInputDatos = Label (root, text = "Ingreso de datos: ", font = "TkDefaultFont 12")
+etiquetaInputDatos = Label (root, text = "Iniciar sistema: ", font = "TkDefaultFont 12")
 etiquetaInputDatos.place (x = 10,  y = 110)
 etiquetaOutputResultado = Label (root, text = "Resultado: ", font = "TkDefaultFont 12")
-etiquetaOutputResultado.place (x = 10,  y = 360)
+etiquetaOutputResultado.place (x = 10,  y = 200)
 etiquetaResultado = Label (root, text = etiquetaResultadoImpresion, fg = "dark green", font = "TkDefaultFont 12")
-etiquetaResultado.place (x = 10, y = 400)
+etiquetaResultado.place (x = 10, y = 230)
 
 # Titulo de la GUI 
 
-root.title ("TP2 UART - Kleiner Matias, Lopez Gaston")
+root.title ("TP3 BIP I - Kleiner Matias, Lopez Gaston")
 
   
 # Ejecucion de loop propio de GUI
