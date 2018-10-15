@@ -28,12 +28,13 @@ module memoria_datos
   input wea,                              // Write enable
   //input ena,                            // RAM Enable, for additional power savings, disable port when not in use
   //input rsta,                           // Output reset (does not affect memory contents)
-  input regcea,                           // Output register enable
+  //input regcea,                           // Output register enable
   output [RAM_WIDTH-1:0] o_data           // RAM output data
 );
 
   wire ena = 1 ;                  // RAM Enable, for additional power savings, disable port when not in use
   wire rsta = 0 ;                 // Output reset (does not affect memory contents)
+  wire regcea = 0;                // Output register enable
 
 
   reg [RAM_WIDTH - 1 : 0] BRAM [RAM_DEPTH - 1 : 0];

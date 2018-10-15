@@ -27,7 +27,7 @@ module datapath
   input [OPERANDO_LENGTH - 1 : 0] i_operando,
   input [OPERANDO_FINAL_LENGHT - 1 : 0] i_outmemdata,
   output [OPERANDO_FINAL_LENGHT - 1 : 0] o_addr,
-  output [OPERANDO_FINAL_LENGHT - 1 : 0] o_inmemdata
+  output [OPERANDO_FINAL_LENGHT - 1 : 0] o_ACC
 );
 
 
@@ -122,7 +122,7 @@ module datapath
 
   end
 
-  assign o_inmemdata = reg_ACC;
+  assign o_ACC = reg_ACC;
   assign o_addr = i_operando;
 
 endmodule

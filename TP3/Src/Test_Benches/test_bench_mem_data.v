@@ -37,11 +37,11 @@ module test_bench_memoria_datos();
        
        clock = 1'b0;
        reg_wea = 1'b0;
-       reg_regcea = 1'b0;
+       //reg_regcea = 1'b0;
        data_in = 8'b00000000;
        reg_i_addr = 11'b0000000;
         
-       #100 reg_regcea = 1'b1; // Lectura de posicion 0, tiene que haber un 0 porque no se guardo nada todavia.
+       //#100 reg_regcea = 1'b1; // Lectura de posicion 0, tiene que haber un 0 porque no se guardo nada todavia.
        
        #100 data_in = 8'b00001111; // Dato a guardar.
        #100 reg_wea = 1'b1; // Ahora se guarda el dato.
@@ -87,7 +87,7 @@ memoria_datos
      .i_addr (reg_i_addr),
      .i_data (data_in),
      .wea (reg_wea),
-     .regcea (reg_regcea),
+     //.regcea (reg_regcea),
      .o_data (wire_o_data)
    );
   
