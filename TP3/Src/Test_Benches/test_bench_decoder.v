@@ -1,9 +1,18 @@
 `timescale 1ns / 100ps
 
+//////////////////////////////////////////////////////////////////////////////////
+// Trabajo Practico Nro. 3. BIP I.
+// Test bench del modulo instruction_decoder.
+// Integrantes: Kleiner Matias, Lopez Gaston.
+// Materia: Arquitectura de Computadoras.
+// FCEFyN. UNC.
+// Anio 2018.
+//////////////////////////////////////////////////////////////////////////////////
+
 module test_bench_instruction_decoder();
 		
 	// Parametros
-    parameter OPCODE_LENGTH = 5;
+    parameter OPCODE_LENGTH = 5;    // Cantidad de bits del opcode.
 	
 	//Todo puerto de salida del modulo es un cable.
 	//Todo puerto de estimulo o generacion de entrada es un registro.

@@ -2,8 +2,8 @@
  `timescale 1ns / 100ps
 
 //////////////////////////////////////////////////////////////////////////////////
-// Trabajo Practico Nro. 2. UART.
-// Test bench del modulo tx.
+// Trabajo Practico Nro. 3. BIP I.
+// Test bench del modulo contador_ciclos.
 // Integrantes: Kleiner Matias, Lopez Gaston.
 // Materia: Arquitectura de Computadoras.
 // FCEFyN. UNC.
@@ -13,7 +13,7 @@
 
 module test_bench_contador_ciclos();
 		
-    parameter CONTADOR_LENGTH = 11	;
+    parameter CONTADOR_LENGTH = 11	;   // Cantidad de bits del contador.
     //Todo puerto de salida del modulo es un cable.
 	//Todo puerto de estimulo o generacion de entrada es un registro.
 	
