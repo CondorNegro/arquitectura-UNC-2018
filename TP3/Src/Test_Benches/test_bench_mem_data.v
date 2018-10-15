@@ -3,7 +3,7 @@
 `timescale 1ns / 100ps
 
 //////////////////////////////////////////////////////////////////////////////////
-// Trabajo Practico Nro. 2. UART.
+// Trabajo Practico Nro. 3. BIP I.
 // Test bench del modulo tx.
 // Integrantes: Kleiner Matias, Lopez Gaston.
 // Materia: Arquitectura de Computadoras.
@@ -41,33 +41,29 @@ module test_bench_memoria_datos();
        data_in = 8'b00000000;
        reg_i_addr = 11'b0000000;
         
-       #100 reg_regcea = 1'b1; // leo posicion 0, tiene que haber un 0 porque no guarde nada todavia
+       #100 reg_regcea = 1'b1; // Lectura de posicion 0, tiene que haber un 0 porque no se guardo nada todavia.
        
-       #100 data_in = 8'b00001111; // Dato a guardar
-       #100 reg_wea = 1'b1; // Ahora guardalo a guardar
+       #100 data_in = 8'b00001111; // Dato a guardar.
+       #100 reg_wea = 1'b1; // Ahora se guarda el dato.
        
-       #100 reg_wea = 1'b0; // Ahora guardalo a guardar
+       #100 reg_wea = 1'b0; 
        
-       #160 data_in = 8'b00000001; // Dato a enviar
-       #100 reg_wea = 1'b1; // Ahora guardalo a guardar
-       #100 reg_wea = 1'b0; // Ahora guardalo a guardar
+       #160 data_in = 8'b00000001; // Dato a guardar.
+       #100 reg_wea = 1'b1; // Ahora se guarda el dato.
+       #100 reg_wea = 1'b0; 
        
        
-       #100 reg_i_addr = 11'b0000001; // Ahora guardalo a guardar
-       #160 data_in = 8'b00000010; // Dato a enviar
-       #100 reg_wea = 1'b1; // Ahora guardalo a guardar
-       #100 reg_wea = 1'b0; // Ahora guardalo a guardar
+       #100 reg_i_addr = 11'b0000001; // Seteo de direccion de mem.
+       #160 data_in = 8'b00000010; // Dato a guardar.
+       #100 reg_wea = 1'b1; // Ahora se guarda el dato.
+       #100 reg_wea = 1'b0; 
        
-       #100 reg_i_addr = 11'b0000000; // //leo el 1 que guarde
-       #100 reg_i_addr = 11'b0000001; // //leo el 2 que guarde
+       #100 reg_i_addr = 11'b0000000; // Lectura del 1 que se guardo.
+       #100 reg_i_addr = 11'b0000001; // Lectura del 2 que se guardo.
        
 
        
-       #1160 data_in = 8'b10000110; // Dato a enviar
-       
-       
-       
-       
+       #1160 data_in = 8'b10000110; // Dato a guardar.      
        
        
        #500000 $finish;
