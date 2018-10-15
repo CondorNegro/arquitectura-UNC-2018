@@ -49,7 +49,7 @@ module memoria_datos
       integer ram_index;
       initial
         for (ram_index = 0; ram_index < RAM_DEPTH; ram_index = ram_index + 1)
-          BRAM[ram_index] = {RAM_WIDTH {1'b0}};
+          BRAM[ram_index] = ram_index;
     end
   endgenerate
 
