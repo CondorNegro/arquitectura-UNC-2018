@@ -36,19 +36,20 @@ module interface_circuit
 
 
 // Local Param
-localparam ESPERA = 5'b00001;
-localparam CC_L_PART = 5'b00010;    // L: parte menos significativa.      
-localparam CC_H_PART = 5'b00100;    // H: parte mas significativa.
-localparam ACC_L_PART = 5'b01000;
-localparam ACC_H_PART = 5'b10000;
+localparam ESPERA       = 6'b000001;
+localparam CC_L_PART    = 6'b000010;    // L: parte menos significativa.      
+localparam CC_H_PART    = 6'b000100;    // H: parte mas significativa.
+localparam ACC_L_PART   = 6'b001000;
+localparam ACC_H_PART   = 6'b010000;
+localparam FIN          = 6'b100000;
 
 
 
 //output reg o_prueba;
 
 // Registros.
-reg [ 4 : 0 ] reg_state;
-reg [ 4 : 0 ] reg_next_state;
+reg [ 5 : 0 ] reg_state;
+reg [ 5 : 0 ] reg_next_state;
 reg registro_tx_done;
 reg [OUTPUT_WORD_LENGTH - 1 : 0] o_data_tx_next;
 reg [OUTPUT_WORD_LENGTH - 1 : 0] reg_data_rx;
@@ -118,54 +119,56 @@ always@( * ) begin //NEXT - STATE logic
 
   case (reg_state)
 
-      ESPERA : begin
-          if (i_opcode == HALT_OPCODE) begin
-              reg_next_state = CC_L_PART;
-          end
-          else begin
-              reg_next_state = ESPERA;
-          end
-      end
+        ESPERA : begin
+            if (i_opcode == HALT_OPCODE) begin
+                reg_next_state = CC_L_PART;
+            end
+            else begin
+                reg_next_state = ESPERA;
+            end
+        end
 
-      CC_L_PART : begin
-         if ( (i_tx_done == 1) && (registro_tx_done == 0))  begin // Deteccion de flanco ascendente
-              reg_next_state = CC_H_PART;
-          end
-          else begin
-              reg_next_state = CC_L_PART;
-          end
-      end
+        CC_L_PART : begin
+            if ( (i_tx_done == 1) && (registro_tx_done == 0))  begin // Deteccion de flanco ascendente
+                reg_next_state = CC_H_PART;
+            end
+            else begin
+                reg_next_state = CC_L_PART;
+            end
+        end
 
-      CC_H_PART : begin
-          if ( (i_tx_done == 1) && (registro_tx_done == 0))  begin  // Deteccion de flanco ascendente
-              reg_next_state = ACC_L_PART;
-          end
-          else begin
-              reg_next_state = CC_H_PART;
-          end
-      end
+        CC_H_PART : begin
+            if ( (i_tx_done == 1) && (registro_tx_done == 0))  begin  // Deteccion de flanco ascendente
+                reg_next_state = ACC_L_PART;
+            end
+            else begin
+                reg_next_state = CC_H_PART;
+            end
+        end
 
-      ACC_L_PART : begin
-          if ( (i_tx_done == 1) && (registro_tx_done == 0)) begin
-              reg_next_state = ACC_H_PART;
-          end
-          else begin
-              reg_next_state = ACC_L_PART;
-          end
-      end
+        ACC_L_PART : begin
+            if ( (i_tx_done == 1) && (registro_tx_done == 0)) begin
+                reg_next_state = ACC_H_PART;
+            end
+            else begin
+                reg_next_state = ACC_L_PART;
+            end
+        end
 
-      ACC_H_PART : begin
-          if ( (i_tx_done == 1) && (registro_tx_done == 0)) begin
-              reg_next_state = ESPERA;
-          end
-          else begin
-              reg_next_state = ACC_H_PART;
-          end
-      end
-
-      default begin
-          reg_next_state = ESPERA;
-      end
+        ACC_H_PART : begin
+            if ( (i_tx_done == 1) && (registro_tx_done == 0)) begin
+                reg_next_state = FIN;
+            end
+            else begin
+                reg_next_state = ACC_H_PART;
+            end
+        end
+        FIN : begin
+            reg_next_state = FIN;
+        end
+        default begin
+            reg_next_state = ESPERA;
+        end
   endcase
 end
 
@@ -174,35 +177,38 @@ always@( * ) begin //Output logic
   //o_prueba = 0;
   case (reg_state)
 
-      ESPERA : begin
-          o_tx_start = 0;
-          o_data_tx_next = o_data_tx;
-      end
+        ESPERA : begin
+            o_tx_start = 0;
+            o_data_tx_next = o_data_tx;
+        end
 
-      CC_L_PART : begin
-          o_tx_start = 1;
-          o_data_tx_next = i_CC [OUTPUT_WORD_LENGTH - 1 : 0];   // Transmito parte menos significativa.
-      end
+        CC_L_PART : begin
+            o_tx_start = 1;
+            o_data_tx_next = i_CC [OUTPUT_WORD_LENGTH - 1 : 0];   // Transmito parte menos significativa.
+        end
 
-      CC_H_PART : begin
-          o_tx_start = 1;       // Transmito parte mas significativa del contador de ciclos.
-          o_data_tx_next = {{(OUTPUT_WORD_LENGTH - (CC_LENGTH - OUTPUT_WORD_LENGTH)) {1'b0}}, i_CC [CC_LENGTH - 1 : OUTPUT_WORD_LENGTH]};
-      end
+        CC_H_PART : begin
+            o_tx_start = 1;       // Transmito parte mas significativa del contador de ciclos.
+            o_data_tx_next = {{(OUTPUT_WORD_LENGTH - (CC_LENGTH - OUTPUT_WORD_LENGTH)) {1'b0}}, i_CC [CC_LENGTH - 1 : OUTPUT_WORD_LENGTH]};
+        end
 
-      ACC_L_PART : begin
-          o_tx_start = 1;
-          o_data_tx_next = i_ACC [OUTPUT_WORD_LENGTH - 1 : 0];
-      end
+        ACC_L_PART : begin
+            o_tx_start = 1;
+            o_data_tx_next = i_ACC [OUTPUT_WORD_LENGTH - 1 : 0];
+        end
 
-      ACC_H_PART : begin
-          o_tx_start = 1;
-          o_data_tx_next = {{(OUTPUT_WORD_LENGTH - (ACC_LENGTH - OUTPUT_WORD_LENGTH)) {1'b0}}, i_ACC [ACC_LENGTH - 1 : OUTPUT_WORD_LENGTH]};
-      end
-
-      default : begin
-          o_tx_start = 0;
-          o_data_tx_next = o_data_tx;
-      end
+        ACC_H_PART : begin
+            o_tx_start = 1;
+            o_data_tx_next = {{(OUTPUT_WORD_LENGTH - (ACC_LENGTH - OUTPUT_WORD_LENGTH)) {1'b0}}, i_ACC [ACC_LENGTH - 1 : OUTPUT_WORD_LENGTH]};
+        end
+        FIN : begin
+            o_tx_start = 0;
+            o_data_tx_next = o_data_tx;
+        end
+        default : begin
+            o_tx_start = 0;
+            o_data_tx_next = o_data_tx;
+        end
 
   endcase
 end
