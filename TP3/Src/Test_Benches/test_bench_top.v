@@ -26,7 +26,7 @@
 `define RAM_PERFORMANCE_DATOS    "LOW_LATENCY"
 `define RAM_PERFORMANCE_PROGRAMA "HIGH_PERFORMANCE"
 `define INIT_FILE_DATOS        ""
-`define INIT_FILE_PROGRAMA     "init_ram_file"      
+`define INIT_FILE_PROGRAMA     "init_ram_file.txt"      
 `define RAM_DEPTH_DATOS      1024
 `define RAM_DEPTH_PROGRAMA   2048     
 
