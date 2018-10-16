@@ -72,7 +72,7 @@ always@( posedge i_clock ) begin //Memory
                 if (reg_state == READ) begin
                     // 16 ticks por bit transmitido.
                     if ( ((reg_contador_ticks % 15) == 0) && (reg_contador_ticks != 0) ) begin
-                        reg_buffer[reg_contador_bits] <=  i_bit_rx;
+                        reg_buffer[(WIDTH_WORD-1)-reg_contador_bits] <=  i_bit_rx;
                         reg_contador_bits <= reg_contador_bits + 1;
                         reg_contador_bits_stop <= 0;
                         reg_contador_ticks <= 0;

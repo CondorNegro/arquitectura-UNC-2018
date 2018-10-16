@@ -1,0 +1,354 @@
+#-----------------------------------------------------------
+# Vivado v2018.2 (64-bit)
+# SW Build 2258646 on Thu Jun 14 20:02:38 MDT 2018
+# IP Build 2256618 on Thu Jun 14 22:10:49 MDT 2018
+# Start of session at: Mon Oct 15 23:25:28 2018
+# Process ID: 12218
+# Current directory: /home/matias/Documentos/arqui/arquitectura-UNC-2018
+# Command line: vivado
+# Log file: /home/matias/Documentos/arqui/arquitectura-UNC-2018/vivado.log
+# Journal file: /home/matias/Documentos/arqui/arquitectura-UNC-2018/vivado.jou
+#-----------------------------------------------------------
+start_gui
+xterm: cannot load font "-Misc-Fixed-medium-R-*-*-13-120-75-75-C-120-ISO10646-1"
+open_project /home/matias/project_3_bip/project_3_bip.xpr
+CRITICAL WARNING: [Project 1-19] Could not find the file '/home/matias/Documentos/arqui/arquitectura-UNC-2018/TP3/Src/Test_Benches/test_bench_alu.v'.
+Scanning sources...
+Finished scanning sources
+INFO: [IP_Flow 19-234] Refreshing IP repositories
+INFO: [IP_Flow 19-1704] No user IP repositories specified
+INFO: [IP_Flow 19-2313] Loaded Vivado IP repository '/opt/Xilinx/Vivado/2018.2/data/ip'.
+open_project: Time (s): cpu = 00:00:17 ; elapsed = 00:00:08 . Memory (MB): peak = 6123.242 ; gain = 90.605 ; free physical = 134 ; free virtual = 11116
+update_compile_order -fileset sources_1
+set_property SOURCE_SET sources_1 [get_filesets sim_1]
+add_files -fileset sim_1 {/home/matias/Documentos/arqui/arquitectura-UNC-2018/TP3/Src/Test_Benches/test_bench_baud_rate_generator.v /home/matias/Documentos/arqui/arquitectura-UNC-2018/TP3/Src/Test_Benches/test_bench_interface_circuit.v /home/matias/Documentos/arqui/arquitectura-UNC-2018/TP3/Src/Test_Benches/test_bench_decoder.v /home/matias/Documentos/arqui/arquitectura-UNC-2018/TP3/Src/Test_Benches/test_bench_top.v /home/matias/Documentos/arqui/arquitectura-UNC-2018/TP3/Src/Test_Benches/test_bench_tx.v /home/matias/Documentos/arqui/arquitectura-UNC-2018/TP3/Src/Test_Benches/test_bench_mem_programa.v /home/matias/Documentos/arqui/arquitectura-UNC-2018/TP3/Src/Test_Benches/test_bench_address_calculator.v /home/matias/Documentos/arqui/arquitectura-UNC-2018/TP3/Src/Test_Benches/test_bench_contador_ciclos.v /home/matias/Documentos/arqui/arquitectura-UNC-2018/TP3/Src/Test_Benches/test_bench_rx.v /home/matias/Documentos/arqui/arquitectura-UNC-2018/TP3/Src/Test_Benches/test_bench_mem_data.v}
+WARNING: [filemgmt 56-12] File '/home/matias/Documentos/arqui/arquitectura-UNC-2018/TP3/Src/Test_Benches/test_bench_baud_rate_generator.v' cannot be added to the project because it already exists in the project, skipping this file
+WARNING: [filemgmt 56-12] File '/home/matias/Documentos/arqui/arquitectura-UNC-2018/TP3/Src/Test_Benches/test_bench_interface_circuit.v' cannot be added to the project because it already exists in the project, skipping this file
+WARNING: [filemgmt 56-12] File '/home/matias/Documentos/arqui/arquitectura-UNC-2018/TP3/Src/Test_Benches/test_bench_decoder.v' cannot be added to the project because it already exists in the project, skipping this file
+WARNING: [filemgmt 56-12] File '/home/matias/Documentos/arqui/arquitectura-UNC-2018/TP3/Src/Test_Benches/test_bench_tx.v' cannot be added to the project because it already exists in the project, skipping this file
+WARNING: [filemgmt 56-12] File '/home/matias/Documentos/arqui/arquitectura-UNC-2018/TP3/Src/Test_Benches/test_bench_address_calculator.v' cannot be added to the project because it already exists in the project, skipping this file
+WARNING: [filemgmt 56-12] File '/home/matias/Documentos/arqui/arquitectura-UNC-2018/TP3/Src/Test_Benches/test_bench_contador_ciclos.v' cannot be added to the project because it already exists in the project, skipping this file
+WARNING: [filemgmt 56-12] File '/home/matias/Documentos/arqui/arquitectura-UNC-2018/TP3/Src/Test_Benches/test_bench_mem_data.v' cannot be added to the project because it already exists in the project, skipping this file
+update_compile_order -fileset sim_1
+set_property top test_bench_top_arquitectura [get_filesets sim_1]
+set_property top_lib xil_defaultlib [get_filesets sim_1]
+update_compile_order -fileset sim_1
+launch_simulation
+INFO: [Vivado 12-5682] Launching behavioral simulation in '/home/matias/project_3_bip/project_3_bip.sim/sim_1/behav/xsim'
+INFO: [SIM-utils-51] Simulation object is 'sim_1'
+INFO: [SIM-utils-54] Inspecting design source files for 'test_bench_top_arquitectura' in fileset 'sim_1'...
+INFO: [USF-XSim-97] Finding global include files...
+INFO: [USF-XSim-98] Fetching design files from 'sim_1'...
+INFO: [USF-XSim-2] XSim::Compile design
+INFO: [USF-XSim-61] Executing 'COMPILE and ANALYZE' step in '/home/matias/project_3_bip/project_3_bip.sim/sim_1/behav/xsim'
+xvlog --incr --relax -prj test_bench_top_arquitectura_vlog.prj
+INFO: [VRFC 10-2263] Analyzing Verilog file "/home/matias/Documentos/arqui/arquitectura-UNC-2018/TP3/Src/Sources/address_calculator.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module address_calculator
+INFO: [VRFC 10-2263] Analyzing Verilog file "/home/matias/Documentos/arqui/arquitectura-UNC-2018/TP3/Src/Sources/baud_rate_generator.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module baud_rate_generator
+INFO: [VRFC 10-2263] Analyzing Verilog file "/home/matias/Documentos/arqui/arquitectura-UNC-2018/TP3/Src/Sources/contador_ciclos.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module contador_ciclos
+INFO: [VRFC 10-2263] Analyzing Verilog file "/home/matias/Documentos/arqui/arquitectura-UNC-2018/TP3/Src/Sources/control.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module control
+INFO: [VRFC 10-2263] Analyzing Verilog file "/home/matias/Documentos/arqui/arquitectura-UNC-2018/TP3/Src/Sources/datapath.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module datapath
+INFO: [VRFC 10-2263] Analyzing Verilog file "/home/matias/Documentos/arqui/arquitectura-UNC-2018/TP3/Src/Sources/instruction_decoder.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module instruction_decoder
+INFO: [VRFC 10-2263] Analyzing Verilog file "/home/matias/Documentos/arqui/arquitectura-UNC-2018/TP3/Src/Sources/interface_circuit.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module interface_circuit
+INFO: [VRFC 10-2263] Analyzing Verilog file "/home/matias/Documentos/arqui/arquitectura-UNC-2018/TP3/Src/Sources/memoria_datos.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module memoria_datos
+INFO: [VRFC 10-2263] Analyzing Verilog file "/home/matias/Documentos/arqui/arquitectura-UNC-2018/TP3/Src/Sources/memoria_programa.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module memoria_programa
+INFO: [VRFC 10-2263] Analyzing Verilog file "/home/matias/Documentos/arqui/arquitectura-UNC-2018/TP3/Src/Sources/rx.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module rx
+INFO: [VRFC 10-2263] Analyzing Verilog file "/home/matias/Documentos/arqui/arquitectura-UNC-2018/TP3/Src/Sources/top_arquitectura.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module top_arquitectura
+INFO: [VRFC 10-2263] Analyzing Verilog file "/home/matias/Documentos/arqui/arquitectura-UNC-2018/TP3/Src/Sources/tx.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module tx
+INFO: [VRFC 10-2263] Analyzing Verilog file "/home/matias/Documentos/arqui/arquitectura-UNC-2018/TP3/Src/Test_Benches/test_bench_top.v" into library xil_defaultlib
+WARNING: [VRFC 10-998] macro RAM_DEPTH_PROGRAMA redefined [/home/matias/Documentos/arqui/arquitectura-UNC-2018/TP3/Src/Test_Benches/test_bench_top.v:31]
+INFO: [VRFC 10-311] analyzing module test_bench_top_arquitectura
+INFO: [USF-XSim-69] 'compile' step finished in '2' seconds
+INFO: [USF-XSim-3] XSim::Elaborate design
+INFO: [USF-XSim-61] Executing 'ELABORATE' step in '/home/matias/project_3_bip/project_3_bip.sim/sim_1/behav/xsim'
+Vivado Simulator 2018.2
+Copyright 1986-1999, 2001-2018 Xilinx, Inc. All Rights Reserved.
+Running: /opt/Xilinx/Vivado/2018.2/bin/unwrapped/lnx64.o/xelab -wto cb618526eab842fe929b0747db72a72a --incr --debug typical --relax --mt 8 -L xil_defaultlib -L unisims_ver -L unimacro_ver -L secureip --snapshot test_bench_top_arquitectura_behav xil_defaultlib.test_bench_top_arquitectura xil_defaultlib.glbl -log elaborate.log 
+Using 8 slave threads.
+Starting static elaboration
+WARNING: [VRFC 10-278] actual bit length 5 differs from formal bit length 1 for port o_opCode [/home/matias/Documentos/arqui/arquitectura-UNC-2018/TP3/Src/Sources/top_arquitectura.v:196]
+WARNING: [VRFC 10-278] actual bit length 1 differs from formal bit length 5 for port o_opcode [/home/matias/Documentos/arqui/arquitectura-UNC-2018/TP3/Src/Sources/control.v:61]
+WARNING: [VRFC 10-278] actual bit length 11 differs from formal bit length 16 for port o_addr [/home/matias/Documentos/arqui/arquitectura-UNC-2018/TP3/Src/Sources/top_arquitectura.v:217]
+Completed static elaboration
+Starting simulation data flow analysis
+Completed simulation data flow analysis
+Time Resolution for simulation is 1ps
+Compiling module xil_defaultlib.interface_circuit
+Compiling module xil_defaultlib.baud_rate_generator_default
+Compiling module xil_defaultlib.rx
+Compiling module xil_defaultlib.tx
+Compiling module xil_defaultlib.address_calculator
+Compiling module xil_defaultlib.instruction_decoder
+Compiling module xil_defaultlib.control
+Compiling module xil_defaultlib.datapath
+Compiling module xil_defaultlib.memoria_datos_default
+Compiling module xil_defaultlib.memoria_programa(INIT_FILE="init...
+Compiling module xil_defaultlib.contador_ciclos
+Compiling module xil_defaultlib.top_arquitectura
+Compiling module xil_defaultlib.test_bench_top_arquitectura
+Compiling module xil_defaultlib.glbl
+Built simulation snapshot test_bench_top_arquitectura_behav
+
+****** Webtalk v2018.2 (64-bit)
+  **** SW Build 2258646 on Thu Jun 14 20:02:38 MDT 2018
+  **** IP Build 2256618 on Thu Jun 14 22:10:49 MDT 2018
+    ** Copyright 1986-2018 Xilinx, Inc. All Rights Reserved.
+
+source /home/matias/project_3_bip/project_3_bip.sim/sim_1/behav/xsim/xsim.dir/test_bench_top_arquitectura_behav/webtalk/xsim_webtalk.tcl -notrace
+INFO: [Common 17-186] '/home/matias/project_3_bip/project_3_bip.sim/sim_1/behav/xsim/xsim.dir/test_bench_top_arquitectura_behav/webtalk/usage_statistics_ext_xsim.xml' has been successfully sent to Xilinx on Mon Oct 15 23:49:32 2018. For additional details about this file, please refer to the WebTalk help file at /opt/Xilinx/Vivado/2018.2/doc/webtalk_introduction.html.
+INFO: [Common 17-206] Exiting Webtalk at Mon Oct 15 23:49:32 2018...
+run_program: Time (s): cpu = 00:00:05 ; elapsed = 00:00:09 . Memory (MB): peak = 6257.707 ; gain = 0.000 ; free physical = 948 ; free virtual = 11766
+INFO: [USF-XSim-69] 'elaborate' step finished in '9' seconds
+INFO: [USF-XSim-4] XSim::Simulate design
+INFO: [USF-XSim-61] Executing 'SIMULATE' step in '/home/matias/project_3_bip/project_3_bip.sim/sim_1/behav/xsim'
+INFO: [USF-XSim-98] *** Running xsim
+   with args "test_bench_top_arquitectura_behav -key {Behavioral:sim_1:Functional:test_bench_top_arquitectura} -tclbatch {test_bench_top_arquitectura.tcl} -log {simulate.log}"
+INFO: [USF-XSim-8] Loading simulator feature
+Vivado Simulator 2018.2
+Time resolution is 1 ps
+source test_bench_top_arquitectura.tcl
+# set curr_wave [current_wave_config]
+# if { [string length $curr_wave] == 0 } {
+#   if { [llength [get_objects]] > 0} {
+#     add_wave /
+#     set_property needs_save false [current_wave_config]
+#   } else {
+#      send_msg_id Add_Wave-1 WARNING "No top level signals found. Simulator will start without a wave window. If you want to open a wave window go to 'File->New Waveform Configuration' or type 'create_wave_config' in the TCL console."
+#   }
+# }
+# run 1000ns
+WARNING: File init_ram_file referenced on /home/matias/Documentos/arqui/arquitectura-UNC-2018/TP3/Src/Sources/memoria_programa.v at line 49 cannot be opened for reading. Please ensure that this file is available in the current working directory.
+INFO: [USF-XSim-96] XSim completed. Design snapshot 'test_bench_top_arquitectura_behav' loaded.
+INFO: [USF-XSim-97] XSim simulation ran for 1000ns
+launch_simulation: Time (s): cpu = 00:00:16 ; elapsed = 00:00:16 . Memory (MB): peak = 6326.320 ; gain = 68.613 ; free physical = 890 ; free virtual = 11722
+restart
+INFO: [Simtcl 6-17] Simulation restarted
+run all
+WARNING: File init_ram_file referenced on /home/matias/Documentos/arqui/arquitectura-UNC-2018/TP3/Src/Sources/memoria_programa.v at line 49 cannot be opened for reading. Please ensure that this file is available in the current working directory.
+$finish called at time : 12667840 ns : File "/home/matias/Documentos/arqui/arquitectura-UNC-2018/TP3/Src/Test_Benches/test_bench_top.v" Line 121
+run: Time (s): cpu = 00:00:05 ; elapsed = 00:00:05 . Memory (MB): peak = 6330.320 ; gain = 0.000 ; free physical = 856 ; free virtual = 11770
+relaunch_sim
+suspend_sim: Time (s): cpu = 00:00:09 ; elapsed = 00:00:07 . Memory (MB): peak = 6332.320 ; gain = 0.000 ; free physical = 914 ; free virtual = 11781
+INFO: [Vivado 12-5682] Launching behavioral simulation in '/home/matias/project_3_bip/project_3_bip.sim/sim_1/behav/xsim'
+INFO: [SIM-utils-51] Simulation object is 'sim_1'
+INFO: [SIM-utils-54] Inspecting design source files for 'test_bench_top_arquitectura' in fileset 'sim_1'...
+INFO: [USF-XSim-97] Finding global include files...
+INFO: [USF-XSim-98] Fetching design files from 'sim_1'...
+INFO: [USF-XSim-2] XSim::Compile design
+INFO: [USF-XSim-61] Executing 'COMPILE and ANALYZE' step in '/home/matias/project_3_bip/project_3_bip.sim/sim_1/behav/xsim'
+xvlog --incr --relax -prj test_bench_top_arquitectura_vlog.prj
+INFO: [VRFC 10-2263] Analyzing Verilog file "/home/matias/Documentos/arqui/arquitectura-UNC-2018/TP3/Src/Sources/address_calculator.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module address_calculator
+INFO: [VRFC 10-2263] Analyzing Verilog file "/home/matias/Documentos/arqui/arquitectura-UNC-2018/TP3/Src/Sources/baud_rate_generator.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module baud_rate_generator
+INFO: [VRFC 10-2263] Analyzing Verilog file "/home/matias/Documentos/arqui/arquitectura-UNC-2018/TP3/Src/Sources/contador_ciclos.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module contador_ciclos
+INFO: [VRFC 10-2263] Analyzing Verilog file "/home/matias/Documentos/arqui/arquitectura-UNC-2018/TP3/Src/Sources/control.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module control
+INFO: [VRFC 10-2263] Analyzing Verilog file "/home/matias/Documentos/arqui/arquitectura-UNC-2018/TP3/Src/Sources/datapath.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module datapath
+INFO: [VRFC 10-2263] Analyzing Verilog file "/home/matias/Documentos/arqui/arquitectura-UNC-2018/TP3/Src/Sources/instruction_decoder.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module instruction_decoder
+INFO: [VRFC 10-2263] Analyzing Verilog file "/home/matias/Documentos/arqui/arquitectura-UNC-2018/TP3/Src/Sources/interface_circuit.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module interface_circuit
+INFO: [VRFC 10-2263] Analyzing Verilog file "/home/matias/Documentos/arqui/arquitectura-UNC-2018/TP3/Src/Sources/memoria_datos.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module memoria_datos
+INFO: [VRFC 10-2263] Analyzing Verilog file "/home/matias/Documentos/arqui/arquitectura-UNC-2018/TP3/Src/Sources/memoria_programa.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module memoria_programa
+INFO: [VRFC 10-2263] Analyzing Verilog file "/home/matias/Documentos/arqui/arquitectura-UNC-2018/TP3/Src/Sources/rx.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module rx
+INFO: [VRFC 10-2263] Analyzing Verilog file "/home/matias/Documentos/arqui/arquitectura-UNC-2018/TP3/Src/Sources/top_arquitectura.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module top_arquitectura
+INFO: [VRFC 10-2263] Analyzing Verilog file "/home/matias/Documentos/arqui/arquitectura-UNC-2018/TP3/Src/Sources/tx.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module tx
+INFO: [VRFC 10-2263] Analyzing Verilog file "/home/matias/Documentos/arqui/arquitectura-UNC-2018/TP3/Src/Test_Benches/test_bench_top.v" into library xil_defaultlib
+WARNING: [VRFC 10-998] macro RAM_DEPTH_PROGRAMA redefined [/home/matias/Documentos/arqui/arquitectura-UNC-2018/TP3/Src/Test_Benches/test_bench_top.v:31]
+INFO: [VRFC 10-311] analyzing module test_bench_top_arquitectura
+INFO: [USF-XSim-69] 'compile' step finished in '2' seconds
+INFO: [Vivado 12-5682] Launching behavioral simulation in '/home/matias/project_3_bip/project_3_bip.sim/sim_1/behav/xsim'
+INFO: [USF-XSim-3] XSim::Elaborate design
+INFO: [USF-XSim-61] Executing 'ELABORATE' step in '/home/matias/project_3_bip/project_3_bip.sim/sim_1/behav/xsim'
+Vivado Simulator 2018.2
+Copyright 1986-1999, 2001-2018 Xilinx, Inc. All Rights Reserved.
+Running: /opt/Xilinx/Vivado/2018.2/bin/unwrapped/lnx64.o/xelab -wto cb618526eab842fe929b0747db72a72a --incr --debug typical --relax --mt 8 -L xil_defaultlib -L unisims_ver -L unimacro_ver -L secureip --snapshot test_bench_top_arquitectura_behav xil_defaultlib.test_bench_top_arquitectura xil_defaultlib.glbl -log elaborate.log 
+Using 8 slave threads.
+Starting static elaboration
+WARNING: [VRFC 10-278] actual bit length 5 differs from formal bit length 1 for port o_opCode [/home/matias/Documentos/arqui/arquitectura-UNC-2018/TP3/Src/Sources/top_arquitectura.v:196]
+WARNING: [VRFC 10-278] actual bit length 1 differs from formal bit length 5 for port o_opcode [/home/matias/Documentos/arqui/arquitectura-UNC-2018/TP3/Src/Sources/control.v:61]
+WARNING: [VRFC 10-278] actual bit length 11 differs from formal bit length 16 for port o_addr [/home/matias/Documentos/arqui/arquitectura-UNC-2018/TP3/Src/Sources/top_arquitectura.v:217]
+Completed static elaboration
+Starting simulation data flow analysis
+Completed simulation data flow analysis
+Time Resolution for simulation is 1ps
+Compiling module xil_defaultlib.interface_circuit
+Compiling module xil_defaultlib.baud_rate_generator_default
+Compiling module xil_defaultlib.rx
+Compiling module xil_defaultlib.tx
+Compiling module xil_defaultlib.address_calculator
+Compiling module xil_defaultlib.instruction_decoder
+Compiling module xil_defaultlib.control
+Compiling module xil_defaultlib.datapath
+Compiling module xil_defaultlib.memoria_datos_default
+Compiling module xil_defaultlib.memoria_programa(INIT_FILE="init...
+Compiling module xil_defaultlib.contador_ciclos
+Compiling module xil_defaultlib.top_arquitectura
+Compiling module xil_defaultlib.test_bench_top_arquitectura
+Compiling module xil_defaultlib.glbl
+Built simulation snapshot test_bench_top_arquitectura_behav
+INFO: [USF-XSim-69] 'elaborate' step finished in '2' seconds
+Vivado Simulator 2018.2
+Time resolution is 1 ps
+WARNING: File init_ram_file referenced on /home/matias/Documentos/arqui/arquitectura-UNC-2018/TP3/Src/Sources/memoria_programa.v at line 49 cannot be opened for reading. Please ensure that this file is available in the current working directory.
+relaunch_sim: Time (s): cpu = 00:00:13 ; elapsed = 00:00:13 . Memory (MB): peak = 6332.320 ; gain = 0.000 ; free physical = 931 ; free virtual = 11777
+restart
+INFO: [Simtcl 6-17] Simulation restarted
+run all
+WARNING: File init_ram_file referenced on /home/matias/Documentos/arqui/arquitectura-UNC-2018/TP3/Src/Sources/memoria_programa.v at line 49 cannot be opened for reading. Please ensure that this file is available in the current working directory.
+INFO: [Common 17-41] Interrupt caught. Command should exit soon.
+$finish called at time : 12667840 ns : File "/home/matias/Documentos/arqui/arquitectura-UNC-2018/TP3/Src/Test_Benches/test_bench_top.v" Line 121
+INFO: [Common 17-344] 'run' was cancelled
+set_property SOURCE_SET sources_1 [get_filesets sim_1]
+add_files -fileset sim_1 -norecurse /home/matias/Documentos/arqui/arquitectura-UNC-2018/TP3/Src/Test_Benches/init_ram_file.txt
+relaunch_sim
+INFO: [Vivado 12-5682] Launching behavioral simulation in '/home/matias/project_3_bip/project_3_bip.sim/sim_1/behav/xsim'
+INFO: [SIM-utils-51] Simulation object is 'sim_1'
+INFO: [SIM-utils-54] Inspecting design source files for 'test_bench_top_arquitectura' in fileset 'sim_1'...
+INFO: [SIM-utils-43] Exported '/home/matias/project_3_bip/project_3_bip.sim/sim_1/behav/xsim/init_ram_file.txt'
+INFO: [USF-XSim-97] Finding global include files...
+INFO: [USF-XSim-98] Fetching design files from 'sim_1'...
+INFO: [USF-XSim-2] XSim::Compile design
+INFO: [USF-XSim-61] Executing 'COMPILE and ANALYZE' step in '/home/matias/project_3_bip/project_3_bip.sim/sim_1/behav/xsim'
+xvlog --incr --relax -prj test_bench_top_arquitectura_vlog.prj
+INFO: [VRFC 10-2263] Analyzing Verilog file "/home/matias/Documentos/arqui/arquitectura-UNC-2018/TP3/Src/Sources/memoria_programa.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module memoria_programa
+INFO: [VRFC 10-2263] Analyzing Verilog file "/home/matias/Documentos/arqui/arquitectura-UNC-2018/TP3/Src/Sources/rx.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module rx
+INFO: [VRFC 10-2263] Analyzing Verilog file "/home/matias/Documentos/arqui/arquitectura-UNC-2018/TP3/Src/Sources/top_arquitectura.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module top_arquitectura
+INFO: [VRFC 10-2263] Analyzing Verilog file "/home/matias/Documentos/arqui/arquitectura-UNC-2018/TP3/Src/Test_Benches/test_bench_top.v" into library xil_defaultlib
+WARNING: [VRFC 10-998] macro INIT_FILE_PROGRAMA redefined [/home/matias/Documentos/arqui/arquitectura-UNC-2018/TP3/Src/Test_Benches/test_bench_top.v:29]
+WARNING: [VRFC 10-998] macro RAM_DEPTH_PROGRAMA redefined [/home/matias/Documentos/arqui/arquitectura-UNC-2018/TP3/Src/Test_Benches/test_bench_top.v:31]
+INFO: [VRFC 10-311] analyzing module test_bench_top_arquitectura
+INFO: [USF-XSim-69] 'compile' step finished in '1' seconds
+INFO: [Vivado 12-5682] Launching behavioral simulation in '/home/matias/project_3_bip/project_3_bip.sim/sim_1/behav/xsim'
+INFO: [USF-XSim-3] XSim::Elaborate design
+INFO: [USF-XSim-61] Executing 'ELABORATE' step in '/home/matias/project_3_bip/project_3_bip.sim/sim_1/behav/xsim'
+Vivado Simulator 2018.2
+Copyright 1986-1999, 2001-2018 Xilinx, Inc. All Rights Reserved.
+Running: /opt/Xilinx/Vivado/2018.2/bin/unwrapped/lnx64.o/xelab -wto cb618526eab842fe929b0747db72a72a --incr --debug typical --relax --mt 8 -L xil_defaultlib -L unisims_ver -L unimacro_ver -L secureip --snapshot test_bench_top_arquitectura_behav xil_defaultlib.test_bench_top_arquitectura xil_defaultlib.glbl -log elaborate.log 
+Using 8 slave threads.
+Starting static elaboration
+WARNING: [VRFC 10-278] actual bit length 5 differs from formal bit length 1 for port o_opCode [/home/matias/Documentos/arqui/arquitectura-UNC-2018/TP3/Src/Sources/top_arquitectura.v:196]
+WARNING: [VRFC 10-278] actual bit length 1 differs from formal bit length 5 for port o_opcode [/home/matias/Documentos/arqui/arquitectura-UNC-2018/TP3/Src/Sources/control.v:61]
+WARNING: [VRFC 10-278] actual bit length 11 differs from formal bit length 16 for port o_addr [/home/matias/Documentos/arqui/arquitectura-UNC-2018/TP3/Src/Sources/top_arquitectura.v:217]
+Completed static elaboration
+Starting simulation data flow analysis
+Completed simulation data flow analysis
+Time Resolution for simulation is 1ps
+Compiling module xil_defaultlib.interface_circuit
+Compiling module xil_defaultlib.baud_rate_generator_default
+Compiling module xil_defaultlib.rx
+Compiling module xil_defaultlib.tx
+Compiling module xil_defaultlib.address_calculator
+Compiling module xil_defaultlib.instruction_decoder
+Compiling module xil_defaultlib.control
+Compiling module xil_defaultlib.datapath
+Compiling module xil_defaultlib.memoria_datos_default
+Compiling module xil_defaultlib.memoria_programa(INIT_FILE="init...
+Compiling module xil_defaultlib.contador_ciclos
+Compiling module xil_defaultlib.top_arquitectura(INIT_FILE_PROGR...
+Compiling module xil_defaultlib.test_bench_top_arquitectura
+Compiling module xil_defaultlib.glbl
+Built simulation snapshot test_bench_top_arquitectura_behav
+INFO: [USF-XSim-69] 'elaborate' step finished in '2' seconds
+Vivado Simulator 2018.2
+Time resolution is 1 ps
+relaunch_sim: Time (s): cpu = 00:00:12 ; elapsed = 00:00:07 . Memory (MB): peak = 6359.332 ; gain = 0.000 ; free physical = 961 ; free virtual = 11840
+restart
+INFO: [Simtcl 6-17] Simulation restarted
+run all
+INFO: [Common 17-41] Interrupt caught. Command should exit soon.
+$finish called at time : 12667840 ns : File "/home/matias/Documentos/arqui/arquitectura-UNC-2018/TP3/Src/Test_Benches/test_bench_top.v" Line 121
+run: Time (s): cpu = 00:00:06 ; elapsed = 00:00:06 . Memory (MB): peak = 6359.332 ; gain = 0.000 ; free physical = 882 ; free virtual = 11835
+INFO: [Common 17-344] 'run' was cancelled
+relaunch_sim
+INFO: [Vivado 12-5682] Launching behavioral simulation in '/home/matias/project_3_bip/project_3_bip.sim/sim_1/behav/xsim'
+INFO: [SIM-utils-51] Simulation object is 'sim_1'
+INFO: [SIM-utils-54] Inspecting design source files for 'test_bench_top_arquitectura' in fileset 'sim_1'...
+INFO: [SIM-utils-43] Exported '/home/matias/project_3_bip/project_3_bip.sim/sim_1/behav/xsim/init_ram_file.txt'
+INFO: [USF-XSim-97] Finding global include files...
+INFO: [USF-XSim-98] Fetching design files from 'sim_1'...
+INFO: [USF-XSim-2] XSim::Compile design
+INFO: [USF-XSim-61] Executing 'COMPILE and ANALYZE' step in '/home/matias/project_3_bip/project_3_bip.sim/sim_1/behav/xsim'
+xvlog --incr --relax -prj test_bench_top_arquitectura_vlog.prj
+INFO: [USF-XSim-69] 'compile' step finished in '2' seconds
+INFO: [Vivado 12-5682] Launching behavioral simulation in '/home/matias/project_3_bip/project_3_bip.sim/sim_1/behav/xsim'
+INFO: [USF-XSim-3] XSim::Elaborate design
+INFO: [USF-XSim-61] Executing 'ELABORATE' step in '/home/matias/project_3_bip/project_3_bip.sim/sim_1/behav/xsim'
+Vivado Simulator 2018.2
+Copyright 1986-1999, 2001-2018 Xilinx, Inc. All Rights Reserved.
+Running: /opt/Xilinx/Vivado/2018.2/bin/unwrapped/lnx64.o/xelab -wto cb618526eab842fe929b0747db72a72a --incr --debug typical --relax --mt 8 -L xil_defaultlib -L unisims_ver -L unimacro_ver -L secureip --snapshot test_bench_top_arquitectura_behav xil_defaultlib.test_bench_top_arquitectura xil_defaultlib.glbl -log elaborate.log 
+Using 8 slave threads.
+Starting static elaboration
+WARNING: [VRFC 10-278] actual bit length 5 differs from formal bit length 1 for port o_opCode [/home/matias/Documentos/arqui/arquitectura-UNC-2018/TP3/Src/Sources/top_arquitectura.v:196]
+WARNING: [VRFC 10-278] actual bit length 1 differs from formal bit length 5 for port o_opcode [/home/matias/Documentos/arqui/arquitectura-UNC-2018/TP3/Src/Sources/control.v:61]
+WARNING: [VRFC 10-278] actual bit length 11 differs from formal bit length 16 for port o_addr [/home/matias/Documentos/arqui/arquitectura-UNC-2018/TP3/Src/Sources/top_arquitectura.v:217]
+Completed static elaboration
+INFO: [XSIM 43-4323] No Change in HDL. Linking previously generated obj files to create kernel
+INFO: [USF-XSim-69] 'elaborate' step finished in '1' seconds
+Vivado Simulator 2018.2
+Time resolution is 1 ps
+relaunch_sim: Time (s): cpu = 00:00:11 ; elapsed = 00:00:07 . Memory (MB): peak = 6375.340 ; gain = 0.000 ; free physical = 922 ; free virtual = 11810
+restart
+INFO: [Simtcl 6-17] Simulation restarted
+run all
+INFO: [Common 17-41] Interrupt caught. Command should exit soon.
+INFO: [Common 17-344] 'run' was cancelled
+relaunch_sim
+INFO: [Vivado 12-5682] Launching behavioral simulation in '/home/matias/project_3_bip/project_3_bip.sim/sim_1/behav/xsim'
+INFO: [SIM-utils-51] Simulation object is 'sim_1'
+INFO: [SIM-utils-54] Inspecting design source files for 'test_bench_top_arquitectura' in fileset 'sim_1'...
+INFO: [SIM-utils-43] Exported '/home/matias/project_3_bip/project_3_bip.sim/sim_1/behav/xsim/init_ram_file.txt'
+INFO: [USF-XSim-97] Finding global include files...
+INFO: [USF-XSim-98] Fetching design files from 'sim_1'...
+INFO: [USF-XSim-2] XSim::Compile design
+INFO: [USF-XSim-61] Executing 'COMPILE and ANALYZE' step in '/home/matias/project_3_bip/project_3_bip.sim/sim_1/behav/xsim'
+xvlog --incr --relax -prj test_bench_top_arquitectura_vlog.prj
+INFO: [USF-XSim-69] 'compile' step finished in '1' seconds
+INFO: [Vivado 12-5682] Launching behavioral simulation in '/home/matias/project_3_bip/project_3_bip.sim/sim_1/behav/xsim'
+INFO: [USF-XSim-3] XSim::Elaborate design
+INFO: [USF-XSim-61] Executing 'ELABORATE' step in '/home/matias/project_3_bip/project_3_bip.sim/sim_1/behav/xsim'
+Vivado Simulator 2018.2
+Copyright 1986-1999, 2001-2018 Xilinx, Inc. All Rights Reserved.
+Running: /opt/Xilinx/Vivado/2018.2/bin/unwrapped/lnx64.o/xelab -wto cb618526eab842fe929b0747db72a72a --incr --debug typical --relax --mt 8 -L xil_defaultlib -L unisims_ver -L unimacro_ver -L secureip --snapshot test_bench_top_arquitectura_behav xil_defaultlib.test_bench_top_arquitectura xil_defaultlib.glbl -log elaborate.log 
+Using 8 slave threads.
+Starting static elaboration
+WARNING: [VRFC 10-278] actual bit length 5 differs from formal bit length 1 for port o_opCode [/home/matias/Documentos/arqui/arquitectura-UNC-2018/TP3/Src/Sources/top_arquitectura.v:196]
+WARNING: [VRFC 10-278] actual bit length 1 differs from formal bit length 5 for port o_opcode [/home/matias/Documentos/arqui/arquitectura-UNC-2018/TP3/Src/Sources/control.v:61]
+WARNING: [VRFC 10-278] actual bit length 11 differs from formal bit length 16 for port o_addr [/home/matias/Documentos/arqui/arquitectura-UNC-2018/TP3/Src/Sources/top_arquitectura.v:217]
+Completed static elaboration
+INFO: [XSIM 43-4323] No Change in HDL. Linking previously generated obj files to create kernel
+INFO: [USF-XSim-69] 'elaborate' step finished in '1' seconds
+Vivado Simulator 2018.2
+Time resolution is 1 ps
+relaunch_sim: Time (s): cpu = 00:00:09 ; elapsed = 00:00:06 . Memory (MB): peak = 6375.340 ; gain = 0.000 ; free physical = 940 ; free virtual = 11835
+restart
+INFO: [Simtcl 6-17] Simulation restarted
+run all
+$finish called at time : 12667840 ns : File "/home/matias/Documentos/arqui/arquitectura-UNC-2018/TP3/Src/Test_Benches/test_bench_top.v" Line 121
+run: Time (s): cpu = 00:00:07 ; elapsed = 00:00:07 . Memory (MB): peak = 6375.340 ; gain = 0.000 ; free physical = 860 ; free virtual = 11829
+close_sim
+INFO: [Simtcl 6-16] Simulation closed
+exit
+INFO: [Common 17-206] Exiting Vivado at Tue Oct 16 00:53:22 2018...
