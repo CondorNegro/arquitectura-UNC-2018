@@ -1,4 +1,5 @@
 # TP 3. BIP I.
+# Script que traduce a instrucciones binarias el assembler del archivo "assembler_BIP_I.txt".
 # Arquitectura de Computadoras. FCEFyN. UNC.
 # Anio 2018.
 # Autores: Lopez Gaston, Kleiner Matias.
@@ -34,7 +35,7 @@ def getOPCODE (x):
 #Constantes 
 WIDTH_MEM = 16
 CANT_BITS_OPERANDO = 11
-DEPTH_MEM = 1024
+DEPTH_MEM = 2048
 
 
 #Lectura de archivo.
