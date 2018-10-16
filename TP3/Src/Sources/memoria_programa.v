@@ -23,21 +23,21 @@ module memoria_programa
   parameter INIT_FILE = ""                        // Specify name/location of RAM initialization file if using one (leave blank if not)
 )
 (
-  input [clogb2(RAM_DEPTH)-1:0] i_addr,   // Address bus, width determined from RAM_DEPTH
+  input [clogb2(RAM_DEPTH) - 2 : 0] i_addr,   // Address bus, width determined from RAM_DEPTH
   //input [RAM_WIDTH-1:0] dina,           // RAM input data
   input i_clk,                            // Clock
   //input wea,                            // Write enable
   //input ena,                            // RAM Enable, for additional power savings, disable port when not in use
   //input rsta,                           // Output reset (does not affect memory contents)
   //input regcea,                         // Output register enable
-  output [RAM_WIDTH-1:0] o_data           // RAM output data
+  output [RAM_WIDTH - 1 : 0] o_data       // RAM output data
 );
 
   wire ena = 1 ;                  // RAM Enable, for additional power savings, disable port when not in use
   wire wea = 0 ;                  // Write enable
   wire rsta = 0 ;                 // Output reset (does not affect memory contents)
   wire regcea = 1;                // Output register enable
-  wire [RAM_WIDTH-1:0] dina = 0;  // RAM input data
+  wire [RAM_WIDTH - 1 : 0] dina = 0;  // RAM input data
 
   reg [RAM_WIDTH - 1 : 0] BRAM [RAM_DEPTH - 1 : 0];
   reg [RAM_WIDTH - 1 : 0] ram_data = {RAM_WIDTH {1'b0}};
