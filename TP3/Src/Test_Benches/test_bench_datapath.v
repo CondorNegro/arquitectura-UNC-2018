@@ -45,6 +45,7 @@ module test_bench_datapath();
 		reg_wrACC = 1'b1;
 		reg_i_opcode = 5'b00101; // ADDI
 		reg_dato_mem = 2;
+		reg_operando = 3;
 		#10 reg_reset = 1'b1; // Desactivo la accion del reset.
 		
 		// Test: Prueba reset.
@@ -52,10 +53,10 @@ module test_bench_datapath();
 		#10 reg_reset = 1'b1; // Desactivo el reset.
 
 		
-        #1 o_wrACC = 1;
-        #1 reg_selA = 0;
-        #1 reg_selB = 0;
-        #1 reg_i_opcode = 2;
+        #10 reg_wrACC = 1;
+        #10 reg_selA = 0;
+        #10 reg_selB = 0;
+        #10 reg_i_opcode = 2; //Load variable.
         
 		#100 reg_reset = 1'b0; // Reset.
 		#10 reg_reset = 1'b1; // Desactivo el reset.
