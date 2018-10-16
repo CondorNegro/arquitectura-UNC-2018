@@ -251,12 +251,14 @@ memoria_programa
 
 contador_ciclos
     #(
-        .CONTADOR_LENGTH (PC_CANT_BITS)
+        .CONTADOR_LENGTH (PC_CANT_BITS),
+        .OPCODE_LENGTH(OPCODE_LENGTH)
     )
     u_contador_ciclos_1
     (
         .i_clock (i_clock),
         .i_reset (wire_soft_reset),
+        .i_opcode(wire_opcode_instruction_decoder),
         .o_cuenta (wire_cuenta_ciclos)
     );
 

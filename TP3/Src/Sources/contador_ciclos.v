@@ -12,11 +12,13 @@
 
 module contador_ciclos
     #(
-        parameter CONTADOR_LENGTH = 11
+        parameter CONTADOR_LENGTH = 11,
+        parameter OPCODE_LENGTH =5
     )
     (
         input i_clock, 
         input i_reset,
+        input [OPCODE_LENGTH-1:0] i_opcode,
         output reg [CONTADOR_LENGTH - 1 : 0] o_cuenta
     );
 
@@ -27,8 +29,11 @@ always@( posedge i_clock) begin
     if (~ i_reset) begin
         o_cuenta <= 0;
     end 
-    else begin
+    else if (i_opcode!=0) begin
         o_cuenta <= o_cuenta + 1;
+    end
+    else begin
+        o_cuenta <= o_cuenta;
     end
 end
 
