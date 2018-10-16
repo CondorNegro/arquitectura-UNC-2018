@@ -52,8 +52,8 @@ reg [ 5 : 0 ] reg_state;
 reg [ 5 : 0 ] reg_next_state;
 reg registro_tx_done;
 reg [OUTPUT_WORD_LENGTH - 1 : 0] o_data_tx_next;
-reg [OUTPUT_WORD_LENGTH - 1 : 0] reg_data_rx;
-reg [OUTPUT_WORD_LENGTH - 1 : 0] reg_next_data_rx;
+
+
 reg [1 : 0] reg_contador_datos;   
 reg [1 : 0] reg_next_contador_datos;
 reg registro_rx_done;
@@ -72,7 +72,6 @@ always@( posedge i_clock ) begin //Memory
       registro_tx_done <= 0;
       registro_rx_done <= 0;
       o_data_tx <= 0;
-      reg_data_rx <= 0;
       reg_contador_datos <= 0;
       o_soft_reset <= 0; 
   end
@@ -82,7 +81,6 @@ always@( posedge i_clock ) begin //Memory
       registro_rx_done <= i_rx_done;
       reg_state <= reg_next_state;
       o_data_tx <= o_data_tx_next;
-      reg_data_rx <= reg_next_data_rx;
       reg_contador_datos <= reg_next_contador_datos;
       if (reg_contador_datos < 2'b10) begin
         o_soft_reset <= 0; // Reset BIP.
@@ -95,12 +93,11 @@ end
 
 
 always@(*) begin //Rx y handler soft reset.
-    if (i_rx_done & ~registro_rx_done) begin  //Deteccion de flanco ascendente.
-        reg_next_data_rx = i_data_rx;
+    if (~i_rx_done & registro_rx_done) begin  //Deteccion de flanco descendente.
         if (((reg_contador_datos == 0) && 
-            (reg_next_data_rx == 1)) ||
+            (i_data_rx == 1)) ||
             ((reg_contador_datos == 1) && 
-            (reg_next_data_rx == 2))) begin  //Señales validas.
+            (i_data_rx == 2))) begin  //Señales validas.
             
             reg_next_contador_datos = reg_contador_datos + 1; // Contador con overflow.
         
@@ -110,7 +107,6 @@ always@(*) begin //Rx y handler soft reset.
         end
     end    
     else begin
-        reg_next_data_rx = reg_data_rx;
         reg_next_contador_datos = reg_contador_datos;
     end
 end
