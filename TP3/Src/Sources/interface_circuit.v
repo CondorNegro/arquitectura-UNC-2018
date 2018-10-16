@@ -54,8 +54,8 @@ reg registro_tx_done;
 reg [OUTPUT_WORD_LENGTH - 1 : 0] o_data_tx_next;
 reg [OUTPUT_WORD_LENGTH - 1 : 0] reg_data_rx;
 reg [OUTPUT_WORD_LENGTH - 1 : 0] reg_next_data_rx;
-reg reg_contador_datos;   
-reg reg_next_contador_datos;
+reg [1 : 0] reg_contador_datos;   
+reg [1 : 0] reg_next_contador_datos;
 reg registro_rx_done;
 
 // En total envio desde la PC 2 señales. 
@@ -74,7 +74,7 @@ always@( posedge i_clock ) begin //Memory
       o_data_tx <= 0;
       reg_data_rx <= 0;
       reg_contador_datos <= 0;
-      o_soft_reset <= 1; 
+      o_soft_reset <= 0; 
   end
 
   else begin
@@ -84,7 +84,7 @@ always@( posedge i_clock ) begin //Memory
       o_data_tx <= o_data_tx_next;
       reg_data_rx <= reg_next_data_rx;
       reg_contador_datos <= reg_next_contador_datos;
-      if (reg_contador_datos == 1'b1) begin
+      if (reg_contador_datos < 2'b10) begin
         o_soft_reset <= 0; // Reset BIP.
       end
       else begin 

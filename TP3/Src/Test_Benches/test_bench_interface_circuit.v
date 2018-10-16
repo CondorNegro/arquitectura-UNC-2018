@@ -76,7 +76,7 @@ module test_bench_interface_circuit();
         #100 reg_tx_done = 1'b1; // paso a estado 5
         #100 reg_tx_done = 1'b0;
         
-        #100 reg_tx_done = 1'b1; // paso a estado 5
+        #100 reg_tx_done = 1'b1; // Prueba del ultimo estado
         #100 reg_tx_done = 1'b0;
 		
 		
