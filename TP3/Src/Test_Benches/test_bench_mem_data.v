@@ -28,7 +28,7 @@ module test_bench_memoria_datos();
    reg [11-1:0] reg_i_addr;
    reg [RAM_WIDTH-1:0] data_in;                                 
    reg reg_wea;
-   reg reg_regcea; 
+   //reg reg_regcea; 
    wire [RAM_WIDTH-1:0] wire_o_data;
    
    
