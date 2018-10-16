@@ -48,12 +48,12 @@ module test_bench_memoria_datos();
        
        #100 reg_wea = 1'b0; 
        
-       #160 data_in = 8'b00000001; // Dato a guardar.
+       #160 data_in = 8'b00000101; // Dato a guardar.
        #100 reg_wea = 1'b1; // Ahora se guarda el dato.
        #100 reg_wea = 1'b0; 
        
        
-       #100 reg_i_addr = 11'b0000001; // Seteo de direccion de mem.
+       #102 reg_i_addr = 11'b0000001; // Seteo de direccion de mem.
        #160 data_in = 8'b00000010; // Dato a guardar.
        #100 reg_wea = 1'b1; // Ahora se guarda el dato.
        #100 reg_wea = 1'b0; 
