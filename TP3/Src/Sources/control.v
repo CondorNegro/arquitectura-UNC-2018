@@ -23,7 +23,7 @@ module control
         output [1 : 0] o_selA,
         output o_selB,
         output o_wrAcc,
-        output o_opCode,
+        output [OPCODE_LENGTH - 1 : 0] o_opCode,
         output o_wr_rd_mem
     );
 
