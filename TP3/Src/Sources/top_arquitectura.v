@@ -28,7 +28,7 @@
 `define RAM_PERFORMANCE_DATOS    "LOW_LATENCY"
 `define RAM_PERFORMANCE_PROGRAMA "HIGH_PERFORMANCE"
 `define INIT_FILE_DATOS        ""
-`define INIT_FILE_PROGRAMA     "init_ram_file"      
+`define INIT_FILE_PROGRAMA     "/home/matias/Documentos/arqui/arquitectura-UNC-2018/TP3/Src/Script/init_ram_file.txt"      
 `define RAM_DEPTH_DATOS      1024
 `define RAM_DEPTH_PROGRAMA   2048
 
@@ -36,9 +36,9 @@ module top_arquitectura(
   i_clock, 
   i_reset,
   uart_txd_in,
-  uart_rxd_out
+  uart_rxd_out,
   //jc
-  //o_leds 
+  o_leds 
   );
 
 
@@ -71,7 +71,7 @@ input i_clock;                                  // Clock.
 input i_reset;                                  // Reset.
 input uart_txd_in;                              // Transmisor de PC.
 output uart_rxd_out;                            // Receptor de PC.
-//output [4 - 1 : 0] o_leds;                    // Leds.
+output [4 - 1 : 0] o_leds;                    // Leds.
 //output [7:0] jc;
 
 
@@ -123,8 +123,8 @@ interface_circuit
     .i_ACC (wire_valor_ACC),
     .o_tx_start (wire_tx_start),
     .o_data_tx (wire_data_tx),
-    .o_soft_reset (wire_soft_reset)
-   //.o_prueba (prueba)
+    .o_soft_reset (wire_soft_reset),
+    .o_prueba (o_leds)
    );
    
 

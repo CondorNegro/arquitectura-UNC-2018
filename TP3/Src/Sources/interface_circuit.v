@@ -29,8 +29,8 @@ module interface_circuit
    input [OUTPUT_WORD_LENGTH - 1 : 0] i_data_rx,
    output reg o_tx_start,
    output reg [OUTPUT_WORD_LENGTH - 1 : 0] o_data_tx,
-   output reg o_soft_reset
-  //o_prueba
+   output reg o_soft_reset,
+   output reg o_prueba
   );
 
 
@@ -45,7 +45,7 @@ localparam FIN          = 6'b100000;
 
 
 
-//output reg o_prueba;
+reg o_prueba_next;
 
 // Registros.
 reg [ 5 : 0 ] reg_state;
@@ -74,9 +74,11 @@ always@( posedge i_clock ) begin //Memory
       o_data_tx <= 0;
       reg_contador_datos <= 0;
       o_soft_reset <= 0; 
+      o_prueba <= 0;
   end
 
   else begin
+      o_prueba <= o_prueba_next;
       registro_tx_done <= i_tx_done;
       registro_rx_done <= i_rx_done;
       reg_state <= reg_next_state;
@@ -118,9 +120,11 @@ always@( * ) begin //NEXT - STATE logic
         ESPERA : begin
             if (i_opcode == HALT_OPCODE) begin
                 reg_next_state = CC_L_PART;
+                o_prueba_next = 1;
             end
             else begin
                 reg_next_state = ESPERA;
+                o_prueba_next = 0;
             end
         end
 
