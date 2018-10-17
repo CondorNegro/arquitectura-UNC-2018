@@ -33,8 +33,8 @@ lock = threading.Lock()
 # Funcion de traduccion del nombre de la operacion a su opcode correspondiente.
 def getOPCODE (x):
     return {
-        'Soft reset': '00000001',
-        'Init': '00000010',
+        'Soft reset': '10000000',
+        'Init': '01000000',
     }.get (x, '11111111')  #11111111 es el por defecto
 
 
@@ -131,7 +131,8 @@ def readResultado():
 	valor_ACC = ""
 	contador_bytes = 0
 	valor_CC = ""
-	while ((ser.inWaiting() == 1) and (contador_bytes < 5)): #inWaiting -> cantidad de bytes en buffer esperando.
+	time.sleep (0.2)
+	while ((ser.inWaiting() > 0) and (contador_bytes < 5)): #inWaiting -> cantidad de bytes en buffer esperando.
 		contador_bytes = contador_bytes + 1
 		lectura = ser.read (1)
 		etiquetaResultadoImpresion = bin(ord (lectura))[2:][::-1]
@@ -155,8 +156,8 @@ def readResultado():
 				valor_ACC = etiquetaResultadoImpresion
 			else:						# Parte alta.
 				valor_ACC = etiquetaResultadoImpresion + valor_ACC
-	etiquetaResultado.config (text = "CC: " + valor_CC + " - " + "ACC: " + valor_ACC, fg = "dark green")
-
+	etiquetaResultado.config (text = "CC:  " + valor_CC + " \n " + "ACC: " + valor_ACC, fg = "dark green")
+	
 		
 
 # Funcion para setear los datos que forman parte de la operacion
@@ -190,7 +191,7 @@ def setDatoViaThread ():
 		dato = getOPCODE ('Init')
 		if (len (dato) == 8):
 			ser.write (chr (int (dato, 2)))
-			time.sleep (1.0) #Espera.
+			#time.sleep (1.0) #Espera.
 			readResultado() #Lectura de resultado
 		else:
 			print 'Warning: Deben ser 8 bits.'
