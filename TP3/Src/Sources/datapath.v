@@ -26,7 +26,7 @@ module datapath
   input [OPCODE_LENGTH - 1 : 0] i_opcode,
   input [OPERANDO_LENGTH - 1 : 0] i_operando,
   input [OPERANDO_FINAL_LENGHT - 1 : 0] i_outmemdata,
-  output [OPERANDO_FINAL_LENGHT - 1 : 0] o_addr,
+  output [OPERANDO_LENGTH - 1 : 0] o_addr,
   output [OPERANDO_FINAL_LENGHT - 1 : 0] o_ACC
 );
 
