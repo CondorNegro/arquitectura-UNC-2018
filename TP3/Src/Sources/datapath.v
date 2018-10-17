@@ -34,7 +34,6 @@ module datapath
   // Registros.
 
   reg [OPERANDO_FINAL_LENGHT - 1 : 0] reg_ACC;
-  reg reg_aux_wrACC;
   reg signed [OPERANDO_FINAL_LENGHT - 1 : 0] reg_signo_extendido;
   reg signed [OPERANDO_FINAL_LENGHT - 1 : 0] reg_out_muxA;
   reg signed [OPERANDO_FINAL_LENGHT - 1 : 0] reg_out_muxB;
@@ -45,11 +44,9 @@ module datapath
   always @(posedge i_clock) begin
     if (~i_reset) begin // Se resetean los registros.
       reg_ACC <= 0;
-      reg_aux_wrACC <= 0;
     end
     else begin
-      reg_aux_wrACC <= i_wrACC;
-      if (i_wrACC && ~reg_aux_wrACC) begin // Deteccion de flanco ascendente.
+      if (i_wrACC) begin // Deteccion de flanco ascendente.
             reg_ACC <= reg_out_muxA;  // Escribo ACC.
       end
       else begin
