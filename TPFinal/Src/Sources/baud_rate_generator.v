@@ -1,7 +1,7 @@
  `timescale 1ns / 1ps
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
-// Trabajo Practico Nro. 3. BIP I.
+// Trabajo Practico Nro. 4. MIPS.
 // Baud Rate Generator.
 // Integrantes: Kleiner Matias, Lopez Gaston.
 // Materia: Arquitectura de Computadoras.

@@ -2,7 +2,7 @@
 
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
-// Trabajo Practico Nro. 3. BIP I.
+// Trabajo Practico Nro. 4. MIPS.
 // Modulo tx.
 // Integrantes: Kleiner Matias, Lopez Gaston.
 // Materia: Arquitectura de Computadoras.

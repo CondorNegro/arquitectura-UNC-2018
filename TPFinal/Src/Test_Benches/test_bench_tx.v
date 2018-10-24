@@ -2,7 +2,7 @@
  `timescale 1ns / 100ps
 
 //////////////////////////////////////////////////////////////////////////////////
-// Trabajo Practico Nro. 3. BIP I.
+// Trabajo Practico Nro. 4. MIPS.
 // Test bench del modulo tx.
 // Integrantes: Kleiner Matias, Lopez Gaston.
 // Materia: Arquitectura de Computadoras.
