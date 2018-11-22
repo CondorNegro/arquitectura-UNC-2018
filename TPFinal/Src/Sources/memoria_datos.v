@@ -21,7 +21,7 @@ module memoria_datos
   parameter RAM_DEPTH = 1024,                  // Specify RAM depth (number of entries)
   parameter RAM_PERFORMANCE = "LOW_LATENCY", // Select "HIGH_PERFORMANCE" or "LOW_LATENCY"
   parameter INIT_FILE = "",                       // Specify name/location of RAM initialization file if using one (leave blank if not)
-  parameter CANT_BIT_RAM_DEPTH = clogb2(RAM_DEPTH-1)                       // Specify name/location of RAM initialization file if using one (leave blank if not)
+  parameter CANT_BIT_RAM_DEPTH = clogb2(RAM_DEPTH)                       // Specify name/location of RAM initialization file if using one (leave blank if not)
   )
 
   (
