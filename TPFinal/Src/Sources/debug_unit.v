@@ -16,7 +16,7 @@ module debug_unit
   parameter HALT_OPCODE = 0,            //  Opcode de la instruccion HALT.
   parameter DATO_MEM_LENGTH = 8,            //  .
   parameter ADDR_MEM_LENGTH = 11,            //  .
-  parameter CANTIDAD_ESTADOS = 4,
+  parameter CANTIDAD_ESTADOS = 5,
   parameter LONGITUD_INSTRUCCION = 32
 
 )
@@ -26,6 +26,7 @@ module debug_unit
   input i_tx_done,
   input i_rx_done,
   input [OUTPUT_WORD_LENGTH - 1 : 0] i_data_rx,
+  input i_soft_reset_ack,
   output reg o_tx_start,
   output reg [OUTPUT_WORD_LENGTH - 1 : 0] o_data_tx,
   output reg o_soft_reset,
@@ -47,10 +48,11 @@ endfunction
 
 
 // Estados
-localparam ESPERA         = 4'b0001;
-localparam SOFT_RESET     = 4'b0010;    // L: parte menos significativa.
-localparam READ_PROGRAMA  = 4'b0100;    // H: parte mas significativa.
-localparam ESPERA_START   = 4'b1000;
+localparam ESPERA           = 5'b00001;
+localparam SOFT_RESET       = 5'b00010;    // L: parte menos significativa.
+localparam ESPERA_PC_ACK    = 5'b00100;
+localparam READ_PROGRAMA    = 5'b01000;    // H: parte mas significativa.
+localparam ESPERA_START     = 5'b10000;
 
 localparam CANT_BITS_CONTADOR_DATOS = clogb2 (LONGITUD_INSTRUCCION / OUTPUT_WORD_LENGTH);
 localparam CANT_BITS_DEPTH_MEM = 2 ** ADDR_MEM_LENGTH;
@@ -128,11 +130,20 @@ always@( * ) begin //NEXT - STATE logic
        end
 
        SOFT_RESET : begin
+           if (i_soft_reset_ack == 1'b1) begin
+               reg_next_state = ESPERA_PC_ACK;
+           end
+           else begin
+               reg_next_state = SOFT_RESET;
+           end
+       end
+
+       ESPERA_PC_ACK : begin
            if ((~i_rx_done & registro_rx_done) && (i_data_rx == 8'b00000001)) begin
                reg_next_state = READ_PROGRAMA;
            end
            else begin
-               reg_next_state = SOFT_RESET;
+               reg_next_state = ESPERA_PC_ACK;
            end
        end
 
@@ -176,6 +187,16 @@ always @ ( * ) begin //Output logic
        SOFT_RESET : begin
          o_tx_start = 0;
          o_data_tx = 0;
+         o_soft_reset = 0; //Logica por nivel bajo.
+         o_write_mem_programa = 0; //Write es en 1.
+         o_addr_mem_programa = 0;
+         o_next_dato_mem_programa = 0;
+         modo_ejecucion = 0; // Continuo.
+       end
+
+       ESPERA_PC_ACK : begin
+         o_tx_start = 1;
+         o_data_tx = 8'b00000001;
          o_soft_reset = 0; //Logica por nivel bajo.
          o_write_mem_programa = 0; //Write es en 1.
          o_addr_mem_programa = 0;
