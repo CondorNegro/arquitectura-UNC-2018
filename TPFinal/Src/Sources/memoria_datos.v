@@ -20,21 +20,25 @@ module memoria_datos
   parameter RAM_WIDTH = 32,                  // Specify RAM data width
   parameter RAM_DEPTH = 1024,                  // Specify RAM depth (number of entries)
   parameter RAM_PERFORMANCE = "LOW_LATENCY", // Select "HIGH_PERFORMANCE" or "LOW_LATENCY"
-  parameter INIT_FILE = ""                       // Specify name/location of RAM initialization file if using one (leave blank if not)
+  parameter INIT_FILE = "",                       // Specify name/location of RAM initialization file if using one (leave blank if not)
+  parameter CANT_BIT_RAM_DEPTH = clogb2(RAM_DEPTH-1)                       // Specify name/location of RAM initialization file if using one (leave blank if not)
   )
 
   (
-    input [clogb2(RAM_DEPTH-1)-1:0] i_addr,  // Address bus, width determined from RAM_DEPTH
+    input [CANT_BIT_RAM_DEPTH-1:0] i_addr,  // Address bus, width determined from RAM_DEPTH
     input [RAM_WIDTH-1:0] i_data,           // RAM input data
     input i_clk,                            // Clock
     input wea,                              // Write enable
     input ena,                            // RAM Enable, for additional power savings, disable port when not in use (1)
     input rsta,                           // Output reset (does not affect memory contents) (0)
     input regcea,                         // Output register enable (0)
-    output [RAM_WIDTH-1:0] o_data           // RAM output data
+    input soft_reset,
+    output [RAM_WIDTH-1:0] o_data,           // RAM output data
+    output reg o_reset_ack
     );
   reg [RAM_WIDTH - 1 : 0] BRAM [RAM_DEPTH - 1 : 0];
   reg [RAM_WIDTH - 1 : 0] ram_data = {RAM_WIDTH {1'b0}};
+  reg [clogb2(RAM_DEPTH-1)-1 : 0] reg_contador;
 
   // The following code either initializes the memory values to a specified file or to all zeros to match hardware
   generate
@@ -49,13 +53,29 @@ module memoria_datos
     end
   endgenerate
 
-  always @(posedge i_clk)
-    if (ena)
-      if (wea)
-        BRAM [i_addr] <= i_data;
-      else
-        ram_data <= BRAM [i_addr];
+  always @(posedge i_clk) begin
+    if (~soft_reset) begin
+      BRAM [reg_contador] <= 0;
 
+      if (reg_contador == (CANT_BIT_RAM_DEPTH-1)) begin
+        reg_contador <= reg_contador + 1;
+        o_reset_ack <= 0;
+      end
+      else begin
+        reg_contador <= reg_contador;
+        o_reset_ack <= 1;
+      end
+    end
+    else begin
+      reg_contador <= 0;
+      o_reset_ack <= 1;
+      if (ena)
+        if (wea)
+          BRAM [i_addr] <= i_data;
+        else
+          ram_data <= BRAM [i_addr];
+    end
+  end
   //  The following code generates HIGH_PERFORMANCE (use output register) or LOW_LATENCY (no output register)
   generate
     if (RAM_PERFORMANCE == "LOW_LATENCY") begin: no_output_register
