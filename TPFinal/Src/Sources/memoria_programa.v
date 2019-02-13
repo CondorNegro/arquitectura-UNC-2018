@@ -72,7 +72,7 @@ module memoria_programa
     if (~soft_reset) begin
       BRAM [reg_contador] <= {RAM_WIDTH{1'b0}};
 
-      if (reg_contador == (RAM_DEPTH-1)) begin
+      if ( reg_contador == (RAM_DEPTH-1) ||  (BRAM [reg_contador]=={RAM_WIDTH{1'b0}}) ) begin
         reg_contador <= reg_contador;
         o_reset_ack <= 0;
       end

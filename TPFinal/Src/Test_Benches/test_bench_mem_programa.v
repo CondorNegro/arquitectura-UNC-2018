@@ -70,6 +70,14 @@ module test_bench_memoria_programa();
        
        #20 reg_i_addr = 11'b0000011; // Lectura del 1 que se guardo.
        
+       
+       
+       #20 data_in = 8'b00000101; // Dato a guardar.
+       #20 reg_i_addr = 11'b0000111; // Seteo de direccion de mem.
+       #20 reg_wea = 1'b1; // Ahora se guarda el dato.
+       #20 reg_wea = 1'b0; 
+       
+       
        #100 reg_soft_reset = 1'b0;
        #30000 reg_soft_reset = 1'b1;
        
