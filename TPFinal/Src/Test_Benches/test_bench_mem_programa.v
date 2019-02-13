@@ -4,7 +4,7 @@
 
 //////////////////////////////////////////////////////////////////////////////////
 // Trabajo Practico Nro. 3. BIP I.
-// Test bench del modulo memoria_programa.
+// Test bench del modulo mem_data.
 // Integrantes: Kleiner Matias, Lopez Gaston.
 // Materia: Arquitectura de Computadoras.
 // FCEFyN. UNC.
@@ -12,49 +12,70 @@
 //////////////////////////////////////////////////////////////////////////////////
 
 
-module test_bench_mem_programa();
+module test_bench_memoria_programa();
        
    // Parametros
-   parameter RAM_WIDTH = 16;                       // Specify RAM data width
-   parameter RAM_DEPTH = 2048;                     // Specify RAM depth (number of entries)
-   parameter RAM_PERFORMANCE = "HIGH_PERFORMANCE";      // Select "HIGH_PERFORMANCE" or "LOW_LATENCY"
-   parameter INIT_FILE = "";                       // Specify name/location of RAM initialization file if using one (leave blank if not)
-   parameter CANT_BIT_RAM_DEPTH = 11;
+   parameter RAM_WIDTH = 32;                       // Specify RAM data width
+   parameter RAM_DEPTH = 1024;                     // Specify RAM depth (number of entries)
+   parameter RAM_PERFORMANCE = "LOW_LATENCY";      // Select "HIGH_PERFORMANCE" or "LOW_LATENCY"
+   parameter INIT_FILE = "";                        // Specify name/location of RAM initialization file if using one (leave blank if not)
+   
    
    //Todo puerto de salida del modulo es un cable.
    //Todo puerto de estimulo o generacion de entrada es un registro.
    
    // Entradas.
    reg clock;                                  // Clock.
-   reg [11 - 1 : 0] reg_i_addr;
-   reg [RAM_WIDTH - 1 : 0] reg_dina;
-   reg reg_softreset;  
-   //reg [RAM_WIDTH-1:0] data_in;
-   //reg reg_wea;
-   //reg reg_regcea;
-   wire [RAM_WIDTH - 1 : 0] wire_o_data;
-   wire wire_ack;
+   reg [11-1:0] reg_i_addr;
+   reg [RAM_WIDTH-1:0] data_in;                                 
+   reg reg_wea;
+   reg reg_ena;
+   reg reg_rsta;
+   reg reg_regcea;
+   reg reg_soft_reset;
+   wire wire_o_reset_ack; 
+   wire [RAM_WIDTH-1:0] wire_o_data;
    
    
    
    initial    begin
        
        clock = 1'b0;
-       reg_i_addr = 0;
-       reg_dina = 0;
-       reg_softreset = 1;
-       
-       #10000 reg_softreset = 1'b0;
-       #10000 reg_softreset = 1'b1;
-       
-       #100000 reg_softreset = 1'b0;
-       #100000 reg_softreset = 1'b1;
-       
+       reg_wea = 1'b0;
+       reg_regcea = 1'b1;
+       data_in = 8'b11011011;
+       reg_i_addr = 11'b0000000;
+       reg_ena = 1'b1;
+       reg_rsta = 1'b0;
+       reg_soft_reset = 1'b1;
         
-       #102 reg_i_addr = 11'b0000001; // Seteo de direccion de mem.
-       #100 reg_i_addr = 11'b0000010; 
-       #100 reg_i_addr = 11'b0000011; 
-       #5000 $finish;
+       //#100 reg_regcea = 1'b1; // Lectura de posicion 0, tiene que haber un 0 porque no se guardo nada todavia.
+       
+       //#100 data_in = 8'b00001111; // Dato a guardar.
+       #20 reg_wea = 1'b1; // Ahora se guarda el dato.
+       
+       #20 reg_wea = 1'b0; 
+       
+       #20 data_in = 8'b00000101; // Dato a guardar.
+       #20 reg_i_addr = 11'b0000001; // Seteo de direccion de mem.
+       #20 reg_wea = 1'b1; // Ahora se guarda el dato.
+       #20 reg_wea = 1'b0; 
+       
+       
+       
+       #20 data_in = 8'b00000010; // Dato a guardar.
+       #20 reg_i_addr = 11'b0000010; // Seteo de direccion de mem.
+       #20 reg_wea = 1'b0; // Ahora se guarda el dato.
+       
+       
+       #20 reg_i_addr = 11'b0000011; // Lectura del 1 que se guardo.
+       
+       #100 reg_soft_reset = 1'b0;
+       #30000 reg_soft_reset = 1'b1;
+       
+       
+       
+       #500000 $finish;
    end
    
    always #2.5 clock=~clock;  // Simulacion de clock.
@@ -65,23 +86,23 @@ module test_bench_mem_programa();
 memoria_programa
    #(
         .RAM_WIDTH (RAM_WIDTH),
-        .RAM_DEPTH (RAM_PERFORMANCE),
         .RAM_PERFORMANCE (RAM_PERFORMANCE),
         .INIT_FILE (INIT_FILE),
-        .CANT_BIT_RAM_DEPTH (CANT_BIT_RAM_DEPTH)
+        .RAM_DEPTH (RAM_DEPTH)
+        
     ) 
    u_memoria_programa_1    
    (
      .i_clk (clock),
      .i_addr (reg_i_addr),
-     .dina (reg_dina),
-     .wea (0),
-     .ena (1),
-     .rsta (0),
-     .regcea (1),
-     .soft_reset (reg_softreset),
-     .o_data (wire_o_data),
-     .o_reset_ack (wire_ack)
+     .i_data (data_in),
+     .wea (reg_wea),
+     .ena (reg_ena),
+     .rsta (reg_rsta),
+     .regcea (reg_regcea),
+     .soft_reset (reg_soft_reset),
+     .o_reset_ack (wire_o_reset_ack),
+     .o_data (wire_o_data)
    );
   
 endmodule
