@@ -1,10 +1,8 @@
- 
-
-`timescale 1ns / 100ps
+ `timescale 1ns / 100ps
 
 //////////////////////////////////////////////////////////////////////////////////
 // Trabajo Practico Nro. 3. BIP I.
-// Test bench del modulo mem_data.
+// Test bench del modulo debug_unit.
 // Integrantes: Kleiner Matias, Lopez Gaston.
 // Materia: Arquitectura de Computadoras.
 // FCEFyN. UNC.
@@ -12,108 +10,147 @@
 //////////////////////////////////////////////////////////////////////////////////
 
 
-module test_bench_memoria_programa();
+
+module test_bench_debug_unit();
        
    // Parametros
-   parameter RAM_WIDTH = 32;                       // Specify RAM data width
-   parameter RAM_DEPTH = 1024;                     // Specify RAM depth (number of entries)
-   parameter RAM_PERFORMANCE = "LOW_LATENCY";      // Select "HIGH_PERFORMANCE" or "LOW_LATENCY"
-   parameter INIT_FILE = "";                        // Specify name/location of RAM initialization file if using one (leave blank if not)
-   
+   parameter OUTPUT_WORD_LENGTH = 8;    //  Cantidad de bits de la palabra a transmitir.
+   parameter HALT_OPCODE = 0;            //  Opcode de la instruccion HALT.
+   parameter DATO_MEM_LENGTH = 8;            //  .
+   parameter ADDR_MEM_LENGTH = 11;            //  .
+   parameter CANTIDAD_ESTADOS = 5;
+   parameter LONGITUD_INSTRUCCION = 32;
    
    //Todo puerto de salida del modulo es un cable.
    //Todo puerto de estimulo o generacion de entrada es un registro.
    
    // Entradas.
-   reg clock;                                  // Clock.
-   reg [11-1:0] reg_i_addr;
-   reg [RAM_WIDTH-1:0] data_in;                                 
-   reg reg_wea;
-   reg reg_ena;
-   reg reg_rsta;
-   reg reg_regcea;
-   reg reg_soft_reset;
-   wire wire_o_reset_ack; 
-   wire [RAM_WIDTH-1:0] wire_o_data;
+   reg  reg_i_clock;
+   reg  reg_i_reset;
+   reg  reg_i_tx_done;
+   reg  reg_i_rx_done;
+   reg  [OUTPUT_WORD_LENGTH - 1 : 0]  reg_i_data_rx;
+   reg  reg_i_soft_reset_ack;
+   wire wire_o_tx_start;
+   wire [OUTPUT_WORD_LENGTH - 1 : 0]  wire_o_data_tx;
+   wire wire_o_soft_reset;
+   wire wire_o_write_mem_programa;
+   wire [ADDR_MEM_LENGTH - 1 : 0]  wire_o_addr_mem_programa;
+   wire [DATO_MEM_LENGTH - 1 : 0]  wire_o_dato_mem_programa;
+   wire wire_modo_ejecucion;
+                          
    
    
+ 
    
    initial    begin
+       reg_i_clock = 1'b0;
+       reg_i_reset = 1'b1; // Reset en 0, se resetea cuando se pone a 1. (Normal cerrado el boton del reset).
+       reg_i_tx_done = 1'b0;
+       reg_i_data_rx = 0;
+       reg_i_rx_done = 1'b0; //tiene que pasar a 1 cuando recibe el dato completamente.
+       reg_i_soft_reset_ack = 1'b1; //despues tiene que valer 0.
+
+
+       //hasta aca estoy en el estado 1.
+       #10 reg_i_rx_done = 1'b1;
+       #10 reg_i_rx_done = 1'b0;
        
-       clock = 1'b0;
-       reg_wea = 1'b0;
-       reg_regcea = 1'b1;
-       data_in = 8'b11011011;
-       reg_i_addr = 11'b0000000;
-       reg_ena = 1'b1;
-       reg_rsta = 1'b0;
-       reg_soft_reset = 1'b1;
-        
-       //#100 reg_regcea = 1'b1; // Lectura de posicion 0, tiene que haber un 0 porque no se guardo nada todavia.
+       //ahora paso a estado 2.
+       #50 reg_i_soft_reset_ack = 1'b0;
        
-       //#100 data_in = 8'b00001111; // Dato a guardar.
-       #20 reg_wea = 1'b1; // Ahora se guarda el dato.
+       //ahora paso a estado 3.
+       #10 reg_i_data_rx = 1'b1; 
+       #10 reg_i_rx_done = 1'b1;
+       #10 reg_i_rx_done = 1'b0;
        
-       #20 reg_wea = 1'b0; 
+       //ahora paso a estado 4, cargo el programa.
+       #10 reg_i_data_rx = 4'b1011;
        
-       #20 data_in = 8'b00000101; // Dato a guardar.
-       #20 reg_i_addr = 11'b0000001; // Seteo de direccion de mem.
-       #20 reg_wea = 1'b1; // Ahora se guarda el dato.
-       #20 reg_wea = 1'b0; 
+       #10 reg_i_rx_done = 1'b1;
+       #10 reg_i_rx_done = 1'b0;
+       #10 reg_i_rx_done = 1'b1;
+       #10 reg_i_rx_done = 1'b0;
+       #10 reg_i_rx_done = 1'b1;
+       #10 reg_i_rx_done = 1'b0;
+       #10 reg_i_rx_done = 1'b1;
+       #10 reg_i_rx_done = 1'b0; //1 instruccion, 4 veces tengo que mandar el rx done (8bits x 4 = 32)
+              
+       #10 reg_i_data_rx = 4'b1001;
+       #10 reg_i_rx_done = 1'b1;
+       #10 reg_i_rx_done = 1'b0;
+       #10 reg_i_rx_done = 1'b1;
+       #10 reg_i_rx_done = 1'b0;
+       #10 reg_i_rx_done = 1'b1;
+       #10 reg_i_rx_done = 1'b0;
+       #10 reg_i_rx_done = 1'b1;
+       #10 reg_i_rx_done = 1'b0; //1 instruccion, 4 veces tengo que mandar el rx done (8bits x 4 = 32)
        
-       
-       
-       #20 data_in = 8'b00000010; // Dato a guardar.
-       #20 reg_i_addr = 11'b0000010; // Seteo de direccion de mem.
-       #20 reg_wea = 1'b0; // Ahora se guarda el dato.
-       
-       
-       #20 reg_i_addr = 11'b0000011; // Lectura del 1 que se guardo.
-       
-       
-       
-       #20 data_in = 8'b00000101; // Dato a guardar.
-       #20 reg_i_addr = 11'b0000111; // Seteo de direccion de mem.
-       #20 reg_wea = 1'b1; // Ahora se guarda el dato.
-       #20 reg_wea = 1'b0; 
-       
-       
-       #100 reg_soft_reset = 1'b0;
-       #30000 reg_soft_reset = 1'b1;
-       
+       #10 reg_i_data_rx = 4'b1111;
+       #10 reg_i_rx_done = 1'b1;
+       #10 reg_i_rx_done = 1'b0;
+       #10 reg_i_rx_done = 1'b1;
+       #10 reg_i_rx_done = 1'b0;
+       #10 reg_i_rx_done = 1'b1;
+       #10 reg_i_rx_done = 1'b0;
+       #10 reg_i_rx_done = 1'b1;
+       #10 reg_i_rx_done = 1'b0; //1 instruccion, 4 veces tengo que mandar el rx done (8bits x 4 = 32)
        
        
-       #500000 $finish;
+       #10 reg_i_data_rx = 0;
+       #10 reg_i_rx_done = 1'b1;
+       #10 reg_i_rx_done = 1'b0;
+       #10 reg_i_rx_done = 1'b1;
+       #10 reg_i_rx_done = 1'b0;
+       #10 reg_i_rx_done = 1'b1;
+       #10 reg_i_rx_done = 1'b0;
+       #10 reg_i_rx_done = 1'b1;
+       #10 reg_i_rx_done = 1'b0; //1 instruccion, 4 veces tengo que mandar el rx done (8bits x 4 = 32)
+       
+       //ahora paso a estado 5
+       #10 reg_i_data_rx = 2'b11;
+       #10 reg_i_rx_done = 1'b1;
+       #10 reg_i_rx_done = 1'b0;
+       
+       
+       // Test 5: Prueba reset.
+       #500000 reg_i_reset = 1'b1; // Reset.
+       #10 reg_i_reset = 1'b0; // Desactivo el reset.
+
+       #1000000 $finish;
    end
    
-   always #2.5 clock=~clock;  // Simulacion de clock.
-   
+   always #2.5 reg_i_clock = ~reg_i_clock;  // Simulacion de clock.
 
 
-// Modulo para pasarle los estimulos del banco de pruebas.
-memoria_programa
+
+//Modulo para pasarle los estimulos del banco de pruebas.
+debug_unit
    #(
-        .RAM_WIDTH (RAM_WIDTH),
-        .RAM_PERFORMANCE (RAM_PERFORMANCE),
-        .INIT_FILE (INIT_FILE),
-        .RAM_DEPTH (RAM_DEPTH)
-        
+        .OUTPUT_WORD_LENGTH (OUTPUT_WORD_LENGTH),
+        .HALT_OPCODE (HALT_OPCODE),
+        .DATO_MEM_LENGTH (DATO_MEM_LENGTH),
+        .ADDR_MEM_LENGTH (ADDR_MEM_LENGTH),
+        .CANTIDAD_ESTADOS (CANTIDAD_ESTADOS),
+        .LONGITUD_INSTRUCCION (LONGITUD_INSTRUCCION)
     ) 
-   u_memoria_programa_1    
+   u_debug_unit_1    // Una sola instancia de este modulo.
    (
-     .i_clk (clock),
-     .i_addr (reg_i_addr),
-     .i_data (data_in),
-     .wea (reg_wea),
-     .ena (reg_ena),
-     .rsta (reg_rsta),
-     .regcea (reg_regcea),
-     .soft_reset (reg_soft_reset),
-     .o_reset_ack (wire_o_reset_ack),
-     .o_data (wire_o_data)
+       .i_clock (reg_i_clock),
+       .i_reset (reg_i_reset),
+       .i_tx_done (reg_i_tx_done),
+       .i_rx_done (reg_i_rx_done),
+       .i_data_rx (reg_i_data_rx),
+       .i_soft_reset_ack (reg_i_soft_reset_ack),
+       .o_tx_start (wire_o_tx_start),
+       .o_data_tx (wire_o_data_tx),
+       .o_soft_reset (wire_o_soft_reset),
+       .o_write_mem_programa (wire_o_write_mem_programa),
+       .o_addr_mem_programa (wire_o_addr_mem_programa),
+       .o_dato_mem_programa (wire_o_dato_mem_programa),
+       .modo_ejecucion (wire_modo_ejecucion)
    );
   
 endmodule
-
 
 
