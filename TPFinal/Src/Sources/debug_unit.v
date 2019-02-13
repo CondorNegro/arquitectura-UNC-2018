@@ -55,7 +55,7 @@ localparam READ_PROGRAMA    = 5'b01000;    // H: parte mas significativa.
 localparam ESPERA_START     = 5'b10000;
 
 localparam CANT_BITS_CONTADOR_DATOS = clogb2 (LONGITUD_INSTRUCCION / OUTPUT_WORD_LENGTH);
-localparam CANT_BITS_DEPTH_MEM = 2 ** ADDR_MEM_LENGTH;
+//localparam CANT_BITS_DEPTH_MEM = 2 ** ADDR_MEM_LENGTH;
 
 // Registros.
 reg [ CANTIDAD_ESTADOS - 1 : 0 ] reg_state;
@@ -63,7 +63,7 @@ reg [ CANTIDAD_ESTADOS - 1 : 0 ] reg_next_state;
 reg registro_rx_done;
 reg [LONGITUD_INSTRUCCION - 1 : 0] reg_instruccion;
 reg [CANT_BITS_CONTADOR_DATOS - 1 : 0] reg_contador_datos;
-reg [CANT_BITS_DEPTH_MEM - 1 : 0] reg_contador_addr_mem;
+reg [ADDR_MEM_LENGTH - 1 : 0] reg_contador_addr_mem;
 reg [DATO_MEM_LENGTH - 1 : 0] o_next_dato_mem_programa;
 //reg [OUTPUT_WORD_LENGTH - 1 : 0] o_data_tx_next;
 //reg registro_tx_done;
@@ -130,7 +130,7 @@ always@( * ) begin //NEXT - STATE logic
        end
 
        SOFT_RESET : begin
-           if (i_soft_reset_ack == 1'b1) begin
+           if (i_soft_reset_ack == 1'b0) begin
                reg_next_state = ESPERA_PC_ACK;
            end
            else begin
@@ -148,7 +148,7 @@ always@( * ) begin //NEXT - STATE logic
        end
 
        READ_PROGRAMA : begin
-           if ((reg_instruccion == 0) && (reg_contador_datos == { CANT_BITS_CONTADOR_DATOS {1'b1} } ) ) begin
+           if ((reg_instruccion == { LONGITUD_INSTRUCCION {1'b0} }) && (reg_contador_datos == { CANT_BITS_CONTADOR_DATOS {1'b1} } ) ) begin
                reg_next_state = ESPERA_START;
            end
            else begin
@@ -197,7 +197,7 @@ always @ ( * ) begin //Output logic
        ESPERA_PC_ACK : begin
          o_tx_start = 1;
          o_data_tx = 8'b00000001;
-         o_soft_reset = 0; //Logica por nivel bajo.
+         o_soft_reset = 1; //Logica por nivel bajo.
          o_write_mem_programa = 0; //Write es en 1.
          o_addr_mem_programa = 0;
          o_next_dato_mem_programa = 0;
