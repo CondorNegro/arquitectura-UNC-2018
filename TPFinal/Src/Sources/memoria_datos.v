@@ -16,30 +16,45 @@
   //  to the memory, the output remains unchanged.  This is the most power efficient write mode.
   //  If a reset or enable is not necessary, it may be tied off or removed from the code.
 module memoria_datos
-  #(
-  parameter RAM_WIDTH = 32,                  // Specify RAM data width
-  parameter RAM_DEPTH = 1024,                  // Specify RAM depth (number of entries)
-  parameter RAM_PERFORMANCE = "LOW_LATENCY", // Select "HIGH_PERFORMANCE" or "LOW_LATENCY"
-  parameter INIT_FILE = "",                       // Specify name/location of RAM initialization file if using one (leave blank if not)
-  parameter CANT_BIT_RAM_DEPTH = clogb2(RAM_DEPTH)                       // Specify name/location of RAM initialization file if using one (leave blank if not)
-  )
-
-  (
-    input [CANT_BIT_RAM_DEPTH-1:0] i_addr,  // Address bus, width determined from RAM_DEPTH
-    input [RAM_WIDTH-1:0] i_data,           // RAM input data
-    input i_clk,                            // Clock
-    input wea,                              // Write enable
-    input ena,                            // RAM Enable, for additional power savings, disable port when not in use (1)
-    input rsta,                           // Output reset (does not affect memory contents) (0)
-    input regcea,                         // Output register enable (0)
-    input soft_reset,
-    output [RAM_WIDTH-1:0] o_data,           // RAM output data
-    output reg o_reset_ack
+    (
+    i_addr,  // Address bus, width determined from RAM_DEPTH
+    i_data,           // RAM input data
+    i_clk,                            // Clock
+    wea,                              // Write enable
+    ena,                            // RAM Enable, for additional power savings, disable port when not in use (1)
+    rsta,                           // Output reset (does not affect memory contents) (0)
+    regcea,                         // Output register enable (0)
+    soft_reset,
+    o_data,           // RAM output data
+    o_reset_ack
     );
+  
+  
+  parameter RAM_WIDTH = 32;                  // Specify RAM data width
+  parameter RAM_DEPTH = 1024;                  // Specify RAM depth (number of entries)
+  parameter RAM_PERFORMANCE = "LOW_LATENCY"; // Select "HIGH_PERFORMANCE" or "LOW_LATENCY"
+  parameter INIT_FILE = "";                       // Specify name/location of RAM initialization file if using one (leave blank if not)  
+  
+  localparam CANT_BIT_RAM_DEPTH = clogb2(RAM_DEPTH);  
+  
+  
+  input [CANT_BIT_RAM_DEPTH-1:0] i_addr;  // Address bus, width determined from RAM_DEPTH
+  input [RAM_WIDTH-1:0] i_data;           // RAM input data
+  input i_clk;                            // Clock
+  input wea;                              // Write enable
+  input ena;                            // RAM Enable, for additional power savings, disable port when not in use (1)
+  input rsta;                           // Output reset (does not affect memory contents) (0)
+  input regcea;                         // Output register enable (0)
+  input soft_reset;
+  output [RAM_WIDTH-1:0] o_data;           // RAM output data
+  output reg o_reset_ack;
+  
+  
   reg [RAM_WIDTH - 1 : 0] BRAM [RAM_DEPTH - 1 : 0];
   reg [RAM_WIDTH - 1 : 0] ram_data = {RAM_WIDTH {1'b0}};
   reg [clogb2(RAM_DEPTH-1)-1 : 0] reg_contador;
-
+  
+  
   // The following code either initializes the memory values to a specified file or to all zeros to match hardware
   generate
     if (INIT_FILE != "") begin: use_init_file
@@ -49,20 +64,20 @@ module memoria_datos
       integer ram_index;
       initial
         for (ram_index = 0; ram_index < RAM_DEPTH; ram_index = ram_index + 1)
-           BRAM[ram_index] = {RAM_WIDTH{1'b0}};
+           BRAM[ram_index] = ram_index;
     end
   endgenerate
 
   always @(posedge i_clk) begin
     if (~soft_reset) begin
-      BRAM [reg_contador] <= 0;
+      BRAM [reg_contador] <= reg_contador;
 
-      if (reg_contador == (CANT_BIT_RAM_DEPTH-1)) begin
-        reg_contador <= reg_contador + 1;
+      if (reg_contador == (RAM_DEPTH-1)) begin
+        reg_contador <= reg_contador;
         o_reset_ack <= 0;
       end
       else begin
-        reg_contador <= reg_contador;
+        reg_contador <= reg_contador + 1;
         o_reset_ack <= 1;
       end
     end
