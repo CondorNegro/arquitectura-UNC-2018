@@ -32,7 +32,7 @@ module debug_unit
   output reg o_soft_reset,
   output reg o_write_mem_programa,
   output reg [ADDR_MEM_LENGTH - 1 : 0] o_addr_mem_programa,
-  output reg [DATO_MEM_LENGTH - 1 : 0] o_dato_mem_programa,
+  output reg [LONGITUD_INSTRUCCION - 1 : 0] o_dato_mem_programa,
   output reg modo_ejecucion
  );
 
@@ -64,9 +64,10 @@ reg registro_rx_done;
 reg [LONGITUD_INSTRUCCION - 1 : 0] reg_instruccion;
 reg [CANT_BITS_CONTADOR_DATOS - 1 : 0] reg_contador_datos;
 reg [ADDR_MEM_LENGTH - 1 : 0] reg_contador_addr_mem;
-reg [DATO_MEM_LENGTH - 1 : 0] o_next_dato_mem_programa;
+reg [LONGITUD_INSTRUCCION - 1 : 0] o_next_dato_mem_programa;
 //reg [OUTPUT_WORD_LENGTH - 1 : 0] o_data_tx_next;
-//reg registro_tx_done;
+
+reg flag_send_mem; //sirve para que el primer dato que se envia sea la instruccion valida y no un 1 (reg instruccion inicializa en 1)
 
 
 
@@ -80,6 +81,7 @@ always @ ( posedge i_clock ) begin //Memory
      reg_contador_datos <= 0;
      reg_contador_addr_mem <= 0;
      o_dato_mem_programa <= 0;
+     flag_send_mem<=0;
  end
 
  else begin
@@ -88,14 +90,17 @@ always @ ( posedge i_clock ) begin //Memory
      o_dato_mem_programa <= o_next_dato_mem_programa;
      if (reg_state == READ_PROGRAMA) begin
        if (~i_rx_done & registro_rx_done) begin
+         
          reg_instruccion <= reg_instruccion << OUTPUT_WORD_LENGTH;
          reg_instruccion [ OUTPUT_WORD_LENGTH - 1 : 0] <= i_data_rx;
          reg_contador_datos <= reg_contador_datos + 1;
-         if (reg_contador_datos ==  { CANT_BITS_CONTADOR_DATOS {1'b1} }) begin
+         if (reg_contador_datos ==  3) begin
            reg_contador_addr_mem <= reg_contador_addr_mem + 1;
+           
          end
          else begin
            reg_contador_addr_mem <= reg_contador_addr_mem;
+           flag_send_mem<=1;
          end
        end
        else begin
@@ -148,7 +153,7 @@ always@( * ) begin //NEXT - STATE logic
        end
 
        READ_PROGRAMA : begin
-           if ((reg_instruccion == { LONGITUD_INSTRUCCION {1'b0} }) && (reg_contador_datos == { CANT_BITS_CONTADOR_DATOS {1'b1} } ) ) begin
+           if ((reg_instruccion == { LONGITUD_INSTRUCCION {1'b0} }) && (reg_contador_datos == 3 )  ) begin
                reg_next_state = ESPERA_START;
            end
            else begin
@@ -204,13 +209,14 @@ always @ ( * ) begin //Output logic
          modo_ejecucion = 0; // Continuo.
        end
 
+//{ CANT_BITS_CONTADOR_DATOS {1'b1} }
        READ_PROGRAMA : begin
          o_tx_start = 0;
          o_data_tx = 0;
          o_soft_reset = 1; //Logica por nivel bajo.
          o_write_mem_programa = 1; //Write es en 1.
          o_addr_mem_programa = reg_contador_addr_mem;
-         if (reg_contador_datos ==  { CANT_BITS_CONTADOR_DATOS {1'b1} }) begin
+         if (reg_contador_datos ==  0 && flag_send_mem==1) begin
            o_next_dato_mem_programa = reg_instruccion;
          end
          else begin

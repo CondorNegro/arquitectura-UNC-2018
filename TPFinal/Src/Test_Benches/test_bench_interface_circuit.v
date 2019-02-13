@@ -2,7 +2,7 @@
 
 //////////////////////////////////////////////////////////////////////////////////
 // Trabajo Practico Nro. 3. BIP I.
-// Test bench del modulo interface_circuit.
+// Test bench del modulo debug_unit.
 // Integrantes: Kleiner Matias, Lopez Gaston.
 // Materia: Arquitectura de Computadoras.
 // FCEFyN. UNC.
@@ -11,111 +11,146 @@
 
 
 
-module test_bench_interface_circuit();
-		
-	// Parametros
-    parameter CANT_BITS_OPCODE = 5;      //  Cantidad de bits del opcode.
-    parameter CC_LENGTH = 11;            //  Cantidad de bits del contador de ciclos.
-    parameter ACC_LENGTH = 16;           //  Cantidad de bits del acumulador.
-    parameter OUTPUT_WORD_LENGTH = 8;    //  Cantidad de bits de la palabra a transmitir.
-    parameter HALT_OPCODE = 0;            //  Opcode de la instruccion HALT.
-	
-	//Todo puerto de salida del modulo es un cable.
-	//Todo puerto de estimulo o generacion de entrada es un registro.
-	
-	// Entradas.
-    reg reg_reset;
-	reg [CC_LENGTH - 1 : 0] reg_i_CC;
-	reg [ACC_LENGTH - 1 : 0] reg_i_ACC;
-	reg [CANT_BITS_OPCODE - 1 : 0] reg_i_opcode;
-	
-	reg [OUTPUT_WORD_LENGTH - 1 : 0] reg_data_rx;
-	reg reg_rx_done;                     
-    reg reg_tx_done;
-	reg reg_clock;
-	                       
-    
-	// Salidas.
-	wire wire_tx_start;
+module test_bench_debug_unit();
+       
+   // Parametros
+   parameter OUTPUT_WORD_LENGTH = 8;    //  Cantidad de bits de la palabra a transmitir.
+   parameter HALT_OPCODE = 0;            //  Opcode de la instruccion HALT.
+   parameter DATO_MEM_LENGTH = 8;            //  .
+   parameter ADDR_MEM_LENGTH = 11;            //  .
+   parameter CANTIDAD_ESTADOS = 5;
+   parameter LONGITUD_INSTRUCCION = 32;
+   
+   //Todo puerto de salida del modulo es un cable.
+   //Todo puerto de estimulo o generacion de entrada es un registro.
+   
+   // Entradas.
+   reg  reg_i_clock;
+   reg  reg_i_reset;
+   reg  reg_i_tx_done;
+   reg  reg_i_rx_done;
+   reg  [OUTPUT_WORD_LENGTH - 1 : 0]  reg_i_data_rx;
+   reg  reg_i_soft_reset_ack;
+   wire wire_o_tx_start;
+   wire [OUTPUT_WORD_LENGTH - 1 : 0]  wire_o_data_tx;
+   wire wire_o_soft_reset;
+   wire wire_o_write_mem_programa;
+   wire [ADDR_MEM_LENGTH - 1 : 0]  wire_o_addr_mem_programa;
+   wire [DATO_MEM_LENGTH - 1 : 0]  wire_o_dato_mem_programa;
+   wire wire_modo_ejecucion;
+                          
+   
+   
+ 
+   
+   initial    begin
+       reg_i_clock = 1'b0;
+       reg_i_reset = 1'b1; // Reset en 0, se resetea cuando se pone a 1. (Normal cerrado el boton del reset).
+       reg_i_tx_done = 1'b0;
+       reg_i_data_rx = 0;
+       reg_i_rx_done = 1'b0; //tiene que pasar a 1 cuando recibe el dato completamente.
+       reg_i_soft_reset_ack = 1'b1; //despues tiene que valer 0.
 
-	wire wire_soft_reset;
-    wire [OUTPUT_WORD_LENGTH - 1 : 0] wire_data_tx;
-	
-	
-	initial	begin
-		reg_clock = 1'b0;
-		reg_reset = 1'b0; // Reset en 0. (Normal cerrado el boton del reset).
-		reg_data_rx = 1;
-		reg_i_opcode = 1'b1;
-		reg_i_CC = 16'b1100001011;
-		reg_i_ACC = 16'b1000001010;
-		reg_rx_done = 1'b0;
-		reg_tx_done = 1'b0;
-		#10 reg_reset = 1'b1; // Desactivo la accion del reset.
-		
-		#1000 reg_rx_done = 1'b1;
-        #1000 reg_rx_done = 1'b0;
-		
-		#100 reg_data_rx = 2;
-		
-		
-		#1000 reg_rx_done = 1'b1;
-		#1000 reg_rx_done = 1'b0;
-		
-		#100 reg_i_opcode = 1'b0; //HALT - paso a estado 1
 
-		#100 reg_tx_done = 1'b1; // paso a estado 2
-		#100 reg_tx_done = 1'b0;
-		
-		#100 reg_tx_done = 1'b1; // paso a estado 3
-        #100 reg_tx_done = 1'b0;
-                
-        #100 reg_tx_done = 1'b1; // paso a estado 4
-        #100 reg_tx_done = 1'b0;
-        
-        #100 reg_tx_done = 1'b1; // paso a estado 5
-        #100 reg_tx_done = 1'b0;
-        
-        #100 reg_tx_done = 1'b1; // Prueba del ultimo estado
-        #100 reg_tx_done = 1'b0;
-		
-		
+       //hasta aca estoy en el estado 1.
+       #10 reg_i_rx_done = 1'b1;
+       #10 reg_i_rx_done = 1'b0;
+       
+       //ahora paso a estado 2.
+       #50 reg_i_soft_reset_ack = 1'b0;
+       
+       //ahora paso a estado 3.
+       #10 reg_i_data_rx = 1'b1; 
+       #10 reg_i_rx_done = 1'b1;
+       #10 reg_i_rx_done = 1'b0;
+       
+       //ahora paso a estado 4, cargo el programa.
+       #10 reg_i_data_rx = 4'b1011;
+       
+       #10 reg_i_rx_done = 1'b1;
+       #10 reg_i_rx_done = 1'b0;
+       #10 reg_i_rx_done = 1'b1;
+       #10 reg_i_rx_done = 1'b0;
+       #10 reg_i_rx_done = 1'b1;
+       #10 reg_i_rx_done = 1'b0;
+       #10 reg_i_rx_done = 1'b1;
+       #10 reg_i_rx_done = 1'b0; //1 instruccion, 4 veces tengo que mandar el rx done (8bits x 4 = 32)
+              
+       #10 reg_i_data_rx = 4'b1001;
+       #10 reg_i_rx_done = 1'b1;
+       #10 reg_i_rx_done = 1'b0;
+       #10 reg_i_rx_done = 1'b1;
+       #10 reg_i_rx_done = 1'b0;
+       #10 reg_i_rx_done = 1'b1;
+       #10 reg_i_rx_done = 1'b0;
+       #10 reg_i_rx_done = 1'b1;
+       #10 reg_i_rx_done = 1'b0; //1 instruccion, 4 veces tengo que mandar el rx done (8bits x 4 = 32)
+       
+       #10 reg_i_data_rx = 4'b1111;
+       #10 reg_i_rx_done = 1'b1;
+       #10 reg_i_rx_done = 1'b0;
+       #10 reg_i_rx_done = 1'b1;
+       #10 reg_i_rx_done = 1'b0;
+       #10 reg_i_rx_done = 1'b1;
+       #10 reg_i_rx_done = 1'b0;
+       #10 reg_i_rx_done = 1'b1;
+       #10 reg_i_rx_done = 1'b0; //1 instruccion, 4 veces tengo que mandar el rx done (8bits x 4 = 32)
+       
+       
+       #10 reg_i_data_rx = 0;
+       #10 reg_i_rx_done = 1'b1;
+       #10 reg_i_rx_done = 1'b0;
+       #10 reg_i_rx_done = 1'b1;
+       #10 reg_i_rx_done = 1'b0;
+       #10 reg_i_rx_done = 1'b1;
+       #10 reg_i_rx_done = 1'b0;
+       #10 reg_i_rx_done = 1'b1;
+       #10 reg_i_rx_done = 1'b0; //1 instruccion, 4 veces tengo que mandar el rx done (8bits x 4 = 32)
+       
+       //ahora paso a estado 5
+       #10 reg_i_data_rx = 2'b11;
+       #10 reg_i_rx_done = 1'b1;
+       #10 reg_i_rx_done = 1'b0;
+       
+       
+       // Test 5: Prueba reset.
+       #500000 reg_i_reset = 1'b1; // Reset.
+       #10 reg_i_reset = 1'b0; // Desactivo el reset.
 
-		// Test 5: Prueba reset.
-		#500000 reg_reset = 1'b0; // Reset.
-		#10 reg_reset = 1'b1; // Desactivo el reset.
-
-		#1000000 $finish;
-	end
-	
-	always #2.5 reg_clock = ~reg_clock;  // Simulacion de clock.
+       #1000000 $finish;
+   end
+   
+   always #2.5 reg_i_clock = ~reg_i_clock;  // Simulacion de clock.
 
 
 
 //Modulo para pasarle los estimulos del banco de pruebas.
-interface_circuit
-    #(
-         .CANT_BITS_OPCODE (CANT_BITS_OPCODE),
-         .CC_LENGTH (CC_LENGTH),
-		 .ACC_LENGTH (ACC_LENGTH),
-		 .OUTPUT_WORD_LENGTH (OUTPUT_WORD_LENGTH),
-		 .HALT_OPCODE (HALT_OPCODE)
-     ) 
-    u_interface_circuit_1    // Una sola instancia de este modulo.
-    (
-      	.i_clock (reg_clock),
-      	.i_reset (reg_reset),
-      	.i_tx_done (reg_tx_done),
-      	.i_rx_done (reg_rx_done),
-      	.i_data_rx (reg_data_rx),
-        .i_opcode(reg_i_opcode),
-        .i_CC(reg_i_CC),
-        .i_ACC(reg_i_ACC),
-		.o_tx_start (wire_tx_start),
-		.o_data_tx (wire_data_tx),
-		.o_soft_reset (wire_soft_reset)
-    );
-   
+debug_unit
+   #(
+        .OUTPUT_WORD_LENGTH (OUTPUT_WORD_LENGTH),
+        .HALT_OPCODE (HALT_OPCODE),
+        .DATO_MEM_LENGTH (DATO_MEM_LENGTH),
+        .ADDR_MEM_LENGTH (ADDR_MEM_LENGTH),
+        .CANTIDAD_ESTADOS (CANTIDAD_ESTADOS),
+        .LONGITUD_INSTRUCCION (LONGITUD_INSTRUCCION)
+    ) 
+   u_debug_unit_1    // Una sola instancia de este modulo.
+   (
+       .i_clock (reg_i_clock),
+       .i_reset (reg_i_reset),
+       .i_tx_done (reg_i_tx_done),
+       .i_rx_done (reg_i_rx_done),
+       .i_data_rx (reg_i_data_rx),
+       .i_soft_reset_ack (reg_i_soft_reset_ack),
+       .o_tx_start (wire_o_tx_start),
+       .o_data_tx (wire_o_data_tx),
+       .o_soft_reset (wire_o_soft_reset),
+       .o_write_mem_programa (wire_o_write_mem_programa),
+       .o_addr_mem_programa (wire_o_addr_mem_programa),
+       .o_dato_mem_programa (wire_o_dato_mem_programa),
+       .modo_ejecucion (wire_modo_ejecucion)
+   );
+  
 endmodule
 
- 
+
