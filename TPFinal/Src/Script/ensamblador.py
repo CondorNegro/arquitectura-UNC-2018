@@ -57,8 +57,8 @@ def getClasificacion (instr):
 		'XOR': 'R10',
 		'NOR': 'R10',
 		'SLT': 'R10',
-		'JR': 'J',
-		'JALR': 'J',
+		'JR': 'J1',
+		'JALR': 'J2',
 		'LB': 'I1-0',
 		'LH': 'I1-1',
 		'LW': 'I1-3',
@@ -87,7 +87,7 @@ def getNumeroRegistro(R):
 		registro = '0' + registro
 	return registro
 
-def getLSBR (instr):
+def getLSB (instr):
 	return {
         'SLL': '000000',
 		'SRL': '000010',
@@ -102,6 +102,8 @@ def getLSBR (instr):
 		'XOR': '100110',
 		'NOR': '100111',
 		'SLT': '101010',
+		'JR': '001000',
+		'JALR': '001001',
     }.get (instr, '000000')  #000000 es el por defecto
 
 
@@ -116,6 +118,8 @@ def getLSBR (instr):
 WIDTH_MEM = 32
 CANT_BITS_OPERANDO = 5
 CANT_BITS_CEROS_R_TYPE = 5
+CANT_BITS_CEROS_J1_TYPE = 15
+CANT_BITS_CEROS_J2_TYPE = 5
 CANT_BITS_SIN_OPCODE = 26 #32 - OPCODE 
 DEPTH_MEM = 2048
 
@@ -191,21 +195,40 @@ for comando in arreglo_parseo:
 					number_bin = '0' + number_bin
 				#print len(number_bin)
 				cadena_binaria = cadena_binaria + '0' * CANT_BITS_CEROS_R_TYPE + getNumeroRegistro (argumento[1]) +\
-				getNumeroRegistro (argumento[0]) + number_bin + getLSBR (instruccion)
+				getNumeroRegistro (argumento[0]) + number_bin + getLSB (instruccion)
 			
 			elif (clasificacion_instruccion == 'R01'):
 				#print len(number_bin)
 			    #print getNumeroRegistro (argumento[2])
 				cadena_binaria = cadena_binaria +  getNumeroRegistro (argumento[2]) +\
 				getNumeroRegistro (argumento[1]) +   getNumeroRegistro (argumento[0]) + '0' * CANT_BITS_CEROS_R_TYPE +\
-				getLSBR (instruccion)
+				getLSB (instruccion)
 			
 			elif (clasificacion_instruccion == 'R10'):
 				#print len(number_bin)
 				#print getNumeroRegistro (argumento[2])
 				cadena_binaria = cadena_binaria +  getNumeroRegistro (argumento[1]) +\
 				getNumeroRegistro (argumento[2]) +   getNumeroRegistro (argumento[0]) + '0' * CANT_BITS_CEROS_R_TYPE +\
-				getLSBR (instruccion)
+				getLSB (instruccion)
+			
+			elif (clasificacion_instruccion == 'J1'):
+				#print len(number_bin)
+				#print getNumeroRegistro (argumento[2])
+				cadena_binaria = cadena_binaria + getNumeroRegistro (argumento[0]) + '0' * CANT_BITS_CEROS_J1_TYPE +\
+				getLSB (instruccion)
+			
+			elif (clasificacion_instruccion == 'J2'):
+				#print len(number_bin)
+				#print getNumeroRegistro (argumento[2])
+				if (len(argumento) == 1):
+					cadena_binaria = cadena_binaria + getNumeroRegistro (argumento[0]) + '0' * CANT_BITS_CEROS_J2_TYPE +\
+					'1' * CANT_BITS_OPERANDO + '0' * CANT_BITS_CEROS_J2_TYPE + getLSB (instruccion)
+				elif (len(argumento)== 2):
+					cadena_binaria = cadena_binaria + getNumeroRegistro (argumento[1]) + '0' * CANT_BITS_CEROS_J2_TYPE +\
+					getNumeroRegistro (argumento[0]) + '0' * CANT_BITS_CEROS_J2_TYPE + getLSB (instruccion)
+				else:
+					print 'Instruccion JALR invalida. Fin'
+					exit (1)
 				
 		else: #Instruccion HALT
 			cadena_binaria = '0' * WIDTH_MEM
