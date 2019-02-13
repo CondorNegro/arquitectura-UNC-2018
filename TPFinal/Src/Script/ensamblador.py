@@ -19,27 +19,27 @@ def FileHandler(cadenaGlobal, nombreDeArchivo):
 
 
 # Funcion de traduccion del nombre de la operacion a su opcode correspondiente.
-def getOPCODE (clasificacion):
+def getOPCODE (instr):
     return {
-		'I1-0': '100000',
-		'I1-1': '100001',
-		'I1-3': '100011',
-		'I1-7': '100111',
-		'I1-4': '100100',
-		'I1-5': '100101',
-		'I1-8': '101000',
-		'I1-9': '101001',
-		'I1-11': '101011',
-		'I0-8': '001000',
-		'I0-12': '001100',
-		'I0-13': '001101',
-		'I0-14': '001110',
-		'I0-15': '001111',
-		'I0-10': '001010',
-		'I0-4': '000100',
-		'I0-5': '000101',
-		'I0-2': '000010',
-		'I0-3': '000011',
+		'LB': '100000',
+		'LH': '100001',
+		'LW': '100011',
+		'LWU': '100111',
+		'LBU': '100100',
+		'LHU': '100101',
+		'SB': '101000',
+		'SH': '101001',
+		'SW': '101011',
+		'ADDI': '001000',
+		'ANDI': '001100',
+		'ORI':  '001101',
+		'XORI': '001110',
+		'LUI': '001111',
+		'SLTI': '001010',
+		'BEQ': '000100',
+		'BNE': '000101',
+		'J': '000010',
+		'JAL': '000011',
     }.get (clasificacion, '000000')  #000000 es el por defecto
 
 def getClasificacion (instr):
@@ -57,27 +57,27 @@ def getClasificacion (instr):
 		'XOR': 'R10',
 		'NOR': 'R10',
 		'SLT': 'R10',
-		'JR': 'J1',
-		'JALR': 'J2',
-		'LB': 'I1-0',
-		'LH': 'I1-1',
-		'LW': 'I1-3',
-		'LWU': 'I1-7',
-		'LBU': 'I1-4',
-		'LHU': 'I1-5',
-		'SB': 'I1-8',
-		'SH': 'I1-9',
-		'SW': 'I1-11',
-		'ADDI': 'I0-8',
-		'ANDI': 'I0-12',
-		'ORI': 'I0-13',
-		'XORI': 'I0-14',
-		'LUI': 'I0-15',
-		'SLTI': 'I0-10',
-		'BEQ': 'I0-4',
-		'BNE': 'I0-5',
-		'J': 'I0-2',
-		'JAL': 'I0-3',
+		'JR': 'J0',
+		'JALR': 'J1',
+		'LB': 'I00',
+		'LH': 'I00',
+		'LW': 'I00',
+		'LWU': 'I00',
+		'LBU': 'I00',
+		'LHU': 'I00',
+		'SB': 'I00',
+		'SH': 'I00',
+		'SW': 'I00',
+		'ADDI': 'I01',
+		'ANDI': 'I01',
+		'ORI': 'I01',
+		'XORI': 'I01',
+		'LUI': 'I01',
+		'SLTI': 'I01',
+		'BEQ': 'I10',
+		'BNE': 'I10',
+		'J': 'I10',
+		'JAL': 'I10',
     }.get (instr, 'X')  #000000 es el por defecto
 
 def getNumeroRegistro(R):
@@ -177,7 +177,7 @@ for comando in arreglo_parseo:
 			if (clasificacion_instruccion == 'X'):
 				print 'Instruccion invalida. Fin.'
 				exit(1)
-			cadena_binaria = getOPCODE (clasificacion_instruccion)
+			cadena_binaria = getOPCODE (instruccion)
 			if (len (cadena_binaria) != 6):
 				print 'OPCODE distinto de 6. Fin.\n'
 				print cadena_binaria
@@ -211,13 +211,26 @@ for comando in arreglo_parseo:
 				getNumeroRegistro (argumento[2]) +   getNumeroRegistro (argumento[0]) + '0' * CANT_BITS_CEROS_R_TYPE +\
 				getLSB (instruccion)
 			
-			elif (clasificacion_instruccion == 'J1'):
+			elif (clasificacion_instruccion == 'J0'):
 				#print len(number_bin)
 				#print getNumeroRegistro (argumento[2])
 				cadena_binaria = cadena_binaria + getNumeroRegistro (argumento[0]) + '0' * CANT_BITS_CEROS_J1_TYPE +\
 				getLSB (instruccion)
 			
-			elif (clasificacion_instruccion == 'J2'):
+			elif (clasificacion_instruccion == 'J1'):
+				#print len(number_bin)
+				#print getNumeroRegistro (argumento[2])
+				if (len(argumento) == 1):
+					cadena_binaria = cadena_binaria + getNumeroRegistro (argumento[0]) + '0' * CANT_BITS_CEROS_J2_TYPE +\
+					'1' * CANT_BITS_OPERANDO + '0' * CANT_BITS_CEROS_J2_TYPE + getLSB (instruccion)
+				elif (len(argumento)== 2):
+					cadena_binaria = cadena_binaria + getNumeroRegistro (argumento[1]) + '0' * CANT_BITS_CEROS_J2_TYPE +\
+					getNumeroRegistro (argumento[0]) + '0' * CANT_BITS_CEROS_J2_TYPE + getLSB (instruccion)
+				else:
+					print 'Instruccion JALR invalida. Fin'
+					exit (1)
+			
+			elif (clasificacion_instruccion == 'I00'):
 				#print len(number_bin)
 				#print getNumeroRegistro (argumento[2])
 				if (len(argumento) == 1):
