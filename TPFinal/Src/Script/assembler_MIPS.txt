@@ -4,6 +4,9 @@
 SLL R1,R2,C
 SLLV R1,R2,R3
 AND R1,R2,R3
+JR R5
+JALR R6
+JALR R7,R6
 HLT
 //11 ciclos y resultado en ACC igual a 5.
 
