@@ -1,5 +1,5 @@
-# TP 3. BIP I.
-# Script que traduce a instrucciones binarias el assembler del archivo "assembler_BIP_I.txt".
+# TP 4. MIPS.
+# Script que traduce a instrucciones binarias el assembler del archivo "assembler_MIPS.txt".
 # Arquitectura de Computadoras. FCEFyN. UNC.
 # Anio 2018.
 # Autores: Lopez Gaston, Kleiner Matias.
@@ -21,7 +21,7 @@ def FileHandler(cadenaGlobal, nombreDeArchivo):
 # Funcion de traduccion del nombre de la operacion a su opcode correspondiente.
 def getOPCODE (x):
     return {
-        'STO': '00001',
+        'SLL': '00001',
 		'LD': '00010',
         'LDI': '00011',
 		'ADD': '00100',
@@ -33,14 +33,15 @@ def getOPCODE (x):
 
 
 #Constantes 
-WIDTH_MEM = 16
+WIDTH_MEM = 32
 CANT_BITS_OPERANDO = 11
+CANT_BITS_SIN_OPCODE = 27
 DEPTH_MEM = 2048
 
 
 #Lectura de archivo.
 cadena_linea = ""
-nombreDeArchivo =  'assembler_BIP_I.txt'
+nombreDeArchivo =  'assembler_MIPS.txt'
 
 
 try:
@@ -88,16 +89,18 @@ for comando in arreglo_parseo:
 		instruccion = comando_parsed [0]
 		cadena_binaria = getOPCODE (instruccion)
 		if (instruccion != 'HLT'):
-			argumento = comando_parsed [1] 
-			if (argumento in constantes_letras):	#Reemplazo las constantes
-				argumento = constantes_numeros [ constantes_letras.index (argumento)]
-			number_bin = bin(int(argumento))[2:]
+			argumento = comando_parsed [1]
+			argumento = argumento.split(",")
+			 
+		 	#if (argumento in constantes_letras):	#Reemplazo las constantes
+			#	argumento = constantes_numeros [ constantes_letras.index (argumento)]
+			#number_bin = bin(int(argumento))[2:]
 			#print len(number_bin)
-			for i in range(0, CANT_BITS_OPERANDO - len(number_bin)): #Me borra los ceros a la izq
-				number_bin = '0' + number_bin
-			cadena_binaria = cadena_binaria + number_bin
+			#for i in range(0, CANT_BITS_OPERANDO - len(number_bin)): #Me borra los ceros a la izq
+			#	number_bin = '0' + number_bin
+			#cadena_binaria = cadena_binaria + number_bin
 		else: #Instruccion HALT
-			cadena_binaria = cadena_binaria + '0' * CANT_BITS_OPERANDO
+			cadena_binaria = cadena_binaria + '0' * CANT_BITS_SIN_OPCODE
 		arreglo_binario.append (cadena_binaria)
 		#print cadena_binaria
 
@@ -109,11 +112,6 @@ print "\n"
 cadena_global = ""
 for i in range (len (arreglo_binario)):
 	cadena_global = cadena_global + arreglo_binario [i] + "\n"
-for i in range (DEPTH_MEM - len (arreglo_binario)):
-	if (i < (DEPTH_MEM - 1 - len (arreglo_binario))):
-		cadena_global = cadena_global + '0' * WIDTH_MEM + "\n"
-	else:
-		cadena_global = cadena_global + '0' * WIDTH_MEM
 
 FileHandler (cadena_global, "init_ram_file.txt")
 
