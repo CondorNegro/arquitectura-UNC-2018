@@ -131,8 +131,8 @@ def getLSB (instr):
 
 
 #Funcion que efectua el control de que la cantidad de argumentos pasados en la instruccion sea la correcta. 
-def controlCantArgumentos (argumentos, cantidad1, cantidad2):
-	if ((len(argumentos) != cantidad1) or (len(argumentos) != cantidad2)):
+def controlCantArgumentos (argumentos, cantidad):
+	if (len(argumentos) != cantidad):
 		print ('Cantidad de argumentos invalida. Fin.')
 		exit (1)
 
@@ -204,6 +204,7 @@ for comando in arreglo_parseo:
 			
 			# Tratamiento de instrucciones segun clasificacion
 			if (clasificacion_instruccion == 'R00'):#Instrucciones SLL, SRL y SRA.
+				controlCantArgumentos (argumento, 3)
 				if (argumento[2] in constantes_letras):	#Reemplazo las constantes
 					argumento[2] = constantes_numeros [ constantes_letras.index (argumento[2])]
 				number_bin = bin(int(argumento[2]))[2:]
@@ -213,16 +214,19 @@ for comando in arreglo_parseo:
 				getNumeroRegistro (argumento[0]) + number_bin + getLSB (instruccion)
 			
 			elif (clasificacion_instruccion == 'R01'):#Instrucciones SLLV, SRLV y SRAV.
+				controlCantArgumentos (argumento, 3)
 				cadena_binaria = cadena_binaria +  getNumeroRegistro (argumento[2]) +\
 				getNumeroRegistro (argumento[1]) +   getNumeroRegistro (argumento[0]) + '0' * CANT_BITS_CEROS_R_TYPE +\
 				getLSB (instruccion)
 			
 			elif (clasificacion_instruccion == 'R10'):#Instrucciones ADDU, SUBU, AND, OR, XOR, NOR y SLT.
+				controlCantArgumentos (argumento, 3)
 				cadena_binaria = cadena_binaria +  getNumeroRegistro (argumento[1]) +\
 				getNumeroRegistro (argumento[2]) +   getNumeroRegistro (argumento[0]) + '0' * CANT_BITS_CEROS_R_TYPE +\
 				getLSB (instruccion)
 			
 			elif (clasificacion_instruccion == 'J0'):#Instruccion JR
+				controlCantArgumentos (argumento, 1)
 				cadena_binaria = cadena_binaria + getNumeroRegistro (argumento[0]) + '0' * CANT_BITS_CEROS_J1_TYPE +\
 				getLSB (instruccion)
 			
@@ -238,6 +242,7 @@ for comando in arreglo_parseo:
 					exit (1)
 			
 			elif (clasificacion_instruccion == 'I00'):#Instrucciones LH, LB, LW, LWU, LHU, LBU, SB, SH y SW.
+				controlCantArgumentos (argumento, 2)
 				pointer_array = argumento[1].split("{")
 				pointer_array[1]=pointer_array[1][:len(pointer_array[1])-1]
 				if (pointer_array[0] in constantes_letras):	#Reemplazo las constantes
@@ -253,6 +258,7 @@ for comando in arreglo_parseo:
 
 
 			elif (clasificacion_instruccion == 'I01'): #Instrucciones ADDI, ANDI, ORI, XORI y STLI.
+				controlCantArgumentos (argumento, 3)
 				if (argumento[2] in constantes_letras):	#Reemplazo las constantes
 					argumento[2] = constantes_numeros [ constantes_letras.index (argumento[2])]
 				number_bin = bin(int(argumento[2]))[2:]
@@ -262,9 +268,7 @@ for comando in arreglo_parseo:
 					number_bin
 
 			elif (clasificacion_instruccion == 'I10'): #Instruccion LUI
-				if (len(argumento)!= 2):
-					print ('Error en la cantidad de argumentos. Fin.')
-					exit (1)
+				controlCantArgumentos (argumento, 2)
 				if (argumento[1] in constantes_letras):	#Reemplazo las constantes
 					argumento[1] = constantes_numeros [ constantes_letras.index (argumento[1])]
 				number_bin = bin(int(argumento[1]))[2:]
@@ -275,9 +279,7 @@ for comando in arreglo_parseo:
 			
 
 			elif (clasificacion_instruccion == 'I11'): #Instrucciones BEQ y BNE
-				if (len(argumento)!= 3):
-					print ('Error en la cantidad de argumentos. Fin.')
-					exit (1)
+				controlCantArgumentos (argumento, 3)
 				if (argumento[2] in constantes_letras):	#Reemplazo las constantes
 					argumento[2] = constantes_numeros [ constantes_letras.index (argumento[2])]
 				number_bin = bin(int(argumento[2]))[2:]
@@ -288,9 +290,7 @@ for comando in arreglo_parseo:
 			
 
 			elif (clasificacion_instruccion == 'I100'): #Instrucciones J y JAL
-				if (len(argumento)!= 1):
-					print ('Error en la cantidad de argumentos. Fin.')
-					exit (1)
+				controlCantArgumentos (argumento, 1)
 				if (argumento[0] in constantes_letras):	#Reemplazo las constantes
 					argumento[0] = constantes_numeros [ constantes_letras.index (argumento[0])]
 				number_bin = bin(int(argumento[0]))[2:]
