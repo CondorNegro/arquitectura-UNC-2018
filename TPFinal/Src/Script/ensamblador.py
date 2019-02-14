@@ -31,7 +31,7 @@ def FileHandler(cadenaGlobal, nombreDeArchivo):
 			exit(1)
 
 
-# Funcion de traduccion del nombre de la instruccion a su opcode correspondiente.
+# Funcion de traduccion del nombre de la instruccion a su opcode correspondiente (6 bits MSB).
 def getOPCODE (instr):
     return {
 		'LB': '100000',
@@ -181,22 +181,24 @@ for comando in arreglo_parseo:
 	if ((comando != "") and (comando != " ") and (Patron_comment not in comando) and (Patron not in comando)):
 		comando_parsed = comando.split (" ")
 		instruccion = comando_parsed [0]
-		if (instruccion != 'HLT'):
+		if (instruccion != 'HLT'): # No es instruccion HALT.
 			clasificacion_instruccion = getClasificacion (instruccion)
-			if (clasificacion_instruccion == 'X'):
+			if (clasificacion_instruccion == 'X'): #Instruccion desconocida.
 				print 'Instruccion invalida. Fin.'
 				exit(1)
-			cadena_binaria = getOPCODE (instruccion)
+			cadena_binaria = getOPCODE (instruccion) #Obtengo los 6 bits MSB de la instruccion.
 			if (len (cadena_binaria) != 6):
 				print 'OPCODE distinto de 6. Fin.\n'
 				print cadena_binaria
 				print len(cadena_binaria)
 				exit (1)
 			
+			#Split de parametros de la instruccion
 			argumento = comando_parsed [1]
 			argumento = argumento.split(",")
 			
-			if (clasificacion_instruccion == 'R00'):
+			# Tratamiento de instrucciones segun clasificacion
+			if (clasificacion_instruccion == 'R00'):#Instrucciones SLL, SRL y SRA.
 				if (argumento[2] in constantes_letras):	#Reemplazo las constantes
 					argumento[2] = constantes_numeros [ constantes_letras.index (argumento[2])]
 				number_bin = bin(int(argumento[2]))[2:]
@@ -205,21 +207,21 @@ for comando in arreglo_parseo:
 				cadena_binaria = cadena_binaria + '0' * CANT_BITS_CEROS_R_TYPE + getNumeroRegistro (argumento[1]) +\
 				getNumeroRegistro (argumento[0]) + number_bin + getLSB (instruccion)
 			
-			elif (clasificacion_instruccion == 'R01'):
+			elif (clasificacion_instruccion == 'R01'):#Instrucciones SLLV, SRLV y SRAV.
 				cadena_binaria = cadena_binaria +  getNumeroRegistro (argumento[2]) +\
 				getNumeroRegistro (argumento[1]) +   getNumeroRegistro (argumento[0]) + '0' * CANT_BITS_CEROS_R_TYPE +\
 				getLSB (instruccion)
 			
-			elif (clasificacion_instruccion == 'R10'):
+			elif (clasificacion_instruccion == 'R10'):#Instrucciones ADDU, SUBU, AND, OR, XOR, NOR y SLT.
 				cadena_binaria = cadena_binaria +  getNumeroRegistro (argumento[1]) +\
 				getNumeroRegistro (argumento[2]) +   getNumeroRegistro (argumento[0]) + '0' * CANT_BITS_CEROS_R_TYPE +\
 				getLSB (instruccion)
 			
-			elif (clasificacion_instruccion == 'J0'):
+			elif (clasificacion_instruccion == 'J0'):#Instruccion JR
 				cadena_binaria = cadena_binaria + getNumeroRegistro (argumento[0]) + '0' * CANT_BITS_CEROS_J1_TYPE +\
 				getLSB (instruccion)
 			
-			elif (clasificacion_instruccion == 'J1'):
+			elif (clasificacion_instruccion == 'J1'):#Instruccion JALR. Admite dos formatos.
 				if (len(argumento) == 1):
 					cadena_binaria = cadena_binaria + getNumeroRegistro (argumento[0]) + '0' * CANT_BITS_CEROS_J2_TYPE +\
 					'1' * CANT_BITS_OPERANDO + '0' * CANT_BITS_CEROS_J2_TYPE + getLSB (instruccion)
@@ -230,7 +232,7 @@ for comando in arreglo_parseo:
 					print 'Instruccion JALR invalida. Fin'
 					exit (1)
 			
-			elif (clasificacion_instruccion == 'I00'):
+			elif (clasificacion_instruccion == 'I00'):#Instrucciones LH, LB, LW, LWU, LHU, LBU, SB, SH y SW.
 				pointer_array = argumento[1].split("{")
 				pointer_array[1]=pointer_array[1][:len(pointer_array[1])-1]
 				if (pointer_array[0] in constantes_letras):	#Reemplazo las constantes
@@ -245,7 +247,7 @@ for comando in arreglo_parseo:
 					number_bin
 
 
-			elif (clasificacion_instruccion == 'I01'):
+			elif (clasificacion_instruccion == 'I01'): #Instrucciones ADDI, ANDI, ORI, XORI y STLI.
 				if (argumento[2] in constantes_letras):	#Reemplazo las constantes
 					argumento[2] = constantes_numeros [ constantes_letras.index (argumento[2])]
 				number_bin = bin(int(argumento[2]))[2:]
