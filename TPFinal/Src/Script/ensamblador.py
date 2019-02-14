@@ -1,7 +1,7 @@
 # TP 4. MIPS.
 # Script que traduce a instrucciones binarias el assembler del archivo "assembler_MIPS.txt".
 # Arquitectura de Computadoras. FCEFyN. UNC.
-# Anio 2018.
+# Anio 2019.
 # Autores: Lopez Gaston, Kleiner Matias.
 
 
@@ -20,7 +20,7 @@ DEPTH_MEM = 2048
 CANT_REGISTROS = 32
 NOMBRE_DE_ARCHIVO =  'assembler_MIPS.txt'
 
-#Funcion para escribir el archivo con los coeficientes.
+#Funcion para escribir el archivo con las instrucciones binarias.
 def FileHandler(cadenaGlobal, nombreDeArchivo):
 		try:
 			file=open(nombreDeArchivo,'w')
@@ -31,7 +31,7 @@ def FileHandler(cadenaGlobal, nombreDeArchivo):
 			exit(1)
 
 
-# Funcion de traduccion del nombre de la operacion a su opcode correspondiente.
+# Funcion de traduccion del nombre de la instruccion a su opcode correspondiente.
 def getOPCODE (instr):
     return {
 		'LB': '100000',
@@ -55,6 +55,7 @@ def getOPCODE (instr):
 		'JAL': '000011',
     }.get (instr, '000000')  #000000 es el por defecto
 
+# Funcion que clasifica a las instrucciones en base a su tipo y a su estructura interna.
 def getClasificacion (instr):
 	return {
         'SLL': 'R00',
@@ -91,18 +92,24 @@ def getClasificacion (instr):
 		'BNE': 'I11',
 		'J': 'I100',
 		'JAL': 'I100',
-    }.get (instr, 'X')  #000000 es el por defecto
+    }.get (instr, 'X')  #X es el por defecto
 
+
+# Funcion que traduce a binario el nombre de un registro del tipo Rn. (Por ejemplo: R1 es 00001).
 def getNumeroRegistro(R):
+	if (R[0] != 'R'):
+		print 'Notacion de registro erronea. Fin'
+		exit (1)
 	if (int(R[1:]) > (CANT_REGISTROS - 1)):
 		print 'No hay tantos registros. Fin'
 		exit (1)
 	registro = bin(int(R[1:]))[2:]
 	registro = registro [-5 : len(registro)]
-	for i in range(0, CANT_BITS_OPERANDO - len(registro)): #Me borra los ceros a la izq
+	for i in range(0, CANT_BITS_OPERANDO - len(registro)): #Me agrega los ceros a la izq
 		registro = '0' + registro
 	return registro
 
+# Funcion que devuelve para las instrucciones de Tipo R y de Tipo J los 6 bits LSB.
 def getLSB (instr):
 	return {
         'SLL': '000000',
@@ -124,7 +131,7 @@ def getLSB (instr):
 
 
 
-
+#Inicio del programa.
 
 print 'Inicio del programa'
 
