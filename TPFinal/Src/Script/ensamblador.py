@@ -4,9 +4,21 @@
 # Anio 2018.
 # Autores: Lopez Gaston, Kleiner Matias.
 
-print 'Inicio del programa'
 
+#Constantes 
+WIDTH_MEM = 32
+CANT_BITS_OPERANDO = 5
+CANT_BITS_CEROS_R_TYPE = 5
+CANT_BITS_CEROS_J1_TYPE = 15
+CANT_BITS_CEROS_J2_TYPE = 5
+CANT_BITS_OFFSET = 16
+CANT_BITS_IMMEDIATE = 16
+CANT_BITS_SIN_OPCODE = 26 #32 - OPCODE 
+CANT_BITS_CEROS_I10_TYPE = 5
+CANT_BITS_TARGET = 26
+DEPTH_MEM = 2048
 CANT_REGISTROS = 32
+NOMBRE_DE_ARCHIVO =  'assembler_MIPS.txt'
 
 #Funcion para escribir el archivo con los coeficientes.
 def FileHandler(cadenaGlobal, nombreDeArchivo):
@@ -15,8 +27,7 @@ def FileHandler(cadenaGlobal, nombreDeArchivo):
 			file.write(cadenaGlobal)
 			file.close()
 		except:
-			print 'Error en el manejo del archivo.'
-			print 'Fin.'
+ 			print ('Error en el manejo del archivo. Fin.')
 			exit(1)
 
 
@@ -71,15 +82,15 @@ def getClasificacion (instr):
 		'SH': 'I00',
 		'SW': 'I00',
 		'ADDI': 'I01',
-		'ANDI': 'I10',
-		'ORI': 'I10',
-		'XORI': 'I10',
-		'LUI': 'I11',
-		'SLTI': 'I11',
-		'BEQ': 'I100',
-		'BNE': 'I100',
-		'J': 'I101',
-		'JAL': 'I101',
+		'ANDI': 'I01',
+		'ORI': 'I01',
+		'XORI': 'I01',
+		'LUI': 'I10',
+		'SLTI': 'I01',
+		'BEQ': 'I11',
+		'BNE': 'I11',
+		'J': 'I100',
+		'JAL': 'I100',
     }.get (instr, 'X')  #000000 es el por defecto
 
 def getNumeroRegistro(R):
@@ -115,28 +126,13 @@ def getLSB (instr):
 
 
 
-
-
-
-
-#Constantes 
-WIDTH_MEM = 32
-CANT_BITS_OPERANDO = 5
-CANT_BITS_CEROS_R_TYPE = 5
-CANT_BITS_CEROS_J1_TYPE = 15
-CANT_BITS_CEROS_J2_TYPE = 5
-CANT_BITS_OFFSET = 16
-CANT_BITS_SIN_OPCODE = 26 #32 - OPCODE 
-DEPTH_MEM = 2048
-
+print 'Inicio del programa'
 
 #Lectura de archivo.
 cadena_linea = ""
-nombreDeArchivo =  'assembler_MIPS.txt'
-
 
 try:
-	file = open (nombreDeArchivo, 'r')
+	file = open (NOMBRE_DE_ARCHIVO, 'r')
 	cadena_linea = file.read()
 	file.close()
 except:
@@ -199,33 +195,24 @@ for comando in arreglo_parseo:
 				number_bin = bin(int(argumento[2]))[2:]
 				for i in range(0, CANT_BITS_OPERANDO - len(number_bin)): #Me agrega los ceros a la izq
 					number_bin = '0' + number_bin
-				#print len(number_bin)
 				cadena_binaria = cadena_binaria + '0' * CANT_BITS_CEROS_R_TYPE + getNumeroRegistro (argumento[1]) +\
 				getNumeroRegistro (argumento[0]) + number_bin + getLSB (instruccion)
 			
 			elif (clasificacion_instruccion == 'R01'):
-				#print len(number_bin)
-			    #print getNumeroRegistro (argumento[2])
 				cadena_binaria = cadena_binaria +  getNumeroRegistro (argumento[2]) +\
 				getNumeroRegistro (argumento[1]) +   getNumeroRegistro (argumento[0]) + '0' * CANT_BITS_CEROS_R_TYPE +\
 				getLSB (instruccion)
 			
 			elif (clasificacion_instruccion == 'R10'):
-				#print len(number_bin)
-				#print getNumeroRegistro (argumento[2])
 				cadena_binaria = cadena_binaria +  getNumeroRegistro (argumento[1]) +\
 				getNumeroRegistro (argumento[2]) +   getNumeroRegistro (argumento[0]) + '0' * CANT_BITS_CEROS_R_TYPE +\
 				getLSB (instruccion)
 			
 			elif (clasificacion_instruccion == 'J0'):
-				#print len(number_bin)
-				#print getNumeroRegistro (argumento[2])
 				cadena_binaria = cadena_binaria + getNumeroRegistro (argumento[0]) + '0' * CANT_BITS_CEROS_J1_TYPE +\
 				getLSB (instruccion)
 			
 			elif (clasificacion_instruccion == 'J1'):
-				#print len(number_bin)
-				#print getNumeroRegistro (argumento[2])
 				if (len(argumento) == 1):
 					cadena_binaria = cadena_binaria + getNumeroRegistro (argumento[0]) + '0' * CANT_BITS_CEROS_J2_TYPE +\
 					'1' * CANT_BITS_OPERANDO + '0' * CANT_BITS_CEROS_J2_TYPE + getLSB (instruccion)
@@ -252,26 +239,56 @@ for comando in arreglo_parseo:
 
 
 			elif (clasificacion_instruccion == 'I01'):
-				pointer_array = argumento[1].split("{")
-				pointer_array[1]=pointer_array[1][:len(pointer_array[1])-1]
-				if (pointer_array[0] in constantes_letras):	#Reemplazo las constantes
-					pointer_array[0] = constantes_numeros [ constantes_letras.index (pointer_array[0])]
-				number_bin = bin(int(pointer_array[0]))[2:]
-				for i in range(0, CANT_BITS_OFFSET - len(number_bin)): #Me agrega los ceros a la izq
+				if (argumento[2] in constantes_letras):	#Reemplazo las constantes
+					argumento[2] = constantes_numeros [ constantes_letras.index (argumento[2])]
+				number_bin = bin(int(argumento[2]))[2:]
+				for i in range(0, CANT_BITS_IMMEDIATE - len(number_bin)): #Me agrega los ceros a la izq
 					number_bin = '0' + number_bin
-				if ((int(pointer_array[0]) % 4) != 0):
-					print 'Direccion no alineada. Fin.'
-					exit (1)
-				cadena_binaria = cadena_binaria + getNumeroRegistro (pointer_array[1]) + getNumeroRegistro (argumento[0]) +\
+				cadena_binaria = cadena_binaria + getNumeroRegistro (argumento[1]) + getNumeroRegistro (argumento[0]) +\
 					number_bin
 
+			elif (clasificacion_instruccion == 'I10'): #Instruccion LUI
+				if (len(argumento)!= 2):
+					print 'Error en la cantidad de argumentos. Fin.'
+					exit (1)
+				if (argumento[1] in constantes_letras):	#Reemplazo las constantes
+					argumento[1] = constantes_numeros [ constantes_letras.index (argumento[1])]
+				number_bin = bin(int(argumento[1]))[2:]
+				for i in range(0, CANT_BITS_IMMEDIATE - len(number_bin)): #Me agrega los ceros a la izq
+					number_bin = '0' + number_bin
+				cadena_binaria = cadena_binaria + '0' * CANT_BITS_CEROS_I10_TYPE + getNumeroRegistro (argumento[0]) +\
+					 number_bin
+			
+
+			elif (clasificacion_instruccion == 'I11'): #Instrucciones BEQ y BNE
+				if (len(argumento)!= 3):
+					print 'Error en la cantidad de argumentos. Fin.'
+					exit (1)
+				if (argumento[2] in constantes_letras):	#Reemplazo las constantes
+					argumento[2] = constantes_numeros [ constantes_letras.index (argumento[2])]
+				number_bin = bin(int(argumento[2]))[2:]
+				for i in range(0, CANT_BITS_OFFSET - len(number_bin)): #Me agrega los ceros a la izq
+					number_bin = '0' + number_bin
+				cadena_binaria = cadena_binaria + getNumeroRegistro (argumento[0]) + getNumeroRegistro (argumento[1]) +\
+					 number_bin
+			
+
+			elif (clasificacion_instruccion == 'I100'): #Instrucciones J y JAL
+				if (len(argumento)!= 1):
+					print 'Error en la cantidad de argumentos. Fin.'
+					exit (1)
+				if (argumento[0] in constantes_letras):	#Reemplazo las constantes
+					argumento[0] = constantes_numeros [ constantes_letras.index (argumento[0])]
+				number_bin = bin(int(argumento[0]))[2:]
+				for i in range(0, CANT_BITS_TARGET - len(number_bin)): #Me agrega los ceros a la izq
+					number_bin = '0' + number_bin
+				cadena_binaria = cadena_binaria + number_bin
 				
 				
 		else: #Instruccion HALT
 			cadena_binaria = '0' * WIDTH_MEM
 		arreglo_binario.append (cadena_binaria)
-		#print cadena_binaria
-
+		
 print "\nArreglo binario: "
 print arreglo_binario
 print "\n"
@@ -283,7 +300,7 @@ for i in range (len (arreglo_binario)):
 
 FileHandler (cadena_global, "init_ram_file.txt")
 
-print "Escritura de archivo correcta."
-print "Se escribieron %d lineas con instrucciones.\n" % len(arreglo_binario)
+print ("Escritura de archivo correcta.")
+print ("Se escribieron %d lineas con instrucciones.\n") % len(arreglo_binario)
 
-print 'Fin'
+print ('Fin')

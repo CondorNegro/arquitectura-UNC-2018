@@ -1,5 +1,5 @@
 #A 16
-#B -2
+#B 2
 #C 5
 SLL R1,R2,C
 SLLV R1,R2,R3
@@ -9,6 +9,11 @@ JALR R6
 JALR R7,R6
 SW R31,A{R1}
 ADDI R1,R2,B
+XORI R4,R6,A
+LUI R5,A
+SLTI R7,R8,C
+BNE R9,R31,B
+J C
 HLT
 //11 ciclos y resultado en ACC igual a 5.
 
