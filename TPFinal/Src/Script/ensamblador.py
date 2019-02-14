@@ -200,6 +200,8 @@ def acondicionarArgumentos (argumento, tipo, cant_bits_req):
 			if (not flag_binario):
 				if ((int (argumento)) >= 0): #Valor decimal positivo
 					cadena = bin(int(argumento))[2:]
+					if (len(cadena) < cant_bits_req):
+						cadena = '0' + cadena
 				else: #Valor decimal negativo.
 					cadena = complementoADos (argumento, cant_bits_req)
 			for i in range(0, cant_bits_req - len(cadena)): #Agrega los ceros o unos a la izq
