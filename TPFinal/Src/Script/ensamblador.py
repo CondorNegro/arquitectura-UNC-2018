@@ -136,6 +136,14 @@ def controlCantArgumentos (argumentos, cantidad):
 		print ('Cantidad de argumentos invalida. Fin.')
 		exit (1)
 
+#Funcion que efectua el control de que dos registros no sean iguales. En caso de ser el mismo registro genera un error.
+def controlIgualdadRegistros (registro1, registro2):
+	print registro1
+	print registro2
+	if (registro1 == registro2):
+		print ("Error. Los registros son iguales. Fin")
+		exit (1)
+
 #Inicio del programa.
 
 print ('Inicio del programa')
@@ -232,9 +240,11 @@ for comando in arreglo_parseo:
 			
 			elif (clasificacion_instruccion == 'J1'):#Instruccion JALR. Admite dos formatos.
 				if (len(argumento) == 1):
+					controlIgualdadRegistros (argumento[0], 'R31')
 					cadena_binaria = cadena_binaria + getNumeroRegistro (argumento[0]) + '0' * CANT_BITS_CEROS_J2_TYPE +\
 					'1' * CANT_BITS_OPERANDO + '0' * CANT_BITS_CEROS_J2_TYPE + getLSB (instruccion)
 				elif (len(argumento)== 2):
+					controlIgualdadRegistros (argumento[0], argumento[1])
 					cadena_binaria = cadena_binaria + getNumeroRegistro (argumento[1]) + '0' * CANT_BITS_CEROS_J2_TYPE +\
 					getNumeroRegistro (argumento[0]) + '0' * CANT_BITS_CEROS_J2_TYPE + getLSB (instruccion)
 				else:
