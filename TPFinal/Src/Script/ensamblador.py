@@ -105,7 +105,12 @@ def getNumeroRegistro(reg):
 	if (int(reg[1:]) > (CANT_REGISTROS - 1)):
 		print ('No hay tantos registros. Fin')
 		exit (1)
-	registro = bin(int(reg[1:]))[2:]
+	registro = ""
+	try:
+		registro = bin(int(reg[1:]))[2:]
+	except:
+		print ('Error en obtener binario. (Funcion getNumeroRegistro). Fin')
+		exit(1)
 	registro = registro [-5 : len(registro)]
 	for i in range(0, CANT_BITS_OPERANDO - len(registro)): #Me agrega los ceros a la izq
 		registro = '0' + registro
@@ -147,7 +152,12 @@ def controlIgualdadRegistros (registro1, registro2):
 #Funcion que efectua el complemento a 2 de un argumento decimal. Cantidad de bits del resultado 
 #es teniendo en cuenta el valor de cant_bits pasado como parametro. 
 def complementoADos (argumento, cant_bits):
-	numero = bin(int(argumento) * (-1))[2:] #Obtengo binario
+	numero = ""
+	try:
+		numero = bin(int(argumento) * (-1))[2:] #Obtengo binario
+	except:
+		print ("Error en obtener binario. (Funcion complementoADos). Fin ")
+		exit(1)
 	flag_once = False #Variable para detectar leyendo desde la derecha el primer uno.
 	for i in range (-1, - len(numero), -1): #Recorro el binario desde derecha a izquierda
 		if (flag_once): #Despues del uno menos significativos, todos los demas bits MSB se invierten.
@@ -193,13 +203,21 @@ def acondicionarArgumentos (argumento, tipo, cant_bits_req):
 	elif ((cant_bits_req - len(cadena))> 0): #Faltan bits por completar. Si es un valor decimal, ingresa aqui.
 		if (tipo == "unsigned"):#Procesamiento unsigned.
 			if (not flag_binario):#Valor decimal
-				cadena = bin(int(argumento))[2:]
+				try:
+					cadena = bin(int(argumento))[2:]
+				except:
+					print ("Error en obtener binario. (Funcion acondicionarArgumentos - unsigned). Fin")
+					exit (1)
 			for i in range(0, cant_bits_req - len(cadena)): #Agrega los ceros a la izq
 				cadena = '0' + cadena
 		elif (tipo == "signed"):#Procesamiento signed.
 			if (not flag_binario):
 				if ((int (argumento)) >= 0): #Valor decimal positivo
-					cadena = bin(int(argumento))[2:]
+					try:
+						cadena = bin(int(argumento))[2:]
+					except:
+						print ("Error en obtener binario. (Funcion acondicionarArgumentos - signed). Fin")
+						exit (1)
 					if (len(cadena) < cant_bits_req):
 						cadena = '0' + cadena
 				else: #Valor decimal negativo.
