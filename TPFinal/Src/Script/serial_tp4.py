@@ -1,6 +1,6 @@
-# TP 3. BIP I.
+# TP 4. MIPS.
 # Arquitectura de Computadoras. FCEFyN. UNC.
-# Anio 2018.
+# Anio 2019.
 # Autores: Lopez Gaston, Kleiner Matias.
 
 try:
@@ -28,6 +28,7 @@ ser = serial.Serial()
 banderaPuertoLoop = 0
 estadoPuerto = "NO CONECTADO"
 etiquetaResultadoImpresion = "Resultado"
+etiquetaResultadoModoDeEjecucion = ""
 lock = threading.Lock()
 
 # Funcion de traduccion del nombre de la operacion a su opcode correspondiente.
@@ -201,7 +202,19 @@ def setDatoViaThread ():
 		print 'Error en el seteo de los datos.'
 		etiquetaResultado.config (text = "ERROR_LOG", fg = "red")
 		activarBotones()
-		
+
+
+def softReset():
+	print "Hola"
+
+def sendInstructions():
+	print "Holis"
+
+def iniciarMIPS():
+	print "Chauchis"
+
+def setModoEjecucion():
+	print "HOLA"
 
 # Funcion al presionar el boton salir.	
 def salir():
@@ -217,9 +230,9 @@ def salir():
 #Ventana principal - Configuracion
 
 root = Tk() 
-root.geometry ("350x380+0+0") #Tamanio
-root.minsize (height=350, width=380)
-root.maxsize (height=350, width=380)
+root.geometry ("560x380+0+0") #Tamanio
+root.minsize (height=560, width=380)
+root.maxsize (height=560, width=380)
 
 # Rectangulos divisorios
 
@@ -228,21 +241,38 @@ canvasPuerto.create_rectangle (5, 5, 340, 80, outline='gray60')
 canvasPuerto.place (x=1, y=1)
 
 canvasOperaciones = Canvas (root)
-canvasOperaciones.config (width = 340, height = 300)
+canvasOperaciones.config (width = 340, height = 330)
 canvasOperaciones.create_rectangle (5, 5, 340, 180, outline='gray60')
 canvasOperaciones.place (x=1, y=100)
 
+canvasSetModoEjecucion = Canvas (root)
+canvasSetModoEjecucion.config (width = 340, height = 390)
+canvasSetModoEjecucion.create_rectangle (5, 5, 340, 120, outline='gray60')
+canvasSetModoEjecucion.place (x=1, y=290)
+
+canvasResultado = Canvas (root)
+canvasResultado.config (width = 340, height = 330)
+canvasResultado.create_rectangle (5, 5, 340, 70, outline='gray60')
+canvasResultado.place (x=1, y=420)
 
 
 # Text boxes
 
 campoPuerto = Entry (root) #Para ingresar texto.
 campoPuerto.place (x = 87, y = 25)
+campoModoEjecucion = Entry (root)
+campoModoEjecucion.place (x = 20, y = 355)
+
 
 # Botones
-
-botonIniciarBIP = Button (root, text = "Iniciar BIP I", command = lambda: setDato (), state = DISABLED)
-botonIniciarBIP.place (x = 100, y = 150, width = 150, height = 30)
+botonSoftReset = Button (root, text = "Soft reset", command = lambda: softReset (), state = DISABLED)
+botonSoftReset.place (x = 100, y = 150, width = 150, height = 30)
+botonSendInstructions = Button (root, text = "Enviar instrucciones", command = lambda: sendInstructions (), state = DISABLED)
+botonSendInstructions.place (x = 100, y = 190, width = 150, height = 30)
+botonSetModoEjecucion = Button (root, text = "Set modo de ejecucion", command = lambda: setModoEjecucion (), state = DISABLED)
+botonSetModoEjecucion.place (x = 180, y = 345, width = 150, height = 30)
+botonIniciarMIPS = Button (root, text = "Iniciar MIPS", command = lambda: iniciarMIPS (), state = DISABLED)
+botonIniciarMIPS.place (x = 100, y = 230, width = 150, height = 30)
 
 ### Botones - Conexion y desconexion FPGA
 
@@ -253,7 +283,7 @@ botonDesconectarFPGA.place (x = 250, y = 40, width = 80, height = 30)
 
 ### Boton - Finalizar programa
 botonSalir = Button (root, text = "Exit", command = lambda: salir(), state = ACTIVE)
-botonSalir.place (x = 150, y = 300, width = 80, height = 30)
+botonSalir.place (x = 100, y = 510, width = 150, height = 30)
 
 
 
@@ -266,16 +296,22 @@ etiquetaPuertoMensajeEstado = Label (root, text = "Status     : ")
 etiquetaPuertoMensajeEstado.place (x = 20, y = 50)
 etiquetaPuertoEstado = Label (root, text = estadoPuerto, fg = "red")
 etiquetaPuertoEstado.place (x = 87, y = 50)
-etiquetaInputDatos = Label (root, text = "Iniciar sistema: ", font = "TkDefaultFont 12")
+etiquetaInputDatos = Label (root, text = "Comandos del sistema: ", font = "TkDefaultFont 12")
 etiquetaInputDatos.place (x = 10,  y = 110)
 etiquetaOutputResultado = Label (root, text = "Resultado: ", font = "TkDefaultFont 12")
-etiquetaOutputResultado.place (x = 10,  y = 200)
+etiquetaOutputResultado.place (x = 10,  y = 430)
 etiquetaResultado = Label (root, text = etiquetaResultadoImpresion, fg = "dark green", font = "TkDefaultFont 12")
-etiquetaResultado.place (x = 10, y = 230)
+etiquetaResultado.place (x = 10, y = 460)
+etiquetaModoEjecucion = Label (root, text = "Setear modo de ejecucion:", font = "TkDefaultFont 12")
+etiquetaModoEjecucion.place (x = 10, y = 300)
+etiquetaInfoModoEjecucion = Label (root, text = "0 (Continuo) - 1 (Debug)", font = "TkDefaultFont 9")
+etiquetaInfoModoEjecucion.place (x = 10, y = 330)
+etiquetaResultadoModoEjecucion = Label (root, text = etiquetaResultadoModoDeEjecucion, font = "TkDefaultFont 9")
+etiquetaResultadoModoEjecucion.place (x = 10, y = 380)
 
 # Titulo de la GUI 
 
-root.title ("TP3 BIP I - Kleiner Matias, Lopez Gaston")
+root.title ("TP4 MIPS - Kleiner Matias, Lopez Gaston")
 
   
 # Ejecucion de loop propio de GUI
