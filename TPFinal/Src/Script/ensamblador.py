@@ -138,8 +138,6 @@ def controlCantArgumentos (argumentos, cantidad):
 
 #Funcion que efectua el control de que dos registros no sean iguales. En caso de ser el mismo registro genera un error.
 def controlIgualdadRegistros (registro1, registro2):
-	print registro1
-	print registro2
 	if (registro1 == registro2):
 		print ("Error. Los registros son iguales. Fin")
 		exit (1)
