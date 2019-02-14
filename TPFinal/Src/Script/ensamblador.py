@@ -6,6 +6,8 @@
 
 print 'Inicio del programa'
 
+CANT_REGISTROS = 32
+
 #Funcion para escribir el archivo con los coeficientes.
 def FileHandler(cadenaGlobal, nombreDeArchivo):
 		try:
@@ -40,7 +42,7 @@ def getOPCODE (instr):
 		'BNE': '000101',
 		'J': '000010',
 		'JAL': '000011',
-    }.get (clasificacion, '000000')  #000000 es el por defecto
+    }.get (instr, '000000')  #000000 es el por defecto
 
 def getClasificacion (instr):
 	return {
@@ -69,20 +71,23 @@ def getClasificacion (instr):
 		'SH': 'I00',
 		'SW': 'I00',
 		'ADDI': 'I01',
-		'ANDI': 'I01',
-		'ORI': 'I01',
-		'XORI': 'I01',
-		'LUI': 'I01',
-		'SLTI': 'I01',
-		'BEQ': 'I10',
-		'BNE': 'I10',
-		'J': 'I10',
-		'JAL': 'I10',
+		'ANDI': 'I10',
+		'ORI': 'I10',
+		'XORI': 'I10',
+		'LUI': 'I11',
+		'SLTI': 'I11',
+		'BEQ': 'I100',
+		'BNE': 'I100',
+		'J': 'I101',
+		'JAL': 'I101',
     }.get (instr, 'X')  #000000 es el por defecto
 
 def getNumeroRegistro(R):
+	if (int(R[1:]) > (CANT_REGISTROS - 1)):
+		print 'No hay tantos registros. Fin'
+		exit (1)
 	registro = bin(int(R[1:]))[2:]
-	registro = registro [len(registro) - 6 : len(registro)]
+	registro = registro [-5 : len(registro)]
 	for i in range(0, CANT_BITS_OPERANDO - len(registro)): #Me borra los ceros a la izq
 		registro = '0' + registro
 	return registro
@@ -120,6 +125,7 @@ CANT_BITS_OPERANDO = 5
 CANT_BITS_CEROS_R_TYPE = 5
 CANT_BITS_CEROS_J1_TYPE = 15
 CANT_BITS_CEROS_J2_TYPE = 5
+CANT_BITS_OFFSET = 16
 CANT_BITS_SIN_OPCODE = 26 #32 - OPCODE 
 DEPTH_MEM = 2048
 
@@ -231,17 +237,35 @@ for comando in arreglo_parseo:
 					exit (1)
 			
 			elif (clasificacion_instruccion == 'I00'):
-				#print len(number_bin)
-				#print getNumeroRegistro (argumento[2])
-				if (len(argumento) == 1):
-					cadena_binaria = cadena_binaria + getNumeroRegistro (argumento[0]) + '0' * CANT_BITS_CEROS_J2_TYPE +\
-					'1' * CANT_BITS_OPERANDO + '0' * CANT_BITS_CEROS_J2_TYPE + getLSB (instruccion)
-				elif (len(argumento)== 2):
-					cadena_binaria = cadena_binaria + getNumeroRegistro (argumento[1]) + '0' * CANT_BITS_CEROS_J2_TYPE +\
-					getNumeroRegistro (argumento[0]) + '0' * CANT_BITS_CEROS_J2_TYPE + getLSB (instruccion)
-				else:
-					print 'Instruccion JALR invalida. Fin'
+				pointer_array = argumento[1].split("{")
+				pointer_array[1]=pointer_array[1][:len(pointer_array[1])-1]
+				if (pointer_array[0] in constantes_letras):	#Reemplazo las constantes
+					pointer_array[0] = constantes_numeros [ constantes_letras.index (pointer_array[0])]
+				number_bin = bin(int(pointer_array[0]))[2:]
+				for i in range(0, CANT_BITS_OFFSET - len(number_bin)): #Me agrega los ceros a la izq
+					number_bin = '0' + number_bin
+				if ((int(pointer_array[0]) % 4) != 0):
+					print 'Direccion no alineada. Fin.'
 					exit (1)
+				cadena_binaria = cadena_binaria + getNumeroRegistro (pointer_array[1]) + getNumeroRegistro (argumento[0]) +\
+					number_bin
+
+
+			elif (clasificacion_instruccion == 'I01'):
+				pointer_array = argumento[1].split("{")
+				pointer_array[1]=pointer_array[1][:len(pointer_array[1])-1]
+				if (pointer_array[0] in constantes_letras):	#Reemplazo las constantes
+					pointer_array[0] = constantes_numeros [ constantes_letras.index (pointer_array[0])]
+				number_bin = bin(int(pointer_array[0]))[2:]
+				for i in range(0, CANT_BITS_OFFSET - len(number_bin)): #Me agrega los ceros a la izq
+					number_bin = '0' + number_bin
+				if ((int(pointer_array[0]) % 4) != 0):
+					print 'Direccion no alineada. Fin.'
+					exit (1)
+				cadena_binaria = cadena_binaria + getNumeroRegistro (pointer_array[1]) + getNumeroRegistro (argumento[0]) +\
+					number_bin
+
+				
 				
 		else: #Instruccion HALT
 			cadena_binaria = '0' * WIDTH_MEM
