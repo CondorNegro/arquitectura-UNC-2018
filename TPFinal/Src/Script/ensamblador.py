@@ -19,6 +19,8 @@ CANT_BITS_TARGET = 26
 DEPTH_MEM = 2048
 CANT_REGISTROS = 32
 NOMBRE_DE_ARCHIVO =  'assembler_MIPS.txt'
+global constantes_letras #Etiquetas
+global constantes_numeros #Valores de las etiquetas
 
 #Funcion para escribir el archivo con las instrucciones binarias.
 def FileHandler(cadena_global, nombre_de_archivo):
@@ -142,6 +144,69 @@ def controlIgualdadRegistros (registro1, registro2):
 		print ("Error. Los registros son iguales. Fin")
 		exit (1)
 
+#Funcion que efectua el complemento a 2 de un argumento decimal. Cantidad de bits del resultado 
+#es teniendo en cuenta el valor de cant_bits pasado como parametro. 
+def complementoADos (argumento, cant_bits):
+	numero = bin(int(argumento) * (-1))[2:] #Obtengo binario
+	flag_once = False #Variable para detectar leyendo desde la derecha el primer uno.
+	for i in range (-1, - len(numero), -1): #Recorro el binario desde derecha a izquierda
+		if (flag_once): #Despues del uno menos significativos, todos los demas bits MSB se invierten.
+			if (numero[i] == '0'):
+				numero[i] = '1'
+			else:
+				numero [i] = '0' 
+		if ((not flag_once) and (numero[i] == '1')): # Detecta el uno menos significativo.
+			flag_once = True
+	for i in range(0, cant_bits - len(numero)): #Agrega los unos a la izq
+				numero = '1' + numero
+	return numero
+
+
+#Funcion que acondiciona el argumento (encuentra el valor de una etiqueta, reconoce valores binarios
+# de la forma bxxxx, convierte valores decimales a binarios). El tipo de procesamiento que se le 
+# efectua al argumento puede variar dependiendo si es "unsigned" o "signed". La cantidad de bits que debe 
+# dar como resultado esta funcion se pasa como parametro (cant_bits_req).
+def acondicionarArgumentos (argumento, tipo, cant_bits_req):
+	# Tratamiento de errores.
+	if ((argumento == "") or (argumento == " ")):
+		print ("Error en el acondicionamiento de los argumentos. Fin")
+		exit (1)
+	if ((tipo != "signed") and (tipo != "unsigned")):
+		print ("Error de tipo de procesamiento requerido en los argumentos. Fin")
+		exit (1)
+	try:
+		prueba = int(cant_bits_req)
+	except:
+		print ("Error en parametro cant_bits_req. Fin")
+		exit (1)
+	# Comienzo de procesamiento
+	cadena=""
+	flag_binario = False
+	if (argumento in constantes_letras):	#Reemplaza las etiquetas por las constantes
+		argumento = constantes_numeros [ constantes_letras.index (argumento)]
+	if (argumento[0] == 'b'): #Es binario
+		cadena = argumento[1:]
+		flag_binario = True
+	if ((cant_bits_req - len(cadena))< 0): #Mas bits de lo necesario.
+		print ("Error. Demasiados bits pasados como argumento. Fin")
+		exit (1)
+	elif ((cant_bits_req - len(cadena))> 0): #Faltan bits por completar. Si es un valor decimal, ingresa aqui.
+		if (tipo == "unsigned"):#Procesamiento unsigned.
+			if (not flag_binario):#Valor decimal
+				cadena = bin(int(argumento))[2:]
+			for i in range(0, cant_bits_req - len(cadena)): #Agrega los ceros a la izq
+				cadena = '0' + cadena
+		elif (tipo == "signed"):#Procesamiento signed.
+			if (not flag_binario):
+				if ((int (argumento)) >= 0): #Valor decimal positivo
+					cadena = bin(int(argumento))[2:]
+				else: #Valor decimal negativo.
+					cadena = complementoADos (argumento, cant_bits_req)
+			for i in range(0, cant_bits_req - len(cadena)): #Agrega los ceros o unos a la izq
+				cadena = cadena[0] + cadena
+	return cadena
+
+
 #Inicio del programa.
 
 print ('Inicio del programa')
@@ -211,11 +276,7 @@ for comando in arreglo_parseo:
 			# Tratamiento de instrucciones segun clasificacion
 			if (clasificacion_instruccion == 'R00'):#Instrucciones SLL, SRL y SRA.
 				controlCantArgumentos (argumento, 3)
-				if (argumento[2] in constantes_letras):	#Reemplazo las constantes
-					argumento[2] = constantes_numeros [ constantes_letras.index (argumento[2])]
-				number_bin = bin(int(argumento[2]))[2:]
-				for i in range(0, CANT_BITS_OPERANDO - len(number_bin)): #Me agrega los ceros a la izq
-					number_bin = '0' + number_bin
+				number_bin = acondicionarArgumentos (argumento[2], "unsigned", CANT_BITS_OPERANDO)
 				cadena_binaria = cadena_binaria + '0' * CANT_BITS_CEROS_R_TYPE + getNumeroRegistro (argumento[1]) +\
 				getNumeroRegistro (argumento[0]) + number_bin + getLSB (instruccion)
 			
@@ -253,57 +314,40 @@ for comando in arreglo_parseo:
 				controlCantArgumentos (argumento, 2)
 				pointer_array = argumento[1].split("{")
 				pointer_array[1]=pointer_array[1][:len(pointer_array[1])-1]
-				if (pointer_array[0] in constantes_letras):	#Reemplazo las constantes
-					pointer_array[0] = constantes_numeros [ constantes_letras.index (pointer_array[0])]
-				number_bin = bin(int(pointer_array[0]))[2:]
-				for i in range(0, CANT_BITS_OFFSET - len(number_bin)): #Me agrega los ceros a la izq
-					number_bin = '0' + number_bin
-				if ((int(pointer_array[0]) % 4) != 0):
+				number_bin = acondicionarArgumentos (pointer_array[0], "signed", CANT_BITS_OFFSET)
+				if ((number_bin[-2:]) != "00"):
 					print ('Direccion no alineada. Fin.')
 					exit (1)
 				cadena_binaria = cadena_binaria + getNumeroRegistro (pointer_array[1]) + getNumeroRegistro (argumento[0]) +\
 					number_bin
 
 
-			elif (clasificacion_instruccion == 'I01'): #Instrucciones ADDI, ANDI, ORI, XORI y STLI.
+			elif (clasificacion_instruccion == 'I01'): #Instrucciones ADDI, ANDI, ORI, XORI y SLTI.
 				controlCantArgumentos (argumento, 3)
-				if (argumento[2] in constantes_letras):	#Reemplazo las constantes
-					argumento[2] = constantes_numeros [ constantes_letras.index (argumento[2])]
-				number_bin = bin(int(argumento[2]))[2:]
-				for i in range(0, CANT_BITS_IMMEDIATE - len(number_bin)): #Me agrega los ceros a la izq
-					number_bin = '0' + number_bin
+				if ((instruccion == "ADDI") or (instruccion == "SLTI")):
+					number_bin = acondicionarArgumentos (argumento[2], "signed", CANT_BITS_IMMEDIATE)
+				else:
+					number_bin = acondicionarArgumentos (argumento[2], "unsigned", CANT_BITS_IMMEDIATE)
 				cadena_binaria = cadena_binaria + getNumeroRegistro (argumento[1]) + getNumeroRegistro (argumento[0]) +\
 					number_bin
 
 			elif (clasificacion_instruccion == 'I10'): #Instruccion LUI
 				controlCantArgumentos (argumento, 2)
-				if (argumento[1] in constantes_letras):	#Reemplazo las constantes
-					argumento[1] = constantes_numeros [ constantes_letras.index (argumento[1])]
-				number_bin = bin(int(argumento[1]))[2:]
-				for i in range(0, CANT_BITS_IMMEDIATE - len(number_bin)): #Me agrega los ceros a la izq
-					number_bin = '0' + number_bin
+				number_bin = acondicionarArgumentos (argumento[1], "signed", CANT_BITS_IMMEDIATE)
 				cadena_binaria = cadena_binaria + '0' * CANT_BITS_CEROS_I10_TYPE + getNumeroRegistro (argumento[0]) +\
 					 number_bin
 			
 
 			elif (clasificacion_instruccion == 'I11'): #Instrucciones BEQ y BNE
 				controlCantArgumentos (argumento, 3)
-				if (argumento[2] in constantes_letras):	#Reemplazo las constantes
-					argumento[2] = constantes_numeros [ constantes_letras.index (argumento[2])]
-				number_bin = bin(int(argumento[2]))[2:]
-				for i in range(0, CANT_BITS_OFFSET - len(number_bin)): #Me agrega los ceros a la izq
-					number_bin = '0' + number_bin
+				number_bin = acondicionarArgumentos (argumento[2], "signed", CANT_BITS_OFFSET)
 				cadena_binaria = cadena_binaria + getNumeroRegistro (argumento[0]) + getNumeroRegistro (argumento[1]) +\
 					 number_bin
 			
 
 			elif (clasificacion_instruccion == 'I100'): #Instrucciones J y JAL
 				controlCantArgumentos (argumento, 1)
-				if (argumento[0] in constantes_letras):	#Reemplazo las constantes
-					argumento[0] = constantes_numeros [ constantes_letras.index (argumento[0])]
-				number_bin = bin(int(argumento[0]))[2:]
-				for i in range(0, CANT_BITS_TARGET - len(number_bin)): #Me agrega los ceros a la izq
-					number_bin = '0' + number_bin
+				number_bin = acondicionarArgumentos (argumento[0], "unsigned", CANT_BITS_TARGET)
 				cadena_binaria = cadena_binaria + number_bin
 				
 				
