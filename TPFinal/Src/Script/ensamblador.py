@@ -21,10 +21,10 @@ CANT_REGISTROS = 32
 NOMBRE_DE_ARCHIVO =  'assembler_MIPS.txt'
 
 #Funcion para escribir el archivo con las instrucciones binarias.
-def FileHandler(cadenaGlobal, nombreDeArchivo):
+def FileHandler(cadena_global, nombre_de_archivo):
 		try:
-			file=open(nombreDeArchivo,'w')
-			file.write(cadenaGlobal)
+			file=open(nombre_de_archivo,'w')
+			file.write(cadena_global)
 			file.close()
 		except:
  			print ('Error en el manejo del archivo. Fin.')
@@ -96,14 +96,14 @@ def getClasificacion (instr):
 
 
 # Funcion que traduce a binario el nombre de un registro del tipo Rn. (Por ejemplo: R1 es 00001).
-def getNumeroRegistro(R):
-	if (R[0] != 'R'):
-		print 'Notacion de registro erronea. Fin'
+def getNumeroRegistro(reg):
+	if (reg[0] != 'R'):
+		print ('Notacion de registro erronea. Fin')
 		exit (1)
-	if (int(R[1:]) > (CANT_REGISTROS - 1)):
-		print 'No hay tantos registros. Fin'
+	if (int(reg[1:]) > (CANT_REGISTROS - 1)):
+		print ('No hay tantos registros. Fin')
 		exit (1)
-	registro = bin(int(R[1:]))[2:]
+	registro = bin(int(reg[1:]))[2:]
 	registro = registro [-5 : len(registro)]
 	for i in range(0, CANT_BITS_OPERANDO - len(registro)): #Me agrega los ceros a la izq
 		registro = '0' + registro
@@ -130,10 +130,15 @@ def getLSB (instr):
     }.get (instr, '000000')  #000000 es el por defecto
 
 
+#Funcion que efectua el control de que la cantidad de argumentos pasados en la instruccion sea la correcta. 
+def controlCantArgumentos (argumentos, cantidad1, cantidad2):
+	if ((len(argumentos) != cantidad1) or (len(argumentos) != cantidad2)):
+		print ('Cantidad de argumentos invalida. Fin.')
+		exit (1)
 
 #Inicio del programa.
 
-print 'Inicio del programa'
+print ('Inicio del programa')
 
 #Lectura de archivo.
 cadena_linea = ""
@@ -143,54 +148,54 @@ try:
 	cadena_linea = file.read()
 	file.close()
 except:
-	print 'Error en el manejo del archivo.'
-	print 'Fin.'
+	print ('Error en el manejo del archivo.')
+	print ('Fin.')
 	exit(1)
 
-print '\nContenido del archivo: '
+print ('\nContenido del archivo: ')
 print cadena_linea
 
 
 #Parseo del archivo.
-print '\nParseo del archivo: '
+print ('\nParseo del archivo: ')
 arreglo_parseo = cadena_linea.split ('\n')
 print arreglo_parseo
 
 #Asignacion de constantes
-Patron = "#"
+patron = "#"
 constantes_letras = []
 constantes_numeros = []
 for slot in arreglo_parseo:
 	if (slot != ""):
-		if (Patron in slot):
+		if (patron in slot):
 			constantes_letras.append (slot [1])
 			constantes_numeros.append (slot.split (" ")[1])
 
-print "\nConstantes: "
+print ("\nConstantes: ")
 print constantes_letras
 print constantes_numeros
 
 
 #Traduccion de instrucciones a binario.
-Patron_comment = "/"   #Es un comentario
+patron_comment = "/"   #Es un comentario
 arreglo_binario = []
 cadena_binaria = ""
 instruccion = ""
 argumento = ""
 for comando in arreglo_parseo:
-	if ((comando != "") and (comando != " ") and (Patron_comment not in comando) and (Patron not in comando)):
+	if ((comando != "") and (comando != " ") and (patron_comment not in comando) and (patron not in comando)):
 		comando_parsed = comando.split (" ")
 		instruccion = comando_parsed [0]
 		if (instruccion != 'HLT'): # No es instruccion HALT.
 			clasificacion_instruccion = getClasificacion (instruccion)
 			if (clasificacion_instruccion == 'X'): #Instruccion desconocida.
-				print 'Instruccion invalida. Fin.'
+				print ('Instruccion invalida. Fin.')
 				exit(1)
 			cadena_binaria = getOPCODE (instruccion) #Obtengo los 6 bits MSB de la instruccion.
 			if (len (cadena_binaria) != 6):
-				print 'OPCODE distinto de 6. Fin.\n'
-				print cadena_binaria
-				print len(cadena_binaria)
+				print ('OPCODE distinto de 6. Fin.\n')
+				print (cadena_binaria)
+				print (len(cadena_binaria))
 				exit (1)
 			
 			#Split de parametros de la instruccion
@@ -229,7 +234,7 @@ for comando in arreglo_parseo:
 					cadena_binaria = cadena_binaria + getNumeroRegistro (argumento[1]) + '0' * CANT_BITS_CEROS_J2_TYPE +\
 					getNumeroRegistro (argumento[0]) + '0' * CANT_BITS_CEROS_J2_TYPE + getLSB (instruccion)
 				else:
-					print 'Instruccion JALR invalida. Fin'
+					print ('Instruccion JALR invalida. Fin')
 					exit (1)
 			
 			elif (clasificacion_instruccion == 'I00'):#Instrucciones LH, LB, LW, LWU, LHU, LBU, SB, SH y SW.
@@ -241,7 +246,7 @@ for comando in arreglo_parseo:
 				for i in range(0, CANT_BITS_OFFSET - len(number_bin)): #Me agrega los ceros a la izq
 					number_bin = '0' + number_bin
 				if ((int(pointer_array[0]) % 4) != 0):
-					print 'Direccion no alineada. Fin.'
+					print ('Direccion no alineada. Fin.')
 					exit (1)
 				cadena_binaria = cadena_binaria + getNumeroRegistro (pointer_array[1]) + getNumeroRegistro (argumento[0]) +\
 					number_bin
@@ -258,7 +263,7 @@ for comando in arreglo_parseo:
 
 			elif (clasificacion_instruccion == 'I10'): #Instruccion LUI
 				if (len(argumento)!= 2):
-					print 'Error en la cantidad de argumentos. Fin.'
+					print ('Error en la cantidad de argumentos. Fin.')
 					exit (1)
 				if (argumento[1] in constantes_letras):	#Reemplazo las constantes
 					argumento[1] = constantes_numeros [ constantes_letras.index (argumento[1])]
@@ -271,7 +276,7 @@ for comando in arreglo_parseo:
 
 			elif (clasificacion_instruccion == 'I11'): #Instrucciones BEQ y BNE
 				if (len(argumento)!= 3):
-					print 'Error en la cantidad de argumentos. Fin.'
+					print ('Error en la cantidad de argumentos. Fin.')
 					exit (1)
 				if (argumento[2] in constantes_letras):	#Reemplazo las constantes
 					argumento[2] = constantes_numeros [ constantes_letras.index (argumento[2])]
@@ -284,7 +289,7 @@ for comando in arreglo_parseo:
 
 			elif (clasificacion_instruccion == 'I100'): #Instrucciones J y JAL
 				if (len(argumento)!= 1):
-					print 'Error en la cantidad de argumentos. Fin.'
+					print ('Error en la cantidad de argumentos. Fin.')
 					exit (1)
 				if (argumento[0] in constantes_letras):	#Reemplazo las constantes
 					argumento[0] = constantes_numeros [ constantes_letras.index (argumento[0])]
@@ -298,9 +303,9 @@ for comando in arreglo_parseo:
 			cadena_binaria = '0' * WIDTH_MEM
 		arreglo_binario.append (cadena_binaria)
 		
-print "\nArreglo binario: "
-print arreglo_binario
-print "\n"
+print ("\nArreglo binario: ")
+print (arreglo_binario)
+print ("\n")
 
 #Creacion de binario a guardar en mem.
 cadena_global = ""
