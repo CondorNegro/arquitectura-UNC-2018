@@ -161,7 +161,7 @@ always@( * ) begin //NEXT - STATE logic
            end
        end
        ESPERA_START : begin
-           if ((~i_rx_done & registro_rx_done) && ((i_data_rx == 8'b0000011) || (i_data_rx == 8'b0000111))) begin
+           if ((~i_rx_done & registro_rx_done) && ((i_data_rx == 8'b00000011) || (i_data_rx == 8'b00000111))) begin
                reg_next_state = ESPERA;
            end
            else begin

@@ -20,39 +20,95 @@ import threading  		# Para uso de threads
 BAUDRATE = 9600
 WIDTH_WORD = 8
 CANT_STOP_BITS = 2
-
+FILE_NAME = "assembler_MIPS.txt"
 
 # Variables globales
 
 ser = serial.Serial()
-banderaPuertoLoop = 0
-estadoPuerto = "NO CONECTADO"
-etiquetaResultadoImpresion = "Resultado"
-etiquetaResultadoModoDeEjecucion = ""
+bandera_puerto_loop = 0
+estado_puerto = "NO CONECTADO"
+etiqueta_resultado_impresion = "Resultado"
+etiqueta_resultado_modo_de_ejecucion = ""
 lock = threading.Lock()
+modo_ejecucion = 0 #0: continuo - 1: debug
 
-# Funcion de traduccion del nombre de la operacion a su opcode correspondiente.
-def getOPCODE (x):
+
+# Funcion que efectua la lectura de un archivo y devuelve su contenido.
+def fileReader (file_name):
+	cadena_linea = ""
+	try:
+		file = open (file_name, 'r')
+		cadena_linea = file.read()
+		file.close()
+		return cadena_linea
+	except:
+		print ('Error en el manejo del archivo.')
+		print ('Fin.')
+		exit(1)
+	
+
+# Funcion de traduccion del nombre de la operacion a su binario correspondiente.
+def getCode (x):
     return {
-        'Soft reset': '10000000',
-        'Init': '01000000',
+        'Soft reset': '00000000',
+		'Soft reset ack': '00000001',
+        'Send instructions': '00000001',
+		'Start MIPS': '00000011',
     }.get (x, '11111111')  #11111111 es el por defecto
 
 
 # Funcion para desactivar botones
-
 def desactivarBotones():
 	lock.acquire()
 	botonDesconectarFPGA.config (state = DISABLED)
-	botonIniciarBIP.config (state = DISABLED)
+	botonSoftReset.config (state = DISABLED)
+	botonSendInstructions.config (state = DISABLED)
+	botonSetModoEjecucion.config (state = DISABLED)
+	botonIniciarMIPS.config (state = DISABLED)
 	lock.release()
 
-# Funcion para activar botones, sigue el comportamiento de una maquina de estados
-
-def activarBotones():
+# Funcion para activar botones, segun el modo pasado como parametro. Los demas botones no especificados 
+# en los distintos modos se colocan como DISABLED.
+# Modos: 0- Activacion del boton de desconexion con FPGA.
+# 		 1- Activacion del boton de desconexion con FPGA y del boton de soft reset.
+# 		 2- Activacion del boton de desconexion con FPGA y del boton de enviar instrucciones.
+#        3- Activacion del boton de desconexion con FPGA y del boton Set modo de ejecucion.
+#        4- Activacion del boton de desconexion con FPGA, del boton Set modo de ejecucion y del boton Iniciar MIPS.
+def activarBotones (modo):
 	lock.acquire()
-	botonDesconectarFPGA.config (state = ACTIVE)
-	botonIniciarBIP.config (state = ACTIVE)
+	if (modo == 0):
+		botonDesconectarFPGA.config (state = ACTIVE)
+		botonSoftReset.config (state = DISABLED)
+		botonSendInstructions.config (state = DISABLED)
+		botonSetModoEjecucion.config (state = DISABLED)
+		botonIniciarMIPS.config (state = DISABLED)
+	elif (modo == 1):
+		botonDesconectarFPGA.config (state = ACTIVE)
+		botonSoftReset.config (state = ACTIVE)
+		botonSendInstructions.config (state = DISABLED)
+		botonSetModoEjecucion.config (state = DISABLED)
+		botonIniciarMIPS.config (state = DISABLED)
+	elif (modo == 2):
+		botonDesconectarFPGA.config (state = ACTIVE)
+		botonSoftReset.config (state = DISABLED)
+		botonSendInstructions.config (state = ACTIVE)
+		botonSetModoEjecucion.config (state = DISABLED)
+		botonIniciarMIPS.config (state = DISABLED)
+	elif (modo == 3):
+		botonDesconectarFPGA.config (state = ACTIVE)
+		botonSoftReset.config (state = DISABLED)
+		botonSendInstructions.config (state = DISABLED)
+		botonSetModoEjecucion.config (state = ACTIVE)
+		botonIniciarMIPS.config (state = DISABLED)
+	elif (modo == 4):
+		botonDesconectarFPGA.config (state = ACTIVE)
+		botonSoftReset.config (state = DISABLED)
+		botonSendInstructions.config (state = DISABLED)
+		botonSetModoEjecucion.config (state = ACTIVE)
+		botonIniciarMIPS.config (state = ACTIVE)
+	else:
+		print 'Modo invalido. Fin'
+		exit (1)	
 	lock.release()
 
 
@@ -69,31 +125,31 @@ def conectarFPGA(puerto):
 # Funcion que ejecuta el thread de la conexion
 	
 def conexionViaThread(puerto):
-	global banderaPuertoLoop
+	global bandera_puerto_loop
 	global ser
-	global estadoPuerto
+	global estado_puerto
 	global currentState
 	
 	print 'Thread de conexion/desconexion OK.'
 	try:
-		if (puerto == "disconnect" and estadoPuerto != "NO CONECTADO"):
-			estadoPuerto = "NO CONECTADO"
-			etiquetaPuertoEstado.config (text = estadoPuerto, fg = "red")
+		if (puerto == "disconnect" and estado_puerto != "NO CONECTADO"):
+			estado_puerto = "NO CONECTADO"
+			etiquetaPuertoEstado.config (text = estado_puerto, fg = "red")
 			desactivarBotones()
 			botonConectarFPGA.config (state = ACTIVE)
-			banderaPuertoLoop = 0
+			bandera_puerto_loop = 0
 			ser.close()
 			print 'Desconexion de puerto.'
-		elif banderaPuertoLoop == 0:
+		elif bandera_puerto_loop == 0:
 			if puerto == "loop":
 				ser = serial.serial_for_url ('loop://', timeout = 1)  #Configuracion del loopback test de esta forma
 				ser.isOpen()        #Abertura del puerto.
 				ser.timeout = None  #Siempre escucha
 				ser.flushInput()	#Limpieza de buffers
 				ser.flushOutput()
-				estadoPuerto = "loop - OK"
-				etiquetaPuertoEstado.config (text = estadoPuerto, fg = "dark green")
-				activarBotones()
+				estado_puerto = "loop - OK"
+				etiquetaPuertoEstado.config (text = estado_puerto, fg = "dark green")
+				activarBotones (1)
 				print 'Loop-ok: ', puerto
 			else:
 				try:
@@ -104,18 +160,18 @@ def conexionViaThread(puerto):
 							stopbits = CANT_STOP_BITS, #Cant de bits de stop
 							bytesize = WIDTH_WORD
 					)
-					estadoPuerto = str (puerto) + " - OK"
-					etiquetaPuertoEstado.config (text = estadoPuerto, fg = "dark green")
-					banderaPuertoLoop = 1
+					estado_puerto = str (puerto) + " - OK"
+					etiquetaPuertoEstado.config (text = estado_puerto, fg = "dark green")
+					bandera_puerto_loop = 1
 					ser.isOpen()        	#Abertura del puerto.
 					ser.timeout = None    	#Siempre escucha
 					ser.flushInput()		#Limpieza de buffers
 					ser.flushOutput()
-					activarBotones()
+					activarBotones (1)
 					print 'Conexion OK en puerto : ', puerto
 				except SerialException:
-					estadoPuerto = str (puerto) + " - ERROR"
-					etiquetaPuertoEstado.config (text = estadoPuerto, fg = "red")
+					estado_puerto = str (puerto) + " - ERROR"
+					etiquetaPuertoEstado.config (text = estado_puerto, fg = "red")
 					desactivarBotones()
 					botonConectarFPGA.config(state = ACTIVE)
 					print 'Error al tratar de abrir el puerto:', puerto
@@ -123,103 +179,173 @@ def conexionViaThread(puerto):
 			print "Puerto ya configurado"
 	except: 
 		print 'Error en la conexion/desconexion.'
-		activarBotones()
+		activarBotones (0)
 
 
-# Funcion que recibe el resultado obtenido de la ALU
+def writeSerial (data):
+	try:
+		ser.write (chr (int (data, 2)))
+		time.sleep (1.0) #Espera.
+	except:
+		print ("Error en la funcion writeSerial. Info a enviar invalida.")
 
-def readResultado():
-	valor_ACC = ""
+
+# Funcion que recibe los datos obtenidos de la FPGA via UART. Puede efectuar una comparacion de los datos recibidos
+# con una cadena enviada como parametro si la misma es distinta a la cadena vacia.
+def readResultado (cantBytes, cadenaComparacion):
+	if (cantBytes < 0):
+		print ("Error en la funcion readResultado. Cantidad de bytes a leer invalida.")
+		exit (1)
+	if (cadenaComparacion != ''):
+		if (len(cadenaComparacion) != (8 * cantBytes)):
+			print ("Error en la funcion readResultado. Cadena de comparacion invalida.")
+			exit (1)
 	contador_bytes = 0
-	valor_CC = ""
 	time.sleep (0.2)
-	while ((ser.inWaiting() > 0) and (contador_bytes < 5)): #inWaiting -> cantidad de bytes en buffer esperando.
+	while ((ser.inWaiting() > 0) and (contador_bytes < cantBytes)): #inWaiting -> cantidad de bytes en buffer esperando.
 		contador_bytes = contador_bytes + 1
 		lectura = ser.read (1)
-		etiquetaResultadoImpresion = bin(ord (lectura))[2:][::-1]
-		
-		for i in range (0, 8 - len(etiquetaResultadoImpresion), 1):
+		etiqueta_resultado_impresion = bin(ord (lectura))[2:][::-1]
+		for i in range (0, 8 - len(etiqueta_resultado_impresion), 1):
 			if (i != 8):	
-				etiquetaResultadoImpresion = etiquetaResultadoImpresion + '0'
+				etiqueta_resultado_impresion = etiqueta_resultado_impresion + '0'
 		print '>>',
-		print etiquetaResultadoImpresion
+		print etiqueta_resultado_impresion
 		print '>>',
 		print lectura
-		if (contador_bytes > 4):	#Reiniciar contador
-			contador_bytes = 0
-		elif (contador_bytes < 3):	# Contador de ciclos.
-			if (contador_bytes < 2):	# Parte baja.
-				valor_CC = etiquetaResultadoImpresion
-			else:						# Parte alta.
-				valor_CC = etiquetaResultadoImpresion + valor_CC
-		else : # Valor del Acumulador
-			if (contador_bytes < 4):	# Parte baja.
-				valor_ACC = etiquetaResultadoImpresion
-			else:						# Parte alta.
-				valor_ACC = etiquetaResultadoImpresion + valor_ACC
-	etiquetaResultado.config (text = "CC:  " + valor_CC + " \n " + "ACC: " + valor_ACC, fg = "dark green")
+	if (cadenaComparacion != ''):
+		if (cadenaComparacion == etiqueta_resultado_impresion):
+			etiquetaResultado.config (text = "Valor obtenido:  " + etiqueta_resultado_impresion, fg = "dark green")
+		else:
+			etiquetaResultado.config (text = "Valor obtenido invalido", fg = "red")
+	else:
+		etiquetaResultado.config (text = "Valor obtenido:  " + etiqueta_resultado_impresion, fg = "dark green")
 	
-		
 
-# Funcion para setear los datos que forman parte de la operacion
-# @param: dato 	Dato a cargar
-def setDato ():
+
+# Funcion que genera un thread que permite realizar un soft reset en la FPGA.
+def softReset():
 	try:
-		hiloSetDato = threading.Thread (target = setDatoViaThread) 
-		hiloSetDato.start()
+		hiloSoftReset = threading.Thread (target = softResetViaThread) 
+		hiloSoftReset.start()
 	except:
 		print 'Sistema operativo denego acceso a recursos.'
-		activarBotones()
-		
-	
-# Funcion que ejecuta el hilo que setea los datos que forman parte de la operacion
-# @param: dato 	Dato a cargar
-def setDatoViaThread ():
+		activarBotones (1)
+
+# Funcion del thread que permite realizar un soft reset en la FPGA.
+def softResetViaThread():
 	desactivarBotones()
-	print 'Thread de seteo de datos OK.'
-	global etiquetaResultadoImpresion
+	print 'Thread de soft reset OK.'
+	global etiqueta_resultado_impresion
 	try:
-		ser.flushInput()
-		ser.flushOutput()
-		dato = getOPCODE ('Soft reset')
-		if (len (dato) == 8):
-			ser.write (chr (int (dato, 2)))
-			time.sleep (1.0) #Espera.
-			#readResultado() #Lectura de resultado
+		data_send = getCode('Soft reset')
+		if (len (data_send) == 8):
+			writeSerial (data_send)
+			readResultado (1, getCode ('Soft reset ack')) #Lectura de soft reset ack (1 byte) 
+			activarBotones (2)
 		else:
 			print 'Warning: Deben ser 8 bits.'
 			etiquetaResultado.config (text = "Warning: Deben ser 8 bits", fg = "red")
-		dato = getOPCODE ('Init')
-		if (len (dato) == 8):
-			ser.write (chr (int (dato, 2)))
-			#time.sleep (1.0) #Espera.
-			readResultado() #Lectura de resultado
-		else:
-			print 'Warning: Deben ser 8 bits.'
-			etiquetaResultado.config (text = "Warning: Deben ser 8 bits", fg = "red")
-		activarBotones()
+			activarBotones (0)
 	except: 
-		print 'Error en el seteo de los datos.'
+		print 'Error en el soft reset.'
 		etiquetaResultado.config (text = "ERROR_LOG", fg = "red")
-		activarBotones()
+		activarBotones(0)
 
-
-def softReset():
-	print "Hola"
-
+# Funcion que genera un thread que permite realizar el envio de instrucciones a la memoria de programa del MIPS.
 def sendInstructions():
-	print "Holis"
+	try:
+		hiloSendInstructions = threading.Thread (target = sendInstructionsViaThread) 
+		hiloSendInstructions.start()
+	except:
+		print 'Sistema operativo denego acceso a recursos.'
+		activarBotones (2)
 
+# Funcion del thread que permite realizar el envio de instrucciones a la memoria de programa del MIPS.
+def sendInstructionsViaThread():
+	desactivarBotones()
+	print 'Thread de send instructions OK.'
+	global etiqueta_resultado_impresion
+	try:
+		data_send = getCode('Send instructions')
+		if (len (data_send) == 8):
+			writeSerial (data_send)
+			cadena_archivo = fileReader (FILE_NAME)
+			cadena_archivo = cadena_archivo.split ("\n")
+			for i in range(len(cadena_archivo)):
+				writeSerial (cadena_archivo[i])
+			activarBotones (3)
+		else:
+			print 'Warning: Deben ser 8 bits.'
+			etiquetaResultado.config (text = "Warning: Deben ser 8 bits", fg = "red")
+			activarBotones (0)
+	except: 
+		print 'Error en send instructions.'
+		etiquetaResultado.config (text = "ERROR_LOG", fg = "red")
+		activarBotones(0)
+
+# Funcion que genera un thread que permite comenzar la ejecucion del MIPS.
 def iniciarMIPS():
-	print "Chauchis"
+	try:
+		hiloIniciarMIPS = threading.Thread (target = iniciarMIPSViaThread) 
+		hiloIniciarMIPS.start()
+	except:
+		print 'Sistema operativo denego acceso a recursos.'
+		activarBotones (4)
 
-def setModoEjecucion():
-	print "HOLA"
+# Funcion del thread que permite comenzar la ejecucion del MIPS.
+def iniciarMIPSViaThread():
+	desactivarBotones()
+	print 'Thread de iniciar MIPS OK.'
+	global etiqueta_resultado_impresion
+	global modo_ejecucion
+	try:
+		data_send = getCode('00000011')
+		data_send[-3] = modo_ejecucion
+		if (len (data_send) == 8):
+			writeSerial (data_send)
+			activarBotones (0)
+		else:
+			print 'Warning: Deben ser 8 bits.'
+			etiquetaResultado.config (text = "Warning: Deben ser 8 bits", fg = "red")
+			activarBotones (0)
+	except: 
+		print 'Error en iniciar MIPS.'
+		etiquetaResultado.config (text = "ERROR_LOG", fg = "red")
+		activarBotones (0)
 
+# Funcion que genera un thread que permite setear el modo de ejecucion del MIPS.
+def setModoEjecucion (modo):
+	try:
+		hiloSetModoEjecucion = threading.Thread (target = setModoEjecucionViaThread, args = (modo,)) 
+		hiloSetModoEjecucion.start()
+	except:
+		print 'Sistema operativo denego acceso a recursos.'
+		activarBotones (3)
+
+# Funcion del thread que permite setear el modo de ejecucion del MIPS.
+def setModoEjecucionViaThread (modo):
+	desactivarBotones()
+	print 'Thread de set modo de ejecucion OK.'
+	global etiqueta_resultado_impresion
+	global modo_ejecucion
+	global etiqueta_resultado_modo_de_ejecucion
+	if ((modo != '0') and (modo != '1')):
+		etiqueta_resultado_modo_de_ejecucion = "Valor ingresado invalido"
+		etiquetaResultadoModoEjecucion.config (text = etiqueta_resultado_modo_de_ejecucion, fg= "red")
+		activarBotones (3)
+	else:
+		modo_ejecucion = modo
+		etiqueta_resultado_impresion = "Modo: " + modo_ejecucion
+		etiquetaResultado.config (text = etiqueta_resultado_impresion, fg = "dark green")
+		activarBotones (4)
+
+	
+		
 # Funcion al presionar el boton salir.	
 def salir():
 	print 'Fin del programa.'
-	exit(1)		
+	exit(0)		
 
 		
 		
@@ -269,7 +395,8 @@ botonSoftReset = Button (root, text = "Soft reset", command = lambda: softReset 
 botonSoftReset.place (x = 100, y = 150, width = 150, height = 30)
 botonSendInstructions = Button (root, text = "Enviar instrucciones", command = lambda: sendInstructions (), state = DISABLED)
 botonSendInstructions.place (x = 100, y = 190, width = 150, height = 30)
-botonSetModoEjecucion = Button (root, text = "Set modo de ejecucion", command = lambda: setModoEjecucion (), state = DISABLED)
+botonSetModoEjecucion = Button (root, text = "Set modo de ejecucion", command = lambda: setModoEjecucion (str (campoModoEjecucion.get())),\
+	 state = DISABLED)
 botonSetModoEjecucion.place (x = 180, y = 345, width = 150, height = 30)
 botonIniciarMIPS = Button (root, text = "Iniciar MIPS", command = lambda: iniciarMIPS (), state = DISABLED)
 botonIniciarMIPS.place (x = 100, y = 230, width = 150, height = 30)
@@ -294,19 +421,19 @@ etiquetaPuerto = Label (root, text = "Serial Port")
 etiquetaPuerto.place (x = 20, y = 25)
 etiquetaPuertoMensajeEstado = Label (root, text = "Status     : ")
 etiquetaPuertoMensajeEstado.place (x = 20, y = 50)
-etiquetaPuertoEstado = Label (root, text = estadoPuerto, fg = "red")
+etiquetaPuertoEstado = Label (root, text = estado_puerto, fg = "red")
 etiquetaPuertoEstado.place (x = 87, y = 50)
 etiquetaInputDatos = Label (root, text = "Comandos del sistema: ", font = "TkDefaultFont 12")
 etiquetaInputDatos.place (x = 10,  y = 110)
 etiquetaOutputResultado = Label (root, text = "Resultado: ", font = "TkDefaultFont 12")
 etiquetaOutputResultado.place (x = 10,  y = 430)
-etiquetaResultado = Label (root, text = etiquetaResultadoImpresion, fg = "dark green", font = "TkDefaultFont 12")
+etiquetaResultado = Label (root, text = etiqueta_resultado_impresion, fg = "dark green", font = "TkDefaultFont 12")
 etiquetaResultado.place (x = 10, y = 460)
 etiquetaModoEjecucion = Label (root, text = "Setear modo de ejecucion:", font = "TkDefaultFont 12")
 etiquetaModoEjecucion.place (x = 10, y = 300)
 etiquetaInfoModoEjecucion = Label (root, text = "0 (Continuo) - 1 (Debug)", font = "TkDefaultFont 9")
 etiquetaInfoModoEjecucion.place (x = 10, y = 330)
-etiquetaResultadoModoEjecucion = Label (root, text = etiquetaResultadoModoDeEjecucion, font = "TkDefaultFont 9")
+etiquetaResultadoModoEjecucion = Label (root, text = etiqueta_resultado_modo_de_ejecucion, font = "TkDefaultFont 9")
 etiquetaResultadoModoEjecucion.place (x = 10, y = 380)
 
 # Titulo de la GUI 
