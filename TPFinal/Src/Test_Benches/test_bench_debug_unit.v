@@ -1,12 +1,12 @@
  `timescale 1ns / 100ps
 
 //////////////////////////////////////////////////////////////////////////////////
-// Trabajo Practico Nro. 3. BIP I.
+// Trabajo Practico Nro. 4. MIPS.
 // Test bench del modulo debug_unit.
 // Integrantes: Kleiner Matias, Lopez Gaston.
 // Materia: Arquitectura de Computadoras.
 // FCEFyN. UNC.
-// Anio 2018.
+// Anio 2019.
 //////////////////////////////////////////////////////////////////////////////////
 
 
@@ -15,9 +15,8 @@ module test_bench_debug_unit();
        
    // Parametros
    parameter OUTPUT_WORD_LENGTH = 8;    //  Cantidad de bits de la palabra a transmitir.
-   parameter HALT_OPCODE = 0;            //  Opcode de la instruccion HALT.
-   parameter DATO_MEM_LENGTH = 8;            //  .
-   parameter ADDR_MEM_LENGTH = 11;            //  .
+   parameter HALT_OPCODE = 0;           //  Opcode de la instruccion HALT.            
+   parameter ADDR_MEM_LENGTH = 11;            
    parameter CANTIDAD_ESTADOS = 5;
    parameter LONGITUD_INSTRUCCION = 32;
    
@@ -36,7 +35,7 @@ module test_bench_debug_unit();
    wire wire_o_soft_reset;
    wire wire_o_write_mem_programa;
    wire [ADDR_MEM_LENGTH - 1 : 0]  wire_o_addr_mem_programa;
-   wire [DATO_MEM_LENGTH - 1 : 0]  wire_o_dato_mem_programa;
+   wire [LONGITUD_INSTRUCCION - 1 : 0]  wire_o_dato_mem_programa;
    wire wire_modo_ejecucion;
                           
    
@@ -129,7 +128,6 @@ debug_unit
    #(
         .OUTPUT_WORD_LENGTH (OUTPUT_WORD_LENGTH),
         .HALT_OPCODE (HALT_OPCODE),
-        .DATO_MEM_LENGTH (DATO_MEM_LENGTH),
         .ADDR_MEM_LENGTH (ADDR_MEM_LENGTH),
         .CANTIDAD_ESTADOS (CANTIDAD_ESTADOS),
         .LONGITUD_INSTRUCCION (LONGITUD_INSTRUCCION)
@@ -148,7 +146,7 @@ debug_unit
        .o_write_mem_programa (wire_o_write_mem_programa),
        .o_addr_mem_programa (wire_o_addr_mem_programa),
        .o_dato_mem_programa (wire_o_dato_mem_programa),
-       .modo_ejecucion (wire_modo_ejecucion)
+       .o_modo_ejecucion (wire_modo_ejecucion)
    );
   
 endmodule

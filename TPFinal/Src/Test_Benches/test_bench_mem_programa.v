@@ -3,12 +3,12 @@
 `timescale 1ns / 100ps
 
 //////////////////////////////////////////////////////////////////////////////////
-// Trabajo Practico Nro. 3. BIP I.
-// Test bench del modulo mem_data.
+// Trabajo Practico Nro. 4. MIPS.
+// Test bench del modulo memoria de programa.
 // Integrantes: Kleiner Matias, Lopez Gaston.
 // Materia: Arquitectura de Computadoras.
 // FCEFyN. UNC.
-// Anio 2018.
+// Anio 2019.
 //////////////////////////////////////////////////////////////////////////////////
 
 
@@ -104,11 +104,11 @@ memoria_programa
      .i_clk (clock),
      .i_addr (reg_i_addr),
      .i_data (data_in),
-     .wea (reg_wea),
-     .ena (reg_ena),
-     .rsta (reg_rsta),
-     .regcea (reg_regcea),
-     .soft_reset (reg_soft_reset),
+     .i_wea (reg_wea),
+     .i_ena (reg_ena),
+     .i_rsta (reg_rsta),
+     .i_regcea (reg_regcea),
+     .i_soft_reset (reg_soft_reset),
      .o_reset_ack (wire_o_reset_ack),
      .o_data (wire_o_data)
    );
