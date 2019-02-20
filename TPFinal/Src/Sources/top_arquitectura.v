@@ -195,9 +195,11 @@ memoria_datos
      .i_ena (1),              
      .i_rsta (0),             
      .i_regcea (0),           
-     .i_soft_reset (wire_soft_reset),      
+     .i_soft_reset (wire_soft_reset),
+     .i_bit_sucio (wire_bit_sucio),      
      .o_data (wire_datos_out_mem_data),           
-     .o_reset_ack (wire_soft_reset_ack_datos)      
+     .o_reset_ack (wire_soft_reset_ack_datos),
+     .o_addr_bit_sucio (wire_addr_control_bit_sucio)    
    );
 
 memoria_programa
