@@ -11,42 +11,36 @@
 
 module control_bit_sucio_mem_data
     (
-    i_addr,  // Address bus, width determined from RAM_DEPTH
-    i_clk,                            // Clock
-    wea,                              // Write enable
-    ena,                            // RAM Enable, for additional power savings, disable port when not in use (1)
-    i_soft_reset_ack_mem_datos,
-    o_bit_sucio
-    
+    i_addr,                         // Address bus, width determined from RAM_DEPTH
+    i_clk,                          // Clock
+    i_wea,                            // Write enable
+    i_ena,                            // RAM Enable, for additional power savings, disable port when not in use (1)
+    i_soft_reset_ack_mem_datos,     // 
+    o_bit_sucio                     // Bit de sucio solicitado 
     );
   
   
-  parameter RAM_DEPTH = 1024;                  // Specify RAM depth (number of entries)
+  parameter RAM_DEPTH = 1024;                           // Specify RAM depth (number of entries)
   localparam CANT_BIT_RAM_DEPTH = clogb2(RAM_DEPTH);  
 
   
-  input [CANT_BIT_RAM_DEPTH-1:0] i_addr;  // Address bus, width determined from RAM_DEPTH
-  
-  input i_clk;                            // Clock
-  input wea;                              // Write enable
-  input ena;                            // RAM Enable, for additional power savings, disable port when not in use (1)
+  input [CANT_BIT_RAM_DEPTH-1:0] i_addr;  
+  input i_clk;                           
+  input i_wea;                              
+  input i_ena;                            
   input i_soft_reset_ack_mem_datos;
   output o_bit_sucio;
   
-  reg [RAM_DEPTH-1 : 0] bit_sucio;
+  reg [RAM_DEPTH - 1 : 0] bit_sucio;
   
   
  
-  
-  
-  
-
-  always @(posedge i_clk) begin
-    if (~i_soft_reset_ack_mem_datos) begin
+ always @(posedge i_clk) begin
+    if (~i_soft_reset_ack_mem_datos) begin // Se esta reseteando la memoria de datos.
         bit_sucio <= 0;
     end
     else begin
-        if (ena && wea) begin
+        if (i_ena && i_wea) begin
             bit_sucio[i_addr] <= 1;
         end
         else begin

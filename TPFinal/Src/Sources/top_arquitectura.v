@@ -1,12 +1,12 @@
 `timescale 1ns / 1ps
 
 //////////////////////////////////////////////////////////////////////////////////
-// Trabajo Practico Nro. 3. BIP I.
+// Trabajo Practico Nro. 4. MIPS.
 // TOP.
 // Integrantes: Kleiner Matias, Lopez Gaston.
 // Materia: Arquitectura de Computadoras.
 // FCEFyN. UNC.
-// Anio 2018.
+// Anio 2019.
 //////////////////////////////////////////////////////////////////////////////////
 
 
@@ -14,24 +14,20 @@
 `define WIDTH_WORD_TOP          8       // Tamanio de palabra.    
 `define FREC_CLK_MHZ        100.0       // Frecuencia del clock en MHZ.
 `define BAUD_RATE_TOP        9600       // Baud rate.
-`define CANT_BIT_STOP_TOP       2       // Cantidad de bits de parada en trama uart.     
-`define PC_CANT_BITS           11       // Cantidad de bits del PC.
-`define SUM_DIR                 1       // Cantidad a sumar al PC para obtener la direccion siguiente.
-`define OPCODE_LENGTH           5       // Cantidad de bits del codigo de operacion.
-`define CC_LENGTH              11       //  Cantidad de bits del contador de ciclos.
-`define ACC_LENGTH             16       //  Cantidad de bits del acumulador.
+`define CANT_BIT_STOP_TOP       2       // Cantidad de bits de parada en trama uart.
 `define HALT_OPCODE             0       //  Opcode de la instruccion HALT.
-`define OPERANDO_LENGTH        11
-`define OPERANDO_FINAL_LENGHT  16
-`define RAM_WIDTH_DATOS        16
-`define RAM_WIDTH_PROGRAMA     16
+`define RAM_WIDTH_DATOS        32
+`define RAM_WIDTH_PROGRAMA     32
 `define RAM_PERFORMANCE_DATOS    "LOW_LATENCY"
 `define RAM_PERFORMANCE_PROGRAMA "HIGH_PERFORMANCE"
 `define INIT_FILE_DATOS        ""
-`define INIT_FILE_PROGRAMA     "C:/Users/gopez/Desktop/UniversidadProyectos/ArquitecturaDeComputadoras/Repo/arquitectura-UNC-2018/TP3/Src/Script/init_ram_file.txt"      
-//`define INIT_FILE_PROGRAMA  "/home/matias/Documentos/arqui/arquitectura-UNC-2018/TP3/Src/Script/init_ram_file.txt"
+`define INIT_FILE_PROGRAMA     ""
 `define RAM_DEPTH_DATOS      1024
 `define RAM_DEPTH_PROGRAMA   2048
+`define CANT_ESTADOS_DEBUG_UNIT 5
+`define ADDR_MEM_PROGRAMA_LENGTH 11
+`define ADDR_MEM_DATOS_LENGTH    10
+`define LONG_INSTRUCCION       32
 
 module top_arquitectura(
   i_clock, 
@@ -49,14 +45,7 @@ parameter WIDTH_WORD_TOP    = `WIDTH_WORD_TOP;
 parameter FREC_CLK_MHZ      = `FREC_CLK_MHZ;
 parameter BAUD_RATE_TOP     = `BAUD_RATE_TOP;
 parameter CANT_BIT_STOP_TOP = `CANT_BIT_STOP_TOP;
-parameter PC_CANT_BITS      = `PC_CANT_BITS;
-parameter SUM_DIR           = `SUM_DIR;
-parameter OPCODE_LENGTH     = `OPCODE_LENGTH;
-parameter CC_LENGTH         = `CC_LENGTH;
-parameter ACC_LENGTH        = `ACC_LENGTH;
-parameter HALT_OPCODE       = `HALT_OPCODE;
-parameter OPERANDO_LENGTH   = `OPERANDO_LENGTH;         
-parameter OPERANDO_FINAL_LENGHT     = `OPERANDO_FINAL_LENGHT;    
+parameter HALT_OPCODE       = `HALT_OPCODE;   
 parameter RAM_WIDTH_DATOS           = `RAM_WIDTH_DATOS;
 parameter RAM_WIDTH_PROGRAMA        =  `RAM_WIDTH_PROGRAMA;
 parameter RAM_PERFORMANCE_DATOS     =  `RAM_PERFORMANCE_DATOS;
@@ -65,7 +54,10 @@ parameter INIT_FILE_DATOS           =   `INIT_FILE_DATOS;
 parameter INIT_FILE_PROGRAMA        =  `INIT_FILE_PROGRAMA;     
 parameter RAM_DEPTH_DATOS           =  `RAM_DEPTH_DATOS;
 parameter RAM_DEPTH_PROGRAMA        =  `RAM_DEPTH_PROGRAMA;
-
+parameter CANT_ESTADOS_DEBUG_UNIT   =  `CANT_ESTADOS_DEBUG_UNIT;
+parameter ADDR_MEM_PROGRAMA_LENGTH  =  `ADDR_MEM_PROGRAMA_LENGTH;
+parameter ADDR_MEM_DATOS_LENGTH     =  `ADDR_MEM_DATOS_LENGTH;
+parameter LONG_INSTRUCCION          =  `LONG_INSTRUCCION;
 
 // Entradas - Salidas
 input i_clock;                                  // Clock.
@@ -86,48 +78,56 @@ wire wire_rx_done;
 wire wire_tx_start;
 wire wire_rate_baud_generator;
 wire wire_soft_reset;
-wire [PC_CANT_BITS - 1 : 0] wire_addr_mem_programa;
-wire [RAM_WIDTH_PROGRAMA - 1 : 0] wire_data_mem_programa;
-wire [1 : 0]  wire_selA;
-wire wire_selB;
-wire wire_wrACC;
-wire [OPCODE_LENGTH - 1 : 0] wire_opcode_instruction_decoder;
-wire wire_wr_rd_mem;
-wire [PC_CANT_BITS - 1 : 0] wire_cuenta_ciclos;
-wire [ACC_LENGTH - 1 : 0] wire_valor_ACC;
+wire [ADDR_MEM_PROGRAMA_LENGTH - 1 : 0] wire_addr_mem_programa;
+wire [RAM_WIDTH_PROGRAMA - 1 : 0] wire_data_mem_programa_input;
+wire [RAM_WIDTH_PROGRAMA - 1 : 0] wire_data_mem_programa_output;
+wire wire_wr_rd_mem_prog;
+wire wire_wr_rd_mem_datos;
+wire [RAM_WIDTH_DATOS - 1 : 0] wire_datos_in_mem_data;
 wire [RAM_WIDTH_DATOS - 1 : 0] wire_datos_out_mem_data;
-wire [PC_CANT_BITS - 1 : 0] wire_addr_mem_datos;
+wire [ADDR_MEM_DATOS_LENGTH - 1 : 0] wire_addr_mem_datos;
+wire wire_soft_reset_ack;
+wire wire_soft_reset_ack_prog;
+wire wire_soft_reset_ack_datos;
+wire wire_modo_ejecucion;
+wire [ADDR_MEM_DATOS_LENGTH - 1 : 0] wire_addr_control_bit_sucio;
+wire wire_bit_sucio;
 
+
+
+assign wire_soft_reset_ack = wire_soft_reset_ack_prog & wire_soft_reset_ack_datos;
 //wire prueba;
 //assign jc[0] = prueba;
 //assign uart_rxd_out = prueba;
 
-// Modulo interface_circuit.
+// Modulo debug_unit.
 
-interface_circuit
+debug_unit
     #(
-        .CANT_BITS_OPCODE (OPCODE_LENGTH),      //  Cantidad de bits del opcode.
-        .CC_LENGTH (CC_LENGTH),                 //  Cantidad de bits del contador de ciclos.
-        .ACC_LENGTH (ACC_LENGTH),               //  Cantidad de bits del acumulador.
-        .OUTPUT_WORD_LENGTH (WIDTH_WORD_TOP),   //  Cantidad de bits de la palabra a transmitir.
-        .HALT_OPCODE (HALT_OPCODE)              //  Opcode de la instruccion HALT.
+        .CANTIDAD_ESTADOS (CANT_ESTADOS_DEBUG_UNIT),      
+        .ADDR_MEM_LENGTH (ADDR_MEM_PROGRAMA_LENGTH),                 
+        .LONGITUD_INSTRUCCION (LONG_INSTRUCCION),              
+        .OUTPUT_WORD_LENGTH (WIDTH_WORD_TOP),   
+        .HALT_OPCODE (HALT_OPCODE)             
      ) 
-   u_interface_circuit1    // Una sola instancia de este modulo
+   u_debug_unit1    // Una sola instancia de este modulo
    (
     .i_clock (i_clock),
     .i_reset (i_reset),
     .i_tx_done (wire_tx_done),
     .i_rx_done (wire_rx_done),
     .i_data_rx (wire_data_rx),
-    .i_opcode (wire_opcode_instruction_decoder),
-    .i_CC (wire_cuenta_ciclos),
-    .i_ACC (wire_valor_ACC),
+    .i_soft_reset_ack (wire_soft_reset_ack),
     .o_tx_start (wire_tx_start),
     .o_data_tx (wire_data_tx),
-    .o_soft_reset (wire_soft_reset)
+    .o_soft_reset (wire_soft_reset),
+    .o_write_mem_programa (wire_wr_rd_mem_prog),
+    .o_addr_mem_programa (wire_addr_mem_programa),
+    .o_dato_mem_programa (wire_data_mem_programa_input),
+    .o_modo_ejecucion (wire_modo_ejecucion)
    //.o_prueba (prueba)
    );
-   
+
 
 // Modulo baud_rate_generator  
 baud_rate_generator
@@ -177,47 +177,7 @@ tx
     );
 
 
-// Modulo ALU.
-
-control
-    #(
-        .PC_CANT_BITS (PC_CANT_BITS),   // Cantidad de bits del PC.
-        .SUM_DIR (SUM_DIR),             // Cantidad a sumar al PC para obtener la direccion siguiente.
-        .OPCODE_LENGTH (OPCODE_LENGTH)  // Cantidad de bits del codigo de operacion
-    )
-    u_control1    // Una sola instancia de este modulo
-    (
-        .i_clock (i_clock),
-        .i_soft_reset (wire_soft_reset),
-        .i_mem_data_opcode (wire_data_mem_programa [RAM_WIDTH_PROGRAMA - 1 : RAM_WIDTH_PROGRAMA - OPCODE_LENGTH]),
-        .o_addr_mem (wire_addr_mem_programa),
-        .o_selA (wire_selA),
-        .o_selB (wire_selB),
-        .o_wrAcc (wire_wrACC),
-        .o_opCode (wire_opcode_instruction_decoder),
-        .o_wr_rd_mem (wire_wr_rd_mem)
-    );
-    
-
-datapath
-    #(
-        .OPERANDO_LENGTH (OPERANDO_LENGTH),                 // Cantidad de bits del operando.
-        .OPERANDO_FINAL_LENGHT (OPERANDO_FINAL_LENGHT),     // Cantidad de bits del operando con extension de signo.
-        .OPCODE_LENGTH (OPCODE_LENGTH)                      // Cantidad de bits del opcode.
-    )
-    u_datapath1
-    (
-        .i_clock (i_clock),
-        .i_reset (wire_soft_reset),
-        .i_selA (wire_selA),
-        .i_selB (wire_selB),
-        .i_wrACC (wire_wrACC),
-        .i_opcode (wire_opcode_instruction_decoder),
-        .i_operando (wire_data_mem_programa [RAM_WIDTH_PROGRAMA - OPCODE_LENGTH - 1 : 0]),
-        .i_outmemdata (wire_datos_out_mem_data),
-        .o_addr (wire_addr_mem_datos),
-        .o_ACC (wire_valor_ACC)            
-    );
+// Memorias.
 
 memoria_datos
    #(
@@ -230,9 +190,14 @@ memoria_datos
    (
      .i_clk (i_clock),
      .i_addr (wire_addr_mem_datos),
-     .i_data (wire_valor_ACC),
-     .wea (wire_wr_rd_mem),
-     .o_data (wire_datos_out_mem_data)
+     .i_data (wire_datos_in_mem_data),           
+     .i_wea (wire_wr_rd_mem_datos),             
+     .i_ena (1),              
+     .i_rsta (0),             
+     .i_regcea (0),           
+     .i_soft_reset (wire_soft_reset),      
+     .o_data (wire_datos_out_mem_data),           
+     .o_reset_ack (wire_soft_reset_ack_datos)      
    );
 
 memoria_programa
@@ -246,21 +211,30 @@ memoria_programa
     (
         .i_clk (i_clock),
         .i_addr (wire_addr_mem_programa),
-        .o_data (wire_data_mem_programa)  
+        .i_data (wire_data_mem_programa_input),           
+        .i_wea (wire_wr_rd_mem_prog),              
+        .i_ena (1),             
+        .i_rsta (0),             
+        .i_regcea (0),           
+        .i_soft_reset (wire_soft_reset),       
+        .o_data (wire_data_mem_programa_output),           
+        .o_reset_ack (wire_soft_reset_ack_prog)       
     );
 
+// Control de bit de sucio en memoria de datos.
 
-contador_ciclos
+control_bit_sucio_mem_data
     #(
-        .CONTADOR_LENGTH (PC_CANT_BITS),
-        .OPCODE_LENGTH(OPCODE_LENGTH)
+        .RAM_DEPTH (RAM_DEPTH_DATOS)
     )
-    u_contador_ciclos_1
+    u_control_bit_sucio_mem_data_1
     (
-        .i_clock (i_clock),
-        .i_reset (wire_soft_reset),
-        .i_opcode(wire_opcode_instruction_decoder),
-        .o_cuenta (wire_cuenta_ciclos)
+        .i_addr (wire_addr_control_bit_sucio),                         
+        .i_clk (i_clock),                         
+        .i_wea (wire_wr_rd_mem_datos),                            
+        .i_ena (1),                            
+        .i_soft_reset_ack_mem_datos (wire_soft_reset_ack_datos),      
+        .o_bit_sucio (wire_bit_sucio) 
     );
 
 endmodule

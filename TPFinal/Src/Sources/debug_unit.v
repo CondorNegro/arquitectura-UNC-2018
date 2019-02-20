@@ -13,11 +13,10 @@
 module debug_unit
 #(
   parameter OUTPUT_WORD_LENGTH = 8,    //  Cantidad de bits de la palabra a transmitir.
-  parameter HALT_OPCODE = 0,            //  Opcode de la instruccion HALT.
-  parameter DATO_MEM_LENGTH = 8,            //  .
-  parameter ADDR_MEM_LENGTH = 11,            //  .
-  parameter CANTIDAD_ESTADOS = 5,
-  parameter LONGITUD_INSTRUCCION = 32
+  parameter HALT_OPCODE = 0,           //  Opcode de la instruccion HALT.
+  parameter ADDR_MEM_LENGTH = 11,      //  Cantidad de bits del bus de direcciones de la memoria.
+  parameter CANTIDAD_ESTADOS = 5,      //  Cantidad de estados
+  parameter LONGITUD_INSTRUCCION = 32  //  Cantidad de bits de la instruccion
 
 )
 (
@@ -33,9 +32,10 @@ module debug_unit
   output reg o_write_mem_programa,
   output reg [ADDR_MEM_LENGTH - 1 : 0] o_addr_mem_programa,
   output reg [LONGITUD_INSTRUCCION - 1 : 0] o_dato_mem_programa,
-  output reg modo_ejecucion
+  output reg o_modo_ejecucion
  );
 
+// Funcion para calcular el logaritmo en base 2.
 function integer clogb2;
    input [31:0] value;
    begin
@@ -49,9 +49,9 @@ endfunction
 
 // Estados
 localparam ESPERA           = 5'b00001;
-localparam SOFT_RESET       = 5'b00010;    // L: parte menos significativa.
+localparam SOFT_RESET       = 5'b00010;    
 localparam ESPERA_PC_ACK    = 5'b00100;
-localparam READ_PROGRAMA    = 5'b01000;    // H: parte mas significativa.
+localparam READ_PROGRAMA    = 5'b01000;
 localparam ESPERA_START     = 5'b10000;
 
 localparam CANT_BITS_CONTADOR_DATOS = clogb2 (LONGITUD_INSTRUCCION / OUTPUT_WORD_LENGTH);
@@ -67,7 +67,7 @@ reg [ADDR_MEM_LENGTH - 1 : 0] reg_contador_addr_mem;
 reg [LONGITUD_INSTRUCCION - 1 : 0] o_next_dato_mem_programa;
 //reg [OUTPUT_WORD_LENGTH - 1 : 0] o_data_tx_next;
 
-reg flag_send_mem; //sirve para que el primer dato que se envia sea la instruccion valida y no un 1 (reg instruccion inicializa en 1)
+reg flag_send_mem; //Sirve para que el primer dato que se envia sea la instruccion valida y no un 1 (reg instruccion inicializa en 1)
 
 
 
@@ -186,7 +186,7 @@ always @ ( * ) begin //Output logic
          o_write_mem_programa = 0; //Write es en 1.
          o_addr_mem_programa = 0;
          o_next_dato_mem_programa = 0;
-         modo_ejecucion = 0; // Continuo.
+         o_modo_ejecucion = 0; // Continuo.
        end
 
        SOFT_RESET : begin
@@ -196,7 +196,7 @@ always @ ( * ) begin //Output logic
          o_write_mem_programa = 0; //Write es en 1.
          o_addr_mem_programa = 0;
          o_next_dato_mem_programa = 0;
-         modo_ejecucion = 0; // Continuo.
+         o_modo_ejecucion = 0; // Continuo.
        end
 
        ESPERA_PC_ACK : begin
@@ -206,7 +206,7 @@ always @ ( * ) begin //Output logic
          o_write_mem_programa = 0; //Write es en 1.
          o_addr_mem_programa = 0;
          o_next_dato_mem_programa = 0;
-         modo_ejecucion = 0; // Continuo.
+         o_modo_ejecucion = 0; // Continuo.
        end
 
 //{ CANT_BITS_CONTADOR_DATOS {1'b1} }
@@ -222,7 +222,7 @@ always @ ( * ) begin //Output logic
          else begin
            o_next_dato_mem_programa = o_dato_mem_programa;
          end
-         modo_ejecucion = 0; // Continuo.
+         o_modo_ejecucion = 0; // Continuo.
        end
 
        ESPERA_START : begin
@@ -232,7 +232,7 @@ always @ ( * ) begin //Output logic
          o_write_mem_programa = 0; //Write es en 1.
          o_addr_mem_programa = 0;
          o_next_dato_mem_programa = 0;
-         modo_ejecucion = i_data_rx [2];// Continuo en cero, paso a paso en 1.
+         o_modo_ejecucion = i_data_rx [2];// Continuo en cero, paso a paso en 1.
        end
 
        default : begin
@@ -242,7 +242,7 @@ always @ ( * ) begin //Output logic
          o_write_mem_programa = 0; //Write es en 1.
          o_addr_mem_programa = 0;
          o_next_dato_mem_programa = 0;
-         modo_ejecucion = 0; // Continuo.
+         o_modo_ejecucion = 0; // Continuo.
        end
 
  endcase

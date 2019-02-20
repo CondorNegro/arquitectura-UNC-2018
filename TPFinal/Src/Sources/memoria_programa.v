@@ -17,21 +17,21 @@
   //  If a reset or enable is not necessary, it may be tied off or removed from the code.
 module memoria_programa
     (
-    i_addr,  // Address bus, width determined from RAM_DEPTH
+    i_addr,           // Address bus, width determined from RAM_DEPTH
     i_data,           // RAM input data
-    i_clk,                            // Clock
-    wea,                              // Write enable
-    ena,                            // RAM Enable, for additional power savings, disable port when not in use (1)
-    rsta,                           // Output reset (does not affect memory contents) (0)
-    regcea,                         // Output register enable (0)
-    soft_reset,
+    i_clk,            // Clock
+    i_wea,              // Write enable
+    i_ena,              // RAM Enable, for additional power savings, disable port when not in use (1)
+    i_rsta,             // Output reset (does not affect memory contents) (0)
+    i_regcea,           // Output register enable (0)
+    i_soft_reset,       // Reset via software for MIPS
     o_data,           // RAM output data
-    o_reset_ack
+    o_reset_ack       // Ack from memories when they complete their resets.
     );
   
   
-  parameter RAM_WIDTH = 32;                  // Specify RAM data width
-  parameter RAM_DEPTH = 2048;                  // Specify RAM depth (number of entries)
+  parameter RAM_WIDTH = 32;                       // Specify RAM data width
+  parameter RAM_DEPTH = 2048;                     // Specify RAM depth (number of entries)
   parameter RAM_PERFORMANCE = "HIGH_PERFORMANCE"; // Select "HIGH_PERFORMANCE" or "LOW_LATENCY"
   parameter INIT_FILE = "";                       // Specify name/location of RAM initialization file if using one (leave blank if not)  
   
@@ -41,13 +41,13 @@ module memoria_programa
   input [CANT_BIT_RAM_DEPTH-1:0] i_addr;  // Address bus, width determined from RAM_DEPTH
   input [RAM_WIDTH-1:0] i_data;           // RAM input data
   input i_clk;                            // Clock
-  input wea;                              // Write enable
-  input ena;                            // RAM Enable, for additional power savings, disable port when not in use (1)
-  input rsta;                           // Output reset (does not affect memory contents) (0)
-  input regcea;                         // Output register enable (0)
-  input soft_reset;
-  output [RAM_WIDTH-1:0] o_data;           // RAM output data
-  output reg o_reset_ack;
+  input i_wea;                              // Write enable
+  input i_ena;                              // RAM Enable, for additional power savings, disable port when not in use (1)
+  input i_rsta;                             // Output reset (does not affect memory contents) (0)
+  input i_regcea;                           // Output register enable (0)
+  input i_soft_reset;                       // Reset via software for MIPS
+  output [RAM_WIDTH-1:0] o_data;          // RAM output data
+  output reg o_reset_ack;                 // Ack from memories when they complete their resets.
   
   
   reg [RAM_WIDTH - 1 : 0] BRAM [RAM_DEPTH - 1 : 0];
@@ -69,7 +69,7 @@ module memoria_programa
   endgenerate
 
   always @(posedge i_clk) begin
-    if (~soft_reset) begin
+    if (~i_soft_reset) begin
       BRAM [reg_contador] <= {RAM_WIDTH{1'b0}};
 
       if ( reg_contador == (RAM_DEPTH-1) ||  (BRAM [reg_contador]=={RAM_WIDTH{1'b0}}) ) begin
@@ -84,8 +84,8 @@ module memoria_programa
     else begin
       reg_contador <= 0;
       o_reset_ack <= 1;
-      if (ena)
-        if (wea)
+      if (i_ena)
+        if (i_wea)
           BRAM [i_addr] <= i_data;
         else
           ram_data <= BRAM [i_addr];
@@ -105,9 +105,9 @@ module memoria_programa
       reg [RAM_WIDTH-1:0] reg_data_out = {RAM_WIDTH{1'b0}};
 
       always @(posedge i_clk)
-        if (rsta)
+        if (i_rsta)
           reg_data_out <= {RAM_WIDTH {1'b0}};
-        else if (regcea)
+        else if (i_regcea)
           reg_data_out <= ram_data;
 
       assign o_data = reg_data_out;
