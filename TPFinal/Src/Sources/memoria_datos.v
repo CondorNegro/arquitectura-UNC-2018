@@ -25,8 +25,10 @@ module memoria_datos
     i_rsta,             // Output reset (does not affect memory contents) (0)
     i_regcea,           // Output register enable (0)
     i_soft_reset,       // Reset via software for MIPS
+    i_bit_sucio,
     o_data,           // RAM output data
-    o_reset_ack       // Ack from memories when they complete their resets. 
+    o_reset_ack,       // Ack from memories when they complete their resets.
+    o_addr_bit_sucio
     );
   
   
@@ -46,9 +48,10 @@ module memoria_datos
   input i_rsta;                             // Output reset (does not affect memory contents) (0)
   input i_regcea;                           // Output register enable (0)
   input i_soft_reset;                       // Reset via software for MIPS
+  input i_bit_sucio;                        // Dirty bit from the position of data memory pointed by o_addr_bit_sucio
   output [RAM_WIDTH-1:0] o_data;          // RAM output data
   output reg o_reset_ack;                 // Ack from memories when they complete their resets.
-  
+  output reg [CANT_BIT_RAM_DEPTH-1:0] o_addr_bit_sucio; //Pointer to the dirty bit register.
   
   reg [RAM_WIDTH - 1 : 0] BRAM [RAM_DEPTH - 1 : 0];
   reg [RAM_WIDTH - 1 : 0] ram_data = {RAM_WIDTH {1'b0}};
@@ -69,9 +72,11 @@ module memoria_datos
   endgenerate
 
   always @(posedge i_clk) begin
+    o_addr_bit_sucio <= reg_contador;
     if (~i_soft_reset) begin
-      BRAM [reg_contador] <= reg_contador;
-
+      if (i_bit_sucio) begin
+        BRAM [o_addr_bit_sucio] <= o_addr_bit_sucio;
+      end 
       if (reg_contador == (RAM_DEPTH-1)) begin
         reg_contador <= reg_contador;
         o_reset_ack <= 0;

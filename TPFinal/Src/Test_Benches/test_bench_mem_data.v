@@ -20,6 +20,8 @@ module test_bench_memoria_datos();
    parameter RAM_PERFORMANCE = "LOW_LATENCY";      // Select "HIGH_PERFORMANCE" or "LOW_LATENCY"
    parameter INIT_FILE = "";                        // Specify name/location of RAM initialization file if using one (leave blank if not)
    
+   localparam CANT_BIT_RAM_DEPTH = clogb2(RAM_DEPTH);  
+  
    
    //Todo puerto de salida del modulo es un cable.
    //Todo puerto de estimulo o generacion de entrada es un registro.
@@ -33,10 +35,17 @@ module test_bench_memoria_datos();
    reg reg_rsta;
    reg reg_regcea;
    reg reg_soft_reset;
+   reg reg_bit_sucio;
    wire wire_o_reset_ack; 
    wire [RAM_WIDTH-1:0] wire_o_data;
+   wire [CANT_BIT_RAM_DEPTH-1:0] wire_addr_bit_sucio;
    
-   
+   //  The following function calculates the address width based on specified RAM depth
+  function integer clogb2;
+    input integer depth;
+      for (clogb2=0; depth>0; clogb2=clogb2+1)
+        depth = depth >> 1;
+  endfunction
    
    initial    begin
        
@@ -48,12 +57,13 @@ module test_bench_memoria_datos();
        reg_ena = 1'b1;
        reg_rsta = 1'b0;
        reg_soft_reset = 1'b1;
+       reg_bit_sucio = 1'b0;
         
        //#100 reg_regcea = 1'b1; // Lectura de posicion 0, tiene que haber un 0 porque no se guardo nada todavia.
        
        //#100 data_in = 8'b00001111; // Dato a guardar.
        #20 reg_wea = 1'b1; // Ahora se guarda el dato.
-       
+       #10 reg_bit_sucio = 1'b1;
        #20 reg_wea = 1'b0; 
        
        #20 data_in = 8'b00000101; // Dato a guardar.
@@ -67,9 +77,21 @@ module test_bench_memoria_datos();
        #20 reg_i_addr = 11'b0000010; // Seteo de direccion de mem.
        #20 reg_wea = 1'b0; // Ahora se guarda el dato.
        
+       #20 reg_wea = 1'b1; // Ahora se guarda el dato.
+       #20 data_in = 8'b00000010; // Dato a guardar.
+       #20 reg_i_addr = 1023; // Seteo de direccion de mem.
+       #20 reg_wea = 1'b0;
        
-       #20 reg_i_addr = 11'b0000011; // Lectura del 1 que se guardo.
+       #20 reg_i_addr = 11'b0000011; 
        
+       #100 reg_soft_reset = 1'b0;
+       #30000 reg_soft_reset = 1'b1;
+       
+       #10 reg_bit_sucio = 1'b0;
+       #20 reg_wea = 1'b1; // Ahora se guarda el dato.
+       #20 data_in = 8'b00000010; // Dato a guardar.
+       #20 reg_i_addr = 1023; // Seteo de direccion de mem.
+       #20 reg_wea = 1'b0;
        #100 reg_soft_reset = 1'b0;
        #30000 reg_soft_reset = 1'b1;
        
@@ -101,8 +123,10 @@ memoria_datos
      .i_rsta (reg_rsta),
      .i_regcea (reg_regcea),
      .i_soft_reset (reg_soft_reset),
+     .i_bit_sucio (reg_bit_sucio),
      .o_reset_ack (wire_o_reset_ack),
-     .o_data (wire_o_data)
+     .o_data (wire_o_data),
+     .o_addr_bit_sucio (wire_addr_bit_sucio)
    );
   
 endmodule
