@@ -19,9 +19,10 @@ import threading  		# Para uso de threads
 #Constantes 
 BAUDRATE = 9600
 WIDTH_WORD = 8
+CANT_BITS_INSTRUCCION = 32
 CANT_STOP_BITS = 2
 FILE_NAME = "init_ram_file.txt"
-FLAG_TEST = True
+FLAG_TEST = False
 
 # Variables globales
 
@@ -182,7 +183,7 @@ def conexionViaThread(puerto):
 		print 'Error en la conexion/desconexion.'
 		activarBotones (0)
 
-
+# Funcion para enviar un byte al MIPS por UART
 def writeSerial (data):
 	global etiqueta_resultado_impresion
 	try:
@@ -296,11 +297,14 @@ def sendInstructionsViaThread():
 					print cadena_archivo
 				flag_activar_botones_3 = True
 				for i in range(len(cadena_archivo)):
-					if (cadena_archivo[i] != ''):
-						code_error = writeSerial (cadena_archivo[i])
-						if (code_error < 0):
-							flag_activar_botones_3 = False
-							break
+					if ((cadena_archivo[i] != '') and (len(cadena_archivo[i]) == (CANT_BITS_INSTRUCCION))):
+						for j in range(CANT_BITS_INSTRUCCION/WIDTH_WORD):
+							code_error = writeSerial (cadena_archivo[i][WIDTH_WORD * j:WIDTH_WORD * (j+1)])
+							if (code_error < 0):
+								flag_activar_botones_3 = False
+								break
+					if (not flag_activar_botones_3):
+						break
 				if (flag_activar_botones_3):
 					activarBotones (3)
 					etiquetaResultado.config (text = "Instrucciones OK", fg = "dark green")
