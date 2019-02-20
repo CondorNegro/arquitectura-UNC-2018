@@ -232,7 +232,8 @@ control_bit_sucio_mem_data
         .i_addr (wire_addr_control_bit_sucio),                         
         .i_clk (i_clock),                         
         .i_wea (wire_wr_rd_mem_datos),                            
-        .i_ena (1),                            
+        .i_ena (1), 
+        .i_soft_reset (wire_soft_reset),                           
         .i_soft_reset_ack_mem_datos (wire_soft_reset_ack_datos),      
         .o_bit_sucio (wire_bit_sucio) 
     );
