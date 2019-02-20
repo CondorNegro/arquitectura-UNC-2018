@@ -20,7 +20,8 @@ import threading  		# Para uso de threads
 BAUDRATE = 9600
 WIDTH_WORD = 8
 CANT_STOP_BITS = 2
-FILE_NAME = "assembler_MIPS.txt"
+FILE_NAME = "init_ram_file.txt"
+FLAG_TEST = True
 
 # Variables globales
 
@@ -183,11 +184,20 @@ def conexionViaThread(puerto):
 
 
 def writeSerial (data):
+	global etiqueta_resultado_impresion
 	try:
-		ser.write (chr (int (data, 2)))
+		if (not FLAG_TEST):
+			ser.write (chr (int (data, 2)))
+		else:
+			print data
+			print ((int (data, 2)))
 		time.sleep (1.0) #Espera.
+		return 0
 	except:
 		print ("Error en la funcion writeSerial. Info a enviar invalida.")
+		etiqueta_resultado_impresion = "Error en la funcion writeSerial. Data invalida."
+		etiquetaResultado.config (text = etiqueta_resultado_impresion, fg = "red")
+		return -1 
 
 
 # Funcion que recibe los datos obtenidos de la FPGA via UART. Puede efectuar una comparacion de los datos recibidos
@@ -202,25 +212,28 @@ def readResultado (cantBytes, cadenaComparacion):
 			exit (1)
 	contador_bytes = 0
 	time.sleep (0.2)
-	while ((ser.inWaiting() > 0) and (contador_bytes < cantBytes)): #inWaiting -> cantidad de bytes en buffer esperando.
-		contador_bytes = contador_bytes + 1
-		lectura = ser.read (1)
-		etiqueta_resultado_impresion = bin(ord (lectura))[2:][::-1]
-		for i in range (0, 8 - len(etiqueta_resultado_impresion), 1):
-			if (i != 8):	
-				etiqueta_resultado_impresion = etiqueta_resultado_impresion + '0'
-		print '>>',
-		print etiqueta_resultado_impresion
-		print '>>',
-		print lectura
-	if (cadenaComparacion != ''):
-		if (cadenaComparacion == etiqueta_resultado_impresion):
-			etiquetaResultado.config (text = "Valor obtenido:  " + etiqueta_resultado_impresion, fg = "dark green")
+	global etiqueta_resultado_impresion
+	if (not FLAG_TEST):
+		while ((ser.inWaiting() > 0) and (contador_bytes < cantBytes)): #inWaiting -> cantidad de bytes en buffer esperando.
+			contador_bytes = contador_bytes + 1
+			lectura = ser.read (1)
+			etiqueta_resultado_impresion = bin(ord (lectura))[2:][::-1]
+			for i in range (0, 8 - len(etiqueta_resultado_impresion), 1):
+				if (i != 8):	
+					etiqueta_resultado_impresion = etiqueta_resultado_impresion + '0'
+			print '>>',
+			print etiqueta_resultado_impresion
+			print '>>',
+			print lectura
+		if (cadenaComparacion != ''):
+			if (cadenaComparacion == etiqueta_resultado_impresion):
+				etiquetaResultado.config (text = "Valor obtenido:  " + etiqueta_resultado_impresion, fg = "dark green")
+			else:
+				etiquetaResultado.config (text = "Valor obtenido invalido", fg = "red")
+				return -1 #Error
 		else:
-			etiquetaResultado.config (text = "Valor obtenido invalido", fg = "red")
-	else:
-		etiquetaResultado.config (text = "Valor obtenido:  " + etiqueta_resultado_impresion, fg = "dark green")
-	
+			etiquetaResultado.config (text = "Valor obtenido:  " + etiqueta_resultado_impresion, fg = "dark green")
+	return 0
 
 
 # Funcion que genera un thread que permite realizar un soft reset en la FPGA.
@@ -240,9 +253,12 @@ def softResetViaThread():
 	try:
 		data_send = getCode('Soft reset')
 		if (len (data_send) == 8):
-			writeSerial (data_send)
-			readResultado (1, getCode ('Soft reset ack')) #Lectura de soft reset ack (1 byte) 
-			activarBotones (2)
+			code_error_wr = writeSerial (data_send)
+			code_error = readResultado (1, getCode ('Soft reset ack')) #Lectura de soft reset ack (1 byte)
+			if ((code_error < 0) or (code_error_wr < 0)): #Hubo error en la comparacion con la cadena patron
+				activarBotones (1)  
+			else:
+				activarBotones (2)
 		else:
 			print 'Warning: Deben ser 8 bits.'
 			etiquetaResultado.config (text = "Warning: Deben ser 8 bits", fg = "red")
@@ -269,12 +285,27 @@ def sendInstructionsViaThread():
 	try:
 		data_send = getCode('Send instructions')
 		if (len (data_send) == 8):
-			writeSerial (data_send)
-			cadena_archivo = fileReader (FILE_NAME)
-			cadena_archivo = cadena_archivo.split ("\n")
-			for i in range(len(cadena_archivo)):
-				writeSerial (cadena_archivo[i])
-			activarBotones (3)
+			code_error = writeSerial (data_send)
+			if (code_error < 0):
+				activarBotones (2)
+			else:
+				cadena_archivo = fileReader (FILE_NAME)
+				cadena_archivo = cadena_archivo.split ("\n")
+				if (FLAG_TEST):
+					print "Array de archivo: ",
+					print cadena_archivo
+				flag_activar_botones_3 = True
+				for i in range(len(cadena_archivo)):
+					if (cadena_archivo[i] != ''):
+						code_error = writeSerial (cadena_archivo[i])
+						if (code_error < 0):
+							flag_activar_botones_3 = False
+							break
+				if (flag_activar_botones_3):
+					activarBotones (3)
+					etiquetaResultado.config (text = "Instrucciones OK", fg = "dark green")
+				else:
+					activarBotones(2)
 		else:
 			print 'Warning: Deben ser 8 bits.'
 			etiquetaResultado.config (text = "Warning: Deben ser 8 bits", fg = "red")
@@ -300,11 +331,16 @@ def iniciarMIPSViaThread():
 	global etiqueta_resultado_impresion
 	global modo_ejecucion
 	try:
-		data_send = getCode('00000011')
-		data_send[-3] = modo_ejecucion
+		data_send = getCode('Start MIPS')
 		if (len (data_send) == 8):
-			writeSerial (data_send)
-			activarBotones (0)
+			data_send =  data_send[0:5] + modo_ejecucion + data_send[6:]
+			code_error = writeSerial (data_send)
+			if (code_error < 0):
+				activarBotones (4)
+			else:
+				etiqueta_resultado_impresion = "Start MIPS."
+				etiquetaResultado.config (text = etiqueta_resultado_impresion, fg = "dark green")
+				activarBotones (1)
 		else:
 			print 'Warning: Deben ser 8 bits.'
 			etiquetaResultado.config (text = "Warning: Deben ser 8 bits", fg = "red")
@@ -336,8 +372,10 @@ def setModoEjecucionViaThread (modo):
 		activarBotones (3)
 	else:
 		modo_ejecucion = modo
-		etiqueta_resultado_impresion = "Modo: " + modo_ejecucion
+		etiqueta_resultado_impresion = "Modo de ejecucion: " + modo_ejecucion
 		etiquetaResultado.config (text = etiqueta_resultado_impresion, fg = "dark green")
+		etiqueta_resultado_modo_de_ejecucion = ""
+		etiquetaResultadoModoEjecucion.config (text = etiqueta_resultado_modo_de_ejecucion, fg= "red")
 		activarBotones (4)
 
 	
