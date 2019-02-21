@@ -33,9 +33,9 @@ module top_arquitectura(
   i_clock, 
   i_reset,
   uart_txd_in,
-  uart_rxd_out
+  uart_rxd_out,
   //jc
-  //o_leds 
+  o_leds 
   );
 
 
@@ -64,7 +64,7 @@ input i_clock;                                  // Clock.
 input i_reset;                                  // Reset.
 input uart_txd_in;                              // Transmisor de PC.
 output uart_rxd_out;                            // Receptor de PC.
-//output [4 - 1 : 0] o_leds;                    // Leds.
+output [3 : 0] o_leds;                      // Leds.
 //output [7:0] jc;
 
 
@@ -95,6 +95,7 @@ wire wire_bit_sucio;
 wire wire_enable_mem;
 wire wire_rsta_mem;
 wire wire_regcea_mem;
+
 
 
 
@@ -130,8 +131,8 @@ debug_unit
     .o_modo_ejecucion (wire_modo_ejecucion),
     .o_enable_mem (wire_enable_mem),
     .o_rsta_mem (wire_rsta_mem),
-    .o_regcea_mem (wire_regcea_mem)
-   //.o_prueba (prueba)
+    .o_regcea_mem (wire_regcea_mem),
+    .o_led (o_leds[0])
    );
 
 

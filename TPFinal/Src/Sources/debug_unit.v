@@ -35,7 +35,8 @@ module debug_unit
   output reg o_modo_ejecucion,
   output reg o_enable_mem,
   output reg o_rsta_mem,
-  output reg o_regcea_mem
+  output reg o_regcea_mem,
+  output reg o_led
  );
 
 // Funcion para calcular el logaritmo en base 2.
@@ -193,6 +194,7 @@ always @ ( * ) begin //Output logic
          o_enable_mem = 0;
          o_rsta_mem = 1;
          o_regcea_mem = 1;
+         o_led = 1;
        end
 
        SOFT_RESET : begin
@@ -205,7 +207,8 @@ always @ ( * ) begin //Output logic
          o_modo_ejecucion = 0; // Continuo.
          o_enable_mem = 1;
          o_rsta_mem = 0;
-         o_regcea_mem = 0; 
+         o_regcea_mem = 0;
+         o_led = 0;
        end
 
        ESPERA_PC_ACK : begin
@@ -218,7 +221,8 @@ always @ ( * ) begin //Output logic
          o_modo_ejecucion = 0; // Continuo.
          o_enable_mem = 1;
          o_rsta_mem = 0;
-         o_regcea_mem = 0; 
+         o_regcea_mem = 0;
+         o_led = 0; 
        end
 
 //{ CANT_BITS_CONTADOR_DATOS {1'b1} }
@@ -238,6 +242,7 @@ always @ ( * ) begin //Output logic
          o_enable_mem = 1;
          o_rsta_mem = 0;
          o_regcea_mem = 0; 
+         o_led = 0;
        end
 
        ESPERA_START : begin
@@ -250,7 +255,8 @@ always @ ( * ) begin //Output logic
          o_modo_ejecucion = i_data_rx [2];// Continuo en cero, paso a paso en 1.
          o_enable_mem = 1;
          o_rsta_mem = 0;
-         o_regcea_mem = 0; 
+         o_regcea_mem = 0;
+         o_led = 0;
        end
 
        default : begin
@@ -264,6 +270,7 @@ always @ ( * ) begin //Output logic
          o_enable_mem = 0;
          o_rsta_mem = 1;
          o_regcea_mem = 1;
+         o_led = 1;
        end
 
  endcase
