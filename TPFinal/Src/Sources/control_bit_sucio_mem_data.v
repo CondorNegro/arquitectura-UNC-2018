@@ -25,7 +25,7 @@ module control_bit_sucio_mem_data
   localparam CANT_BIT_RAM_DEPTH = clogb2(RAM_DEPTH);  
 
   
-  input [CANT_BIT_RAM_DEPTH-1:0] i_addr;  
+  input [CANT_BIT_RAM_DEPTH-2:0] i_addr;  
   input i_clk;                           
   input i_wea;                              
   input i_ena;

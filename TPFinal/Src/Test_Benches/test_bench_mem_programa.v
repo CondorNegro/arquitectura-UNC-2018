@@ -16,17 +16,17 @@ module test_bench_memoria_programa();
        
    // Parametros
    parameter RAM_WIDTH = 32;                       // Specify RAM data width
-   parameter RAM_DEPTH = 1024;                     // Specify RAM depth (number of entries)
+   parameter RAM_DEPTH = 2048;                     // Specify RAM depth (number of entries)
    parameter RAM_PERFORMANCE = "LOW_LATENCY";      // Select "HIGH_PERFORMANCE" or "LOW_LATENCY"
    parameter INIT_FILE = "";                        // Specify name/location of RAM initialization file if using one (leave blank if not)
    
-   
+   localparam CANT_BIT_RAM_DEPTH = clogb2(RAM_DEPTH);
    //Todo puerto de salida del modulo es un cable.
    //Todo puerto de estimulo o generacion de entrada es un registro.
    
    // Entradas.
    reg clock;                                  // Clock.
-   reg [11-1:0] reg_i_addr;
+   reg [CANT_BIT_RAM_DEPTH - 2 : 0] reg_i_addr;
    reg [RAM_WIDTH-1:0] data_in;                                 
    reg reg_wea;
    reg reg_ena;
@@ -36,7 +36,12 @@ module test_bench_memoria_programa();
    wire wire_o_reset_ack; 
    wire [RAM_WIDTH-1:0] wire_o_data;
    
-   
+   //  The following function calculates the address width based on specified RAM depth
+  function integer clogb2;
+    input integer depth;
+      for (clogb2=0; depth>0; clogb2=clogb2+1)
+        depth = depth >> 1;
+  endfunction
    
    initial    begin
        

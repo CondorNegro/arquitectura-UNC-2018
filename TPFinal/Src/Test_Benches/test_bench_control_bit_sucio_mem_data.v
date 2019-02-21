@@ -22,7 +22,7 @@ module test_bench_control_bit_sucio_mem_data();
    
    // Entradas.
    reg clock;                                  // Clock.
-   reg [CANT_BIT_RAM_DEPTH - 1 : 0] reg_i_addr;                                
+   reg [CANT_BIT_RAM_DEPTH - 2 : 0] reg_i_addr;                                
    reg reg_wea;
    reg reg_ena;
    reg reg_soft_reset_ack;

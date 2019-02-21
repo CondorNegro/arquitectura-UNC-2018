@@ -28,7 +28,7 @@ module test_bench_memoria_datos();
    
    // Entradas.
    reg clock;                                  // Clock.
-   reg [11-1:0] reg_i_addr;
+   reg [CANT_BIT_RAM_DEPTH - 2 : 0] reg_i_addr;
    reg [RAM_WIDTH-1:0] data_in;                                 
    reg reg_wea;
    reg reg_ena;
@@ -38,7 +38,7 @@ module test_bench_memoria_datos();
    reg reg_bit_sucio;
    wire wire_o_reset_ack; 
    wire [RAM_WIDTH-1:0] wire_o_data;
-   wire [CANT_BIT_RAM_DEPTH-1:0] wire_addr_bit_sucio;
+   wire [CANT_BIT_RAM_DEPTH-2:0] wire_addr_bit_sucio;
    
    //  The following function calculates the address width based on specified RAM depth
   function integer clogb2;

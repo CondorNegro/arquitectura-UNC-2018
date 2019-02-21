@@ -38,7 +38,7 @@ module memoria_programa
   localparam CANT_BIT_RAM_DEPTH = clogb2(RAM_DEPTH);  
   
   
-  input [CANT_BIT_RAM_DEPTH-1:0] i_addr;  // Address bus, width determined from RAM_DEPTH
+  input [CANT_BIT_RAM_DEPTH-2:0] i_addr;  // Address bus, width determined from RAM_DEPTH
   input [RAM_WIDTH-1:0] i_data;           // RAM input data
   input i_clk;                            // Clock
   input i_wea;                              // Write enable

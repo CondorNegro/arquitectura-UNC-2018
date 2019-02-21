@@ -40,7 +40,7 @@ module memoria_datos
   localparam CANT_BIT_RAM_DEPTH = clogb2(RAM_DEPTH);  
   
   
-  input [CANT_BIT_RAM_DEPTH-1:0] i_addr;  // Address bus, width determined from RAM_DEPTH
+  input [CANT_BIT_RAM_DEPTH-2:0] i_addr;  // Address bus, width determined from RAM_DEPTH
   input [RAM_WIDTH-1:0] i_data;           // RAM input data
   input i_clk;                            // Clock
   input i_wea;                              // Write enable
@@ -51,7 +51,7 @@ module memoria_datos
   input i_bit_sucio;                        // Dirty bit from the position of data memory pointed by o_addr_bit_sucio
   output [RAM_WIDTH-1:0] o_data;          // RAM output data
   output reg o_reset_ack;                 // Ack from memories when they complete their resets.
-  output reg [CANT_BIT_RAM_DEPTH-1:0] o_addr_bit_sucio; //Pointer to the dirty bit register.
+  output reg [CANT_BIT_RAM_DEPTH-2:0] o_addr_bit_sucio; //Pointer to the dirty bit register.
   
   reg [RAM_WIDTH - 1 : 0] BRAM [RAM_DEPTH - 1 : 0];
   reg [RAM_WIDTH - 1 : 0] ram_data = {RAM_WIDTH {1'b0}};
