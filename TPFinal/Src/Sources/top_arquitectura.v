@@ -95,7 +95,7 @@ wire wire_bit_sucio;
 
 
 
-assign wire_soft_reset_ack = wire_soft_reset_ack_prog & wire_soft_reset_ack_datos;
+assign wire_soft_reset_ack = wire_soft_reset_ack_prog | wire_soft_reset_ack_datos;
 //wire prueba;
 //assign jc[0] = prueba;
 //assign uart_rxd_out = prueba;

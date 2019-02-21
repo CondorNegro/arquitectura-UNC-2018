@@ -316,7 +316,7 @@ module test_bench_top_arquitectura();
         #52080 uart_txd_in_reg = 1'b0;
         
         #52080 uart_txd_in_reg = 1'b0;
-        #52080 uart_txd_in_reg = 1'b0;
+        #52080 uart_txd_in_reg = 1'b1;
         #52080 uart_txd_in_reg = 1'b1;
         #52080 uart_txd_in_reg = 1'b1;
         
