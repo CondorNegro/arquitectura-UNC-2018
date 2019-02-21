@@ -153,7 +153,7 @@ always@( * ) begin //NEXT - STATE logic
        end
 
        READ_PROGRAMA : begin
-           if ((reg_instruccion == { LONGITUD_INSTRUCCION {1'b0} }) && (reg_contador_datos == 3 )  ) begin
+           if ((reg_instruccion == { LONGITUD_INSTRUCCION {1'b0} }) && (flag_send_mem == 1) && (reg_contador_datos ==  0) ) begin
                reg_next_state = ESPERA_START;
            end
            else begin
