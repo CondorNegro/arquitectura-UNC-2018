@@ -92,6 +92,9 @@ wire wire_soft_reset_ack_datos;
 wire wire_modo_ejecucion;
 wire [ADDR_MEM_DATOS_LENGTH - 1 : 0] wire_addr_control_bit_sucio;
 wire wire_bit_sucio;
+wire wire_enable_mem;
+wire wire_rsta_mem;
+wire wire_regcea_mem;
 
 
 
@@ -124,7 +127,10 @@ debug_unit
     .o_write_mem_programa (wire_wr_rd_mem_prog),
     .o_addr_mem_programa (wire_addr_mem_programa),
     .o_dato_mem_programa (wire_data_mem_programa_input),
-    .o_modo_ejecucion (wire_modo_ejecucion)
+    .o_modo_ejecucion (wire_modo_ejecucion),
+    .o_enable_mem (wire_enable_mem),
+    .o_rsta_mem (wire_rsta_mem),
+    .o_regcea_mem (wire_regcea_mem)
    //.o_prueba (prueba)
    );
 
@@ -192,9 +198,9 @@ memoria_datos
      .i_addr (wire_addr_mem_datos),
      .i_data (wire_datos_in_mem_data),           
      .i_wea (wire_wr_rd_mem_datos),             
-     .i_ena (1),              
-     .i_rsta (0),             
-     .i_regcea (0),           
+     .i_ena (wire_enable_mem),              
+     .i_rsta (wire_rsta_mem),             
+     .i_regcea (wire_regcea_mem),           
      .i_soft_reset (wire_soft_reset),
      .i_bit_sucio (wire_bit_sucio),      
      .o_data (wire_datos_out_mem_data),           
@@ -215,9 +221,9 @@ memoria_programa
         .i_addr (wire_addr_mem_programa),
         .i_data (wire_data_mem_programa_input),           
         .i_wea (wire_wr_rd_mem_prog),              
-        .i_ena (1),             
-        .i_rsta (0),             
-        .i_regcea (0),           
+        .i_ena (wire_enable_mem),             
+        .i_rsta (wire_rsta_mem),             
+        .i_regcea (wire_regcea_mem),           
         .i_soft_reset (wire_soft_reset),       
         .o_data (wire_data_mem_programa_output),           
         .o_reset_ack (wire_soft_reset_ack_prog)       
@@ -234,7 +240,7 @@ control_bit_sucio_mem_data
         .i_addr (wire_addr_control_bit_sucio),                         
         .i_clk (i_clock),                         
         .i_wea (wire_wr_rd_mem_datos),                            
-        .i_ena (1), 
+        .i_ena (wire_enable_mem), 
         .i_soft_reset (wire_soft_reset),                           
         .i_soft_reset_ack_mem_datos (wire_soft_reset_ack_datos),      
         .o_bit_sucio (wire_bit_sucio) 

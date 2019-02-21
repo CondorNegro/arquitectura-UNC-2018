@@ -37,6 +37,9 @@ module test_bench_debug_unit();
    wire [ADDR_MEM_LENGTH - 1 : 0]  wire_o_addr_mem_programa;
    wire [LONGITUD_INSTRUCCION - 1 : 0]  wire_o_dato_mem_programa;
    wire wire_modo_ejecucion;
+   wire wire_enable_mem;
+   wire wire_rsta_mem;
+   wire wire_regcea_mem;
                           
    
    
@@ -146,7 +149,10 @@ debug_unit
        .o_write_mem_programa (wire_o_write_mem_programa),
        .o_addr_mem_programa (wire_o_addr_mem_programa),
        .o_dato_mem_programa (wire_o_dato_mem_programa),
-       .o_modo_ejecucion (wire_modo_ejecucion)
+       .o_modo_ejecucion (wire_modo_ejecucion),
+       .o_enable_mem (wire_enable_mem),
+       .o_rsta_mem (wire_rsta_mem),
+       .o_regcea_mem (wire_regcea_mem)
    );
   
 endmodule
