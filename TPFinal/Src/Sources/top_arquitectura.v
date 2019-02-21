@@ -97,12 +97,17 @@ wire wire_rsta_mem;
 wire wire_regcea_mem;
 
 
+//Borrar y dejar el segundo 
+assign wire_soft_reset_ack = wire_soft_reset_ack_prog;
+//assign wire_soft_reset_ack = wire_soft_reset_ack_prog | wire_soft_reset_ack_datos;
 
 
-assign wire_soft_reset_ack = wire_soft_reset_ack_prog | wire_soft_reset_ack_datos;
 //wire prueba;
 //assign jc[0] = prueba;
 //assign uart_rxd_out = prueba;
+assign o_leds[1] = 1'b0;
+assign o_leds[2] = 1'b0;
+assign o_leds[3] = 1'b0;
 
 // Modulo debug_unit.
 
@@ -186,7 +191,7 @@ tx
 
 // Memorias.
 
-memoria_datos
+/**memoria_datos
    #(
         .RAM_WIDTH (RAM_WIDTH_DATOS),
         .RAM_PERFORMANCE (RAM_PERFORMANCE_DATOS),
@@ -207,7 +212,7 @@ memoria_datos
      .o_data (wire_datos_out_mem_data),           
      .o_reset_ack (wire_soft_reset_ack_datos),
      .o_addr_bit_sucio (wire_addr_control_bit_sucio)    
-   );
+   );**/
 
 memoria_programa
     #(
@@ -232,7 +237,7 @@ memoria_programa
 
 // Control de bit de sucio en memoria de datos.
 
-control_bit_sucio_mem_data
+/**control_bit_sucio_mem_data
     #(
         .RAM_DEPTH (RAM_DEPTH_DATOS)
     )
@@ -245,6 +250,6 @@ control_bit_sucio_mem_data
         .i_soft_reset (wire_soft_reset),                           
         .i_soft_reset_ack_mem_datos (wire_soft_reset_ack_datos),      
         .o_bit_sucio (wire_bit_sucio) 
-    );
+    );**/
 
 endmodule
