@@ -26,7 +26,8 @@ module memoria_programa
     i_regcea,           // Output register enable (0)
     i_soft_reset,       // Reset via software for MIPS
     o_data,           // RAM output data
-    o_reset_ack       // Ack from memories when they complete their resets.
+    o_reset_ack,       // Ack from memories when they complete their resets.
+    o_led
     );
   
   
@@ -48,6 +49,7 @@ module memoria_programa
   input i_soft_reset;                       // Reset via software for MIPS
   output [RAM_WIDTH-1:0] o_data;          // RAM output data
   output reg o_reset_ack;                 // Ack from memories when they complete their resets.
+  output reg o_led;
   
   
   reg [RAM_WIDTH - 1 : 0] BRAM [RAM_DEPTH - 1 : 0];
@@ -70,8 +72,9 @@ module memoria_programa
 
   always @(posedge i_clk) begin
     if (~i_soft_reset) begin
+      ram_data <= 0;
       BRAM [reg_contador] <= {RAM_WIDTH{1'b0}};
-
+      o_led <= 0;
       if ( reg_contador == (RAM_DEPTH-1) ||  (BRAM [reg_contador]=={RAM_WIDTH{1'b0}}) ) begin
         reg_contador <= reg_contador;
         o_reset_ack <= 0;
@@ -84,11 +87,30 @@ module memoria_programa
     else begin
       reg_contador <= 0;
       o_reset_ack <= 1;
-      if (i_ena)
-        if (i_wea)
+      if (i_ena) begin
+        if (i_wea)begin
           BRAM [i_addr] <= i_data;
-        else
+          ram_data <= ram_data;
+          if ( BRAM [i_addr] != 0) begin
+            o_led <= 1;
+          end
+          else begin
+            o_led <= o_led;
+          end
+        end
+        else begin
           ram_data <= BRAM [i_addr];
+          BRAM [i_addr] <= BRAM [i_addr];
+          o_led <= o_led;
+         end
+     end
+     else begin
+        o_led <= 0;
+        reg_contador <= 0;
+        o_reset_ack <= 1;
+        ram_data <= ram_data;
+        BRAM [i_addr] <= BRAM [i_addr];
+     end
     end
   end
   //  The following code generates HIGH_PERFORMANCE (use output register) or LOW_LATENCY (no output register)

@@ -35,6 +35,7 @@ module test_bench_memoria_programa();
    reg reg_soft_reset;
    wire wire_o_reset_ack; 
    wire [RAM_WIDTH-1:0] wire_o_data;
+   wire wire_led;
    
    //  The following function calculates the address width based on specified RAM depth
   function integer clogb2;
@@ -50,10 +51,12 @@ module test_bench_memoria_programa();
        reg_regcea = 1'b1;
        data_in = 8'b11011011;
        reg_i_addr = 11'b0000000;
-       reg_ena = 1'b1;
+       reg_ena = 1'b0;
        reg_rsta = 1'b0;
        reg_soft_reset = 1'b1;
-        
+       #20 reg_soft_reset = 1'b0;
+       #20 reg_soft_reset = 1'b1;
+       #10  reg_ena = 1'b1;
        //#100 reg_regcea = 1'b1; // Lectura de posicion 0, tiene que haber un 0 porque no se guardo nada todavia.
        
        //#100 data_in = 8'b00001111; // Dato a guardar.
@@ -115,7 +118,8 @@ memoria_programa
      .i_regcea (reg_regcea),
      .i_soft_reset (reg_soft_reset),
      .o_reset_ack (wire_o_reset_ack),
-     .o_data (wire_o_data)
+     .o_data (wire_o_data),
+     .o_led (wire_led)
    );
   
 endmodule

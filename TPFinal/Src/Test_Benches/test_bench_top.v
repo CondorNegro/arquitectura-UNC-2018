@@ -57,7 +57,7 @@ module test_bench_top_arquitectura();
    reg hard_reset;                             // Reset.
    reg uart_txd_in_reg;                        // Tx de PC.
    wire uart_rxd_out_wire;                     // Rx de PC.
-   
+   wire [3:0] wire_leds;                       // Leds de la placa.
    
    
    initial    begin
@@ -364,7 +364,8 @@ top_arquitectura
      .i_clock (clock),
      .i_reset (hard_reset),
      .uart_txd_in (uart_txd_in_reg),
-     .uart_rxd_out (uart_rxd_out_wire)
+     .uart_rxd_out (uart_rxd_out_wire),
+     .o_leds (wire_leds)
    );
   
 endmodule

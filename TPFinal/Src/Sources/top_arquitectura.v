@@ -105,7 +105,7 @@ assign wire_soft_reset_ack = wire_soft_reset_ack_prog;
 //wire prueba;
 //assign jc[0] = prueba;
 //assign uart_rxd_out = prueba;
-assign o_leds[1] = 1'b0;
+//assign o_leds[1] = 1'b0;
 assign o_leds[2] = 1'b0;
 assign o_leds[3] = 1'b0;
 
@@ -232,7 +232,8 @@ memoria_programa
         .i_regcea (wire_regcea_mem),           
         .i_soft_reset (wire_soft_reset),       
         .o_data (wire_data_mem_programa_output),           
-        .o_reset_ack (wire_soft_reset_ack_prog)       
+        .o_reset_ack (wire_soft_reset_ack_prog),
+        .o_led (o_leds[1])       
     );
 
 // Control de bit de sucio en memoria de datos.
