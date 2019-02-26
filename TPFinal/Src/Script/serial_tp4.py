@@ -54,8 +54,8 @@ def getCode (x):
     return {
         'Soft reset': '00000000',
 		'Soft reset ack': '00000001',
-        'Send instructions': '00000001',
-		'Start MIPS': '00000011',
+        'Send instructions': '10000000',
+		'Start MIPS': '11000000',
     }.get (x, '11111111')  #11111111 es el por defecto
 
 
