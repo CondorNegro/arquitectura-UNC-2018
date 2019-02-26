@@ -299,7 +299,7 @@ def sendInstructionsViaThread():
 				for i in range(len(cadena_archivo)):
 					if ((cadena_archivo[i] != '') and (len(cadena_archivo[i]) == (CANT_BITS_INSTRUCCION))):
 						for j in range(CANT_BITS_INSTRUCCION/WIDTH_WORD):
-							code_error = writeSerial (cadena_archivo[i][WIDTH_WORD * j:WIDTH_WORD * (j+1)])
+							code_error = writeSerial (cadena_archivo[i][WIDTH_WORD * j:WIDTH_WORD * (j+1)][::-1])
 							if (code_error < 0):
 								flag_activar_botones_3 = False
 								break
@@ -337,7 +337,7 @@ def iniciarMIPSViaThread():
 	try:
 		data_send = getCode('Start MIPS')
 		if (len (data_send) == 8):
-			data_send =  data_send[0:5] + modo_ejecucion + data_send[6:]
+			data_send =  data_send[0:2] + modo_ejecucion + data_send[3:]
 			code_error = writeSerial (data_send)
 			if (code_error < 0):
 				activarBotones (4)
