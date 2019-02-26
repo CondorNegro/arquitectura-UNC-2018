@@ -114,6 +114,7 @@ always @ ( posedge i_clock ) begin //Memory
        end
      end
      else begin
+       flag_send_mem <= 0;
        reg_instruccion <= 1;
        reg_contador_datos <= 0;
        reg_contador_addr_mem <= 0;
