@@ -98,7 +98,7 @@ always @ ( posedge i_clock ) begin //Memory
          reg_instruccion <= reg_instruccion << OUTPUT_WORD_LENGTH;
          reg_instruccion [ OUTPUT_WORD_LENGTH - 1 : 0] <= i_data_rx;
          reg_contador_datos <= reg_contador_datos + 1;
-         if (reg_contador_datos ==  3) begin
+         if ((reg_contador_datos ==  0) && (flag_send_mem == 1)) begin
            reg_contador_addr_mem <= reg_contador_addr_mem + 1;
            
          end
