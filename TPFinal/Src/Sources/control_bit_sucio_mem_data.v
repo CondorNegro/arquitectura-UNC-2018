@@ -21,7 +21,7 @@ module control_bit_sucio_mem_data
     );
   
   
-  parameter RAM_DEPTH = 1024;                           // Specify RAM depth (number of entries)
+  parameter RAM_DEPTH = 2048;                           // Specify RAM depth (number of entries)
   localparam CANT_BIT_RAM_DEPTH = clogb2(RAM_DEPTH);  
 
   
