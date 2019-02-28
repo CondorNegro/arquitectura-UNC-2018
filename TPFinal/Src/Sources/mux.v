@@ -17,10 +17,10 @@ module mux
    (
        input [INPUT_OUTPUT_LENGTH - 1 : 0] i_data_A,
        input [INPUT_OUTPUT_LENGTH - 1 : 0] i_data_B,
-       output [INPUT_OUTPUT_LENGTH - 1 : 0] o_result,
-       input selector;
+       input i_selector,
+       output [INPUT_OUTPUT_LENGTH - 1 : 0] o_result     
    );
 
-  assign o_result = (selector) ? i_data_A : i_data_B;
+  assign o_result = (i_selector) ? i_data_A : i_data_B;
 
 endmodule
