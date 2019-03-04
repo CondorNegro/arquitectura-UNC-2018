@@ -43,25 +43,25 @@ module database
         reg_instruction_fetch <= 0;
     end
     else begin
-        if (control == 1) begin
+        if (i_control == 1) begin
             reg_pc <= i_pc;
             reg_pc_plus_cuatro <= i_pc_plus_cuatro;
             reg_instruction_fetch <= i_instruction_fetch;
             o_dato <= 0;
         end
-        else if (control == 2) begin
+        else if (i_control == 2) begin
             reg_pc <= reg_pc;
             reg_pc_plus_cuatro <= reg_pc_plus_cuatro;
             reg_instruction_fetch <= reg_instruction_fetch;
             o_dato <= reg_pc;
         end
-        else if (control == 3) begin
+        else if (i_control == 3) begin
             reg_pc <= reg_pc;
             reg_pc_plus_cuatro <= reg_pc_plus_cuatro;
             reg_instruction_fetch <= reg_instruction_fetch;
             o_dato <= reg_pc_plus_cuatro;
         end
-        else if (control == 4) begin
+        else if (i_control == 4) begin
             reg_pc <= reg_pc;
             reg_pc_plus_cuatro <= reg_pc_plus_cuatro;
             reg_instruction_fetch <= reg_instruction_fetch;
