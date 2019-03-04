@@ -70,7 +70,7 @@ memoria_programa
        .i_rsta (i_rsta_mem),
        .i_regcea (i_regcea_mem),
        .i_soft_reset (i_soft_reset),
-       .o_data (),
+       .o_data (wire_output_data_mem_programa_TO_dataA_mux3),
        .o_reset_ack (o_reset_ack_mem),
        .o_led (o_led_mem)
    );
@@ -101,7 +101,7 @@ mux
 
    mux
       #(
-          .INPUT_OUTPUT_LENGTH (CANT_BITS_ADDR)
+          .INPUT_OUTPUT_LENGTH (RAM_WIDTH_PROGRAMA)
       )
       u_mux_output_3
       (
