@@ -230,7 +230,7 @@ always@( * ) begin //NEXT - STATE logic
 
        SEND_PC_4_L  : begin
           if ((~i_rx_done & registro_rx_done) && (i_data_rx == 8'b00100000)) begin 
-               reg_next_state = INSTR_IF_PART0;
+               reg_next_state = INSTR_IF_PART3;
            end
           else begin
                reg_next_state = SEND_PC_4_L;
@@ -398,7 +398,7 @@ always @ ( * ) begin //Output logic
 
        SEND_PC_H : begin 
          o_tx_start = 1;
-         o_data_tx = (i_dato_database >> 8) [7 : 0];
+         o_data_tx = i_dato_database >> 8;
          o_soft_reset = 1; //Logica por nivel bajo.
          o_write_mem_programa = 0; //Write es en 1.
          o_addr_mem_programa = 0;
@@ -415,7 +415,7 @@ always @ ( * ) begin //Output logic
 
        SEND_PC_L : begin 
          o_tx_start = 1;
-         o_data_tx = (i_dato_database) [7 : 0];
+         o_data_tx = (i_dato_database);
          o_soft_reset = 1; //Logica por nivel bajo.
          o_write_mem_programa = 0; //Write es en 1.
          o_addr_mem_programa = 0;
@@ -432,7 +432,7 @@ always @ ( * ) begin //Output logic
         
         SEND_PC_4_H : begin 
           o_tx_start = 1;
-          o_data_tx = (i_dato_database >> 8) [7 : 0];
+          o_data_tx = (i_dato_database >> 8);
           o_soft_reset = 1; //Logica por nivel bajo.
           o_write_mem_programa = 0; //Write es en 1.
           o_addr_mem_programa = 0;
@@ -449,7 +449,7 @@ always @ ( * ) begin //Output logic
 
         SEND_PC_4_L : begin 
          o_tx_start = 1;
-         o_data_tx = (i_dato_database) [7 : 0];
+         o_data_tx = (i_dato_database);
          o_soft_reset = 1; //Logica por nivel bajo.
          o_write_mem_programa = 0; //Write es en 1.
          o_addr_mem_programa = 0;
@@ -466,7 +466,7 @@ always @ ( * ) begin //Output logic
 
       INSTR_IF_PART3 : begin 
          o_tx_start = 1;
-         o_data_tx = (i_dato_database >> 21) [7 : 0];
+         o_data_tx = (i_dato_database >> 24);
          o_soft_reset = 1; //Logica por nivel bajo.
          o_write_mem_programa = 0; //Write es en 1.
          o_addr_mem_programa = 0;
@@ -485,7 +485,7 @@ always @ ( * ) begin //Output logic
 
       INSTR_IF_PART2 : begin 
          o_tx_start = 1;
-         o_data_tx = (i_dato_database >> 16) [7 : 0];
+         o_data_tx = (i_dato_database >> 16);
          o_soft_reset = 1; //Logica por nivel bajo.
          o_write_mem_programa = 0; //Write es en 1.
          o_addr_mem_programa = 0;
@@ -503,7 +503,7 @@ always @ ( * ) begin //Output logic
 
       INSTR_IF_PART1 : begin 
          o_tx_start = 1;
-         o_data_tx = (i_dato_database >> 8) [7 : 0];
+         o_data_tx = (i_dato_database >> 8);
          o_soft_reset = 1; //Logica por nivel bajo.
          o_write_mem_programa = 0; //Write es en 1.
          o_addr_mem_programa = 0;
@@ -520,7 +520,7 @@ always @ ( * ) begin //Output logic
 
        INSTR_IF_PART0 : begin 
          o_tx_start = 1;
-         o_data_tx = (i_dato_database) [7 : 0];
+         o_data_tx = (i_dato_database);
          o_soft_reset = 1; //Logica por nivel bajo.
          o_write_mem_programa = 0; //Write es en 1.
          o_addr_mem_programa = 0;
