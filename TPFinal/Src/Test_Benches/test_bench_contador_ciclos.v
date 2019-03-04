@@ -26,21 +26,17 @@ module test_bench_contador_ciclos();
 	  wire [CONTADOR_LENGTH - 1 : 0] salida_cuenta;
 
 	initial	begin
-
-		clock = 1'b0;
-		soft_reset = 1'b0; // Reset en 0. (Normal cerrado el boton del reset).
-    enable = 1'b0;
-    instruction = 1;
-
-		#10 soft_reset = 1'b1; // Desactivo la accion del reset.
-    #10 instruction = 0;
-    #10 enable=1'b1;
-
-    #100 enable=1'b0;
-
-    #100 enable=1'b1;
-
-    #10 enable=1'b0;
+	   clock = 1'b0;
+	   soft_reset = 1'b0; // Reset en 0. (Normal cerrado el boton del reset).
+	   enable = 1'b0;
+	   instruction = 1;
+	   #10 soft_reset = 1'b1; // Desactivo la accion del reset.
+	  
+	   #10 enable=1'b1;
+	   #50 instruction = 0;
+	   #100 enable=1'b0;
+	   #100 enable=1'b1;
+	   #50 enable=1'b0;
 
 		// Test 4: Prueba reset.
 		#10000 soft_reset = 1'b0; // Reset.
@@ -62,7 +58,7 @@ contador_ciclos
     u_contador_ciclos_1
     (
       .i_clock (clock),
-      .i_reset (soft_reset),
+      .i_soft_reset (soft_reset),
       .i_instruction (instruction),
       .i_enable (enable),
       .o_cuenta (salida_cuenta)
