@@ -17,7 +17,7 @@ module test_bench_debug_unit();
    parameter OUTPUT_WORD_LENGTH = 8;    //  Cantidad de bits de la palabra a transmitir.
    parameter HALT_OPCODE = 0;           //  Opcode de la instruccion HALT.            
    parameter ADDR_MEM_LENGTH = 11;            
-   parameter CANTIDAD_ESTADOS = 5;
+   parameter CANTIDAD_ESTADOS = 6;
    parameter LONGITUD_INSTRUCCION = 32;
    
    //Todo puerto de salida del modulo es un cable.
@@ -30,6 +30,9 @@ module test_bench_debug_unit();
    reg  reg_i_rx_done;
    reg  [OUTPUT_WORD_LENGTH - 1 : 0]  reg_i_data_rx;
    reg  reg_i_soft_reset_ack;
+   reg [LONGITUD_INSTRUCCION - 1 : 0] reg_instruction_fetch;
+
+   // Salidas.
    wire wire_o_tx_start;
    wire [OUTPUT_WORD_LENGTH - 1 : 0]  wire_o_data_tx;
    wire wire_o_soft_reset;
@@ -41,6 +44,8 @@ module test_bench_debug_unit();
    wire wire_rsta_mem;
    wire wire_regcea_mem;
    wire wire_led;
+   wire wire_enable_pc;
+   wire wire_control_mux_addr_mem_top_if;
                           
    
    
@@ -53,6 +58,7 @@ module test_bench_debug_unit();
        reg_i_data_rx = 0;
        reg_i_rx_done = 1'b0; //tiene que pasar a 1 cuando recibe el dato completamente.
        reg_i_soft_reset_ack = 1'b1; //despues tiene que valer 0.
+       reg_instruction_fetch = 1;
 
 
        //hasta aca estoy en el estado 1.
@@ -111,9 +117,13 @@ module test_bench_debug_unit();
        #10 reg_i_rx_done = 1'b0; //1 instruccion, 4 veces tengo que mandar el rx done (8bits x 4 = 32)
        
        //ahora paso a estado 5
-       #10 reg_i_data_rx = 2'b11;
+       #10 reg_i_data_rx = 7;
        #10 reg_i_rx_done = 1'b1;
        #10 reg_i_rx_done = 1'b0;
+
+       //ahora regreso a estado 1.
+       #10 reg_instruction_fetch = 0;
+
        
        
        // Test 5: Prueba reset.
@@ -144,6 +154,7 @@ debug_unit
        .i_rx_done (reg_i_rx_done),
        .i_data_rx (reg_i_data_rx),
        .i_soft_reset_ack (reg_i_soft_reset_ack),
+       .i_instruction_fetch (reg_instruction_fetch),
        .o_tx_start (wire_o_tx_start),
        .o_data_tx (wire_o_data_tx),
        .o_soft_reset (wire_o_soft_reset),
@@ -154,6 +165,8 @@ debug_unit
        .o_enable_mem (wire_enable_mem),
        .o_rsta_mem (wire_rsta_mem),
        .o_regcea_mem (wire_regcea_mem),
+       .o_enable_PC (wire_enable_pc),
+       .o_control_mux_addr_mem_top_if (wire_control_mux_addr_mem_top_if),
        .o_led (wire_led)
    );
   

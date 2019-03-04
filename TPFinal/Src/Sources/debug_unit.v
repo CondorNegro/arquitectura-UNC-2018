@@ -15,7 +15,7 @@ module debug_unit
   parameter OUTPUT_WORD_LENGTH = 8,    //  Cantidad de bits de la palabra a transmitir.
   parameter HALT_OPCODE = 0,           //  Opcode de la instruccion HALT.
   parameter ADDR_MEM_LENGTH = 11,      //  Cantidad de bits del bus de direcciones de la memoria.
-  parameter CANTIDAD_ESTADOS = 5,      //  Cantidad de estados
+  parameter CANTIDAD_ESTADOS = 6,      //  Cantidad de estados
   parameter LONGITUD_INSTRUCCION = 32  //  Cantidad de bits de la instruccion
 
 )
@@ -26,6 +26,7 @@ module debug_unit
   input i_rx_done,
   input [OUTPUT_WORD_LENGTH - 1 : 0] i_data_rx,
   input i_soft_reset_ack,
+  input [LONGITUD_INSTRUCCION - 1 : 0] i_instruction_fetch,
   output reg o_tx_start,
   output reg [OUTPUT_WORD_LENGTH - 1 : 0] o_data_tx,
   output reg o_soft_reset,
@@ -36,6 +37,8 @@ module debug_unit
   output reg o_enable_mem,
   output reg o_rsta_mem,
   output reg o_regcea_mem,
+  output reg o_enable_PC,
+  output reg o_control_mux_addr_mem_top_if,
   output reg o_led
  );
 
@@ -52,11 +55,12 @@ endfunction
 
 
 // Estados
-localparam ESPERA           = 5'b00001;
-localparam SOFT_RESET       = 5'b00010;    
-localparam ESPERA_PC_ACK    = 5'b00100;
-localparam READ_PROGRAMA    = 5'b01000;
-localparam ESPERA_START     = 5'b10000;
+localparam ESPERA           = 6'b000001;
+localparam SOFT_RESET       = 6'b000010;    
+localparam ESPERA_PC_ACK    = 6'b000100;
+localparam READ_PROGRAMA    = 6'b001000;
+localparam ESPERA_START     = 6'b010000;
+localparam EJECUCION        = 6'b100000;
 
 localparam CANT_BITS_CONTADOR_DATOS = clogb2 (LONGITUD_INSTRUCCION / OUTPUT_WORD_LENGTH);
 //localparam CANT_BITS_DEPTH_MEM = 2 ** ADDR_MEM_LENGTH;
@@ -69,6 +73,7 @@ reg [LONGITUD_INSTRUCCION - 1 : 0] reg_instruccion;
 reg [CANT_BITS_CONTADOR_DATOS - 1 : 0] reg_contador_datos;
 reg [ADDR_MEM_LENGTH - 1 : 0] reg_contador_addr_mem;
 reg [LONGITUD_INSTRUCCION - 1 : 0] o_next_dato_mem_programa;
+reg reg_next_modo_ejecucion;
 //reg [OUTPUT_WORD_LENGTH - 1 : 0] o_data_tx_next;
 
 reg flag_send_mem; //Sirve para que el primer dato que se envia sea la instruccion valida y no un 1 (reg instruccion inicializa en 1)
@@ -86,12 +91,14 @@ always @ ( posedge i_clock ) begin //Memory
      reg_contador_addr_mem <= 0;
      o_dato_mem_programa <= 0;
      flag_send_mem<=0;
+     o_modo_ejecucion <= 0; // Continuo.
  end
 
  else begin
      reg_state <= reg_next_state;
      registro_rx_done <= i_rx_done;
      o_dato_mem_programa <= o_next_dato_mem_programa;
+     o_modo_ejecucion <= reg_next_modo_ejecucion;
      if (reg_state == READ_PROGRAMA) begin
        if (~i_rx_done & registro_rx_done) begin
          
@@ -167,10 +174,19 @@ always@( * ) begin //NEXT - STATE logic
        end
        ESPERA_START : begin
            if ((~i_rx_done & registro_rx_done) && ((i_data_rx == 8'b00000011) || (i_data_rx == 8'b00000111))) begin
-               reg_next_state = ESPERA;
+               reg_next_state = EJECUCION;
            end
            else begin
                reg_next_state = ESPERA_START;
+           end
+       end
+
+        EJECUCION : begin
+           if (i_instruction_fetch == 0) begin //Instruccion igual a HALT.
+               reg_next_state = ESPERA;
+           end
+           else begin
+               reg_next_state = EJECUCION;
            end
        end
 
@@ -191,11 +207,13 @@ always @ ( * ) begin //Output logic
          o_write_mem_programa = 0; //Write es en 1.
          o_addr_mem_programa = 0;
          o_next_dato_mem_programa = 0;
-         o_modo_ejecucion = 0; // Continuo.
+         reg_next_modo_ejecucion = 0; // Continuo.
          o_enable_mem = 0;
          o_rsta_mem = 1;
          o_regcea_mem = 1;
          o_led = 1;
+         o_enable_PC = 0;
+         o_control_mux_addr_mem_top_if = 1;
        end
 
        SOFT_RESET : begin
@@ -205,11 +223,13 @@ always @ ( * ) begin //Output logic
          o_write_mem_programa = 0; //Write es en 1.
          o_addr_mem_programa = 0;
          o_next_dato_mem_programa = 0;
-         o_modo_ejecucion = 0; // Continuo.
+         reg_next_modo_ejecucion = 0; // Continuo.
          o_enable_mem = 1;
          o_rsta_mem = 0;
          o_regcea_mem = 0;
          o_led = 0;
+         o_enable_PC = 0;
+         o_control_mux_addr_mem_top_if = 1;
        end
 
        ESPERA_PC_ACK : begin
@@ -219,11 +239,13 @@ always @ ( * ) begin //Output logic
          o_write_mem_programa = 0; //Write es en 1.
          o_addr_mem_programa = 0;
          o_next_dato_mem_programa = 0;
-         o_modo_ejecucion = 0; // Continuo.
+         reg_next_modo_ejecucion = 0; // Continuo.
          o_enable_mem = 1;
          o_rsta_mem = 0;
          o_regcea_mem = 0;
-         o_led = 0; 
+         o_led = 0;
+         o_enable_PC = 0;
+         o_control_mux_addr_mem_top_if = 1; 
        end
 
 //{ CANT_BITS_CONTADOR_DATOS {1'b1} }
@@ -239,11 +261,13 @@ always @ ( * ) begin //Output logic
          else begin
            o_next_dato_mem_programa = o_dato_mem_programa;
          end
-         o_modo_ejecucion = 0; // Continuo.
+         reg_next_modo_ejecucion = 0; // Continuo.
          o_enable_mem = 1;
          o_rsta_mem = 0;
          o_regcea_mem = 0; 
          o_led = 0;
+         o_enable_PC = 0;
+         o_control_mux_addr_mem_top_if = 1;
        end
 
        ESPERA_START : begin
@@ -253,11 +277,29 @@ always @ ( * ) begin //Output logic
          o_write_mem_programa = 0; //Write es en 1.
          o_addr_mem_programa = 0;
          o_next_dato_mem_programa = 0;
-         o_modo_ejecucion = i_data_rx [2];// Continuo en cero, paso a paso en 1.
+         reg_next_modo_ejecucion = i_data_rx [2];// Continuo en cero, paso a paso en 1.
          o_enable_mem = 1;
          o_rsta_mem = 0;
          o_regcea_mem = 0;
          o_led = 0;
+         o_enable_PC = 0;
+         o_control_mux_addr_mem_top_if = 1;
+       end
+
+       EJECUCION : begin
+         o_tx_start = 0;
+         o_data_tx = 0;
+         o_soft_reset = 1; //Logica por nivel bajo.
+         o_write_mem_programa = 0; //Write es en 1.
+         o_addr_mem_programa = 0;
+         o_next_dato_mem_programa = 0;
+         reg_next_modo_ejecucion = o_modo_ejecucion;// Continuo en cero, paso a paso en 1.
+         o_enable_mem = 1;
+         o_rsta_mem = 0;
+         o_regcea_mem = 0;
+         o_led = 0;
+         o_enable_PC = 1;
+         o_control_mux_addr_mem_top_if = 0;
        end
 
        default : begin
@@ -267,11 +309,13 @@ always @ ( * ) begin //Output logic
          o_write_mem_programa = 0; //Write es en 1.
          o_addr_mem_programa = 0;
          o_next_dato_mem_programa = 0;
-         o_modo_ejecucion = 0; // Continuo.
+         reg_next_modo_ejecucion = 0; // Continuo.
          o_enable_mem = 0;
          o_rsta_mem = 1;
          o_regcea_mem = 1;
          o_led = 1;
+         o_enable_PC = 0;
+         o_control_mux_addr_mem_top_if = 1;
        end
 
  endcase
