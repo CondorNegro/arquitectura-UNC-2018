@@ -55,7 +55,7 @@ module test_bench_top_if();
 
   initial    begin
    clock = 1'b0;
-   soft_reset = 1'b0; // Reset en 0. (Normal cerrado el boton del reset).
+   soft_reset = 1'b1; // Reset en 0. (Normal cerrado el boton del reset).
 
 
    enable_contador_PC = 0;
@@ -73,7 +73,7 @@ module test_bench_top_if();
    /* Primera prueba, pruebo contador de programa (Resultado esperado: el PC debe contar hasta que el enable sea cero.
    Ademas despues de la instruccion cinco la salida de memoria debe ser halt). */
 
-
+   #5 soft_reset = 1'b0;
    #100 soft_reset = 1'b1;
    #200  enable_mem = 1'b1;
    #10 enable_contador_PC = 1'b1;
