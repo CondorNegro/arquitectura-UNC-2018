@@ -21,6 +21,6 @@ module mux
        output [INPUT_OUTPUT_LENGTH - 1 : 0] o_result     
    );
 
-  assign o_result = (i_selector) ? i_data_A : i_data_B;
+  assign o_result = (i_selector) ? i_data_B : i_data_A;
 
 endmodule
