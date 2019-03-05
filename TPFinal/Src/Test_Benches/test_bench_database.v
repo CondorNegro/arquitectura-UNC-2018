@@ -29,6 +29,7 @@ module test_bench_database();
     reg [ADDR_LENGTH - 1 : 0] pc_plus_cuatro;
     reg [LONGITUD_INSTRUCCION - 1 : 0] instruction_fetch;
 
+    reg [ADDR_LENGTH - 1 : 0] contador_ciclos;
 
     wire [LONGITUD_INSTRUCCION - 1 : 0] wire_dato;
 
@@ -39,6 +40,7 @@ module test_bench_database();
 	   pc = 4;
 		 pc_plus_cuatro = 8;
 		 instruction_fetch = 2;
+     contador_ciclos = 1;
 	   
 		 #10 soft_reset = 1'b0; // Desactivo la accion del reset.
 	   #10 soft_reset = 1'b1; // Desactivo la accion del reset.
@@ -47,7 +49,7 @@ module test_bench_database();
 	  
 		 #20 control = 3;
 
-		 #20 control = 5;
+		 #20 control = 6;
 
 		// Test 4: Prueba reset.
 		#10000 soft_reset = 1'b0; // Reset.
@@ -75,6 +77,7 @@ database
       .i_pc (pc),
 			.i_pc_plus_cuatro (pc_plus_cuatro),
 			.i_instruction_fetch (instruction_fetch),
+      .i_contador_ciclos (contador_ciclos),
       .o_dato (wire_dato)
     );
 
