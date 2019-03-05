@@ -121,6 +121,10 @@ assign wire_soft_reset_ack = wire_soft_reset_ack_prog;
 assign o_leds[2] = 1'b0;
 assign o_leds[3] = 1'b0;
 
+assign wire_branch_dir = 0;
+assign wire_control_mux_PC = 1'b0;
+assign wire_control_mux_output_IF = 1'b0;
+
 // Modulo debug_unit.
 
 debug_unit
