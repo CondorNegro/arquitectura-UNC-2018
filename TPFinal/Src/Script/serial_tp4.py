@@ -61,6 +61,16 @@ def getCode (x):
 		'Soft reset ack': '00000001',
         'Send instructions': '10000000',
 		'Start MIPS': '11000000',
+		'PC-H' : '00010000',
+		'PC-L' : '00001000',
+		'CC-H' : '00011000',
+		'CC-L' : '00000100',
+		'PC4-H': '00010100',
+		'PC4-L': '00001100',
+		'IF-3' : '00011100',
+		'IF-2' : '00000010',
+		'IF-1' : '00010010',
+		'IF-0' : '00001010'
     }.get (x, '11111111')  #11111111 es el por defecto
 
 
@@ -242,6 +252,209 @@ def readResultado (cantBytes, cadenaComparacion):
 	return 0
 
 
+# Funcion que recibe los datos obtenidos de la FPGA via UART.
+# Devuelve el valor leido.
+def readResultadoEjecucion (cantBytes):
+	if (cantBytes < 0):
+		print ("Error en la funcion readResultado. Cantidad de bytes a leer invalida.")
+		exit (1)
+	
+	contador_bytes = 0
+	time.sleep (0.2)
+	resultado = ""
+	if (not FLAG_TEST):
+		while ((ser.inWaiting() > 0) and (contador_bytes < cantBytes)): #inWaiting -> cantidad de bytes en buffer esperando.
+			contador_bytes = contador_bytes + 1
+			lectura = ser.read (1)
+			resultado = bin(ord (lectura))[2:][::-1]
+			for i in range (0, 8 - len(resultado), 1):
+				if (i != 8):	
+					resultado = resultado + '0'
+			print '>>',
+			print resultado
+			print '>>',
+			print lectura
+		
+	else:
+		contador_bytes = cantBytes
+		resultado = "0"
+	
+	return [resultado, contador_bytes]
+
+
+
+# Funcion que recibe valores obtenidos de la FPGA via UART. Estos datos corresponden a:
+#  Contador de programa.
+#  Contador de ciclos.
+#  Valores intermedios en los latches.
+def recibirDatosFromFPGA ():
+	global etiqueta_resultado_pc
+	global etiqueta_contador_ciclos
+	global etiqueta_resultado_pc_plus_4
+	global etiqueta_instruction_fetch
+	global ser
+
+	flag_receive = True
+	contador_de_programa = ""
+	contador_de_programa_aux = ""
+	contador_de_ciclos = ""
+	contador_de_ciclos_aux = ""
+	contador_de_programa_plus_4 = ""
+	contador_de_programa_plus_4_aux = ""
+	instruction_fetch = ""
+	instruction_fetch_aux = ""
+	contador_etapas = 0
+	contador_subetapas = 0
+	cantidad_bytes_control = 0
+
+
+	while (flag_receive):
+
+		if (contador_etapas == 0): #PC
+
+			if (contador_subetapas == 0): #Parte H
+				contador_de_programa, cantidad_bytes_control = readResultadoEjecucion (1)
+				if (cantidad_bytes_control == 1):
+					code_error = writeSerial (getCode('PC-H'))
+					if (code_error < 0):
+						activarBotones (1)
+						flag_receive = False
+					else:
+						ser.flushInput()
+						contador_subetapas = contador_subetapas + 1
+
+			else: #Parte L
+				contador_de_programa_aux, cantidad_bytes_control = readResultadoEjecucion (1)
+				if (cantidad_bytes_control == 1):
+					code_error = writeSerial (getCode('PC-L'))
+					if (code_error < 0):
+						activarBotones (1)
+						flag_receive = False
+					else:
+						ser.flushInput()
+						contador_de_programa = contador_de_programa + contador_de_programa_aux
+						etiqueta_resultado_pc = contador_de_programa
+						etiquetaPCValorMIPS.config (text = etiqueta_resultado_pc)
+						contador_etapas = contador_etapas + 1
+						contador_subetapas = 0 
+				
+
+		elif (contador_etapas == 1): #Contador de ciclos
+
+			if (contador_subetapas == 0): # Parte H
+				contador_de_ciclos, cantidad_bytes_control = readResultadoEjecucion (1)
+				if (cantidad_bytes_control == 1):
+					code_error = writeSerial (getCode('CC-H'))
+					if (code_error < 0):
+						activarBotones (1)
+						flag_receive = False
+					else:
+						ser.flushInput()
+						contador_subetapas = contador_subetapas + 1
+
+			else: # Parte L
+				contador_de_ciclos_aux, cantidad_bytes_control = readResultadoEjecucion (1)
+				if (cantidad_bytes_control == 1):
+					code_error = writeSerial (getCode('CC-L'))
+					if (code_error < 0):
+						activarBotones (1)
+						flag_receive = False
+					else:
+						ser.flushInput()
+						contador_de_ciclos = contador_de_ciclos + contador_de_ciclos_aux
+						etiqueta_contador_ciclos = contador_de_ciclos
+						etiquetaContadorCiclosValorMIPS.config (text = etiqueta_contador_ciclos)
+						contador_etapas = contador_etapas + 1
+						contador_subetapas = 0 
+
+
+		elif (contador_etapas == 2): #Adder IF 
+
+			if (contador_subetapas == 0): #Parte H
+				contador_de_programa_plus_4, cantidad_bytes_control = readResultadoEjecucion (1)
+				if (cantidad_bytes_control == 1):
+					code_error = writeSerial (getCode('PC4-H'))
+					if (code_error < 0):
+						activarBotones (1)
+						flag_receive = False
+					else:
+						ser.flushInput()
+						contador_subetapas = contador_subetapas + 1
+
+			else: #Parte L
+				contador_de_programa_plus_4_aux, cantidad_bytes_control = readResultadoEjecucion (1)
+				if (cantidad_bytes_control == 1):
+					code_error = writeSerial (getCode('PC4-L'))
+					if (code_error < 0):
+						activarBotones (1)
+						flag_receive = False
+					else:
+						ser.flushInput()
+						contador_de_programa_plus_4 = contador_de_programa_plus_4 + contador_de_programa_plus_4_aux
+						etiqueta_resultado_pc_plus_4 = contador_de_programa_plus_4
+						etiquetaPC4ValorMIPS.config (text = etiqueta_resultado_pc_plus_4)
+						contador_etapas = contador_etapas + 1
+						contador_subetapas = 0 
+		
+		elif (contador_etapas == 3): #Instruction (output IF)
+
+			if (contador_subetapas == 0): # Parte 3
+				instruction_fetch, cantidad_bytes_control = readResultadoEjecucion (1)
+				if (cantidad_bytes_control == 1):
+					code_error = writeSerial (getCode('IF-3'))
+					if (code_error < 0):
+						activarBotones (1)
+						flag_receive = False
+					else:
+						ser.flushInput()
+						contador_subetapas = contador_subetapas + 1
+
+			if (contador_subetapas == 1): # Parte 2
+				instruction_fetch_aux, cantidad_bytes_control = readResultadoEjecucion (1)
+				if (cantidad_bytes_control == 1):
+					code_error = writeSerial (getCode('IF-2'))
+					if (code_error < 0):
+						activarBotones (1)
+						flag_receive = False
+					else:
+						ser.flushInput()
+						contador_subetapas = contador_subetapas + 1
+						instruction_fetch = instruction_fetch + instruction_fetch_aux
+
+			if (contador_subetapas == 2): #Parte 1
+				instruction_fetch_aux, cantidad_bytes_control = readResultadoEjecucion (1)
+				if (cantidad_bytes_control == 1):
+					code_error = writeSerial (getCode('IF-1'))
+					if (code_error < 0):
+						activarBotones (1)
+						flag_receive = False
+					else:
+						ser.flushInput()
+						contador_subetapas = contador_subetapas + 1
+						instruction_fetch = instruction_fetch + instruction_fetch_aux
+
+			else: # Parte 0
+				instruction_fetch_aux, cantidad_bytes_control = readResultadoEjecucion (1)
+				if (cantidad_bytes_control == 1):
+					code_error = writeSerial (getCode('IF-0'))
+					if (code_error < 0):
+						activarBotones (1)
+						flag_receive = False
+					else:
+						ser.flushInput()
+						instruction_fetch = instruction_fetch + instruction_fetch_aux
+						etiqueta_instruction_fetch = instruction_fetch
+						etiquetaInstructionFetchValorMIPS.config (text = etiqueta_instruction_fetch)
+						contador_etapas = contador_etapas + 1
+						contador_subetapas = 0
+						flag_receive = False
+						activarBotones (1)
+
+		
+
+
+
+
 # Funcion que genera un thread que permite realizar un soft reset en la FPGA.
 def softReset():
 	try:
@@ -349,7 +562,10 @@ def iniciarMIPSViaThread():
 			else:
 				etiqueta_resultado_impresion = "Start MIPS."
 				etiquetaResultado.config (text = etiqueta_resultado_impresion, fg = "dark green")
-				activarBotones (1)
+				if (modo_ejecucion == '1'): #Debug (por ahora solamente vuelve a ESPERA)
+					activarBotones (1)
+				else:
+					recibirDatosFromFPGA ()
 		else:
 			print 'Warning: Deben ser 8 bits.'
 			etiquetaResultado.config (text = "Warning: Deben ser 8 bits", fg = "red")
@@ -386,6 +602,7 @@ def setModoEjecucionViaThread (modo):
 			etiqueta_resultado_modo_de_ejecucion_valor_MIPS = "Continuo"
 		else:
 			etiqueta_resultado_modo_de_ejecucion_valor_MIPS = "Debug"
+		etiquetaModoEjecucionValorMIPS.config (text = etiqueta_resultado_modo_de_ejecucion_valor_MIPS)
 		etiqueta_resultado_impresion = "Modo de ejecucion: " + modo_ejecucion
 		etiquetaResultado.config (text = etiqueta_resultado_impresion, fg = "dark green")
 		etiqueta_resultado_modo_de_ejecucion = ""
