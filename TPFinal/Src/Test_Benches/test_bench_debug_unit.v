@@ -17,7 +17,7 @@ module test_bench_debug_unit();
    parameter OUTPUT_WORD_LENGTH = 8;    //  Cantidad de bits de la palabra a transmitir.
    parameter HALT_OPCODE = 0;           //  Opcode de la instruccion HALT.            
    parameter ADDR_MEM_LENGTH = 11;            
-   parameter CANTIDAD_ESTADOS = 14;
+   parameter CANTIDAD_ESTADOS = 16;
    parameter LONGITUD_INSTRUCCION = 32;
    parameter CANT_BITS_CONTROL_DATABASE = 3;
    
@@ -133,40 +133,51 @@ module test_bench_debug_unit();
        #10 reg_i_rx_done = 1'b1;
        #10 reg_i_rx_done = 1'b0;
 
-       //ahora paso a estado de envio de PC_4 parte H.
+       //ahora paso a estado de envio de contador de ciclos parte H.
        #50 reg_i_data_rx = 8'b00010000;
        #10 reg_i_rx_done = 1'b1;
        #10 reg_i_rx_done = 1'b0;
 
-       //ahora paso a estado de envio de PC_4 parte L.
+
+       //ahora paso a estado de envio de contador de ciclos parte L.
        #50 reg_i_data_rx = 8'b00011000;
        #10 reg_i_rx_done = 1'b1;
        #10 reg_i_rx_done = 1'b0;
 
-       //ahora paso a estado de envio de INSTRUCCION parte 3.
+       //ahora paso a estado de envio de PC_4 parte H.
        #50 reg_i_data_rx = 8'b00100000;
        #10 reg_i_rx_done = 1'b1;
        #10 reg_i_rx_done = 1'b0;
 
-       //ahora paso a estado de envio de INSTRUCCION parte 2.
+       //ahora paso a estado de envio de PC_4 parte L.
        #50 reg_i_data_rx = 8'b00101000;
        #10 reg_i_rx_done = 1'b1;
        #10 reg_i_rx_done = 1'b0;
 
-
-       //ahora paso a estado de envio de INSTRUCCION parte 1.
+       //ahora paso a estado de envio de INSTRUCCION parte 3.
        #50 reg_i_data_rx = 8'b00110000;
        #10 reg_i_rx_done = 1'b1;
        #10 reg_i_rx_done = 1'b0;
 
-       //ahora paso a estado de envio de INSTRUCCION parte 0.
+       //ahora paso a estado de envio de INSTRUCCION parte 2.
        #50 reg_i_data_rx = 8'b00111000;
        #10 reg_i_rx_done = 1'b1;
        #10 reg_i_rx_done = 1'b0;
 
 
-       //ahora paso a estado de ESPERA.
+       //ahora paso a estado de envio de INSTRUCCION parte 1.
        #50 reg_i_data_rx = 8'b01000000;
+       #10 reg_i_rx_done = 1'b1;
+       #10 reg_i_rx_done = 1'b0;
+
+       //ahora paso a estado de envio de INSTRUCCION parte 0.
+       #50 reg_i_data_rx = 8'b01001000;
+       #10 reg_i_rx_done = 1'b1;
+       #10 reg_i_rx_done = 1'b0;
+
+
+       //ahora paso a estado de ESPERA.
+       #50 reg_i_data_rx = 8'b01010000;
        #10 reg_i_rx_done = 1'b1;
        #10 reg_i_rx_done = 1'b0;
 
