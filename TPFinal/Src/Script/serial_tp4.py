@@ -31,6 +31,11 @@ bandera_puerto_loop = 0
 estado_puerto = "NO CONECTADO"
 etiqueta_resultado_impresion = "Resultado"
 etiqueta_resultado_modo_de_ejecucion = ""
+etiqueta_resultado_modo_de_ejecucion_valor_MIPS = ""
+etiqueta_resultado_pc = ""
+etiqueta_resultado_pc_plus_4 = ""
+etiqueta_contador_ciclos = ""
+etiqueta_instruction_fetch = ""
 lock = threading.Lock()
 modo_ejecucion = 0 #0: continuo - 1: debug
 
@@ -370,12 +375,17 @@ def setModoEjecucionViaThread (modo):
 	global etiqueta_resultado_impresion
 	global modo_ejecucion
 	global etiqueta_resultado_modo_de_ejecucion
+	global etiqueta_resultado_modo_de_ejecucion_valor_MIPS
 	if ((modo != '0') and (modo != '1')):
 		etiqueta_resultado_modo_de_ejecucion = "Valor ingresado invalido"
 		etiquetaResultadoModoEjecucion.config (text = etiqueta_resultado_modo_de_ejecucion, fg= "red")
 		activarBotones (3)
 	else:
 		modo_ejecucion = modo
+		if (modo == '0'):
+			etiqueta_resultado_modo_de_ejecucion_valor_MIPS = "Continuo"
+		else:
+			etiqueta_resultado_modo_de_ejecucion_valor_MIPS = "Debug"
 		etiqueta_resultado_impresion = "Modo de ejecucion: " + modo_ejecucion
 		etiquetaResultado.config (text = etiqueta_resultado_impresion, fg = "dark green")
 		etiqueta_resultado_modo_de_ejecucion = ""
@@ -398,9 +408,9 @@ def salir():
 #Ventana principal - Configuracion
 
 root = Tk() 
-root.geometry ("560x380+0+0") #Tamanio
-root.minsize (height=560, width=380)
-root.maxsize (height=560, width=380)
+root.geometry ("560x760+0+0") #Tamanio
+root.minsize (height=560, width=760)
+root.maxsize (height=560, width=760)
 
 # Rectangulos divisorios
 
@@ -422,6 +432,12 @@ canvasResultado = Canvas (root)
 canvasResultado.config (width = 340, height = 330)
 canvasResultado.create_rectangle (5, 5, 340, 70, outline='gray60')
 canvasResultado.place (x=1, y=420)
+
+
+canvasValoresMIPS = Canvas (root)
+canvasValoresMIPS.config (width = 340, height = 530)
+canvasValoresMIPS.create_rectangle (5, 5, 340, 530, outline='gray60')
+canvasValoresMIPS.place (x=380, y=2)
 
 
 # Text boxes
@@ -477,6 +493,44 @@ etiquetaInfoModoEjecucion = Label (root, text = "0 (Continuo) - 1 (Debug)", font
 etiquetaInfoModoEjecucion.place (x = 10, y = 330)
 etiquetaResultadoModoEjecucion = Label (root, text = etiqueta_resultado_modo_de_ejecucion, font = "TkDefaultFont 9")
 etiquetaResultadoModoEjecucion.place (x = 10, y = 380)
+
+
+# Etiquetas de valores del MIPS.
+
+etiquetaTitleCanvasValoresMIPS = Label (root, text = "Valores del MIPS: ", fg = "dark green", font = "TkDefaultFont 14")
+etiquetaTitleCanvasValoresMIPS.place (x = 400,  y = 20)
+
+etiquetaModoEjecucionCanvasDerecha = Label (root, text = "Modo de ejecucion: ", fg = "brown", font = "TkDefaultFont 12")
+etiquetaModoEjecucionCanvasDerecha.place (x = 400,  y = 70)
+etiquetaModoEjecucionValorMIPS = Label (root, text = etiqueta_resultado_modo_de_ejecucion_valor_MIPS,\
+	 fg = "black", font = "TkDefaultFont 12")
+etiquetaModoEjecucionValorMIPS.place (x = 580,  y = 70)
+
+etiquetaPC = Label (root, text = "Contador de programa: ", fg = "brown", font = "TkDefaultFont 12")
+etiquetaPC.place (x = 400,  y = 100)
+etiquetaPCValorMIPS = Label (root, text = etiqueta_resultado_pc,\
+	 fg = "black", font = "TkDefaultFont 12")
+etiquetaPCValorMIPS.place (x = 580,  y = 100)
+
+etiquetaContadorCiclos = Label (root, text = "Contador de ciclos: ", fg = "brown", font = "TkDefaultFont 12")
+etiquetaContadorCiclos.place (x = 400,  y = 130)
+etiquetaContadorCiclosValorMIPS = Label (root, text = etiqueta_contador_ciclos,\
+	 fg = "black", font = "TkDefaultFont 12")
+etiquetaContadorCiclosValorMIPS.place (x = 580,  y = 130)
+
+etiquetaLatchIFID = Label (root, text = "LATCH IF/ID: ", fg = "dark green", font = "TkDefaultFont 12")
+etiquetaLatchIFID.place (x = 400,  y = 190)
+etiquetaPC4 = Label (root, text = "Salida adder de PC: ", fg = "brown", font = "TkDefaultFont 12")
+etiquetaPC4.place (x = 400,  y = 220)
+etiquetaPC4ValorMIPS = Label (root, text = etiqueta_resultado_pc_plus_4,\
+	 fg = "black", font = "TkDefaultFont 12")
+etiquetaPC4ValorMIPS.place (x = 580,  y = 220)
+
+etiquetaInstructionFetch = Label (root, text = "Instruccion: ", fg = "brown", font = "TkDefaultFont 12")
+etiquetaInstructionFetch.place (x = 400,  y = 250)
+etiquetaInstructionFetchValorMIPS = Label (root, text = etiqueta_instruction_fetch,\
+	 fg = "black", font = "TkDefaultFont 12")
+etiquetaInstructionFetchValorMIPS.place (x = 580,  y = 250)
 
 # Titulo de la GUI 
 
