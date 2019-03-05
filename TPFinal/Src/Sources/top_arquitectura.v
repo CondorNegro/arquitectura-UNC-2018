@@ -24,10 +24,11 @@
 `define INIT_FILE_PROGRAMA     ""
 `define RAM_DEPTH_DATOS      2048
 `define RAM_DEPTH_PROGRAMA   2048
-`define CANT_ESTADOS_DEBUG_UNIT 5
+`define CANT_ESTADOS_DEBUG_UNIT 16
 `define ADDR_MEM_PROGRAMA_LENGTH 11
 `define ADDR_MEM_DATOS_LENGTH    11
 `define LONG_INSTRUCCION       32
+`define CANT_BITS_CONTROL_DATABASE_TOP 3
 
 module top_arquitectura(
   i_clock, 
@@ -58,6 +59,7 @@ parameter CANT_ESTADOS_DEBUG_UNIT   =  `CANT_ESTADOS_DEBUG_UNIT;
 parameter ADDR_MEM_PROGRAMA_LENGTH  =  `ADDR_MEM_PROGRAMA_LENGTH;
 parameter ADDR_MEM_DATOS_LENGTH     =  `ADDR_MEM_DATOS_LENGTH;
 parameter LONG_INSTRUCCION          =  `LONG_INSTRUCCION;
+parameter CANT_BITS_CONTROL_DATABASE_TOP = `CANT_BITS_CONTROL_DATABASE_TOP;
 
 // Entradas - Salidas
 input i_clock;                                  // Clock.
@@ -95,7 +97,17 @@ wire wire_bit_sucio;
 wire wire_enable_mem;
 wire wire_rsta_mem;
 wire wire_regcea_mem;
-
+wire [LONG_INSTRUCCION - 1 : 0] wire_instruction_fetch;
+wire [CANT_BITS_CONTROL_DATABASE_TOP - 1 : 0] wire_control_database;
+wire wire_enable_PC;
+wire wire_control_mux_output_IF;
+wire wire_control_mux_addr_mem_IF;
+wire wire_control_mux_PC;
+wire [LONG_INSTRUCCION - 1 : 0] wire_dato_database;
+wire [ADDR_MEM_PROGRAMA_LENGTH - 1 : 0] wire_branch_dir;
+wire [ADDR_MEM_PROGRAMA_LENGTH - 1 : 0] wire_contador_ciclos;
+wire [ADDR_MEM_PROGRAMA_LENGTH - 1 : 0] wire_contador_programa;
+wire [ADDR_MEM_PROGRAMA_LENGTH - 1 : 0] wire_contador_programa_plus_4;
 
 //Borrar y dejar el segundo 
 assign wire_soft_reset_ack = wire_soft_reset_ack_prog;
@@ -117,7 +129,8 @@ debug_unit
         .ADDR_MEM_LENGTH (ADDR_MEM_PROGRAMA_LENGTH),                 
         .LONGITUD_INSTRUCCION (LONG_INSTRUCCION),              
         .OUTPUT_WORD_LENGTH (WIDTH_WORD_TOP),   
-        .HALT_OPCODE (HALT_OPCODE)             
+        .HALT_OPCODE (HALT_OPCODE),
+        .CANT_BITS_CONTROL_DATABASE (CANT_BITS_CONTROL_DATABASE_TOP)          
      ) 
    u_debug_unit1    // Una sola instancia de este modulo
    (
@@ -127,6 +140,8 @@ debug_unit
     .i_rx_done (wire_rx_done),
     .i_data_rx (wire_data_rx),
     .i_soft_reset_ack (wire_soft_reset_ack),
+    .i_instruction_fetch (wire_instruction_fetch),
+    .i_dato_database (wire_dato_database),
     .o_tx_start (wire_tx_start),
     .o_data_tx (wire_data_tx),
     .o_soft_reset (wire_soft_reset),
@@ -137,6 +152,9 @@ debug_unit
     .o_enable_mem (wire_enable_mem),
     .o_rsta_mem (wire_rsta_mem),
     .o_regcea_mem (wire_regcea_mem),
+    .o_enable_PC (wire_enable_PC),
+    .o_control_mux_addr_mem_top_if (wire_control_mux_addr_mem_IF),
+    .o_control_database (wire_control_database),
     .o_led (o_leds[0])
    );
 
@@ -189,6 +207,75 @@ tx
     );
 
 
+// Modulo top de la etapa instruction fetch.
+top_if
+  #(
+      .RAM_WIDTH_PROGRAMA (RAM_WIDTH_PROGRAMA),
+      .RAM_PERFORMANCE_PROGRAMA (RAM_PERFORMANCE_PROGRAMA),
+      .INIT_FILE_PROGRAMA (INIT_FILE_PROGRAMA),
+      .RAM_DEPTH_PROGRAMA (RAM_DEPTH_PROGRAMA),
+      .CANT_BITS_ADDR (ADDR_MEM_PROGRAMA_LENGTH)
+   )
+  u_top_if_1
+  (
+    .i_clock (i_clock),
+    .i_soft_reset (wire_soft_reset),
+    .i_enable_contador_PC (wire_enable_PC),
+    .i_enable_mem (wire_enable_mem),
+    .i_write_read_mem (wire_wr_rd_mem_prog),
+    .i_rsta_mem (wire_rsta_mem),
+    .i_regcea_mem (wire_regcea_mem),
+    .i_addr_mem_programa (wire_addr_mem_programa),
+    .i_data_mem_programa (wire_data_mem_programa_input),
+    .i_control_mux_PC (wire_control_mux_PC),
+    .i_control_mux_addr_mem (wire_control_mux_addr_mem_IF),
+    .i_control_mux_ouput (wire_control_mux_output_IF),
+    .i_branch_dir (wire_branch_dir),
+    .o_instruction (wire_instruction_fetch),
+    .o_direccion_PC_PLUS_4 (wire_contador_programa_plus_4),
+    .o_contador_programa (wire_contador_programa),
+    .o_led_mem (o_leds[1]),
+    .o_reset_ack_mem (wire_soft_reset_ack_prog)
+  );
+
+
+// Modulo contador de ciclos.
+contador_ciclos
+    #(
+        .CONTADOR_LENGTH (ADDR_MEM_PROGRAMA_LENGTH),
+        .INSTRUCTION_LENGTH (LONG_INSTRUCCION)
+     )
+    u_contador_ciclos_1
+    (
+      .i_clock (i_clock),
+      .i_soft_reset (wire_soft_reset),
+      .i_instruction (wire_instruction_fetch),
+      .i_enable (wire_enable_PC),
+      .o_cuenta (wire_contador_ciclos)
+    );
+
+
+
+
+// Modulo que almacena los datos del MIPS para enviar a PC.
+database
+    #(
+        .ADDR_LENGTH (ADDR_MEM_PROGRAMA_LENGTH),
+        .LONGITUD_INSTRUCCION (LONG_INSTRUCCION),
+		.CANT_BITS_CONTROL (CANT_BITS_CONTROL_DATABASE_TOP)
+     )
+    u_database_1
+    (
+        .i_clock (i_clock),
+        .i_soft_reset (wire_soft_reset),
+        .i_control (wire_control_database),
+        .i_pc (wire_contador_programa),
+        .i_contador_ciclos (wire_contador_ciclos),
+		.i_pc_plus_cuatro (wire_contador_programa_plus_4),
+		.i_instruction_fetch (wire_instruction_fetch),
+        .o_dato (wire_dato_database)
+    );
+
 // Memorias.
 
 /**memoria_datos
@@ -214,7 +301,7 @@ tx
      .o_addr_bit_sucio (wire_addr_control_bit_sucio)    
    );**/
 
-memoria_programa
+/*memoria_programa
     #(
         .RAM_WIDTH (RAM_WIDTH_PROGRAMA),
         .RAM_PERFORMANCE (RAM_PERFORMANCE_PROGRAMA),
@@ -234,7 +321,7 @@ memoria_programa
         .o_data (wire_data_mem_programa_output),           
         .o_reset_ack (wire_soft_reset_ack_prog),
         .o_led (o_leds[1])       
-    );
+    );*/
 
 // Control de bit de sucio en memoria de datos.
 
