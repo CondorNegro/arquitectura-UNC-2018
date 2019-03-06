@@ -410,7 +410,7 @@ module test_bench_top_arquitectura();
         #52080 uart_txd_in_reg = 1'b0;
 
         
-        //quinto dato - start MIPS //0000 0111
+        //PC-H //0000 1000
         #52080 uart_txd_in_reg = 1'b0;
         #52080 uart_txd_in_reg = 1'b0;
         #52080 uart_txd_in_reg = 1'b0;
@@ -433,7 +433,7 @@ module test_bench_top_arquitectura();
         #52080 uart_txd_in_reg = 1'b0;
         
                 
-        //quinto dato - start MIPS //0001 0000
+        //PC-L //0001 0000
         #52080 uart_txd_in_reg = 1'b0;
         #52080 uart_txd_in_reg = 1'b0;
         #52080 uart_txd_in_reg = 1'b0;
@@ -457,7 +457,7 @@ module test_bench_top_arquitectura();
         #52080 uart_txd_in_reg = 1'b0;
         
                 
-        //quinto dato - start MIPS //0001 1000
+        //CC-H //0001 1000
         #52080 uart_txd_in_reg = 1'b0;
         #52080 uart_txd_in_reg = 1'b0;
         #52080 uart_txd_in_reg = 1'b0;
@@ -480,7 +480,7 @@ module test_bench_top_arquitectura();
         #52080 uart_txd_in_reg = 1'b0;
         
                 
-        //quinto dato - start MIPS //0010 0000
+        //CC-L //0010 0000
         #52080 uart_txd_in_reg = 1'b0;
         #52080 uart_txd_in_reg = 1'b0;
         #52080 uart_txd_in_reg = 1'b1;
@@ -504,7 +504,7 @@ module test_bench_top_arquitectura();
         #52080 uart_txd_in_reg = 1'b0;
         
                 
-        //quinto dato - start MIPS //0010 1000
+        //PC4-H //0010 1000
         #52080 uart_txd_in_reg = 1'b0;
         #52080 uart_txd_in_reg = 1'b0;
         #52080 uart_txd_in_reg = 1'b1;
@@ -527,7 +527,7 @@ module test_bench_top_arquitectura();
         #52080 uart_txd_in_reg = 1'b0;
         
                 
-        //quinto dato - start MIPS //0011 0000
+        //PC4-L //0011 0000
         #52080 uart_txd_in_reg = 1'b0;
         #52080 uart_txd_in_reg = 1'b0;
         #52080 uart_txd_in_reg = 1'b1;
@@ -553,7 +553,7 @@ module test_bench_top_arquitectura();
         #52080 uart_txd_in_reg = 1'b0;
         
                 
-        //quinto dato - start MIPS //0011 1000
+        //Instruction-3 //0011 1000
         #52080 uart_txd_in_reg = 1'b0;
         #52080 uart_txd_in_reg = 1'b0;
         #52080 uart_txd_in_reg = 1'b1;
@@ -578,7 +578,7 @@ module test_bench_top_arquitectura();
         #52080 uart_txd_in_reg = 1'b0;
         
                 
-        //quinto dato - start MIPS //0100 0000
+        //Instruction-2 //0100 0000
         #52080 uart_txd_in_reg = 1'b0;
         #52080 uart_txd_in_reg = 1'b1;
         #52080 uart_txd_in_reg = 1'b0;
@@ -604,7 +604,7 @@ module test_bench_top_arquitectura();
         #52080 uart_txd_in_reg = 1'b0;
         
                 
-        //quinto dato - start MIPS //0100 1000
+        //Instruction-1 //0100 1000
         #52080 uart_txd_in_reg = 1'b0;
         #52080 uart_txd_in_reg = 1'b1;
         #52080 uart_txd_in_reg = 1'b0;
@@ -627,13 +627,13 @@ module test_bench_top_arquitectura();
         #52080 uart_txd_in_reg = 1'b0;
         
                 
-        //quinto dato - start MIPS //0100 1000
+        //Instruction-0 //0101 0000
         #52080 uart_txd_in_reg = 1'b0;
         #52080 uart_txd_in_reg = 1'b1;
         #52080 uart_txd_in_reg = 1'b0;
-        #52080 uart_txd_in_reg = 1'b0;
+        #52080 uart_txd_in_reg = 1'b1;
         
-        #52080 uart_txd_in_reg = 1'b1;
+        #52080 uart_txd_in_reg = 1'b0;
         #52080 uart_txd_in_reg = 1'b0;
         #52080 uart_txd_in_reg = 1'b0;
         #52080 uart_txd_in_reg = 1'b0;
