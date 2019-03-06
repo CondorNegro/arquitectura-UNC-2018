@@ -118,7 +118,7 @@ adder
    u_adder_1
    (
        .i_data_A (o_contador_programa),
-       .i_data_B (4),
+       .i_data_B (11'b00000000100),
        .o_result (o_direccion_PC_PLUS_4)
    );
 
