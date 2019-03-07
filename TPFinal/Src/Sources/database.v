@@ -65,21 +65,21 @@ module database
             reg_pc_plus_cuatro <= reg_pc_plus_cuatro;
             reg_instruction_fetch <= reg_instruction_fetch;
             reg_contador_ciclos <= reg_contador_ciclos;
-            o_dato <= reg_pc_plus_cuatro;
+            o_dato <= reg_contador_ciclos;
         end
         else if (i_control == 4) begin
             reg_pc <= reg_pc;
             reg_pc_plus_cuatro <= reg_pc_plus_cuatro;
             reg_instruction_fetch <= reg_instruction_fetch;
             reg_contador_ciclos <= reg_contador_ciclos;
-            o_dato <= reg_instruction_fetch;
+            o_dato <= reg_pc_plus_cuatro;
         end
         else if (i_control == 5) begin
             reg_pc <= reg_pc;
             reg_pc_plus_cuatro <= reg_pc_plus_cuatro;
             reg_instruction_fetch <= reg_instruction_fetch;
             reg_contador_ciclos <= reg_contador_ciclos;
-            o_dato <= reg_contador_ciclos;
+            o_dato <= reg_instruction_fetch;
         end
         else begin
             reg_pc <= 0;
