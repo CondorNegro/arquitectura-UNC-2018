@@ -625,9 +625,9 @@ def salir():
 #Ventana principal - Configuracion
 
 root = Tk() 
-root.geometry ("560x760+0+0") #Tamanio
-root.minsize (height=560, width=760)
-root.maxsize (height=560, width=760)
+root.geometry ("560x860+0+0") #Tamanio
+root.minsize (height=560, width=860)
+root.maxsize (height=560, width=860)
 
 # Rectangulos divisorios
 
@@ -652,8 +652,8 @@ canvasResultado.place (x=1, y=420)
 
 
 canvasValoresMIPS = Canvas (root)
-canvasValoresMIPS.config (width = 340, height = 530)
-canvasValoresMIPS.create_rectangle (5, 5, 340, 530, outline='gray60')
+canvasValoresMIPS.config (width = 440, height = 530)
+canvasValoresMIPS.create_rectangle (5, 5, 440, 530, outline='gray60')
 canvasValoresMIPS.place (x=380, y=2)
 
 
@@ -747,7 +747,7 @@ etiquetaInstructionFetch = Label (root, text = "Instruccion: ", fg = "brown", fo
 etiquetaInstructionFetch.place (x = 400,  y = 250)
 etiquetaInstructionFetchValorMIPS = Label (root, text = etiqueta_instruction_fetch,\
 	 fg = "black", font = "TkDefaultFont 12")
-etiquetaInstructionFetchValorMIPS.place (x = 580,  y = 250)
+etiquetaInstructionFetchValorMIPS.place (x = 500,  y = 250)
 
 # Titulo de la GUI 
 
