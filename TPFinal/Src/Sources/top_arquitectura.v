@@ -12,7 +12,7 @@
 
 
 `define WIDTH_WORD_TOP          8       // Tamanio de palabra.    
-`define FREC_CLK_MHZ        100.0       // Frecuencia del clock en MHZ.
+`define FREC_CLK_MHZ         50.0       // Frecuencia del clock en MHZ.
 `define BAUD_RATE_TOP        9600       // Baud rate.
 `define CANT_BIT_STOP_TOP       2       // Cantidad de bits de parada en trama uart.
 `define HALT_OPCODE             0       //  Opcode de la instruccion HALT.
@@ -31,7 +31,7 @@
 `define CANT_BITS_CONTROL_DATABASE_TOP 3
 
 module top_arquitectura(
-  i_clock, 
+  i_clock_top, 
   i_reset,
   uart_txd_in,
   uart_rxd_out,
@@ -62,17 +62,17 @@ parameter LONG_INSTRUCCION          =  `LONG_INSTRUCCION;
 parameter CANT_BITS_CONTROL_DATABASE_TOP = `CANT_BITS_CONTROL_DATABASE_TOP;
 
 // Entradas - Salidas
-input i_clock;                                  // Clock.
+input i_clock_top;                              // Clock.
 input i_reset;                                  // Reset.
 input uart_txd_in;                              // Transmisor de PC.
 output uart_rxd_out;                            // Receptor de PC.
-output [3 : 0] o_leds;                      // Leds.
+output [3 : 0] o_leds;                          // Leds.
 //output [7:0] jc;
 
 
 
 // Wires.
-
+wire i_clock;
 wire [WIDTH_WORD_TOP - 1 : 0]   wire_data_rx;
 wire [WIDTH_WORD_TOP - 1 : 0]   wire_data_tx;
 wire wire_tx_done;
@@ -124,6 +124,19 @@ assign o_leds[3] = 1'b0;
 assign wire_branch_dir = 0;
 assign wire_control_mux_PC = 1'b0;
 assign wire_control_mux_output_IF = 1'b0;
+
+
+// Modulo clock_wizard.
+
+clk_wiz_0
+u_clk_wiz_0_1
+(
+  .clk_out1(i_clock),
+  .reset(~i_reset),
+  .locked(),
+  .clk_in1(i_clock_top)
+);
+
 
 // Modulo debug_unit.
 

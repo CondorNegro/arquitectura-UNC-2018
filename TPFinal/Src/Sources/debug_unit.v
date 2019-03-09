@@ -363,7 +363,12 @@ always @ ( * ) begin //Output logic
          o_tx_start = 0;
          o_data_tx = 0;
          o_soft_reset = 1; //Logica por nivel bajo.
-         o_write_mem_programa = 1; //Write es en 1.
+         if (reg_instruccion != 0 && reg_contador_datos==0) begin // Para solucionar problema de instr. anterior a HALT.
+            o_write_mem_programa = 1; //Write es en 1.
+         end
+         else begin
+            o_write_mem_programa = 0; //Write es en 0.
+         end
          o_addr_mem_programa = reg_contador_addr_mem;
          if (reg_contador_datos ==  0 && flag_send_mem==1) begin
            o_next_dato_mem_programa = reg_instruccion;
