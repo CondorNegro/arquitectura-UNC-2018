@@ -42,7 +42,7 @@ module debug_unit
   output reg o_enable_PC,
   output reg o_control_mux_addr_mem_top_if,
   output reg [CANT_BITS_CONTROL_DATABASE - 1 : 0] o_control_database,
-  output reg o_led
+  output reg [3:0] o_led
  );
 
 // Funcion para calcular el logaritmo en base 2.
@@ -105,6 +105,7 @@ always @ ( posedge i_clock ) begin //Memory
      o_dato_mem_programa <= 0;
      flag_send_mem<=0;
      o_modo_ejecucion <= 0; // Continuo.
+     o_led <= 0;
  end
 
  else begin
@@ -133,6 +134,8 @@ always @ ( posedge i_clock ) begin //Memory
          reg_contador_addr_mem <= reg_contador_addr_mem;
        end
      end
+     
+     
      else begin
        flag_send_mem <= 0;
        reg_instruccion <= 1;
@@ -141,6 +144,11 @@ always @ ( posedge i_clock ) begin //Memory
      end
 
  end
+ 
+      if (reg_state == CONT_CICLOS_L) begin
+
+            o_led <= i_dato_database;
+        end
 
 end
 
@@ -318,7 +326,6 @@ always @ ( * ) begin //Output logic
          o_enable_mem = 0;
          o_rsta_mem = 1;
          o_regcea_mem = 1;
-         o_led = 1;
          o_enable_PC = 0;
          o_control_mux_addr_mem_top_if = 1;
          o_control_database = 0;
@@ -335,7 +342,6 @@ always @ ( * ) begin //Output logic
          o_enable_mem = 1;
          o_rsta_mem = 0;
          o_regcea_mem = 0;
-         o_led = 0;
          o_enable_PC = 0;
          o_control_mux_addr_mem_top_if = 1;
          o_control_database = 0;
@@ -352,7 +358,6 @@ always @ ( * ) begin //Output logic
          o_enable_mem = 1;
          o_rsta_mem = 0;
          o_regcea_mem = 0;
-         o_led = 0;
          o_enable_PC = 0;
          o_control_mux_addr_mem_top_if = 1; 
          o_control_database = 0;
@@ -363,7 +368,12 @@ always @ ( * ) begin //Output logic
          o_tx_start = 0;
          o_data_tx = 0;
          o_soft_reset = 1; //Logica por nivel bajo.
-         o_write_mem_programa = 1; //Write es en 1.
+         if (reg_instruccion!=0 && reg_contador_datos==0) begin
+            o_write_mem_programa = 1; //Write es en 1.
+         end
+         else begin
+            o_write_mem_programa = 0; //Write es en 1.
+         end
          o_addr_mem_programa = reg_contador_addr_mem;
          if (reg_contador_datos ==  0 && flag_send_mem==1) begin
            o_next_dato_mem_programa = reg_instruccion;
@@ -375,7 +385,6 @@ always @ ( * ) begin //Output logic
          o_enable_mem = 1;
          o_rsta_mem = 0;
          o_regcea_mem = 0; 
-         o_led = 0;
          o_enable_PC = 0;
          o_control_mux_addr_mem_top_if = 1;
          o_control_database = 0;
@@ -392,7 +401,6 @@ always @ ( * ) begin //Output logic
          o_enable_mem = 1;
          o_rsta_mem = 0;
          o_regcea_mem = 0;
-         o_led = 0;
          o_enable_PC = 0;
          o_control_mux_addr_mem_top_if = 1;
          o_control_database = 0;
@@ -409,7 +417,6 @@ always @ ( * ) begin //Output logic
          o_enable_mem = 1;
          o_rsta_mem = 0;
          o_regcea_mem = 0;
-         o_led = 0;
          o_enable_PC = 1;
          o_control_mux_addr_mem_top_if = 0;
          o_control_database = 1;
@@ -427,7 +434,6 @@ always @ ( * ) begin //Output logic
          o_enable_mem = 1;
          o_rsta_mem = 0;
          o_regcea_mem = 0;
-         o_led = 0;
          o_enable_PC = 0;
          o_control_mux_addr_mem_top_if = 0;
          o_control_database = 2;
@@ -444,7 +450,6 @@ always @ ( * ) begin //Output logic
          o_enable_mem = 1;
          o_rsta_mem = 0;
          o_regcea_mem = 0;
-         o_led = 0;
          o_enable_PC = 0;
          o_control_mux_addr_mem_top_if = 0;
          o_control_database = 2;
@@ -461,7 +466,6 @@ always @ ( * ) begin //Output logic
           o_enable_mem = 1;
           o_rsta_mem = 0;
           o_regcea_mem = 0;
-          o_led = 0;
           o_enable_PC = 0;
           o_control_mux_addr_mem_top_if = 0;
           o_control_database = 3;
@@ -479,7 +483,6 @@ always @ ( * ) begin //Output logic
           o_enable_mem = 1;
           o_rsta_mem = 0;
           o_regcea_mem = 0;
-          o_led = 0;
           o_enable_PC = 0;
           o_control_mux_addr_mem_top_if = 0;
           o_control_database = 3;
@@ -496,7 +499,6 @@ always @ ( * ) begin //Output logic
           o_enable_mem = 1;
           o_rsta_mem = 0;
           o_regcea_mem = 0;
-          o_led = 0;
           o_enable_PC = 0;
           o_control_mux_addr_mem_top_if = 0;
           o_control_database = 4;
@@ -513,7 +515,6 @@ always @ ( * ) begin //Output logic
          o_enable_mem = 1;
          o_rsta_mem = 0;
          o_regcea_mem = 0;
-         o_led = 0;
          o_enable_PC = 0;
          o_control_mux_addr_mem_top_if = 0;
          o_control_database = 4;
@@ -530,7 +531,6 @@ always @ ( * ) begin //Output logic
          o_enable_mem = 1;
          o_rsta_mem = 0;
          o_regcea_mem = 0;
-         o_led = 0;
          o_enable_PC = 0;
          o_control_mux_addr_mem_top_if = 0;
          o_control_database = 5;
@@ -549,7 +549,6 @@ always @ ( * ) begin //Output logic
          o_enable_mem = 1;
          o_rsta_mem = 0;
          o_regcea_mem = 0;
-         o_led = 0;
          o_enable_PC = 0;
          o_control_mux_addr_mem_top_if = 0;
          o_control_database = 5;
@@ -567,7 +566,6 @@ always @ ( * ) begin //Output logic
          o_enable_mem = 1;
          o_rsta_mem = 0;
          o_regcea_mem = 0;
-         o_led = 0;
          o_enable_PC = 0;
          o_control_mux_addr_mem_top_if = 0;
          o_control_database = 5;
@@ -584,7 +582,6 @@ always @ ( * ) begin //Output logic
          o_enable_mem = 1;
          o_rsta_mem = 0;
          o_regcea_mem = 0;
-         o_led = 0;
          o_enable_PC = 0;
          o_control_mux_addr_mem_top_if = 0;
          o_control_database = 5;
@@ -602,7 +599,6 @@ always @ ( * ) begin //Output logic
          o_enable_mem = 0;
          o_rsta_mem = 1;
          o_regcea_mem = 1;
-         o_led = 1;
          o_enable_PC = 0;
          o_control_mux_addr_mem_top_if = 1;
          o_control_database = 0;

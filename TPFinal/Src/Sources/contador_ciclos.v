@@ -20,7 +20,9 @@ module contador_ciclos
        input i_soft_reset,
        input i_enable,
        input [INSTRUCTION_LENGTH-1:0] i_instruction,
-       output reg [CONTADOR_LENGTH - 1 : 0] o_cuenta
+       output reg [CONTADOR_LENGTH - 1 : 0] o_cuenta,
+       output reg o_leds,
+       output reg o_ledss
    );
 
 
@@ -29,12 +31,24 @@ always@( posedge i_clock) begin
     // Se resetean los registros.
    if (~ i_soft_reset) begin
        o_cuenta <= 0;
-   end
-   else if (i_instruction != 0 && i_enable == 1) begin
-       o_cuenta <= o_cuenta + 1;
+       o_leds <= 0;
+       o_ledss <=0 ;
    end
    else begin
-       o_cuenta <= o_cuenta;
+       if (o_cuenta>8) begin
+           o_leds <= 1;
+           o_ledss <= 0;
+       end
+       else if (o_cuenta>5 & o_cuenta<8) begin
+           o_ledss <= 1;
+           o_leds <= 0;
+      end
+       if (i_instruction != 0 && i_enable == 1) begin
+           o_cuenta <= o_cuenta + 1;
+       end
+       else begin
+           o_cuenta <= o_cuenta;
+       end
    end
 end
 

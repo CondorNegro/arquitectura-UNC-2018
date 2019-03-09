@@ -12,7 +12,7 @@
 
 
 `define WIDTH_WORD_TOP          8       // Tamanio de palabra.    
-`define FREC_CLK_MHZ        100.0       // Frecuencia del clock en MHZ.
+`define FREC_CLK_MHZ        50.0       // Frecuencia del clock en MHZ.
 `define BAUD_RATE_TOP        9600       // Baud rate.
 `define CANT_BIT_STOP_TOP       2       // Cantidad de bits de parada en trama uart.
 `define HALT_OPCODE             0       //  Opcode de la instruccion HALT.
@@ -31,7 +31,7 @@
 `define CANT_BITS_CONTROL_DATABASE_TOP 3
 
 module top_arquitectura(
-  i_clock, 
+  i_clock_top, 
   i_reset,
   uart_txd_in,
   uart_rxd_out,
@@ -62,7 +62,7 @@ parameter LONG_INSTRUCCION          =  `LONG_INSTRUCCION;
 parameter CANT_BITS_CONTROL_DATABASE_TOP = `CANT_BITS_CONTROL_DATABASE_TOP;
 
 // Entradas - Salidas
-input i_clock;                                  // Clock.
+input i_clock_top;                                  // Clock.
 input i_reset;                                  // Reset.
 input uart_txd_in;                              // Transmisor de PC.
 output uart_rxd_out;                            // Receptor de PC.
@@ -73,6 +73,7 @@ output [3 : 0] o_leds;                      // Leds.
 
 // Wires.
 
+wire i_clock;
 wire [WIDTH_WORD_TOP - 1 : 0]   wire_data_rx;
 wire [WIDTH_WORD_TOP - 1 : 0]   wire_data_tx;
 wire wire_tx_done;
@@ -118,12 +119,30 @@ assign wire_soft_reset_ack = wire_soft_reset_ack_prog;
 //assign jc[0] = prueba;
 //assign uart_rxd_out = prueba;
 //assign o_leds[1] = 1'b0;
-assign o_leds[2] = 1'b0;
-assign o_leds[3] = 1'b0;
+//assign o_leds[2] = 1'b0;
+//assign o_leds[3] = 1'b0;
 
 assign wire_branch_dir = 0;
 assign wire_control_mux_PC = 1'b0;
 assign wire_control_mux_output_IF = 1'b0;
+
+
+
+
+clk_wiz_0 
+#()
+u_clk_wiz_0_unit
+ (
+  // Clock out ports
+  .clk_out1(i_clock),
+  // Status and control signals
+  .reset(~i_reset),
+  .locked(),
+ // Clock in ports
+  .clk_in1(i_clock_top)
+ );
+
+
 
 // Modulo debug_unit.
 
@@ -159,7 +178,7 @@ debug_unit
     .o_enable_PC (wire_enable_PC),
     .o_control_mux_addr_mem_top_if (wire_control_mux_addr_mem_IF),
     .o_control_database (wire_control_database),
-    .o_led (o_leds[0])
+    .o_led (o_leds)
    );
 
 
@@ -207,7 +226,8 @@ tx
     .i_data_in (wire_data_tx),
     .i_tx_start (wire_tx_start),
     .o_bit_tx (uart_rxd_out),
-    .o_tx_done (wire_tx_done)
+    .o_tx_done (wire_tx_done),
+    .o_leds() 
     );
 
 
@@ -238,7 +258,7 @@ top_if
     .o_instruction (wire_instruction_fetch),
     .o_direccion_PC_PLUS_4 (wire_contador_programa_plus_4),
     .o_contador_programa (wire_contador_programa),
-    .o_led_mem (o_leds[1]),
+    .o_led_mem (),
     .o_reset_ack_mem (wire_soft_reset_ack_prog)
   );
 
@@ -255,7 +275,9 @@ contador_ciclos
       .i_soft_reset (wire_soft_reset),
       .i_instruction (wire_instruction_fetch),
       .i_enable (wire_enable_PC),
-      .o_cuenta (wire_contador_ciclos)
+      .o_cuenta (wire_contador_ciclos),
+      .o_leds(),
+      .o_ledss()
     );
 
 
@@ -277,7 +299,8 @@ database
         .i_contador_ciclos (wire_contador_ciclos),
 		.i_pc_plus_cuatro (wire_contador_programa_plus_4),
 		.i_instruction_fetch (wire_instruction_fetch),
-        .o_dato (wire_dato_database)
+        .o_dato (wire_dato_database),
+        .o_leds()
     );
 
 // Memorias.

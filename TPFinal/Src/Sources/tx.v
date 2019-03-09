@@ -24,7 +24,8 @@ module tx(
     i_reset,
     i_tx_start,
     o_bit_tx,
-    o_tx_done
+    o_tx_done,
+    o_leds
     );
 
 // Parametros.
@@ -46,6 +47,7 @@ input i_reset;
 input  i_tx_start;  
 output reg o_bit_tx;  
 output reg o_tx_done; 
+output reg o_leds; 
 
 
 
@@ -66,12 +68,14 @@ always@( posedge i_clock ) begin //Memory
         reg_contador_bits <= 0;
         reg_contador_ticks <= 0;
         reg_contador_bits_stop <= 0;
+        o_leds <= 0;
     end 
 
     else if (i_rate) begin
         reg_state <= reg_next_state;
        
         if (reg_state == START) begin
+            o_leds <= o_leds;
             // 16 ticks por bit transmitido.
             if (( (reg_contador_ticks % 15) == 0 ) && (reg_contador_ticks != 0)) begin
                 reg_contador_bits <= 0;
@@ -85,6 +89,7 @@ always@( posedge i_clock ) begin //Memory
             end
         end
         if (reg_state == READ) begin
+            o_leds <= 1;
             // 16 ticks por bit transmitido.
             // Primer bit a transmitir.
             if ((reg_contador_ticks != 0) && (reg_contador_bits == 0) && ((reg_contador_ticks % 31) == 0 )) begin
@@ -112,6 +117,7 @@ always@( posedge i_clock ) begin //Memory
         end
 
         else if ( reg_state == STOP ) begin
+            o_leds <= o_leds;
             // 16 ticks por bit transmitido.
             if (( (reg_contador_ticks % 15) == 0 ) && (reg_contador_ticks != 0)) begin
                 reg_contador_bits <= 0;
@@ -127,6 +133,7 @@ always@( posedge i_clock ) begin //Memory
         end
 
         else begin
+            o_leds <= o_leds;
             reg_contador_bits <= 0;
             reg_contador_bits_stop <= 0;
             if ( reg_state == ESPERA) begin
@@ -139,6 +146,7 @@ always@( posedge i_clock ) begin //Memory
         
     end
     else begin
+        o_leds <= o_leds;
         reg_state <= reg_state;
         reg_contador_bits <= reg_contador_bits;
         reg_contador_ticks <= reg_contador_ticks;
