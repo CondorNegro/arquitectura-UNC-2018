@@ -15,8 +15,8 @@ module top_if
        parameter RAM_WIDTH_PROGRAMA = 32,
        parameter RAM_PERFORMANCE_PROGRAMA= "LOW_LATENCY",
        parameter INIT_FILE_PROGRAMA = "",
-       parameter RAM_DEPTH_PROGRAMA = 2048,
-       parameter CANT_BITS_ADDR = 11
+       parameter RAM_DEPTH_PROGRAMA = 1024,
+       parameter CANT_BITS_ADDR = 10
 
    )
    (
@@ -118,7 +118,7 @@ adder
    u_adder_1
    (
        .i_data_A (o_contador_programa),
-       .i_data_B (11'b00000000100),
+       .i_data_B (10'b0000000001),
        .o_result (o_direccion_PC_PLUS_4)
    );
 
