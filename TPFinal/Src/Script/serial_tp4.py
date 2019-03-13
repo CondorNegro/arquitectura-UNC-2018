@@ -33,7 +33,7 @@ etiqueta_resultado_impresion = "Resultado"
 etiqueta_resultado_modo_de_ejecucion = ""
 etiqueta_resultado_modo_de_ejecucion_valor_MIPS = ""
 etiqueta_resultado_pc = ""
-etiqueta_resultado_pc_plus_4 = ""
+etiqueta_resultado_adder_pc = ""
 etiqueta_contador_ciclos = ""
 etiqueta_instruction_fetch = ""
 lock = threading.Lock()
@@ -65,8 +65,8 @@ def getCode (x):
 		'PC-L' : '00001000',
 		'CC-H' : '00011000',
 		'CC-L' : '00000100',
-		'PC4-H': '00010100',
-		'PC4-L': '00001100',
+		'PCAdd-H': '00010100',
+		'PCAdd-L': '00001100',
 		'IF-3' : '00011100',
 		'IF-2' : '00000010',
 		'IF-1' : '00010010',
@@ -290,7 +290,7 @@ def readResultadoEjecucion (cantBytes):
 def recibirDatosFromFPGA ():
 	global etiqueta_resultado_pc
 	global etiqueta_contador_ciclos
-	global etiqueta_resultado_pc_plus_4
+	global etiqueta_resultado_adder_pc
 	global etiqueta_instruction_fetch
 	global ser
 
@@ -299,8 +299,8 @@ def recibirDatosFromFPGA ():
 	contador_de_programa_aux = ""
 	contador_de_ciclos = ""
 	contador_de_ciclos_aux = ""
-	contador_de_programa_plus_4 = ""
-	contador_de_programa_plus_4_aux = ""
+	adder_contador_de_programa = ""
+	adder_contador_de_programa_aux = ""
 	instruction_fetch = ""
 	instruction_fetch_aux = ""
 	contador_etapas = 0
@@ -371,9 +371,9 @@ def recibirDatosFromFPGA ():
 		elif (contador_etapas == 2): #Adder IF 
 
 			if (contador_subetapas == 0): #Parte H
-				contador_de_programa_plus_4, cantidad_bytes_control = readResultadoEjecucion (1)
+				adder_contador_de_programa, cantidad_bytes_control = readResultadoEjecucion (1)
 				if (cantidad_bytes_control == 1):
-					code_error = writeSerial (getCode('PC4-H'))
+					code_error = writeSerial (getCode('PCAdd-H'))
 					if (code_error < 0):
 						activarBotones (1)
 						flag_receive = False
@@ -382,17 +382,17 @@ def recibirDatosFromFPGA ():
 						contador_subetapas = contador_subetapas + 1
 
 			else: #Parte L
-				contador_de_programa_plus_4_aux, cantidad_bytes_control = readResultadoEjecucion (1)
+				adder_contador_de_programa_aux, cantidad_bytes_control = readResultadoEjecucion (1)
 				if (cantidad_bytes_control == 1):
-					code_error = writeSerial (getCode('PC4-L'))
+					code_error = writeSerial (getCode('PCAdd-L'))
 					if (code_error < 0):
 						activarBotones (1)
 						flag_receive = False
 					else:
 						ser.flushInput()
-						contador_de_programa_plus_4 = contador_de_programa_plus_4 + contador_de_programa_plus_4_aux
-						etiqueta_resultado_pc_plus_4 = contador_de_programa_plus_4
-						etiquetaPC4ValorMIPS.config (text = etiqueta_resultado_pc_plus_4)
+						adder_contador_de_programa = adder_contador_de_programa + adder_contador_de_programa_aux
+						etiqueta_resultado_adder_pc = adder_contador_de_programa
+						etiquetaPCAddValorMIPS.config (text = etiqueta_resultado_adder_pc)
 						contador_etapas = contador_etapas + 1
 						contador_subetapas = 0 
 		
@@ -737,11 +737,11 @@ etiquetaContadorCiclosValorMIPS.place (x = 580,  y = 130)
 
 etiquetaLatchIFID = Label (root, text = "LATCH IF/ID: ", fg = "dark green", font = "TkDefaultFont 12")
 etiquetaLatchIFID.place (x = 400,  y = 190)
-etiquetaPC4 = Label (root, text = "Salida adder de PC: ", fg = "brown", font = "TkDefaultFont 12")
-etiquetaPC4.place (x = 400,  y = 220)
-etiquetaPC4ValorMIPS = Label (root, text = etiqueta_resultado_pc_plus_4,\
+etiquetaPCAdd = Label (root, text = "Salida adder de PC: ", fg = "brown", font = "TkDefaultFont 12")
+etiquetaPCAdd.place (x = 400,  y = 220)
+etiquetaPCAddValorMIPS = Label (root, text = etiqueta_resultado_adder_pc,\
 	 fg = "black", font = "TkDefaultFont 12")
-etiquetaPC4ValorMIPS.place (x = 580,  y = 220)
+etiquetaPCAddValorMIPS.place (x = 580,  y = 220)
 
 etiquetaInstructionFetch = Label (root, text = "Instruccion: ", fg = "brown", font = "TkDefaultFont 12")
 etiquetaInstructionFetch.place (x = 400,  y = 250)
