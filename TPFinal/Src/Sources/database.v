@@ -25,7 +25,7 @@ module database
 
        // Intruction Fetch.
        input [ADDR_LENGTH - 1 : 0] i_pc,
-       input [ADDR_LENGTH - 1 : 0] i_pc_plus_cuatro,
+       input [ADDR_LENGTH - 1 : 0] i_adder_pc,
        input [LONGITUD_INSTRUCCION - 1 : 0] i_instruction_fetch,
 
 
@@ -35,55 +35,55 @@ module database
 
     reg [ADDR_LENGTH - 1 : 0] reg_contador_ciclos;
     reg [ADDR_LENGTH - 1 : 0] reg_pc;
-    reg [ADDR_LENGTH - 1 : 0] reg_pc_plus_cuatro;
+    reg [ADDR_LENGTH - 1 : 0] reg_adder_pc;
     reg [LONGITUD_INSTRUCCION - 1 : 0] reg_instruction_fetch;
 
   always @(posedge i_clock) begin
     if (~ i_soft_reset) begin
         reg_pc <= 0;
-        reg_pc_plus_cuatro <= 4;
+        reg_adder_pc <= 4;
         reg_instruction_fetch <= 0;
         reg_contador_ciclos <= 0;
     end
     else begin
         if (i_control == 1) begin
             reg_pc <= i_pc;
-            reg_pc_plus_cuatro <= i_pc_plus_cuatro;
+            reg_adder_pc <= i_adder_pc;
             reg_instruction_fetch <= i_instruction_fetch;
             reg_contador_ciclos <= i_contador_ciclos;
             o_dato <= 0;
         end
         else if (i_control == 2) begin
             reg_pc <= reg_pc;
-            reg_pc_plus_cuatro <= reg_pc_plus_cuatro;
+            reg_adder_pc <= reg_adder_pc;
             reg_instruction_fetch <= reg_instruction_fetch;
             reg_contador_ciclos <= reg_contador_ciclos;
             o_dato <= reg_pc;
         end
         else if (i_control == 3) begin
             reg_pc <= reg_pc;
-            reg_pc_plus_cuatro <= reg_pc_plus_cuatro;
+            reg_adder_pc <= reg_adder_pc;
             reg_instruction_fetch <= reg_instruction_fetch;
             reg_contador_ciclos <= reg_contador_ciclos;
             o_dato <= reg_contador_ciclos;
         end
         else if (i_control == 4) begin
             reg_pc <= reg_pc;
-            reg_pc_plus_cuatro <= reg_pc_plus_cuatro;
+            reg_adder_pc <= reg_adder_pc;
             reg_instruction_fetch <= reg_instruction_fetch;
             reg_contador_ciclos <= reg_contador_ciclos;
-            o_dato <= reg_pc_plus_cuatro;
+            o_dato <= reg_adder_pc;
         end
         else if (i_control == 5) begin
             reg_pc <= reg_pc;
-            reg_pc_plus_cuatro <= reg_pc_plus_cuatro;
+            reg_adder_pc <= reg_adder_pc;
             reg_instruction_fetch <= reg_instruction_fetch;
             reg_contador_ciclos <= reg_contador_ciclos;
             o_dato <= reg_instruction_fetch;
         end
         else begin
             reg_pc <= 0;
-            reg_pc_plus_cuatro <= 4;
+            reg_adder_pc <= 4;
             reg_instruction_fetch <= 0;
             o_dato <= 0;
             reg_contador_ciclos <= 0;

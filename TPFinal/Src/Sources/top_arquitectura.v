@@ -107,7 +107,7 @@ wire [LONG_INSTRUCCION - 1 : 0] wire_dato_database;
 wire [ADDR_MEM_PROGRAMA_LENGTH - 1 : 0] wire_branch_dir;
 wire [ADDR_MEM_PROGRAMA_LENGTH - 1 : 0] wire_contador_ciclos;
 wire [ADDR_MEM_PROGRAMA_LENGTH - 1 : 0] wire_contador_programa;
-wire [ADDR_MEM_PROGRAMA_LENGTH - 1 : 0] wire_contador_programa_plus_4;
+wire [ADDR_MEM_PROGRAMA_LENGTH - 1 : 0] wire_adder_contador_programa;
 
 //Borrar y dejar el segundo 
 assign wire_soft_reset_ack = wire_soft_reset_ack_prog;
@@ -249,7 +249,7 @@ top_if
     .i_control_mux_ouput (wire_control_mux_output_IF),
     .i_branch_dir (wire_branch_dir),
     .o_instruction (wire_instruction_fetch),
-    .o_direccion_PC_PLUS_4 (wire_contador_programa_plus_4),
+    .o_direccion_adder_pc (wire_adder_contador_programa),
     .o_contador_programa (wire_contador_programa),
     .o_led_mem (o_leds[1]),
     .o_reset_ack_mem (wire_soft_reset_ack_prog)
@@ -288,7 +288,7 @@ database
         .i_control (wire_control_database),
         .i_pc (wire_contador_programa),
         .i_contador_ciclos (wire_contador_ciclos),
-		.i_pc_plus_cuatro (wire_contador_programa_plus_4),
+		.i_adder_pc (wire_adder_contador_programa),
 		.i_instruction_fetch (wire_instruction_fetch),
         .o_dato (wire_dato_database)
     );

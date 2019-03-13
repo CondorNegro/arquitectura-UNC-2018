@@ -40,7 +40,7 @@ module top_if
 
 
        output [RAM_WIDTH_PROGRAMA - 1 : 0] o_instruction,
-       output [CANT_BITS_ADDR - 1 : 0] o_direccion_PC_PLUS_4,
+       output [CANT_BITS_ADDR - 1 : 0] o_direccion_adder_pc,
        output [CANT_BITS_ADDR - 1 : 0] o_contador_programa,
        output o_led_mem,
        output o_reset_ack_mem
@@ -81,7 +81,7 @@ mux
    )
    u_mux_PC_1
    (
-       .i_data_A (o_direccion_PC_PLUS_4),
+       .i_data_A (o_direccion_adder_pc),
        .i_data_B (i_branch_dir),
        .i_selector (i_control_mux_PC),
        .o_result (wire_output_mux1_TO_idata_pc)
@@ -119,7 +119,7 @@ adder
    (
        .i_data_A (o_contador_programa),
        .i_data_B (10'b0000000001),
-       .o_result (o_direccion_PC_PLUS_4)
+       .o_result (o_direccion_adder_pc)
    );
 
 

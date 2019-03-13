@@ -68,8 +68,8 @@ localparam SEND_PC_H        = 16'b0000000001000000;
 localparam SEND_PC_L        = 16'b0000000010000000;
 localparam CONT_CICLOS_H    = 16'b0000000100000000;
 localparam CONT_CICLOS_L    = 16'b0000001000000000; 
-localparam SEND_PC_4_H      = 16'b0000010000000000;
-localparam SEND_PC_4_L      = 16'b0000100000000000;
+localparam SEND_ADDER_PC_H      = 16'b0000010000000000;
+localparam SEND_ADDER_PC_L      = 16'b0000100000000000;
 localparam INSTR_IF_PART3   = 16'b0001000000000000;
 localparam INSTR_IF_PART2   = 16'b0010000000000000;
 localparam INSTR_IF_PART1   = 16'b0100000000000000;
@@ -232,28 +232,28 @@ always@( * ) begin //NEXT - STATE logic
 
        CONT_CICLOS_L  : begin
           if ((~i_rx_done & registro_rx_done) && (i_data_rx == 8'b00100000)) begin 
-               reg_next_state = SEND_PC_4_H;
+               reg_next_state = SEND_ADDER_PC_H;
            end
           else begin
                reg_next_state = CONT_CICLOS_L;
           end
        end
 
-       SEND_PC_4_H  : begin
+       SEND_ADDER_PC_H  : begin
           if ((~i_rx_done & registro_rx_done) && (i_data_rx == 8'b00101000)) begin 
-               reg_next_state = SEND_PC_4_L;
+               reg_next_state = SEND_ADDER_PC_L;
            end
           else begin
-               reg_next_state = SEND_PC_4_H;
+               reg_next_state = SEND_ADDER_PC_H;
           end
        end
 
-       SEND_PC_4_L  : begin
+       SEND_ADDER_PC_L  : begin
           if ((~i_rx_done & registro_rx_done) && (i_data_rx == 8'b00110000)) begin 
                reg_next_state = INSTR_IF_PART3;
            end
           else begin
-               reg_next_state = SEND_PC_4_L;
+               reg_next_state = SEND_ADDER_PC_L;
           end
        end
 
@@ -490,7 +490,7 @@ always @ ( * ) begin //Output logic
           o_control_database = 3;
         end
         
-        SEND_PC_4_H : begin 
+        SEND_ADDER_PC_H : begin 
           o_tx_start = 1;
           o_data_tx = (i_dato_database >> 8);
           o_soft_reset = 1; //Logica por nivel bajo.
@@ -507,7 +507,7 @@ always @ ( * ) begin //Output logic
           o_control_database = 4;
         end
 
-        SEND_PC_4_L : begin 
+        SEND_ADDER_PC_L : begin 
          o_tx_start = 1;
          o_data_tx = (i_dato_database);
          o_soft_reset = 1; //Logica por nivel bajo.
