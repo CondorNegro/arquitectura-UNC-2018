@@ -292,8 +292,8 @@ def recibirDatosFromFPGA ():
 	global etiqueta_contador_ciclos
 	global etiqueta_resultado_adder_pc
 	global etiqueta_instruction_fetch
-	global ser
-
+	
+	
 	flag_receive = True
 	contador_de_programa = ""
 	contador_de_programa_aux = ""
@@ -552,6 +552,14 @@ def iniciarMIPSViaThread():
 	print 'Thread de iniciar MIPS OK.'
 	global etiqueta_resultado_impresion
 	global modo_ejecucion
+	global ser
+	ser.flushInput()
+	ser.flushOutput()
+	while (ser.inWaiting() > 0):
+		ser.read (1)
+	time.sleep(1)
+	while (ser.inWaiting() > 0):
+		ser.read (1)
 	try:
 		data_send = getCode('Start MIPS')
 		if (len (data_send) == 8):
