@@ -198,6 +198,9 @@ always@( * ) begin //NEXT - STATE logic
            if (i_instruction_fetch == 0) begin //Instruccion igual a HALT.
                reg_next_state = SEND_PC_H;
            end
+           else if (reg_next_modo_ejecucion == 1'b1) begin // Debug
+               reg_next_state = SEND_PC_H;
+           end
            else begin
                reg_next_state = EJECUCION;
            end
@@ -288,8 +291,16 @@ always@( * ) begin //NEXT - STATE logic
 
 
        INSTR_IF_PART0  : begin
-          if ((~i_rx_done & registro_rx_done) && (i_data_rx == 8'b01010000)) begin 
-               reg_next_state = ESPERA;
+          if ((~i_rx_done & registro_rx_done) && (i_data_rx == 8'b01010000)) begin
+              if (reg_next_modo_ejecucion == 1'b0) begin
+                reg_next_state = ESPERA;
+              end
+              else if (i_instruction_fetch != 0) begin
+                reg_next_state = ESPERA_START;
+              end
+              else begin
+                 reg_next_state = ESPERA;
+              end
            end
           else begin
                reg_next_state = INSTR_IF_PART0;
