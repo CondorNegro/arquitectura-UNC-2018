@@ -82,8 +82,8 @@ def getHexadecimal (binario):
 		for i in range(0, len(binario), 4):
 			grupoCuatro = binario[i : i + 4]
 			try:
-				decimal =  int (grupoCuatro)
-				if (decimal > 9):
+				decimal =  int (grupoCuatro, 2)
+				if (decimal > 9 and decimal < 16):
 					resultado = resultado + arrayHex [decimal - 10]
 				else:
 					resultado = resultado + str (decimal)
