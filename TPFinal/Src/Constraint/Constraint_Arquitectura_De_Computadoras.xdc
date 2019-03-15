@@ -21,10 +21,10 @@ create_clock -period 10.000 -name sys_clk_pin -waveform {0.000 5.000} -add [get_
 
 ##Switches
 
-#set_property -dict {PACKAGE_PIN A8 IOSTANDARD LVCMOS33} [get_ports {i_switches[0]}]
-#set_property -dict {PACKAGE_PIN C11 IOSTANDARD LVCMOS33} [get_ports {i_switches[1]}]
-#set_property -dict {PACKAGE_PIN C10 IOSTANDARD LVCMOS33} [get_ports {i_switches[2]}]
-#set_property -dict {PACKAGE_PIN A10 IOSTANDARD LVCMOS33} [get_ports {i_switches[3]}]
+set_property -dict {PACKAGE_PIN A8 IOSTANDARD LVCMOS33} [get_ports {i_switches[0]}]
+set_property -dict {PACKAGE_PIN C11 IOSTANDARD LVCMOS33} [get_ports {i_switches[1]}]
+set_property -dict {PACKAGE_PIN C10 IOSTANDARD LVCMOS33} [get_ports {i_switches[2]}]
+set_property -dict {PACKAGE_PIN A10 IOSTANDARD LVCMOS33} [get_ports {i_switches[3]}]
 
 ##RGB LEDs
 

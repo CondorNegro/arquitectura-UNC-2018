@@ -410,7 +410,7 @@ always @ ( * ) begin //Output logic
          o_regcea_mem = 0;
          o_led = 0;
          o_enable_PC = 0;
-         o_control_mux_addr_mem_top_if = 1;
+         o_control_mux_addr_mem_top_if = 0;
          o_control_database = 0;
        end
 

@@ -44,8 +44,16 @@ module database
         reg_adder_pc <= 4;
         reg_instruction_fetch <= 0;
         reg_contador_ciclos <= 0;
+        o_dato <= 0;
     end
     else begin
+        if (i_control == 0) begin
+            reg_pc <= reg_pc;
+            reg_adder_pc <= reg_adder_pc;
+            reg_instruction_fetch <= reg_instruction_fetch;
+            o_dato <= o_dato;
+            reg_contador_ciclos <= reg_contador_ciclos;
+        end 
         if (i_control == 1) begin
             reg_pc <= i_pc;
             reg_adder_pc <= i_adder_pc;
@@ -85,8 +93,8 @@ module database
             reg_pc <= 0;
             reg_adder_pc <= 4;
             reg_instruction_fetch <= 0;
-            o_dato <= 0;
             reg_contador_ciclos <= 0;
+            o_dato <= 0;
         end
     end
 

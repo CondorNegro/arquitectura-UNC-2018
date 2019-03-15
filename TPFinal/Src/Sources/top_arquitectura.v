@@ -29,10 +29,12 @@
 `define ADDR_MEM_DATOS_LENGTH    10
 `define LONG_INSTRUCCION       32
 `define CANT_BITS_CONTROL_DATABASE_TOP 3
+`define CANT_SWITCHES           4
 
 module top_arquitectura(
   i_clock_top, 
   i_reset,
+  i_switches,
   uart_txd_in,
   uart_rxd_out,
   //jc
@@ -60,10 +62,12 @@ parameter ADDR_MEM_PROGRAMA_LENGTH  =  `ADDR_MEM_PROGRAMA_LENGTH;
 parameter ADDR_MEM_DATOS_LENGTH     =  `ADDR_MEM_DATOS_LENGTH;
 parameter LONG_INSTRUCCION          =  `LONG_INSTRUCCION;
 parameter CANT_BITS_CONTROL_DATABASE_TOP = `CANT_BITS_CONTROL_DATABASE_TOP;
+parameter CANT_SWITCHES             =   `CANT_SWITCHES;
 
 // Entradas - Salidas
 input i_clock_top;                              // Clock.
 input i_reset;                                  // Reset.
+input [CANT_SWITCHES - 1 : 0] i_switches;       // Switches.
 input uart_txd_in;                              // Transmisor de PC.
 output uart_rxd_out;                            // Receptor de PC.
 output [3 : 0] o_leds;                          // Leds.
@@ -132,7 +136,7 @@ clk_wiz_0
 u_clk_wiz_0_1
 (
   .clk_out1(i_clock),
-  .reset(~i_reset),
+  .reset(~i_switches[0]),
   .locked(),
   .clk_in1(i_clock_top)
 );
