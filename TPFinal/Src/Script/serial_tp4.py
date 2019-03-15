@@ -22,7 +22,7 @@ WIDTH_WORD = 8
 CANT_BITS_INSTRUCCION = 32
 CANT_STOP_BITS = 2
 FILE_NAME = "init_ram_file.txt"
-FLAG_TEST = True
+FLAG_TEST = False
 
 # Variables globales
 
