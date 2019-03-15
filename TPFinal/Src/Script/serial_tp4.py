@@ -74,6 +74,33 @@ def getCode (x):
     }.get (x, '11111111')  #11111111 es el por defecto
 
 
+def getHexadecimal (binario):
+	arrayHex = ['A', 'B', 'C', 'D', 'E', 'F']
+	resultado = ""
+	grupoCuatro = ''
+	if ( (len(binario) > 0) and ((len(binario)% 4) == 0) ):
+		for i in range(0, len(binario), 4):
+			grupoCuatro = binario[i : i + 4]
+			try:
+				decimal =  int (grupoCuatro)
+				if (decimal > 9):
+					resultado = resultado + arrayHex [decimal - 10]
+				else:
+					resultado = resultado + str (decimal)
+				
+			except:
+				print 'Decimal invalido en getHexadecimal.'
+				exit (1)
+			
+
+	else:
+		print 'Binario incompleto en getHexadecimal.'
+		return binario
+	
+	return resultado
+		
+
+
 # Funcion para desactivar botones
 def desactivarBotones():
 	lock.acquire()
@@ -443,7 +470,7 @@ def recibirDatosFromFPGA ():
 					else:
 						ser.flushInput()
 						instruction_fetch = instruction_fetch + instruction_fetch_aux
-						etiqueta_instruction_fetch = instruction_fetch
+						etiqueta_instruction_fetch = getHexadecimal (instruction_fetch)
 						etiquetaInstructionFetchValorMIPS.config (text = etiqueta_instruction_fetch)
 						contador_etapas = contador_etapas + 1
 						contador_subetapas = 0
@@ -758,7 +785,7 @@ etiquetaInstructionFetch = Label (root, text = "Instruccion: ", fg = "brown", fo
 etiquetaInstructionFetch.place (x = 400,  y = 250)
 etiquetaInstructionFetchValorMIPS = Label (root, text = etiqueta_instruction_fetch,\
 	 fg = "black", font = "TkDefaultFont 12")
-etiquetaInstructionFetchValorMIPS.place (x = 500,  y = 250)
+etiquetaInstructionFetchValorMIPS.place (x = 580,  y = 250)
 
 # Titulo de la GUI 
 
