@@ -22,7 +22,7 @@ WIDTH_WORD = 8
 CANT_BITS_INSTRUCCION = 32
 CANT_STOP_BITS = 2
 FILE_NAME = "init_ram_file.txt"
-FLAG_TEST = False
+FLAG_TEST = True
 
 # Variables globales
 
@@ -277,7 +277,7 @@ def readResultadoEjecucion (cantBytes):
 		
 	else:
 		contador_bytes = cantBytes
-		resultado = "0"
+		resultado = "00000000"
 	
 	return [resultado, contador_bytes]
 
@@ -448,7 +448,12 @@ def recibirDatosFromFPGA ():
 						contador_etapas = contador_etapas + 1
 						contador_subetapas = 0
 						flag_receive = False
-						activarBotones (1)
+						if ((modo_ejecucion == '0') or (instruction_fetch == ('0' * 32))): #Continuo
+							activarBotones (1)
+						else: #Debug
+							activarBotones (4)
+
+						
 
 		
 
@@ -570,10 +575,8 @@ def iniciarMIPSViaThread():
 			else:
 				etiqueta_resultado_impresion = "Start MIPS."
 				etiquetaResultado.config (text = etiqueta_resultado_impresion, fg = "dark green")
-				if (modo_ejecucion == '1'): #Debug (por ahora solamente vuelve a ESPERA)
-					activarBotones (1)
-				else:
-					recibirDatosFromFPGA ()
+				recibirDatosFromFPGA ()
+				
 		else:
 			print 'Warning: Deben ser 8 bits.'
 			etiquetaResultado.config (text = "Warning: Deben ser 8 bits", fg = "red")
