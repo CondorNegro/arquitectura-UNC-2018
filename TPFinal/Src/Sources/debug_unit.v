@@ -92,6 +92,7 @@ reg reg_next_modo_ejecucion;
 reg flag_send_mem; //Sirve para que el primer dato que se envia sea la instruccion valida y no un 1 (reg instruccion inicializa en 1)
 
 
+reg flag_ejecucion_modo_debug;
 
 
 always @ ( posedge i_clock ) begin //Memory
@@ -105,6 +106,7 @@ always @ ( posedge i_clock ) begin //Memory
      o_dato_mem_programa <= 0;
      flag_send_mem<=0;
      o_modo_ejecucion <= 0; // Continuo.
+     flag_ejecucion_modo_debug <= 1'b0;
  end
 
  else begin
@@ -138,6 +140,14 @@ always @ ( posedge i_clock ) begin //Memory
        reg_instruccion <= 1;
        reg_contador_datos <= 0;
        reg_contador_addr_mem <= 0;
+     end
+     
+     
+     if (reg_state == EJECUCION) begin
+          flag_ejecucion_modo_debug <= 1'b1;
+     end
+     else begin
+        flag_ejecucion_modo_debug <= flag_ejecucion_modo_debug;
      end
 
  end
@@ -199,7 +209,12 @@ always@( * ) begin //NEXT - STATE logic
                reg_next_state = SEND_PC_H;
            end
            else if (reg_next_modo_ejecucion == 1'b1) begin // Debug
-               reg_next_state = SEND_PC_H;
+              if (flag_ejecucion_modo_debug == 1'b1) begin
+                reg_next_state = SEND_PC_H;
+              end
+              else begin
+                reg_next_state = EJECUCION;
+              end
            end
            else begin
                reg_next_state = EJECUCION;
@@ -295,11 +310,14 @@ always@( * ) begin //NEXT - STATE logic
               if (reg_next_modo_ejecucion == 1'b0) begin
                 reg_next_state = ESPERA;
               end
-              else if (i_instruction_fetch != 0) begin
+              else if ((i_instruction_fetch == 0) && (i_dato_database != 0)) begin
                 reg_next_state = ESPERA_START;
               end
-              else begin
+              else if ((i_instruction_fetch == 0) && (i_dato_database == 0)) begin
                  reg_next_state = ESPERA;
+              end
+              else begin
+                  reg_next_state = ESPERA_START;
               end
            end
           else begin
