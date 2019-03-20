@@ -92,7 +92,7 @@ reg reg_next_modo_ejecucion;
 reg flag_send_mem; //Sirve para que el primer dato que se envia sea la instruccion valida y no un 1 (reg instruccion inicializa en 1)
 
 
-reg flag_enable_pc;
+reg flag_enable_pc; //Flag para habilitar o no el enable_pc.
 
 
 always @ ( posedge i_clock ) begin //Memory
@@ -143,10 +143,10 @@ always @ ( posedge i_clock ) begin //Memory
      end
      
      
-     if ((reg_state == EJECUCION) && (reg_next_modo_ejecucion == 1'b1)) begin
+     if ((reg_state == EJECUCION) && (reg_next_modo_ejecucion == 1'b1)) begin //Modo debug en EJECUCION.
           flag_enable_pc <= 1'b1;
      end
-     else if ((i_instruction_fetch == 0) && (reg_next_modo_ejecucion == 1'b0)) begin
+     else if ((i_instruction_fetch == 0) && (reg_next_modo_ejecucion == 1'b0)) begin //Modo continuo con HALT.
           flag_enable_pc <= 1'b1;
      end
      else begin
@@ -208,10 +208,10 @@ always@( * ) begin //NEXT - STATE logic
        end
 
         EJECUCION : begin
-           if (i_instruction_fetch == 0 && reg_next_modo_ejecucion == 1'b0) begin //Instruccion igual a HALT.
+           if (i_instruction_fetch == 0 && reg_next_modo_ejecucion == 1'b0) begin //Modo continuo con HALT.
                reg_next_state = SEND_PC_H;
            end
-           else if (reg_next_modo_ejecucion == 1'b1) begin // Debug
+           else if (reg_next_modo_ejecucion == 1'b1) begin // Modo Debug
               if (flag_enable_pc == 1'b1) begin
                 reg_next_state = SEND_PC_H;
               end
@@ -448,7 +448,7 @@ always @ ( * ) begin //Output logic
          o_regcea_mem = 0;
          o_led = 0;
          if (flag_enable_pc == 1'b1) begin
-            o_enable_PC = 0;
+            o_enable_PC = 0; // Deshabilito el enable pc.
          end
          else begin
             o_enable_PC = 1;
