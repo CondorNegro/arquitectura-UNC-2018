@@ -125,8 +125,7 @@ adder
 
    pc
       #(
-          .CONTADOR_LENGTH (CANT_BITS_ADDR),
-          .INSTRUCTION_LENGTH (RAM_WIDTH_PROGRAMA)
+          .CONTADOR_LENGTH (CANT_BITS_ADDR)
       )
       u_pc_1
       (

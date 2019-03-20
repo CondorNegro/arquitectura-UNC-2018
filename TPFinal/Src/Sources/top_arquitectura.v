@@ -263,8 +263,7 @@ top_if
 // Modulo contador de ciclos.
 contador_ciclos
     #(
-        .CONTADOR_LENGTH (ADDR_MEM_PROGRAMA_LENGTH),
-        .INSTRUCTION_LENGTH (LONG_INSTRUCCION)
+        .CONTADOR_LENGTH (ADDR_MEM_PROGRAMA_LENGTH)
      )
     u_contador_ciclos_1
     (

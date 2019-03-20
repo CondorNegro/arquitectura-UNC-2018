@@ -14,7 +14,7 @@
 module test_bench_contador_ciclos();
 
     parameter CONTADOR_LENGTH = 11	;   // Cantidad de bits del contador.
-    parameter INSTRUCTION_LENGTH = 32;
+    
     //Todo puerto de salida del modulo es un cable.
 	//Todo puerto de estimulo o generacion de entrada es un registro.
 
@@ -22,18 +22,16 @@ module test_bench_contador_ciclos();
     reg clock;                                  // Clock.
     reg soft_reset;                             // Reset.
     reg enable;
-    reg [INSTRUCTION_LENGTH-1:0] instruction;
 	  wire [CONTADOR_LENGTH - 1 : 0] salida_cuenta;
 
 	initial	begin
 	   clock = 1'b0;
 	   soft_reset = 1'b0; // Reset en 0. (Normal cerrado el boton del reset).
 	   enable = 1'b0;
-	   instruction = 1;
+	   
 	   #10 soft_reset = 1'b1; // Desactivo la accion del reset.
 	  
 	   #10 enable=1'b1;
-	   #50 instruction = 0;
 	   #100 enable=1'b0;
 	   #100 enable=1'b1;
 	   #50 enable=1'b0;
@@ -52,14 +50,12 @@ module test_bench_contador_ciclos();
 // Modulo para pasarle los estimulos del banco de pruebas.
 contador_ciclos
     #(
-         .CONTADOR_LENGTH (CONTADOR_LENGTH),
-         .INSTRUCTION_LENGTH (INSTRUCTION_LENGTH)
+         .CONTADOR_LENGTH (CONTADOR_LENGTH)
      )
     u_contador_ciclos_1
     (
       .i_clock (clock),
       .i_soft_reset (soft_reset),
-      .i_instruction (instruction),
       .i_enable (enable),
       .o_cuenta (salida_cuenta)
     );

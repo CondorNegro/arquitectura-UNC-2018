@@ -12,8 +12,7 @@
 
 module contador_ciclos
    #(
-       parameter CONTADOR_LENGTH = 11,
-       parameter INSTRUCTION_LENGTH = 32
+       parameter CONTADOR_LENGTH = 11
    )
    (
        input i_clock,
