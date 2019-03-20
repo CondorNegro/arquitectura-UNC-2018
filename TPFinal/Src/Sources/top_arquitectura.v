@@ -270,7 +270,6 @@ contador_ciclos
     (
       .i_clock (i_clock),
       .i_soft_reset (wire_soft_reset),
-      .i_instruction (wire_instruction_fetch),
       .i_enable (wire_enable_PC),
       .o_cuenta (wire_contador_ciclos)
     );

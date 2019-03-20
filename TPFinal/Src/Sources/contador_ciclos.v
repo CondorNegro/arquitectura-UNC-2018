@@ -19,7 +19,6 @@ module contador_ciclos
        input i_clock,
        input i_soft_reset,
        input i_enable,
-       input [INSTRUCTION_LENGTH-1:0] i_instruction,
        output reg [CONTADOR_LENGTH - 1 : 0] o_cuenta
    );
 
@@ -30,7 +29,7 @@ always@( posedge i_clock) begin
    if (~ i_soft_reset) begin
        o_cuenta <= 0;
    end
-   else if (i_instruction != 0 && i_enable == 1) begin
+   else if (i_enable == 1'b1) begin
        o_cuenta <= o_cuenta + 1;
    end
    else begin

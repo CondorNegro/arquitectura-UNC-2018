@@ -134,7 +134,6 @@ adder
           .i_soft_reset (i_soft_reset),
           .i_enable (i_enable_contador_PC),
           .i_direccion (wire_output_mux1_TO_idata_pc),
-          .i_instruction (o_instruction),
           .o_direccion (o_contador_programa)
       );
 
