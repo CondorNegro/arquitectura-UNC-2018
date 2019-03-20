@@ -143,11 +143,11 @@ always @ ( posedge i_clock ) begin //Memory
      end
      
      
-     if (reg_state == EJECUCION) begin
+     if ((reg_state == EJECUCION) && (reg_next_modo_ejecucion == 1'b1)) begin
           flag_ejecucion_modo_debug <= 1'b1;
      end
      else begin
-        flag_ejecucion_modo_debug <= flag_ejecucion_modo_debug;
+        flag_ejecucion_modo_debug <= 1'b0;
      end
 
  end
@@ -205,7 +205,7 @@ always@( * ) begin //NEXT - STATE logic
        end
 
         EJECUCION : begin
-           if (i_instruction_fetch == 0) begin //Instruccion igual a HALT.
+           if (i_instruction_fetch == 0 && reg_next_modo_ejecucion == 1'b0) begin //Instruccion igual a HALT.
                reg_next_state = SEND_PC_H;
            end
            else if (reg_next_modo_ejecucion == 1'b1) begin // Debug
@@ -444,7 +444,12 @@ always @ ( * ) begin //Output logic
          o_rsta_mem = 0;
          o_regcea_mem = 0;
          o_led = 0;
-         o_enable_PC = 1;
+         if (flag_ejecucion_modo_debug == 1'b1) begin
+            o_enable_PC = 0;
+         end
+         else begin
+            o_enable_PC = 1;
+         end
          o_control_mux_addr_mem_top_if = 0;
          o_control_database = 1;
        end
