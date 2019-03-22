@@ -103,7 +103,8 @@ branch_address_calculator
     #(
         .CANT_BITS_INSTRUCTION_INDEX_BRANCH (CANT_BITS_INSTRUCTION_INDEX_BRANCH),
         .CANT_BITS_FLAG_BRANCH (CANT_BITS_FLAG_BRANCH),
-        .INPUT_OUTPUT_LENGTH (CANT_BITS_ADDR)
+        .CANT_BITS_ADDR (CANT_BITS_ADDR),
+        .CANT_BITS_IMMEDIATE (CANT_BITS_IMMEDIATE)
     )
     (
         .i_flag_branch (wire_output_flag_branch_decoder_TO_flag_branch_branch_address_calculator),
@@ -111,20 +112,8 @@ branch_address_calculator
         .i_immediate_address (o_extension_signo_constante),
         .i_instruction_index_branch (wire_output_instruction_index_branch_decoder_TO_instruction_index_branch_branch_address_calculator),
         .o_branch_control (o_branch_control),
-        .o_result (o_branch_dir)
+        .o_branch_dir (o_branch_dir)
     );
-
-
-adder
-   #(
-       .INPUT_OUTPUT_LENGTH (CANT_BITS_ADDR)
-   )
-   u_adder_1
-   (
-       .i_data_A (),
-       .i_data_B (), //No se debe realizar un desplazamiento de dos (<<2) porque el PC suma de a uno.
-       .o_result ()
-   );
 
 
 register_file
