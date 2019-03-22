@@ -21,7 +21,8 @@ module top_id
        parameter CANT_BITS_CEROS = 5,
        parameter CANT_BITS_ID_LSB = 6,
        parameter CANT_BITS_INSTRUCTION_INDEX_BRANCH = 26,
-       parameter CANT_BITS_FLAG_BRANCH = 3  
+       parameter CANT_BITS_FLAG_BRANCH = 3,
+       parameter CANT_BITS_ALU_OP = 2  
    )
    (
        input i_clock,
@@ -48,6 +49,16 @@ module top_id
        output [clogb2 (CANT_REGISTROS - 1) - 1 : 0] o_reg_rt,
        output [clogb2 (CANT_REGISTROS - 1) - 1 : 0] o_reg_rd,
        
+       // Control
+
+       output o_RegDst,
+       output o_RegWrite,
+       output o_ALUSrc,
+       output [CANT_BITS_ALU_OP - 1 : 0] o_ALUOp,
+       output o_MemRead,
+       output o_MemWrite,
+       output o_MemtoReg,
+       output o_flag_branch,   
 
        output o_led
    );
@@ -74,6 +85,7 @@ module top_id
     wire [CANT_BITS_INSTRUCTION_INDEX_BRANCH - 1 : 0] wire_output_instruction_index_branch_decoder_TO_instruction_index_branch_branch_address_calculator;
     
     
+    assign o_flag_branch = wire_output_flag_branch_decoder_TO_flag_branch_branch_address_calculator;
 
 
 decoder
@@ -139,14 +151,23 @@ register_file
         .o_led (o_led)
     );
 
-/**control 
+control 
     #(
-
+        .CANT_BITS_INSTRUCTION (LENGTH_INSTRUCTION),
+        .CANT_BITS_FLAG_BRANCH (CANT_BITS_FLAG_BRANCH),
+        .CANT_BITS_ALU_OP (CANT_BITS_ALU_OP)
     )
     u_control_1
     (
-
-    );**/
+        .i_instruction (i_instruction),
+        .o_RegDst (o_RegDst),
+        .o_RegWrite (o_RegWrite),
+        .o_ALUSrc (o_ALUSrc),
+        .o_ALUOp (o_ALUOp),
+        .o_MemRead (o_MemRead),
+        .o_MemWrite (o_MemWrite),
+        .o_MemtoReg (o_MemtoReg)
+    );
 
 
 
