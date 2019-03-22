@@ -78,8 +78,7 @@ module top_id
     
     wire [CANT_BITS_IMMEDIATE - 1 : 0] wire_output_immediate_decoder_TO_extension_signo;
   
-    assign o_extension_signo_constante = {(CANT_BITS_REGISTROS - CANT_BITS_IMMEDIATE) {wire_output_immediate_decoder_TO_extension_signo[CANT_BITS_IMMEDIATE - 1]},
-     wire_output_immediate_decoder_TO_extension_signo}; // Extension de signo.
+    assign o_extension_signo_constante = {(CANT_BITS_REGISTROS - CANT_BITS_IMMEDIATE) {wire_output_immediate_decoder_TO_extension_signo[CANT_BITS_IMMEDIATE - 1]},wire_output_immediate_decoder_TO_extension_signo}; // Extension de signo.
 
     wire [CANT_BITS_FLAG_BRANCH - 1 : 0] wire_output_flag_branch_decoder_TO_flag_branch_branch_address_calculator;
     wire [CANT_BITS_INSTRUCTION_INDEX_BRANCH - 1 : 0] wire_output_instruction_index_branch_decoder_TO_instruction_index_branch_branch_address_calculator;
