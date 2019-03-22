@@ -71,7 +71,9 @@ module top_id
 
 decoder
     #(
-        .CANT_BITS_INSTRUCCION (LENGTH_INSTRUCTION)
+        .CANT_BITS_INSTRUCCION (LENGTH_INSTRUCTION),
+        .CANT_BITS_ADDRESS_REGISTROS (clogb2 (CANT_REGISTROS - 1)),
+        .CANT_BITS_IMMEDIATE (CANT_BITS_IMMEDIATE)
     )
     (
         .i_instruction (i_instruction),
