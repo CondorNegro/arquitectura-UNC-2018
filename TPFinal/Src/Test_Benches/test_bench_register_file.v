@@ -80,7 +80,7 @@ register_file
         .i_reg_B (reg_B),
         .i_reg_Write (reg_reg_write),
         .i_data_write (reg_data_write),
-        .i_control_write (reg_control_write_reg),
+        .i_control_write (reg_control_write),
         .o_data_A (wire_data_A),
         .o_data_B (wire_data_B),
         .o_led (wire_led)
