@@ -16,7 +16,12 @@ module top_id
        parameter CANT_REGISTROS= 32,
        parameter CANT_BITS_ADDR = 11,
        parameter CANT_BITS_REGISTROS = 32,
-       parameter CANT_BITS_IMMEDIATE = 16
+       parameter CANT_BITS_IMMEDIATE = 16,
+       parameter CANT_BITS_ESPECIAL = 6,
+       parameter CANT_BITS_CEROS = 5,
+       parameter CANT_BITS_ID_LSB = 6,
+       parameter CANT_BITS_INSTRUCTION_INDEX_BRANCH = 26,
+       parameter CANT_BITS_FLAG_BRANCH = 3  
    )
    (
        input i_clock,
@@ -65,23 +70,48 @@ module top_id
     assign o_extension_signo_constante = {(CANT_BITS_REGISTROS - CANT_BITS_IMMEDIATE) {wire_output_immediate_decoder_TO_extension_signo[CANT_BITS_IMMEDIATE - 1]},
      wire_output_immediate_decoder_TO_extension_signo}; // Extension de signo.
 
-    wire wire_output_flag_branch_decoder_TO_compuerta_and;
-    assign o_branch_control = wire_output_flag_branch_decoder_TO_compuerta_and & (o_data_A == 0); //Condicion de salto.
+    wire [CANT_BITS_FLAG_BRANCH - 1 : 0] wire_output_flag_branch_decoder_TO_flag_branch_branch_address_calculator;
+    wire [CANT_BITS_INSTRUCTION_INDEX_BRANCH - 1 : 0] wire_output_instruction_index_branch_decoder_TO_instruction_index_branch_branch_address_calculator;
+    
+    
 
 
 decoder
     #(
         .CANT_BITS_INSTRUCCION (LENGTH_INSTRUCTION),
         .CANT_BITS_ADDRESS_REGISTROS (clogb2 (CANT_REGISTROS - 1)),
-        .CANT_BITS_IMMEDIATE (CANT_BITS_IMMEDIATE)
+        .CANT_BITS_IMMEDIATE (CANT_BITS_IMMEDIATE),
+        .CANT_BITS_ESPECIAL (CANT_BITS_ESPECIAL),
+        .CANT_BITS_CEROS (CANT_BITS_CEROS),
+        .CANT_BITS_ID_LSB (CANT_BITS_ID_LSB),
+        .CANT_BITS_INSTRUCTION_INDEX_BRANCH (CANT_BITS_INSTRUCTION_INDEX_BRANCH),
+        .CANT_BITS_FLAG_BRANCH (CANT_BITS_FLAG_BRANCH)
+
     )
     (
         .i_instruction (i_instruction),
         .o_reg_A (wire_output_reg_A_decoder_TO_reg_A_register_file),
         .o_reg_B (wire_output_reg_B_decoder_TO_reg_B_register_file),
         .o_reg_W (o_reg_rd),
-        .o_flag_branch (wire_output_flag_branch_decoder_TO_compuerta_and),
-        .o_immediate (wire_output_immediate_decoder_TO_extension_signo)
+        .o_flag_branch (wire_output_flag_branch_decoder_TO_flag_branch_branch_address_calculator),
+        .o_immediate (wire_output_immediate_decoder_TO_extension_signo),
+        .o_instruction_index_branch (wire_output_instruction_index_branch_decoder_TO_instruction_index_branch_branch_address_calculator)
+    );
+
+
+branch_address_calculator 
+    #(
+        .CANT_BITS_INSTRUCTION_INDEX_BRANCH (CANT_BITS_INSTRUCTION_INDEX_BRANCH),
+        .CANT_BITS_FLAG_BRANCH (CANT_BITS_FLAG_BRANCH),
+        .INPUT_OUTPUT_LENGTH (CANT_BITS_ADDR)
+    )
+    (
+        .i_flag_branch (wire_output_flag_branch_decoder_TO_flag_branch_branch_address_calculator),
+        .i_adder_pc (i_out_adder_pc),
+        .i_immediate_address (o_extension_signo_constante),
+        .i_instruction_index_branch (wire_output_instruction_index_branch_decoder_TO_instruction_index_branch_branch_address_calculator),
+        .o_branch_control (o_branch_control),
+        .o_result (o_branch_dir)
     );
 
 
@@ -91,9 +121,9 @@ adder
    )
    u_adder_1
    (
-       .i_data_A (i_out_adder_pc),
-       .i_data_B (o_extension_signo_constante), //No se debe realizar un desplazamiento de dos (<<2) porque el PC suma de a uno.
-       .o_result (o_branch_dir)
+       .i_data_A (),
+       .i_data_B (), //No se debe realizar un desplazamiento de dos (<<2) porque el PC suma de a uno.
+       .o_result ()
    );
 
 
