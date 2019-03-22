@@ -155,10 +155,15 @@ control
     #(
         .CANT_BITS_INSTRUCTION (LENGTH_INSTRUCTION),
         .CANT_BITS_FLAG_BRANCH (CANT_BITS_FLAG_BRANCH),
-        .CANT_BITS_ALU_OP (CANT_BITS_ALU_OP)
+        .CANT_BITS_ALU_OP (CANT_BITS_ALU_OP),
+        .CANT_BITS_ESPECIAL (CANT_BITS_ESPECIAL),
+        .CANT_BITS_ID_LSB (CANT_BITS_ID_LSB)
+
     )
     u_control_1
     (
+        .i_clock (i_clock),
+        .i_soft_reset (i_soft_reset),
         .i_instruction (i_instruction),
         .o_RegDst (o_RegDst),
         .o_RegWrite (o_RegWrite),

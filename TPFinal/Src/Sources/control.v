@@ -15,10 +15,14 @@ module control
        
        parameter CANT_BITS_INSTRUCTION = 32,
        parameter CANT_BITS_FLAG_BRANCH = 3,
-       parameter CANT_BITS_ALU_OP = 2
+       parameter CANT_BITS_ALU_OP = 2,
+       parameter CANT_BITS_ESPECIAL = 6,
+       parameter CANT_BITS_ID_LSB = 6
     
     )
    (
+       input i_clock,
+       input i_soft_reset,
        input [CANT_BITS_INSTRUCTION - 1 : 0] i_instruction,
        output reg o_RegDst,
        output reg o_RegWrite,
@@ -28,6 +32,23 @@ module control
        output reg o_MemWrite,
        output reg o_MemtoReg     
    );
+
+
+
+   always@(posedge i_clock) begin
+        if (~ i_soft_reset) begin
+          o_RegDst <= 0;
+          o_RegWrite <= 0;
+          o_ALUSrc <= 0;
+          o_ALUOp <= 0
+          o_MemRead <= 0;
+          o_MemWrite <= 0;
+          o_MemtoReg <= 0;
+        end
+        else begin
+                
+        end
+   end
 
 
 
