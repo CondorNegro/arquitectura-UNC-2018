@@ -104,11 +104,14 @@ branch_address_calculator
         .CANT_BITS_INSTRUCTION_INDEX_BRANCH (CANT_BITS_INSTRUCTION_INDEX_BRANCH),
         .CANT_BITS_FLAG_BRANCH (CANT_BITS_FLAG_BRANCH),
         .CANT_BITS_ADDR (CANT_BITS_ADDR),
-        .CANT_BITS_IMMEDIATE (CANT_BITS_IMMEDIATE)
+        .CANT_BITS_IMMEDIATE (CANT_BITS_IMMEDIATE),
+        .CANT_BITS_REGISTROS (CANT_BITS_REGISTROS)
     )
     (
         .i_flag_branch (wire_output_flag_branch_decoder_TO_flag_branch_branch_address_calculator),
         .i_adder_pc (i_out_adder_pc),
+        .i_dato_reg_A (o_data_A),
+        .i_dato_reg_B (o_data_B),
         .i_immediate_address (o_extension_signo_constante),
         .i_instruction_index_branch (wire_output_instruction_index_branch_decoder_TO_instruction_index_branch_branch_address_calculator),
         .o_branch_control (o_branch_control),
