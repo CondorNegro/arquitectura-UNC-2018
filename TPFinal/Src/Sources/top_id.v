@@ -56,7 +56,7 @@ module top_id
     endfunction
 
     
-decoder
+/**decoder
     #(
         .CANT_BITS_INSTRUCCION (LENGTH_INSTRUCTION)
     )
@@ -67,7 +67,7 @@ decoder
         .o_reg_W (),
         .o_flag_branch (),
         .o_immediate ()
-    )
+    );
 
 adder
    #(
@@ -78,7 +78,7 @@ adder
        .i_data_A (i_out_adder_pc),
        .i_data_B (),
        .o_result (o_branch_dir)
-   );
+   );**/
 
 register_file
     #(
@@ -100,14 +100,14 @@ register_file
         .o_led (o_led)
     );
 
-control 
+/**control 
     #(
 
     )
     u_control_1
     (
 
-    );
+    );**/
 
 
   

@@ -11,7 +11,7 @@
 //////////////////////////////////////////////////////////////////////////////////
 
 
-module test_bench_contador_ciclos();
+module test_bench_register_file();
 
     parameter CANTIDAD_REGISTROS = 32;
     parameter CANTIDAD_BITS_REGISTROS = 32;
