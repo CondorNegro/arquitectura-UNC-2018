@@ -42,6 +42,7 @@ module top_id
        output [clogb2 (CANT_REGISTROS - 1) - 1 : 0] o_reg_rs,
        output [clogb2 (CANT_REGISTROS - 1) - 1 : 0] o_reg_rt,
        output [clogb2 (CANT_REGISTROS - 1) - 1 : 0] o_reg_rd,
+       
 
        output o_led
    );
@@ -55,19 +56,32 @@ module top_id
                 depth = depth >> 1;
     endfunction
 
+
+    wire [clogb2 (CANT_REGISTROS - 1) - 1 : 0] wire_output_reg_A_decoder_TO_reg_A_register_file;
+    wire [clogb2 (CANT_REGISTROS - 1) - 1 : 0] wire_output_reg_B_decoder_TO_reg_B_register_file;
     
-/**decoder
+    wire [CANT_BITS_IMMEDIATE - 1 : 0] wire_output_immediate_decoder_TO_extension_signo;
+  
+    assign o_extension_signo_constante = {(CANT_BITS_REGISTROS - CANT_BITS_IMMEDIATE) {wire_output_immediate_decoder_TO_extension_signo[CANT_BITS_IMMEDIATE - 1]},
+     wire_output_immediate_decoder_TO_extension_signo}; // Extension de signo.
+
+    wire wire_output_flag_branch_decoder_TO_compuerta_and;
+    assign o_branch_control = wire_output_flag_branch_decoder_TO_compuerta_and & (o_data_A == 0); //Condicion de salto.
+
+
+decoder
     #(
         .CANT_BITS_INSTRUCCION (LENGTH_INSTRUCTION)
     )
     (
         .i_instruction (i_instruction),
-        .o_reg_A (),
-        .o_reg_B (),
-        .o_reg_W (),
-        .o_flag_branch (),
-        .o_immediate ()
+        .o_reg_A (wire_output_reg_A_decoder_TO_reg_A_register_file),
+        .o_reg_B (wire_output_reg_B_decoder_TO_reg_B_register_file),
+        .o_reg_W (o_reg_rd),
+        .o_flag_branch (wire_output_flag_branch_decoder_TO_compuerta_and),
+        .o_immediate (wire_output_immediate_decoder_TO_extension_signo)
     );
+
 
 adder
    #(
@@ -76,9 +90,10 @@ adder
    u_adder_1
    (
        .i_data_A (i_out_adder_pc),
-       .i_data_B (),
+       .i_data_B (o_extension_signo_constante), //No se debe realizar un desplazamiento de dos (<<2) porque el PC suma de a uno.
        .o_result (o_branch_dir)
-   );**/
+   );
+
 
 register_file
     #(
@@ -90,8 +105,8 @@ register_file
     (
         .i_clock (i_clock),
         .i_soft_reset (i_soft_reset),
-        .i_reg_A (),
-        .i_reg_B (),
+        .i_reg_A (wire_output_reg_A_decoder_TO_reg_A_register_file),
+        .i_reg_B (wire_output_reg_B_decoder_TO_reg_B_register_file),
         .i_reg_Write (i_reg_write),
         .i_data_write (i_data_write),
         .i_control_write (i_control_write_reg),
@@ -108,6 +123,7 @@ register_file
     (
 
     );**/
+
 
 
   
