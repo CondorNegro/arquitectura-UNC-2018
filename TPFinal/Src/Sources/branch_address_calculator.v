@@ -65,7 +65,7 @@ module branch_address_calculator
               else begin
                 o_branch_control = 1'b0;
               end
-              o_branch_dir = i_immediate_address [CANT_BITS_ADDR - 1 : 0];
+              o_branch_dir = wire_resultado_sumador;
             end
 
         4://BNE
@@ -75,13 +75,15 @@ module branch_address_calculator
               end
               else begin
                 o_branch_control = 1'b0;
-              o_branch_dir = i_immediate_address [CANT_BITS_ADDR - 1 : 0];
+              o_branch_dir = wire_resultado_sumador;
+             end
             end
         
         5://J, JAL
             begin
               o_branch_control = 1'b1;
               o_branch_dir = i_instruction_index_branch [CANT_BITS_ADDR - 1 : 0];
+              //en MIPS se deberia concatenar con BITS MSB del PC, 
             end
 
         default:
