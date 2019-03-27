@@ -32,10 +32,9 @@ module test_bench_branch_address_calculator();
     wire wire_o_branch_control;
     wire [CANT_BITS_ADDR - 1 : 0] wire_o_branch_dir;
 	
-    reg clock; // unicamente como referencia
+    
 	
 	initial	begin
-		clock = 1'b0;
 		reg_i_adder_pc = 1;
         reg_i_immediate_address = 0;
         reg_i_instruction_index_branch = 0;
@@ -89,7 +88,7 @@ module test_bench_branch_address_calculator();
 		#5000 $finish;
 	end
 	
-	always #2.5 clock=~clock;  // Simulacion de clock.
+
 
 
 
