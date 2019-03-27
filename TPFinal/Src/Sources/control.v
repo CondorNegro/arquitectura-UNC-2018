@@ -48,7 +48,7 @@ module control
           o_MemtoReg <= 0;
         end
         else begin
-            if (i_instruction [CANT_BITS_INSTRUCTION - 1 : CANT_BITS_INSTRUCTION - CANT_BITS_ESPECIAL -  1] == {CANT_BITS_ESPECIAL{1'b0}}) //6 bits MSB en cero.
+            if (i_instruction [CANT_BITS_INSTRUCTION - 1 : CANT_BITS_INSTRUCTION - CANT_BITS_ESPECIAL] == {CANT_BITS_ESPECIAL{1'b0}}) //6 bits MSB en cero.
             begin 
                 case (i_instruction [CANT_BITS_ID_LSB - 1 : 0]) //6 bits LSB.
                     0://SLL
@@ -214,7 +214,7 @@ module control
                 endcase
             end
             else begin // 6 bits MSB distinto de cero.
-              case (i_instruction [CANT_BITS_INSTRUCTION - 1 : CANT_BITS_INSTRUCTION - CANT_BITS_ESPECIAL -  1])//6 bits MSB.
+              case (i_instruction [CANT_BITS_INSTRUCTION - 1 : CANT_BITS_INSTRUCTION - CANT_BITS_ESPECIAL])//6 bits MSB.
                     32://LB
                         begin
                             o_RegDst <= 0;
@@ -428,7 +428,7 @@ module control
         case (o_ALUOp)
             2'b00: //Load o Store.
                 begin
-                    if (i_instruction [CANT_BITS_INSTRUCTION - 1 : CANT_BITS_INSTRUCTION - CANT_BITS_ESPECIAL -  1] == 15) begin
+                    if (i_instruction [CANT_BITS_INSTRUCTION - 1 : CANT_BITS_INSTRUCTION - CANT_BITS_ESPECIAL] == 15) begin
                         o_ALUCtrl = 4'b1000;
                     end
                     else begin
@@ -442,7 +442,7 @@ module control
                 end
             2'b10: // Tipo R. 
                 begin
-                    if (i_instruction [CANT_BITS_INSTRUCTION - 1 : CANT_BITS_INSTRUCTION - CANT_BITS_ESPECIAL -  1] == {CANT_BITS_ESPECIAL{1'b0}}) //6 bits MSB en cero.
+                    if (i_instruction [CANT_BITS_INSTRUCTION - 1 : CANT_BITS_INSTRUCTION - CANT_BITS_ESPECIAL] == {CANT_BITS_ESPECIAL{1'b0}}) //6 bits MSB en cero.
                     begin 
                         case (i_instruction [CANT_BITS_ID_LSB - 1 : 0]) //6 bits LSB.
                             0://SLL
@@ -505,7 +505,7 @@ module control
                         endcase
                     end
                     else begin
-                      case (i_instruction [CANT_BITS_INSTRUCTION - 1 : CANT_BITS_INSTRUCTION - CANT_BITS_ESPECIAL -  1])
+                      case (i_instruction [CANT_BITS_INSTRUCTION - 1 : CANT_BITS_INSTRUCTION - CANT_BITS_ESPECIAL])
                            
                             8://ADDI
                                 begin

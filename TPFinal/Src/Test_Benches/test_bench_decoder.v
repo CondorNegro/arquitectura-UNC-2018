@@ -38,13 +38,13 @@ module test_bench_decoder();
 	initial	begin
 	   reg_instruction = 2;
        
-       #20 reg_instruction = 32'b00000000000000010001000011000000; //SLL
-       #20 reg_instruction = 32'b00000000001000100001100000000100; //SLLV
-       #20 reg_instruction = 32'b00000000001000100001100000100001; //ADDU
-       #20 reg_instruction = 32'b00000010100000000000000000001000; //JR.
-       #20 reg_instruction = 32'b00010010100000110000000000001001; //BEQ
-       #20 reg_instruction = 32'b00001000000000000000000000000111; //J
-       #20 reg_instruction = 32'b10000010101000010000000000001000; //LB
+       #20 reg_instruction = 32'b00000000000000010001000011000000; //SLL R2,R1,3
+       #20 reg_instruction = 32'b00000000001000100001100000000100; //SLLV R3,R2,R1
+       #20 reg_instruction = 32'b00000000001000100001100000100001; //ADDU R3,R1,R2
+       #20 reg_instruction = 32'b00000010100000000000000000001000; //JR R20.
+       #20 reg_instruction = 32'b00010010100000110000000000001001; //BEQ R20,R3,9
+       #20 reg_instruction = 32'b00001000000000000000000000000111; //J 7
+       #20 reg_instruction = 32'b10000010101000010000000000001000; //LB R1,8(R21)
        #20 reg_instruction = 32'b00000000000000000000000000000000; // HALT.
      
 

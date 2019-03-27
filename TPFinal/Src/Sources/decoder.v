@@ -33,7 +33,7 @@ module decoder
 
 
 always@(*) begin
-    if (i_instruction [CANT_BITS_INSTRUCCION - 1 : CANT_BITS_INSTRUCCION - CANT_BITS_ESPECIAL -  1] == {CANT_BITS_ESPECIAL{1'b0}}) //6 bits MSB en cero.
+    if (i_instruction [CANT_BITS_INSTRUCCION - 1 : CANT_BITS_INSTRUCCION - CANT_BITS_ESPECIAL] == {CANT_BITS_ESPECIAL{1'b0}}) //6 bits MSB en cero.
     begin
        case (i_instruction [CANT_BITS_ID_LSB - 1 : 0]) //6 bits LSB.
         
@@ -103,7 +103,7 @@ always@(*) begin
        endcase
     end 
     else begin // 6 bits MSB distinto de cero.
-      case (i_instruction [CANT_BITS_INSTRUCCION - 1 : CANT_BITS_INSTRUCCION - CANT_BITS_ESPECIAL -  1])//6 bits MSB.
+      case (i_instruction [CANT_BITS_INSTRUCCION - 1 : CANT_BITS_INSTRUCCION - CANT_BITS_ESPECIAL])//6 bits MSB.
             4://BEQ
                 begin
                     o_reg_A = i_instruction [CANT_BITS_INSTRUCCION - CANT_BITS_ESPECIAL - 1 :
