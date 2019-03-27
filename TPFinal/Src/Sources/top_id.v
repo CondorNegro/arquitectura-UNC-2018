@@ -22,7 +22,8 @@ module top_id
        parameter CANT_BITS_ID_LSB = 6,
        parameter CANT_BITS_INSTRUCTION_INDEX_BRANCH = 26,
        parameter CANT_BITS_FLAG_BRANCH = 3,
-       parameter CANT_BITS_ALU_OP = 2  
+       parameter CANT_BITS_ALU_OP = 2,
+       parameter CANT_BITS_ALU_CONTROL = 4  
    )
    (
        input i_clock,
@@ -58,7 +59,8 @@ module top_id
        output o_MemRead,
        output o_MemWrite,
        output o_MemtoReg,
-       output o_flag_branch,   
+       output o_flag_branch,
+       output [CANT_BITS_ALU_CONTROL - 1 : 0] o_ALUCtrl,   
 
        output o_led
    );
@@ -156,7 +158,8 @@ control
         .CANT_BITS_FLAG_BRANCH (CANT_BITS_FLAG_BRANCH),
         .CANT_BITS_ALU_OP (CANT_BITS_ALU_OP),
         .CANT_BITS_ESPECIAL (CANT_BITS_ESPECIAL),
-        .CANT_BITS_ID_LSB (CANT_BITS_ID_LSB)
+        .CANT_BITS_ID_LSB (CANT_BITS_ID_LSB),
+        .CANT_BITS_ALU_CONTROL (CANT_BITS_ALU_CONTROL)
 
     )
     u_control_1
@@ -168,6 +171,7 @@ control
         .o_RegWrite (o_RegWrite),
         .o_ALUSrc (o_ALUSrc),
         .o_ALUOp (o_ALUOp),
+        .o_ALUCtrl (o_ALUCtrl),
         .o_MemRead (o_MemRead),
         .o_MemWrite (o_MemWrite),
         .o_MemtoReg (o_MemtoReg)
