@@ -101,6 +101,7 @@ decoder
         .CANT_BITS_FLAG_BRANCH (CANT_BITS_FLAG_BRANCH)
 
     )
+    u_decoder_1
     (
         .i_instruction (i_instruction),
         .o_reg_A (wire_output_reg_A_decoder_TO_reg_A_register_file),
@@ -120,6 +121,7 @@ branch_address_calculator
         .CANT_BITS_IMMEDIATE (CANT_BITS_IMMEDIATE),
         .CANT_BITS_REGISTROS (CANT_BITS_REGISTROS)
     )
+    u_branch_address_calculator_1
     (
         .i_flag_branch (wire_output_flag_branch_decoder_TO_flag_branch_branch_address_calculator),
         .i_adder_pc (i_out_adder_pc),
