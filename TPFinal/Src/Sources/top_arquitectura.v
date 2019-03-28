@@ -176,9 +176,6 @@ assign wire_soft_reset_ack = wire_soft_reset_ack_prog;
 //assign o_leds[2] = 1'b0;
 assign o_leds[3] = 1'b0;
 
-assign wire_branch_dir = 0;
-assign wire_control_mux_PC = 1'b0;
-assign wire_control_mux_output_IF = 1'b0;
 
 // Modulo clock_wizard.
 
@@ -300,7 +297,7 @@ top_if
     .i_data_mem_programa (wire_data_mem_programa_input),
     .i_control_mux_PC (wire_control_mux_PC),
     .i_control_mux_addr_mem (wire_control_mux_addr_mem_IF),
-    .i_control_mux_ouput (wire_control_mux_output_IF),
+    .i_control_mux_ouput (wire_branch_dir),
     .i_branch_dir (wire_branch_dir),
     .o_instruction (wire_instruction_fetch),
     .o_direccion_adder_pc (wire_adder_contador_programa),
