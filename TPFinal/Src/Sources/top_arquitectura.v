@@ -11,25 +11,36 @@
 
 
 
-`define WIDTH_WORD_TOP          8       // Tamanio de palabra.    
-`define FREC_CLK_MHZ         50.0       // Frecuencia del clock en MHZ.
-`define BAUD_RATE_TOP        9600       // Baud rate.
-`define CANT_BIT_STOP_TOP       2       // Cantidad de bits de parada en trama uart.
-`define HALT_OPCODE             0       //  Opcode de la instruccion HALT.
-`define RAM_WIDTH_DATOS        32
-`define RAM_WIDTH_PROGRAMA     32
-`define RAM_PERFORMANCE_DATOS    "LOW_LATENCY"
-`define RAM_PERFORMANCE_PROGRAMA  "LOW_LATENCY"
-`define INIT_FILE_DATOS        ""
-`define INIT_FILE_PROGRAMA     ""
-`define RAM_DEPTH_DATOS      1024
-`define RAM_DEPTH_PROGRAMA   1024
-`define CANT_ESTADOS_DEBUG_UNIT 16
-`define ADDR_MEM_PROGRAMA_LENGTH 10
-`define ADDR_MEM_DATOS_LENGTH    10
-`define LONG_INSTRUCCION       32
-`define CANT_BITS_CONTROL_DATABASE_TOP 3
-`define CANT_SWITCHES           4
+`define WIDTH_WORD_TOP                          8       // Tamanio de palabra.    
+`define FREC_CLK_MHZ                            50.0       // Frecuencia del clock en MHZ.
+`define BAUD_RATE_TOP                           9600       // Baud rate.
+`define CANT_BIT_STOP_TOP                       2       // Cantidad de bits de parada en trama uart.
+`define HALT_OPCODE                             0       //  Opcode de la instruccion HALT.
+`define RAM_WIDTH_DATOS                         32
+`define RAM_WIDTH_PROGRAMA                      32
+`define RAM_PERFORMANCE_DATOS                   "LOW_LATENCY"
+`define RAM_PERFORMANCE_PROGRAMA                "LOW_LATENCY"
+`define INIT_FILE_DATOS                         ""
+`define INIT_FILE_PROGRAMA                      ""
+`define RAM_DEPTH_DATOS                         1024
+`define RAM_DEPTH_PROGRAMA                      1024
+`define CANT_ESTADOS_DEBUG_UNIT                 34
+`define ADDR_MEM_PROGRAMA_LENGTH                10
+`define ADDR_MEM_DATOS_LENGTH                   10
+`define LONG_INSTRUCCION                        32
+`define CANT_BITS_CONTROL_DATABASE_TOP          4
+`define CANT_SWITCHES                           4
+`define CANT_BITS_REGISTROS_TOP                 32
+`define CANT_BITS_ALU_OP_TOP                    2
+`define CANT_BITS_ALU_CONTROL_TOP               4
+`define CANT_REGISTROS_TOP                      32 
+`define CANT_BITS_IMMEDIATE_TOP                 16
+`define CANT_BITS_ESPECIAL_TOP                  6
+`define CANT_BITS_CEROS_TOP                     5
+`define CANT_BITS_ID_LSB_TOP                    6
+`define CANT_BITS_INSTRUCTION_INDEX_BRANCH_TOP  26
+`define CANT_BITS_FLAG_BRANCH_TOP               3 
+`define CANT_BITS_ADDR_REGISTROS                5
 
 module top_arquitectura(
   i_clock_top, 
@@ -63,6 +74,17 @@ parameter ADDR_MEM_DATOS_LENGTH     =  `ADDR_MEM_DATOS_LENGTH;
 parameter LONG_INSTRUCCION          =  `LONG_INSTRUCCION;
 parameter CANT_BITS_CONTROL_DATABASE_TOP = `CANT_BITS_CONTROL_DATABASE_TOP;
 parameter CANT_SWITCHES             =   `CANT_SWITCHES;
+parameter CANT_BITS_REGISTROS_TOP   = `CANT_BITS_REGISTROS_TOP;
+parameter CANT_BITS_ALU_OP_TOP      = `CANT_BITS_ALU_OP_TOP;
+parameter CANT_BITS_ALU_CONTROL_TOP = `CANT_BITS_ALU_CONTROL_TOP;
+parameter CANT_REGISTROS_TOP        = `CANT_REGISTROS_TOP; 
+parameter CANT_BITS_IMMEDIATE_TOP   = `CANT_BITS_IMMEDIATE_TOP;
+parameter CANT_BITS_ESPECIAL_TOP    = `CANT_BITS_ESPECIAL_TOP;
+parameter CANT_BITS_CEROS_TOP       = `CANT_BITS_CEROS_TOP;
+parameter CANT_BITS_ID_LSB_TOP      = `CANT_BITS_ID_LSB_TOP;
+parameter CANT_BITS_INSTRUCTION_INDEX_BRANCH_TOP = `CANT_BITS_INSTRUCTION_INDEX_BRANCH_TOP;
+parameter CANT_BITS_FLAG_BRANCH_TOP = `CANT_BITS_FLAG_BRANCH_TOP;
+parameter CANT_BITS_ADDR_REGISTROS  = `CANT_BITS_ADDR_REGISTROS; 
 
 // Entradas - Salidas
 input i_clock_top;                              // Clock.
@@ -84,6 +106,8 @@ wire wire_rx_done;
 wire wire_tx_start;
 wire wire_rate_baud_generator;
 wire wire_soft_reset;
+
+// Instruction fetch.
 wire [ADDR_MEM_PROGRAMA_LENGTH - 1 : 0] wire_addr_mem_programa;
 wire [RAM_WIDTH_PROGRAMA - 1 : 0] wire_data_mem_programa_input;
 wire [RAM_WIDTH_PROGRAMA - 1 : 0] wire_data_mem_programa_output;
@@ -113,22 +137,48 @@ wire [ADDR_MEM_PROGRAMA_LENGTH - 1 : 0] wire_contador_ciclos;
 wire [ADDR_MEM_PROGRAMA_LENGTH - 1 : 0] wire_contador_programa;
 wire [ADDR_MEM_PROGRAMA_LENGTH - 1 : 0] wire_adder_contador_programa;
 
+// Instruction decode.
+
+wire wire_control_write_reg_ID;
+wire [CANT_BITS_REGISTROS_TOP - 1 : 0] wire_data_write_ID;
+wire [CANT_BITS_ADDR_REGISTROS - 1 : 0] wire_reg_write_ID;
+
+wire [CANT_BITS_REGISTROS_TOP - 1 : 0] wire_data_A;
+wire [CANT_BITS_REGISTROS_TOP - 1 : 0] wire_data_B;
+wire [CANT_BITS_REGISTROS_TOP - 1 : 0] wire_extension_signo_constante;
+wire [CANT_BITS_ADDR_REGISTROS - 1 : 0] wire_reg_rs;
+wire [CANT_BITS_ADDR_REGISTROS - 1 : 0] wire_reg_rt;
+wire [CANT_BITS_ADDR_REGISTROS - 1 : 0] wire_reg_rd;
+wire wire_RegDst;
+wire wire_RegWrite;
+wire wire_ALUSrc;
+wire [CANT_BITS_ALU_OP_TOP - 1 : 0] wire_ALUOp;
+wire wire_MemRead;
+wire wire_MemWrite;
+wire wire_MemtoReg;
+wire [CANT_BITS_FLAG_BRANCH_TOP - 1 : 0] wire_flag_branch;
+wire [CANT_BITS_ALU_CONTROL_TOP - 1 : 0] wire_ALUCtrl; 
+
+
+// Asignaciones de wires.
+
 //Borrar y dejar el segundo 
 assign wire_soft_reset_ack = wire_soft_reset_ack_prog;
 //assign wire_soft_reset_ack = wire_soft_reset_ack_prog | wire_soft_reset_ack_datos;
 
 
+ 
+
 //wire prueba;
 //assign jc[0] = prueba;
 //assign uart_rxd_out = prueba;
 //assign o_leds[1] = 1'b0;
-assign o_leds[2] = 1'b0;
+//assign o_leds[2] = 1'b0;
 assign o_leds[3] = 1'b0;
 
 assign wire_branch_dir = 0;
 assign wire_control_mux_PC = 1'b0;
 assign wire_control_mux_output_IF = 1'b0;
-
 
 // Modulo clock_wizard.
 
@@ -260,6 +310,58 @@ top_if
   );
 
 
+// Modulo top de la etapa de instruction decode.
+top_id
+    #(
+        .LENGTH_INSTRUCTION (LONG_INSTRUCCION),
+        .CANT_REGISTROS (CANT_REGISTROS_TOP),
+        .CANT_BITS_ADDR (ADDR_MEM_PROGRAMA_LENGTH),
+        .CANT_BITS_REGISTROS (CANT_BITS_REGISTROS_TOP),
+        .CANT_BITS_IMMEDIATE (CANT_BITS_IMMEDIATE_TOP),
+        .CANT_BITS_ESPECIAL (CANT_BITS_ESPECIAL_TOP),
+        .CANT_BITS_CEROS (CANT_BITS_CEROS_TOP),
+        .CANT_BITS_ID_LSB (CANT_BITS_ID_LSB_TOP),
+        .CANT_BITS_INSTRUCTION_INDEX_BRANCH (CANT_BITS_INSTRUCTION_INDEX_BRANCH_TOP),
+        .CANT_BITS_FLAG_BRANCH (CANT_BITS_FLAG_BRANCH_TOP),
+        .CANT_BITS_ALU_OP (CANT_BITS_ALU_OP_TOP),
+        .CANT_BITS_ALU_CONTROL (CANT_BITS_ALU_CONTROL_TOP)  
+     ) 
+    u_top_id_1    // Una sola instancia de este modulo.
+    (
+        .i_clock (i_clock),
+        .i_soft_reset (wire_soft_reset),
+
+        .i_instruction (wire_instruction_fetch),
+        .i_out_adder_pc (wire_adder_contador_programa),
+
+        .i_control_write_reg (wire_control_write_reg_ID),
+        .i_reg_write (wire_reg_write_ID),
+        .i_data_write (wire_data_write_ID),
+
+        .o_branch_dir (wire_branch_dir),
+        .o_branch_control (wire_control_mux_PC),
+        .o_data_A (wire_data_A),
+        .o_data_B (wire_data_B),
+        .o_extension_signo_constante (wire_extension_signo_constante),
+        .o_reg_rs (wire_reg_rs),
+        .o_reg_rt (wire_reg_rt),
+        .o_reg_rd (wire_reg_rd),
+
+        .o_RegDst (wire_RegDst),
+        .o_RegWrite (wire_RegWrite),
+        .o_ALUSrc (wire_ALUSrc),
+        .o_ALUOp (wire_ALUOp),
+        .o_MemRead (wire_MemRead),
+        .o_MemWrite (wire_MemWrite),
+        .o_MemtoReg (wire_MemtoReg),
+        .o_flag_branch (wire_flag_branch),
+        .o_ALUCtrl (wire_ALUCtrl),   
+
+        .o_led (o_leds[2])
+    );
+   
+
+
 // Modulo contador de ciclos.
 contador_ciclos
     #(
@@ -281,7 +383,12 @@ database
     #(
         .ADDR_LENGTH (ADDR_MEM_PROGRAMA_LENGTH),
         .LONGITUD_INSTRUCCION (LONG_INSTRUCCION),
-		.CANT_BITS_CONTROL (CANT_BITS_CONTROL_DATABASE_TOP)
+		.CANT_BITS_CONTROL (CANT_BITS_CONTROL_DATABASE_TOP),
+        .CANT_BITS_REGISTROS (CANT_BITS_REGISTROS_TOP),
+        .CANT_BITS_ALU_OP (CANT_BITS_ALU_OP_TOP),
+        .CANT_BITS_ALU_CONTROL (CANT_BITS_ALU_CONTROL_TOP),
+        .CANT_REGISTROS (CANT_REGISTROS_TOP), 
+        .CANT_BITS_IMMEDIATE (CANT_BITS_IMMEDIATE_TOP) 
      )
     u_database_1
     (
@@ -292,6 +399,23 @@ database
         .i_contador_ciclos (wire_contador_ciclos),
 		.i_adder_pc (wire_adder_contador_programa),
 		.i_instruction_fetch (wire_instruction_fetch),
+        .i_branch_dir (wire_branch_dir),
+        .i_branch_control (wire_control_mux_PC),
+        .i_data_A (wire_data_A),
+        .i_data_B (wire_data_B),
+        .i_extension_signo_constante (wire_extension_signo_constante),
+        .i_reg_rs (wire_reg_rs),
+        .i_reg_rt (wire_reg_rt),
+        .i_reg_rd (wire_reg_rd),
+        .i_RegDst (wire_RegDst),
+        .i_RegWrite (wire_RegWrite),
+        .i_ALUSrc (wire_ALUSrc),
+        .i_ALUOp (wire_ALUOp),
+        .i_MemRead (wire_MemRead),
+        .i_MemWrite (wire_MemWrite),
+        .i_MemtoReg (wire_MemtoReg),
+        .i_flag_branch (wire_flag_branch),
+        .i_ALUCtrl (wire_ALUCtrl),
         .o_dato (wire_dato_database)
     );
 
