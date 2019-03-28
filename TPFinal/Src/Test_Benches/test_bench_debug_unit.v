@@ -17,7 +17,7 @@ module test_bench_debug_unit();
    parameter OUTPUT_WORD_LENGTH = 8;    //  Cantidad de bits de la palabra a transmitir.
    parameter HALT_OPCODE = 0;           //  Opcode de la instruccion HALT.            
    parameter ADDR_MEM_LENGTH = 11;            
-   parameter CANTIDAD_ESTADOS = 16;
+   parameter CANTIDAD_ESTADOS = 34;
    parameter LONGITUD_INSTRUCCION = 32;
    parameter CANT_BITS_CONTROL_DATABASE = 3;
    
@@ -176,8 +176,113 @@ module test_bench_debug_unit();
        #10 reg_i_rx_done = 1'b0;
 
 
-       //ahora paso a estado de ESPERA.
+       //ahora paso a estado de envio de BRANCH parte H.
        #50 reg_i_data_rx = 8'b01010000;
+       #10 reg_i_rx_done = 1'b1;
+       #10 reg_i_rx_done = 1'b0;
+
+
+       //ahora paso a estado de envio de BRANCH parte L.
+       #50 reg_i_data_rx = 8'b01011000;
+       #10 reg_i_rx_done = 1'b1;
+       #10 reg_i_rx_done = 1'b0;
+
+
+       //ahora paso a estado de envio de dato de REG A parte 3.
+       #50 reg_i_data_rx = 8'b01100000;
+       #10 reg_i_rx_done = 1'b1;
+       #10 reg_i_rx_done = 1'b0;
+
+
+       //ahora paso a estado de envio de dato de REG A parte 2.
+       #50 reg_i_data_rx = 8'b01101000;
+       #10 reg_i_rx_done = 1'b1;
+       #10 reg_i_rx_done = 1'b0;
+
+
+       //ahora paso a estado de envio de dato de REG A parte 1.
+       #50 reg_i_data_rx = 8'b01110000;
+       #10 reg_i_rx_done = 1'b1;
+       #10 reg_i_rx_done = 1'b0;
+
+       //ahora paso a estado de envio de dato de REG A parte 0.
+       #50 reg_i_data_rx = 8'b01111000;
+       #10 reg_i_rx_done = 1'b1;
+       #10 reg_i_rx_done = 1'b0;
+
+
+       //ahora paso a estado de envio de dato de REG B parte 3.
+       #50 reg_i_data_rx = 8'b10000000;
+       #10 reg_i_rx_done = 1'b1;
+       #10 reg_i_rx_done = 1'b0;
+
+
+       //ahora paso a estado de envio de dato de REG B parte 2.
+       #50 reg_i_data_rx = 8'b10001000;
+       #10 reg_i_rx_done = 1'b1;
+       #10 reg_i_rx_done = 1'b0;
+
+
+       //ahora paso a estado de envio de dato de REG B parte 1.
+       #50 reg_i_data_rx = 8'b10010000;
+       #10 reg_i_rx_done = 1'b1;
+       #10 reg_i_rx_done = 1'b0;
+
+       //ahora paso a estado de envio de dato de REG B parte 0.
+       #50 reg_i_data_rx = 8'b10011000;
+       #10 reg_i_rx_done = 1'b1;
+       #10 reg_i_rx_done = 1'b0;
+
+
+       //ahora paso a estado de envio de dato inmediato con extension de signo parte 3.
+       #50 reg_i_data_rx = 8'b10100000;
+       #10 reg_i_rx_done = 1'b1;
+       #10 reg_i_rx_done = 1'b0;
+
+
+       //ahora paso a estado de envio de dato inmediato con extension de signo parte 2.
+       #50 reg_i_data_rx = 8'b10101000;
+       #10 reg_i_rx_done = 1'b1;
+       #10 reg_i_rx_done = 1'b0;
+
+
+       //ahora paso a estado de envio de dato inmediato con extension de signo parte 1.
+       #50 reg_i_data_rx = 8'b10110000;
+       #10 reg_i_rx_done = 1'b1;
+       #10 reg_i_rx_done = 1'b0;
+
+       //ahora paso a estado de envio de dato inmediato con extension de signo parte 0.
+       #50 reg_i_data_rx = 8'b10111000;
+       #10 reg_i_rx_done = 1'b1;
+       #10 reg_i_rx_done = 1'b0;
+
+
+       //ahora paso a estado de envio de direcciones de registros rs, rt y rd parte H.
+       #50 reg_i_data_rx = 8'b11000000;
+       #10 reg_i_rx_done = 1'b1;
+       #10 reg_i_rx_done = 1'b0;
+
+
+       //ahora paso a estado de envio de direcciones de registros rs, rt y rd parte L.
+       #50 reg_i_data_rx = 8'b11001000;
+       #10 reg_i_rx_done = 1'b1;
+       #10 reg_i_rx_done = 1'b0;
+
+
+       //ahora paso a estado de envio de señales de control en etapa ID/EX parte H.
+       #50 reg_i_data_rx = 8'b11010000;
+       #10 reg_i_rx_done = 1'b1;
+       #10 reg_i_rx_done = 1'b0;
+
+
+       //ahora paso a estado de envio de señales de control en etapa ID/EX parte L.
+       #50 reg_i_data_rx = 8'b11011000;
+       #10 reg_i_rx_done = 1'b1;
+       #10 reg_i_rx_done = 1'b0;
+
+
+       //ahora paso a estado de ESPERA.
+       #50 reg_i_data_rx = 8'b11100000;
        #10 reg_i_rx_done = 1'b1;
        #10 reg_i_rx_done = 1'b0;
 
