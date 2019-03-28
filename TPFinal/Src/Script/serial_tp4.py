@@ -245,6 +245,8 @@ def writeSerial (data):
 
 # Funcion que recibe los datos obtenidos de la FPGA via UART. Puede efectuar una comparacion de los datos recibidos
 # con una cadena enviada como parametro si la misma es distinta a la cadena vacia.
+# Imprime un mensaje y el valor obtenido en la GUI. 
+# Devuelve -1 en caso de error y 0 en caso de una lectura correcta. 
 def readResultado (cantBytes, cadenaComparacion):
 	if (cantBytes < 0):
 		print ("Error en la funcion readResultado. Cantidad de bytes a leer invalida.")
@@ -281,6 +283,7 @@ def readResultado (cantBytes, cadenaComparacion):
 
 # Funcion que recibe los datos obtenidos de la FPGA via UART.
 # Devuelve el valor leido.
+# No imprime nada en la GUI.
 def readResultadoEjecucion (cantBytes):
 	if (cantBytes < 0):
 		print ("Error en la funcion readResultado. Cantidad de bytes a leer invalida.")
