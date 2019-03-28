@@ -31,7 +31,7 @@ module test_bench_database();
 
     // Intruction Fetch.
     reg [ADDR_LENGTH - 1 : 0] pc;
-    reg [ADDR_LENGTH - 1 : 0] pc_plus_cuatro;
+    reg [ADDR_LENGTH - 1 : 0] adder_pc;
     reg [LONGITUD_INSTRUCCION - 1 : 0] instruction_fetch;
 
     reg [ADDR_LENGTH - 1 : 0] contador_ciclos;
@@ -76,7 +76,7 @@ module test_bench_database();
 	    soft_reset = 1'b1; // Reset en 0. (Normal cerrado el boton del reset).
 	    control = 0;
 	    pc = 4;
-		pc_plus_cuatro = 8;
+		adder_pc = 8;
 		instruction_fetch = 2;
         contador_ciclos = 1;
         reg_branch_dir = 1;
@@ -147,7 +147,7 @@ database
         .i_soft_reset (soft_reset),
         .i_control (control),
         .i_pc (pc),
-		.i_pc_plus_cuatro (pc_plus_cuatro),
+		.i_adder_pc (adder_pc),
 		.i_instruction_fetch (instruction_fetch),
         .i_contador_ciclos (contador_ciclos),
         .i_branch_dir (reg_branch_dir),
