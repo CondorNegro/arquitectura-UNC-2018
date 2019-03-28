@@ -146,8 +146,7 @@ always@(*) begin
                     CANT_BITS_INSTRUCCION - CANT_BITS_ESPECIAL - CANT_BITS_ADDRESS_REGISTROS];
                     o_reg_B = i_instruction [CANT_BITS_ADDRESS_REGISTROS * 3 + CANT_BITS_ID_LSB - 1:
                      CANT_BITS_ADDRESS_REGISTROS * 2 + CANT_BITS_ID_LSB];
-                    o_reg_W = i_instruction [CANT_BITS_ADDRESS_REGISTROS * 2 + CANT_BITS_ID_LSB - 1:
-                     CANT_BITS_ADDRESS_REGISTROS + CANT_BITS_ID_LSB];
+                    o_reg_W = {CANT_BITS_ADDRESS_REGISTROS {1'b1}};
                     o_flag_branch = 3'b101;
                     o_immediate = i_instruction [CANT_BITS_IMMEDIATE - 1 : 0];
                     o_instruction_index_branch = i_instruction [CANT_BITS_INSTRUCTION_INDEX_BRANCH - 1 : 0];

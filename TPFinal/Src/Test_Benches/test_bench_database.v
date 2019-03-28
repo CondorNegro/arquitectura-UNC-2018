@@ -58,7 +58,6 @@ module test_bench_database();
     reg reg_MemRead;
     reg reg_MemWrite;
     reg reg_MemtoReg;
-    reg reg_flag_branch;
     reg [CANT_BITS_ALU_CONTROL - 1 : 0] reg_ALUCtrl;
 
 
@@ -94,7 +93,7 @@ module test_bench_database();
         reg_MemRead = 0;
         reg_MemWrite = 1;
         reg_MemtoReg = 0;
-        reg_flag_branch = 1;
+        
         reg_ALUCtrl = 0;
 
 
@@ -165,7 +164,6 @@ database
         .i_MemRead (reg_MemRead),
         .i_MemWrite (reg_MemWrite),
         .i_MemtoReg (reg_MemtoReg),
-        .i_flag_branch (reg_flag_branch),
         .i_ALUCtrl (reg_ALUCtrl),
         .o_dato (wire_dato)
     );

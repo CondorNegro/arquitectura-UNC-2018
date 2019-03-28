@@ -350,7 +350,6 @@ top_id
         .o_MemRead (wire_MemRead),
         .o_MemWrite (wire_MemWrite),
         .o_MemtoReg (wire_MemtoReg),
-        .o_flag_branch (wire_flag_branch),
         .o_ALUCtrl (wire_ALUCtrl),   
 
         .o_led (o_leds[2])
@@ -410,7 +409,6 @@ database
         .i_MemRead (wire_MemRead),
         .i_MemWrite (wire_MemWrite),
         .i_MemtoReg (wire_MemtoReg),
-        .i_flag_branch (wire_flag_branch),
         .i_ALUCtrl (wire_ALUCtrl),
         .o_dato (wire_dato_database)
     );

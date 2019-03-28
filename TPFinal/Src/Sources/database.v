@@ -56,7 +56,6 @@ module database
         input i_MemRead,
         input i_MemWrite,
         input i_MemtoReg,
-        input i_flag_branch,
         input [CANT_BITS_ALU_CONTROL - 1 : 0] i_ALUCtrl,
 
         output reg [LONGITUD_INSTRUCCION - 1 : 0] o_dato
@@ -90,7 +89,6 @@ module database
     reg reg_MemRead;
     reg reg_MemWrite;
     reg reg_MemtoReg;
-    reg reg_flag_branch;
     reg [CANT_BITS_ALU_CONTROL - 1 : 0] reg_ALUCtrl; 
 
    //  The following function calculates the address width based on specified RAM depth
@@ -122,7 +120,6 @@ module database
         reg_MemRead <= 0;
         reg_MemWrite <= 0;
         reg_MemtoReg <= 0;
-        reg_flag_branch <= 0;
         reg_ALUCtrl <= 0;
     end
     else begin
@@ -147,7 +144,6 @@ module database
             reg_MemRead <= reg_MemRead;
             reg_MemWrite <= reg_MemWrite;
             reg_MemtoReg <= reg_MemtoReg;
-            reg_flag_branch <= reg_flag_branch;
             reg_ALUCtrl <= reg_ALUCtrl;
         end 
         if (i_control == 1) begin // Se guardan los valores de las entradas en los registros.
@@ -171,7 +167,6 @@ module database
             reg_MemRead <= i_MemRead;
             reg_MemWrite <= i_MemWrite;
             reg_MemtoReg <= i_MemtoReg;
-            reg_flag_branch <= i_flag_branch;
             reg_ALUCtrl <= i_ALUCtrl;
         end
         else if (i_control == 2) begin // Se devuelve el contador de programa a la salida.
@@ -195,7 +190,6 @@ module database
             reg_MemRead <= reg_MemRead;
             reg_MemWrite <= reg_MemWrite;
             reg_MemtoReg <= reg_MemtoReg;
-            reg_flag_branch <= reg_flag_branch;
             reg_ALUCtrl <= reg_ALUCtrl;
         end
         else if (i_control == 3) begin // Se devuelve el contador de ciclos a la salida.
@@ -219,7 +213,6 @@ module database
             reg_MemRead <= reg_MemRead;
             reg_MemWrite <= reg_MemWrite;
             reg_MemtoReg <= reg_MemtoReg;
-            reg_flag_branch <= reg_flag_branch;
             reg_ALUCtrl <= reg_ALUCtrl;
         end
         else if (i_control == 4) begin //Se devuelve la salida del adder del instruction fetch en la salida de este modulo.
@@ -243,7 +236,6 @@ module database
             reg_MemRead <= reg_MemRead;
             reg_MemWrite <= reg_MemWrite;
             reg_MemtoReg <= reg_MemtoReg;
-            reg_flag_branch <= reg_flag_branch;
             reg_ALUCtrl <= reg_ALUCtrl;
         end
         else if (i_control == 5) begin // Se devuelve la instruccion que pasa a la etapa de ID en la salida de este modulo. 
@@ -267,7 +259,6 @@ module database
             reg_MemRead <= reg_MemRead;
             reg_MemWrite <= reg_MemWrite;
             reg_MemtoReg <= reg_MemtoReg;
-            reg_flag_branch <= reg_flag_branch;
             reg_ALUCtrl <= reg_ALUCtrl;
         end
         else if (i_control == 6) begin // Se devuelve la direccion y el control del salto en la salida de este modulo. 
@@ -290,7 +281,6 @@ module database
             reg_MemRead <= reg_MemRead;
             reg_MemWrite <= reg_MemWrite;
             reg_MemtoReg <= reg_MemtoReg;
-            reg_flag_branch <= reg_flag_branch;
             reg_ALUCtrl <= reg_ALUCtrl;
             o_dato <= {reg_branch_control, reg_branch_dir};
         end
@@ -314,7 +304,6 @@ module database
             reg_MemRead <= reg_MemRead;
             reg_MemWrite <= reg_MemWrite;
             reg_MemtoReg <= reg_MemtoReg;
-            reg_flag_branch <= reg_flag_branch;
             reg_ALUCtrl <= reg_ALUCtrl;
             o_dato <= reg_data_A;
         end
@@ -338,7 +327,6 @@ module database
             reg_MemRead <= reg_MemRead;
             reg_MemWrite <= reg_MemWrite;
             reg_MemtoReg <= reg_MemtoReg;
-            reg_flag_branch <= reg_flag_branch;
             reg_ALUCtrl <= reg_ALUCtrl;
             o_dato <= reg_data_B;
         end
@@ -362,7 +350,6 @@ module database
             reg_MemRead <= reg_MemRead;
             reg_MemWrite <= reg_MemWrite;
             reg_MemtoReg <= reg_MemtoReg;
-            reg_flag_branch <= reg_flag_branch;
             reg_ALUCtrl <= reg_ALUCtrl;
             o_dato <= reg_extension_signo_constante;
         end
@@ -386,7 +373,6 @@ module database
             reg_MemRead <= reg_MemRead;
             reg_MemWrite <= reg_MemWrite;
             reg_MemtoReg <= reg_MemtoReg;
-            reg_flag_branch <= reg_flag_branch;
             reg_ALUCtrl <= reg_ALUCtrl;
             o_dato <= {reg_rs, reg_rt, reg_rd};
         end
@@ -410,9 +396,8 @@ module database
             reg_MemRead <= reg_MemRead;
             reg_MemWrite <= reg_MemWrite;
             reg_MemtoReg <= reg_MemtoReg;
-            reg_flag_branch <= reg_flag_branch;
             reg_ALUCtrl <= reg_ALUCtrl;
-            o_dato <= {reg_RegDst, reg_RegWrite, reg_ALUSrc, reg_MemRead, reg_MemWrite, reg_MemtoReg, reg_ALUOp, reg_flag_branch, reg_ALUCtrl};
+            o_dato <= {reg_RegDst, reg_RegWrite, reg_ALUSrc, reg_MemRead, reg_MemWrite, reg_MemtoReg, reg_ALUOp, reg_ALUCtrl};
         end
         else begin
             reg_pc <= 0;
@@ -435,7 +420,6 @@ module database
             reg_MemRead <= 0;
             reg_MemWrite <= 0;
             reg_MemtoReg <= 0;
-            reg_flag_branch <= 0;
             reg_ALUCtrl <= 0;
         end
     end

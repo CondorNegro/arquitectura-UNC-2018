@@ -59,7 +59,6 @@ module top_id
        output o_MemRead,
        output o_MemWrite,
        output o_MemtoReg,
-       output o_flag_branch,
        output [CANT_BITS_ALU_CONTROL - 1 : 0] o_ALUCtrl,   
 
        output o_led
@@ -89,7 +88,7 @@ module top_id
     wire [CANT_BITS_INSTRUCTION_INDEX_BRANCH - 1 : 0] wire_output_instruction_index_branch_decoder_TO_instruction_index_branch_branch_address_calculator;
     
     
-    assign o_flag_branch = wire_output_flag_branch_decoder_TO_flag_branch_branch_address_calculator;
+    
 
 
 decoder

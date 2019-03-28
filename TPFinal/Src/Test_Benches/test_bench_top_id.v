@@ -71,7 +71,6 @@ module test_bench_top_id();
     wire wire_o_MemRead;
     wire wire_o_MemWrite;
     wire wire_o_MemtoReg;
-    wire wire_o_flag_branch;
     wire [CANT_BITS_ALU_CONTROL - 1 : 0] wire_o_ALUCtrl;   
 
     wire wire_o_led;
@@ -157,7 +156,6 @@ top_id
         .o_MemRead (wire_o_MemRead),
         .o_MemWrite (wire_o_MemWrite),
         .o_MemtoReg (wire_o_MemtoReg),
-        .o_flag_branch (wire_o_flag_branch),
         .o_ALUCtrl (wire_o_ALUCtrl),   
 
         .o_led(wire_o_led)
