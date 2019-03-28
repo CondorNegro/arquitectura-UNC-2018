@@ -14,7 +14,7 @@ import serial			# Comunicacion serie
 from serial import *	# Comunicacion serie
 import os				# Funciones del Sistema Operativo
 import threading  		# Para uso de threads
-
+import math
  
 #Constantes 
 BAUDRATE = 9600
@@ -22,7 +22,12 @@ WIDTH_WORD = 8
 CANT_BITS_INSTRUCCION = 32
 CANT_STOP_BITS = 2
 FILE_NAME = "init_ram_file.txt"
-FLAG_TEST = False
+FLAG_TEST = True
+CANT_BITS_ADDRESS_MEM_PROGRAMA = 10
+CANT_REGSITROS = 32
+CANT_BITS_ADDR_REGISTROS = math.log(CANT_REGSITROS, 2)
+CANT_BITS_ALU_CTRL = 4
+CANT_BITS_ALU_OP = 2
 
 # Variables globales
 
@@ -383,6 +388,40 @@ def recibirDatosFromFPGA ():
 	adder_contador_de_programa_aux = ""
 	instruction_fetch = ""
 	instruction_fetch_aux = ""
+	branch_dir = ""
+	branch_dir_aux = ""
+	control_salto = ""
+	control_salto_aux = ""
+	dato_reg_A = ""
+	dato_reg_A_aux = ""
+	dato_reg_B = ""
+	dato_reg_B_aux = ""
+	valor_inmediato = ""
+	valor_inmediato_aux = ""
+	rs = ""
+	rs_aux = ""
+	rd = ""
+	rd_aux = ""
+	rt = ""
+	rt_aux = ""
+	reg_dst = ""
+	reg_dst_aux = ""
+	mem_to_reg = ""
+	mem_to_reg_aux = ""
+	alu_op = ""
+	alu_op_aux = ""
+	alu_ctrl = ""
+	alu_ctrl_aux = ""
+	alu_src = ""
+	alu_src_aux = ""
+	mem_read = ""
+	mem_read_aux = ""
+	mem_write = ""
+	mem_write_aux = ""
+	reg_write = ""
+	reg_write_aux = ""
+	
+
 	contador_etapas = 0
 	contador_subetapas = 0
 	cantidad_bytes_control = 0
@@ -533,9 +572,11 @@ def recibirDatosFromFPGA ():
 						#else: #Debug
 						#	activarBotones (4)
 		
+		
+		
 		elif (contador_etapas == 4): # Branch
 			if (contador_subetapas == 0): # Parte H
-				contador_de_ciclos, cantidad_bytes_control = readResultadoEjecucion (1)
+				branch_dir, cantidad_bytes_control = readResultadoEjecucion (1)
 				if (cantidad_bytes_control == 1):
 					code_error = writeSerial (getCode('BR-H'))
 					if (code_error < 0):
@@ -546,7 +587,7 @@ def recibirDatosFromFPGA ():
 						contador_subetapas = contador_subetapas + 1
 
 			else: # Parte L
-				contador_de_ciclos_aux, cantidad_bytes_control = readResultadoEjecucion (1)
+				branch_dir_aux, cantidad_bytes_control = readResultadoEjecucion (1)
 				if (cantidad_bytes_control == 1):
 					code_error = writeSerial (getCode('BR-L'))
 					if (code_error < 0):
@@ -554,15 +595,17 @@ def recibirDatosFromFPGA ():
 						flag_receive = False
 					else:
 						ser.flushInput()
-						contador_de_ciclos = contador_de_ciclos + contador_de_ciclos_aux
-						etiqueta_contador_ciclos = contador_de_ciclos
-						etiquetaContadorCiclosValorMIPS.config (text = etiqueta_contador_ciclos)
+						branch_dir = branch_dir + branch_dir_aux
+						etiqueta_branch_dir = branch_dir [CANT_BITS_INSTRUCCION / 2 - CANT_BITS_ADDRESS_MEM_PROGRAMA ::]
+						etiqueta_control_salto = branch_dir [CANT_BITS_INSTRUCCION / 2 - CANT_BITS_ADDRESS_MEM_PROGRAMA - 1]
+						etiquetaBranchDirValorMIPS.config (text = etiqueta_branch_dir)
+						etiquetaBranchControlValorMIPS .config (text = etiqueta_control_salto)
 						contador_etapas = contador_etapas + 1
 						contador_subetapas = 0 
 
 		elif (contador_etapas == 5): # Reg_dato_A
 			if (contador_subetapas == 0): # Parte 3
-				instruction_fetch, cantidad_bytes_control = readResultadoEjecucion (1)
+				dato_reg_A, cantidad_bytes_control = readResultadoEjecucion (1)
 				if (cantidad_bytes_control == 1):
 					code_error = writeSerial (getCode('DA-3'))
 					if (code_error < 0):
@@ -573,7 +616,7 @@ def recibirDatosFromFPGA ():
 						contador_subetapas = contador_subetapas + 1
 
 			if (contador_subetapas == 1): # Parte 2
-				instruction_fetch_aux, cantidad_bytes_control = readResultadoEjecucion (1)
+				dato_reg_A_aux, cantidad_bytes_control = readResultadoEjecucion (1)
 				if (cantidad_bytes_control == 1):
 					code_error = writeSerial (getCode('DA-2'))
 					if (code_error < 0):
@@ -582,10 +625,10 @@ def recibirDatosFromFPGA ():
 					else:
 						ser.flushInput()
 						contador_subetapas = contador_subetapas + 1
-						instruction_fetch = instruction_fetch + instruction_fetch_aux
+						dato_reg_A = dato_reg_A + dato_reg_A_aux
 
 			if (contador_subetapas == 2): #Parte 1
-				instruction_fetch_aux, cantidad_bytes_control = readResultadoEjecucion (1)
+				dato_reg_A_aux, cantidad_bytes_control = readResultadoEjecucion (1)
 				if (cantidad_bytes_control == 1):
 					code_error = writeSerial (getCode('DA-1'))
 					if (code_error < 0):
@@ -594,10 +637,10 @@ def recibirDatosFromFPGA ():
 					else:
 						ser.flushInput()
 						contador_subetapas = contador_subetapas + 1
-						instruction_fetch = instruction_fetch + instruction_fetch_aux
+						dato_reg_A = dato_reg_A + dato_reg_A_aux
 
 			else: # Parte 0
-				instruction_fetch_aux, cantidad_bytes_control = readResultadoEjecucion (1)
+				dato_reg_A_aux, cantidad_bytes_control = readResultadoEjecucion (1)
 				if (cantidad_bytes_control == 1):
 					code_error = writeSerial (getCode('DA-0'))
 					if (code_error < 0):
@@ -605,20 +648,20 @@ def recibirDatosFromFPGA ():
 						flag_receive = False
 					else:
 						ser.flushInput()
-						instruction_fetch = instruction_fetch + instruction_fetch_aux
-						etiqueta_instruction_fetch = getHexadecimal (instruction_fetch)
-						etiquetaInstructionFetchValorMIPS.config (text = etiqueta_instruction_fetch)
+						dato_reg_A = dato_reg_A + dato_reg_A_aux
+						etiqueta_dato_reg_A = getHexadecimal (dato_reg_A)
+						etiquetaDatoRegAValorMIPS.config (text = etiqueta_dato_reg_A)
 						contador_etapas = contador_etapas + 1
 						contador_subetapas = 0
 						#flag_receive = False
-						#if ((modo_ejecucion == '0') or (instruction_fetch == ('0' * 32))): #Continuo
+						#if ((modo_ejecucion == '0') or (dato_reg_A == ('0' * 32))): #Continuo
 						#	activarBotones (1)
 						#else: #Debug
 						#	activarBotones (4)
 
 		elif (contador_etapas == 6): # Reg_dato_B
 			if (contador_subetapas == 0): # Parte 3
-				instruction_fetch, cantidad_bytes_control = readResultadoEjecucion (1)
+				dato_reg_B, cantidad_bytes_control = readResultadoEjecucion (1)
 				if (cantidad_bytes_control == 1):
 					code_error = writeSerial (getCode('DB-3'))
 					if (code_error < 0):
@@ -629,7 +672,7 @@ def recibirDatosFromFPGA ():
 						contador_subetapas = contador_subetapas + 1
 
 			if (contador_subetapas == 1): # Parte 2
-				instruction_fetch_aux, cantidad_bytes_control = readResultadoEjecucion (1)
+				dato_reg_B_aux, cantidad_bytes_control = readResultadoEjecucion (1)
 				if (cantidad_bytes_control == 1):
 					code_error = writeSerial (getCode('DB-2'))
 					if (code_error < 0):
@@ -638,10 +681,10 @@ def recibirDatosFromFPGA ():
 					else:
 						ser.flushInput()
 						contador_subetapas = contador_subetapas + 1
-						instruction_fetch = instruction_fetch + instruction_fetch_aux
+						dato_reg_B = dato_reg_B + dato_reg_B_aux
 
 			if (contador_subetapas == 2): #Parte 1
-				instruction_fetch_aux, cantidad_bytes_control = readResultadoEjecucion (1)
+				dato_reg_B_aux, cantidad_bytes_control = readResultadoEjecucion (1)
 				if (cantidad_bytes_control == 1):
 					code_error = writeSerial (getCode('DB-1'))
 					if (code_error < 0):
@@ -650,10 +693,10 @@ def recibirDatosFromFPGA ():
 					else:
 						ser.flushInput()
 						contador_subetapas = contador_subetapas + 1
-						instruction_fetch = instruction_fetch + instruction_fetch_aux
+						dato_reg_B = dato_reg_B + dato_reg_B_aux
 
 			else: # Parte 0
-				instruction_fetch_aux, cantidad_bytes_control = readResultadoEjecucion (1)
+				dato_reg_B_aux, cantidad_bytes_control = readResultadoEjecucion (1)
 				if (cantidad_bytes_control == 1):
 					code_error = writeSerial (getCode('DB-0'))
 					if (code_error < 0):
@@ -661,20 +704,20 @@ def recibirDatosFromFPGA ():
 						flag_receive = False
 					else:
 						ser.flushInput()
-						instruction_fetch = instruction_fetch + instruction_fetch_aux
-						etiqueta_instruction_fetch = getHexadecimal (instruction_fetch)
-						etiquetaInstructionFetchValorMIPS.config (text = etiqueta_instruction_fetch)
+						dato_reg_B = dato_reg_B + dato_reg_B_aux
+						etiqueta_dato_reg_B = getHexadecimal (dato_reg_B)
+						etiquetaDatoRegBValorMIPS.config (text = etiqueta_dato_reg_B)
 						contador_etapas = contador_etapas + 1
 						contador_subetapas = 0
 						#flag_receive = False
-						#if ((modo_ejecucion == '0') or (instruction_fetch == ('0' * 32))): #Continuo
+						#if ((modo_ejecucion == '0') or (dato_reg_B == ('0' * 32))): #Continuo
 						#	activarBotones (1)
 						#else: #Debug
 						#	activarBotones (4)
 
-		elif (contador_etapas == 6): # Valor inmediato con extension de signo
+		elif (contador_etapas == 7): # Valor inmediato con extension de signo
 			if (contador_subetapas == 0): # Parte 3
-				instruction_fetch, cantidad_bytes_control = readResultadoEjecucion (1)
+				valor_inmediato, cantidad_bytes_control = readResultadoEjecucion (1)
 				if (cantidad_bytes_control == 1):
 					code_error = writeSerial (getCode('IM-3'))
 					if (code_error < 0):
@@ -685,7 +728,7 @@ def recibirDatosFromFPGA ():
 						contador_subetapas = contador_subetapas + 1
 
 			if (contador_subetapas == 1): # Parte 2
-				instruction_fetch_aux, cantidad_bytes_control = readResultadoEjecucion (1)
+				valor_inmediato_aux, cantidad_bytes_control = readResultadoEjecucion (1)
 				if (cantidad_bytes_control == 1):
 					code_error = writeSerial (getCode('IM-2'))
 					if (code_error < 0):
@@ -694,10 +737,10 @@ def recibirDatosFromFPGA ():
 					else:
 						ser.flushInput()
 						contador_subetapas = contador_subetapas + 1
-						instruction_fetch = instruction_fetch + instruction_fetch_aux
+						valor_inmediato = valor_inmediato + valor_inmediato_aux
 
 			if (contador_subetapas == 2): #Parte 1
-				instruction_fetch_aux, cantidad_bytes_control = readResultadoEjecucion (1)
+				valor_inmediato_aux, cantidad_bytes_control = readResultadoEjecucion (1)
 				if (cantidad_bytes_control == 1):
 					code_error = writeSerial (getCode('IM-1'))
 					if (code_error < 0):
@@ -706,10 +749,10 @@ def recibirDatosFromFPGA ():
 					else:
 						ser.flushInput()
 						contador_subetapas = contador_subetapas + 1
-						instruction_fetch = instruction_fetch + instruction_fetch_aux
+						valor_inmediato = valor_inmediato + valor_inmediato_aux
 
 			else: # Parte 0
-				instruction_fetch_aux, cantidad_bytes_control = readResultadoEjecucion (1)
+				valor_inmediato_aux, cantidad_bytes_control = readResultadoEjecucion (1)
 				if (cantidad_bytes_control == 1):
 					code_error = writeSerial (getCode('IM-0'))
 					if (code_error < 0):
@@ -717,20 +760,20 @@ def recibirDatosFromFPGA ():
 						flag_receive = False
 					else:
 						ser.flushInput()
-						instruction_fetch = instruction_fetch + instruction_fetch_aux
-						etiqueta_instruction_fetch = getHexadecimal (instruction_fetch)
-						etiquetaInstructionFetchValorMIPS.config (text = etiqueta_instruction_fetch)
+						valor_inmediato = valor_inmediato + valor_inmediato_aux
+						etiqueta_valor_inmediato = getHexadecimal (valor_inmediato)
+						etiquetaValorInmediatoValorMIPS.config (text = etiqueta_valor_inmediato)
 						contador_etapas = contador_etapas + 1
 						contador_subetapas = 0
 						#flag_receive = False
-						#if ((modo_ejecucion == '0') or (instruction_fetch == ('0' * 32))): #Continuo
+						#if ((modo_ejecucion == '0') or (valor_inmediato == ('0' * 32))): #Continuo
 						#	activarBotones (1)
 						#else: #Debug
 						#	activarBotones (4)
 		
 		elif (contador_etapas == 8): # Direcciones de registros rs, rt y rd
 			if (contador_subetapas == 0): # Parte H
-				contador_de_ciclos, cantidad_bytes_control = readResultadoEjecucion (1)
+				rs, cantidad_bytes_control = readResultadoEjecucion (1)
 				if (cantidad_bytes_control == 1):
 					code_error = writeSerial (getCode('AR-H'))
 					if (code_error < 0):
@@ -741,7 +784,7 @@ def recibirDatosFromFPGA ():
 						contador_subetapas = contador_subetapas + 1
 
 			else: # Parte L
-				contador_de_ciclos_aux, cantidad_bytes_control = readResultadoEjecucion (1)
+				rs_aux, cantidad_bytes_control = readResultadoEjecucion (1)
 				if (cantidad_bytes_control == 1):
 					code_error = writeSerial (getCode('AR-L'))
 					if (code_error < 0):
@@ -749,16 +792,24 @@ def recibirDatosFromFPGA ():
 						flag_receive = False
 					else:
 						ser.flushInput()
-						contador_de_ciclos = contador_de_ciclos + contador_de_ciclos_aux
-						etiqueta_contador_ciclos = contador_de_ciclos
-						etiquetaContadorCiclosValorMIPS.config (text = etiqueta_contador_ciclos)
+						rs = rs + rs_aux
+						etiqueta_rs = 'R' + str (int (rs [-CANT_BITS_ADDR_REGISTROS * 2 - 1 : -CANT_BITS_ADDR_REGISTROS * 3 -1], 2))
+						etiqueta_rt = 'R' + str (int (rs [-CANT_BITS_ADDR_REGISTROS - 1 : -CANT_BITS_ADDR_REGISTROS * 2 - 1], 2 ))
+						etiqueta_rd = 'R' + str (int (rs [-1 : -CANT_BITS_ADDR_REGISTROS - 1]))
+						
+						print etiqueta_rs
+						print etiqueta_rd
+						print etiqueta_rt
+						etiquetaRSValorMIPS.config (text = etiqueta_rs)
+						etiquetaRTValorMIPS.config (text = etiqueta_rt)
+						etiquetaRDValorMIPS.config (text = etiqueta_rd)
 						contador_etapas = contador_etapas + 1
 						contador_subetapas = 0 
 
 		
 		elif (contador_etapas == 9): # Seniales de control ID/EX
 			if (contador_subetapas == 0): # Parte H
-				contador_de_ciclos, cantidad_bytes_control = readResultadoEjecucion (1)
+				reg_dst, cantidad_bytes_control = readResultadoEjecucion (1)
 				if (cantidad_bytes_control == 1):
 					code_error = writeSerial (getCode('SC-H'))
 					if (code_error < 0):
@@ -769,7 +820,7 @@ def recibirDatosFromFPGA ():
 						contador_subetapas = contador_subetapas + 1
 
 			else: # Parte L
-				contador_de_ciclos_aux, cantidad_bytes_control = readResultadoEjecucion (1)
+				reg_dst_aux, cantidad_bytes_control = readResultadoEjecucion (1)
 				if (cantidad_bytes_control == 1):
 					code_error = writeSerial (getCode('SC-L'))
 					if (code_error < 0):
@@ -777,9 +828,23 @@ def recibirDatosFromFPGA ():
 						flag_receive = False
 					else:
 						ser.flushInput()
-						contador_de_ciclos = contador_de_ciclos + contador_de_ciclos_aux
-						etiqueta_contador_ciclos = contador_de_ciclos
-						etiquetaContadorCiclosValorMIPS.config (text = etiqueta_contador_ciclos)
+						reg_dst = reg_dst + reg_dst_aux
+						etiqueta_reg_dst = reg_dst [- CANT_BITS_ALU_CTRL - CANT_BITS_ALU_OP - 6 ]
+						etiqueta_mem_to_reg = reg_dst [- CANT_BITS_ALU_CTRL - CANT_BITS_ALU_OP - 1 ]
+						etiqueta_alu_op = reg_dst [-CANT_BITS_ALU_CTRL - 1 : - CANT_BITS_ALU_CTRL - CANT_BITS_ALU_OP - 1 ]
+						etiqueta_alu_ctrl = reg_dst [-1 : -CANT_BITS_ALU_CTRL - 1]
+						etiqueta_alu_src = reg_dst [- CANT_BITS_ALU_CTRL - CANT_BITS_ALU_OP - 4 ]
+						etiqueta_mem_read = reg_dst [- CANT_BITS_ALU_CTRL - CANT_BITS_ALU_OP - 3 ]
+						etiqueta_mem_write = reg_dst [- CANT_BITS_ALU_CTRL - CANT_BITS_ALU_OP - 2 ]
+						etiqueta_reg_write = reg_dst [- CANT_BITS_ALU_CTRL - CANT_BITS_ALU_OP - 5 ]
+						etiquetaRegDestinoValorMIPS.config (text = etiqueta_reg_dst)
+						etiquetaMemToRegValorMIPS.config (text = etiqueta_mem_to_reg)
+						etiquetaALUOpValorMIPS.config (text = etiqueta_alu_op)
+						etiquetaALUControlValorMIPS.config (text = etiqueta_alu_ctrl)
+						etiquetaALUSrcValorMIPS.config (text = etiqueta_alu_src)
+						etiquetaMemReadValorMIPS.config (text = etiqueta_mem_read)
+						etiquetaMemWriteValorMIPS.config (text = etiqueta_mem_write)
+						etiquetaRegWriteValorMIPS.config (text = etiqueta_reg_write)
 						contador_etapas = contador_etapas + 1
 						contador_subetapas = 0
 						flag_receive = False
@@ -1067,19 +1132,19 @@ etiquetaModoEjecucionCanvasDerecha = Label (root, text = "Modo de ejecucion: ", 
 etiquetaModoEjecucionCanvasDerecha.place (x = 400,  y = 70)
 etiquetaModoEjecucionValorMIPS = Label (root, text = etiqueta_resultado_modo_de_ejecucion_valor_MIPS,\
 	 fg = "black", font = "TkDefaultFont 12")
-etiquetaModoEjecucionValorMIPS.place (x = 580,  y = 70)
+etiquetaModoEjecucionValorMIPS.place (x = 620,  y = 70)
 
 etiquetaPC = Label (root, text = "Contador de programa: ", fg = "brown", font = "TkDefaultFont 12")
 etiquetaPC.place (x = 400,  y = 100)
 etiquetaPCValorMIPS = Label (root, text = etiqueta_resultado_pc,\
 	 fg = "black", font = "TkDefaultFont 12")
-etiquetaPCValorMIPS.place (x = 580,  y = 100)
+etiquetaPCValorMIPS.place (x = 620,  y = 100)
 
 etiquetaContadorCiclos = Label (root, text = "Contador de ciclos: ", fg = "brown", font = "TkDefaultFont 12")
 etiquetaContadorCiclos.place (x = 400,  y = 130)
 etiquetaContadorCiclosValorMIPS = Label (root, text = etiqueta_contador_ciclos,\
 	 fg = "black", font = "TkDefaultFont 12")
-etiquetaContadorCiclosValorMIPS.place (x = 580,  y = 130)
+etiquetaContadorCiclosValorMIPS.place (x = 620,  y = 130)
 
 
 # IF 
@@ -1090,13 +1155,13 @@ etiquetaPCAdd = Label (root, text = "Salida adder de PC: ", fg = "brown", font =
 etiquetaPCAdd.place (x = 400,  y = 220)
 etiquetaPCAddValorMIPS = Label (root, text = etiqueta_resultado_adder_pc,\
 	 fg = "black", font = "TkDefaultFont 12")
-etiquetaPCAddValorMIPS.place (x = 580,  y = 220)
+etiquetaPCAddValorMIPS.place (x = 620,  y = 220)
 
 etiquetaInstructionFetch = Label (root, text = "Instruccion: ", fg = "brown", font = "TkDefaultFont 12")
 etiquetaInstructionFetch.place (x = 400,  y = 250)
 etiquetaInstructionFetchValorMIPS = Label (root, text = etiqueta_instruction_fetch,\
 	 fg = "black", font = "TkDefaultFont 12")
-etiquetaInstructionFetchValorMIPS.place (x = 580,  y = 250)
+etiquetaInstructionFetchValorMIPS.place (x = 620,  y = 250)
 
 
 
@@ -1109,43 +1174,43 @@ etiquetaBranchDir = Label (root, text = "Direccion de salto: ", fg = "brown", fo
 etiquetaBranchDir.place (x = 400,  y = 320)
 etiquetaBranchDirValorMIPS = Label (root, text = etiqueta_branch_dir,\
 	 fg = "black", font = "TkDefaultFont 12")
-etiquetaBranchDirValorMIPS.place (x = 580,  y = 320)
+etiquetaBranchDirValorMIPS.place (x = 620,  y = 320)
 
 etiquetaBranchControl = Label (root, text = "Control del salto: ", fg = "brown", font = "TkDefaultFont 12")
 etiquetaBranchControl.place (x = 400,  y = 350)
 etiquetaBranchControlValorMIPS = Label (root, text = etiqueta_control_salto,\
 	 fg = "black", font = "TkDefaultFont 12")
-etiquetaBranchControlValorMIPS.place (x = 580,  y = 350)
+etiquetaBranchControlValorMIPS.place (x = 620,  y = 350)
 
 etiquetaDatoRegA = Label (root, text = "Dato de registro A: ", fg = "brown", font = "TkDefaultFont 12")
 etiquetaDatoRegA.place (x = 400,  y = 380)
 etiquetaDatoRegAValorMIPS = Label (root, text = etiqueta_dato_reg_A,\
 	 fg = "black", font = "TkDefaultFont 12")
-etiquetaDatoRegAValorMIPS.place (x = 580,  y = 380)
+etiquetaDatoRegAValorMIPS.place (x = 620,  y = 380)
 
 etiquetaDatoRegB = Label (root, text = "Dato de registro B: ", fg = "brown", font = "TkDefaultFont 12")
 etiquetaDatoRegB.place (x = 400,  y = 410)
 etiquetaDatoRegBValorMIPS = Label (root, text = etiqueta_dato_reg_B,\
 	 fg = "black", font = "TkDefaultFont 12")
-etiquetaDatoRegBValorMIPS.place (x = 580,  y = 410)
+etiquetaDatoRegBValorMIPS.place (x = 620,  y = 410)
 
 etiquetaValorInmediato = Label (root, text = "Valor inmediato: ", fg = "brown", font = "TkDefaultFont 12")
 etiquetaValorInmediato.place (x = 400,  y = 440)
 etiquetaValorInmediatoValorMIPS = Label (root, text = etiqueta_valor_inmediato,\
 	 fg = "black", font = "TkDefaultFont 12")
-etiquetaValorInmediatoValorMIPS.place (x = 580,  y = 440)
+etiquetaValorInmediatoValorMIPS.place (x = 620,  y = 440)
 
 etiquetaRS = Label (root, text = "Direccion rs: ", fg = "brown", font = "TkDefaultFont 12")
 etiquetaRS.place (x = 400,  y = 470)
 etiquetaRSValorMIPS = Label (root, text = etiqueta_rs,\
 	 fg = "black", font = "TkDefaultFont 12")
-etiquetaRSValorMIPS.place (x = 580,  y = 470)
+etiquetaRSValorMIPS.place (x = 620,  y = 470)
 
 etiquetaRT = Label (root, text = "Direccion rt: ", fg = "brown", font = "TkDefaultFont 12")
 etiquetaRT.place (x = 400,  y = 500)
 etiquetaRTValorMIPS = Label (root, text = etiqueta_rt,\
 	 fg = "black", font = "TkDefaultFont 12")
-etiquetaRTValorMIPS.place (x = 580,  y = 500)
+etiquetaRTValorMIPS.place (x = 620,  y = 500)
 
 etiquetaLatchIFID = Label (root, text = "LATCH ID/EX: ", fg = "dark green", font = "TkDefaultFont 12")
 etiquetaLatchIFID.place (x = 900,  y = 20)
@@ -1154,57 +1219,57 @@ etiquetaRD = Label (root, text = "Direccion rd: ", fg = "brown", font = "TkDefau
 etiquetaRD.place (x = 900,  y = 70)
 etiquetaRDValorMIPS = Label (root, text = etiqueta_rd,\
 	 fg = "black", font = "TkDefaultFont 12")
-etiquetaRDValorMIPS.place (x = 1080,  y = 70)
+etiquetaRDValorMIPS.place (x = 1200,  y = 70)
 
 etiquetaRegDestino = Label (root, text = "Registro destino: ", fg = "brown", font = "TkDefaultFont 12")
 etiquetaRegDestino.place (x = 900,  y = 100)
 etiquetaRegDestinoValorMIPS = Label (root, text = etiqueta_reg_dst,\
 	 fg = "black", font = "TkDefaultFont 12")
-etiquetaRegDestinoValorMIPS.place (x = 1080,  y = 100)
+etiquetaRegDestinoValorMIPS.place (x = 1200,  y = 100)
 
 etiquetaRegWrite = Label (root, text = "Escribir registro: ", fg = "brown", font = "TkDefaultFont 12")
 etiquetaRegWrite.place (x = 900,  y = 130)
 etiquetaRegWriteValorMIPS = Label (root, text = etiqueta_reg_write,\
 	 fg = "black", font = "TkDefaultFont 12")
-etiquetaRegWriteValorMIPS.place (x = 1080,  y = 130)
+etiquetaRegWriteValorMIPS.place (x = 1200,  y = 130)
 
 etiquetaALUSrc = Label (root, text = "Segundo operando ALU: ", fg = "brown", font = "TkDefaultFont 12")
 etiquetaALUSrc.place (x = 900,  y = 160)
 etiquetaALUSrcValorMIPS = Label (root, text = etiqueta_alu_src,\
 	 fg = "black", font = "TkDefaultFont 12")
-etiquetaALUSrcValorMIPS.place (x = 1080,  y = 160)
+etiquetaALUSrcValorMIPS.place (x = 1200,  y = 160)
 
 
 etiquetaALUOp = Label (root, text = "ALU op: ", fg = "brown", font = "TkDefaultFont 12")
 etiquetaALUOp.place (x = 900,  y = 190)
 etiquetaALUOpValorMIPS = Label (root, text = etiqueta_alu_op,\
 	 fg = "black", font = "TkDefaultFont 12")
-etiquetaALUOpValorMIPS.place (x = 1080,  y = 190)
+etiquetaALUOpValorMIPS.place (x = 1200,  y = 190)
 
 
 etiquetaALUControl = Label (root, text = "ALU ctrl: ", fg = "brown", font = "TkDefaultFont 12")
 etiquetaALUControl.place (x = 900,  y = 220)
 etiquetaALUControlValorMIPS = Label (root, text = etiqueta_alu_ctrl,\
 	 fg = "black", font = "TkDefaultFont 12")
-etiquetaALUControlValorMIPS.place (x = 1080,  y = 220)
+etiquetaALUControlValorMIPS.place (x = 1200,  y = 220)
 
 etiquetaMemRead = Label (root, text = "Lectura memoria de datos: ", fg = "brown", font = "TkDefaultFont 12")
 etiquetaMemRead.place (x = 900,  y = 250)
 etiquetaMemReadValorMIPS = Label (root, text = etiqueta_mem_read,\
 	 fg = "black", font = "TkDefaultFont 12")
-etiquetaMemReadValorMIPS.place (x = 1080,  y = 250)
+etiquetaMemReadValorMIPS.place (x = 1200,  y = 250)
 
 etiquetaMemWrite = Label (root, text = "Escritura memoria de datos: ", fg = "brown", font = "TkDefaultFont 12")
 etiquetaMemWrite.place (x = 900,  y = 280)
 etiquetaMemWriteValorMIPS = Label (root, text = etiqueta_mem_write,\
 	 fg = "black", font = "TkDefaultFont 12")
-etiquetaMemWriteValorMIPS.place (x = 1080,  y = 280)
+etiquetaMemWriteValorMIPS.place (x = 1200,  y = 280)
 
 etiquetaMemToReg = Label (root, text = "Datos de memoria a registros: ", fg = "brown", font = "TkDefaultFont 12")
 etiquetaMemToReg.place (x = 900,  y = 310)
 etiquetaMemToRegValorMIPS = Label (root, text = etiqueta_mem_to_reg,\
 	 fg = "black", font = "TkDefaultFont 12")
-etiquetaMemToRegValorMIPS.place (x = 1080,  y = 310)
+etiquetaMemToRegValorMIPS.place (x = 1200,  y = 310)
 
 
 # Titulo de la GUI 
