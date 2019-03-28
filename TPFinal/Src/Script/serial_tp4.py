@@ -22,10 +22,10 @@ WIDTH_WORD = 8
 CANT_BITS_INSTRUCCION = 32
 CANT_STOP_BITS = 2
 FILE_NAME = "init_ram_file.txt"
-FLAG_TEST = True
+FLAG_TEST = False
 CANT_BITS_ADDRESS_MEM_PROGRAMA = 10
 CANT_REGSITROS = 32
-CANT_BITS_ADDR_REGISTROS = math.log(CANT_REGSITROS, 2)
+CANT_BITS_ADDR_REGISTROS = int (math.log(CANT_REGSITROS, 2))
 CANT_BITS_ALU_CTRL = 4
 CANT_BITS_ALU_OP = 2
 
@@ -793,13 +793,11 @@ def recibirDatosFromFPGA ():
 					else:
 						ser.flushInput()
 						rs = rs + rs_aux
-						etiqueta_rs = 'R' + str (int (rs [-CANT_BITS_ADDR_REGISTROS * 2 - 1 : -CANT_BITS_ADDR_REGISTROS * 3 -1], 2))
-						etiqueta_rt = 'R' + str (int (rs [-CANT_BITS_ADDR_REGISTROS - 1 : -CANT_BITS_ADDR_REGISTROS * 2 - 1], 2 ))
-						etiqueta_rd = 'R' + str (int (rs [-1 : -CANT_BITS_ADDR_REGISTROS - 1]))
+
+						etiqueta_rs = 'R' + str (int (rs [-CANT_BITS_ADDR_REGISTROS * 2 - 1 : -CANT_BITS_ADDR_REGISTROS * 3 -1 : - 1], 2))
+						etiqueta_rt = 'R' + str (int (rs [-CANT_BITS_ADDR_REGISTROS - 1 : -CANT_BITS_ADDR_REGISTROS * 2 - 1: - 1], 2 ))
+						etiqueta_rd = 'R' + str (int (rs [-1 : -CANT_BITS_ADDR_REGISTROS - 1 : -1]))
 						
-						print etiqueta_rs
-						print etiqueta_rd
-						print etiqueta_rt
 						etiquetaRSValorMIPS.config (text = etiqueta_rs)
 						etiquetaRTValorMIPS.config (text = etiqueta_rt)
 						etiquetaRDValorMIPS.config (text = etiqueta_rd)
@@ -829,14 +827,45 @@ def recibirDatosFromFPGA ():
 					else:
 						ser.flushInput()
 						reg_dst = reg_dst + reg_dst_aux
-						etiqueta_reg_dst = reg_dst [- CANT_BITS_ALU_CTRL - CANT_BITS_ALU_OP - 6 ]
-						etiqueta_mem_to_reg = reg_dst [- CANT_BITS_ALU_CTRL - CANT_BITS_ALU_OP - 1 ]
-						etiqueta_alu_op = reg_dst [-CANT_BITS_ALU_CTRL - 1 : - CANT_BITS_ALU_CTRL - CANT_BITS_ALU_OP - 1 ]
-						etiqueta_alu_ctrl = reg_dst [-1 : -CANT_BITS_ALU_CTRL - 1]
-						etiqueta_alu_src = reg_dst [- CANT_BITS_ALU_CTRL - CANT_BITS_ALU_OP - 4 ]
-						etiqueta_mem_read = reg_dst [- CANT_BITS_ALU_CTRL - CANT_BITS_ALU_OP - 3 ]
-						etiqueta_mem_write = reg_dst [- CANT_BITS_ALU_CTRL - CANT_BITS_ALU_OP - 2 ]
-						etiqueta_reg_write = reg_dst [- CANT_BITS_ALU_CTRL - CANT_BITS_ALU_OP - 5 ]
+						
+						if (reg_dst [- CANT_BITS_ALU_CTRL - CANT_BITS_ALU_OP - 6 ] == 1):
+							etiqueta_reg_dst = 'Rd'
+						else:
+							etiqueta_reg_dst = 'Rd'
+						
+						if (reg_dst [- CANT_BITS_ALU_CTRL - CANT_BITS_ALU_OP - 1 ] == 1):
+							etiqueta_mem_to_reg = 'Si'
+						else:
+							etiqueta_mem_to_reg = 'No'
+
+						
+						
+						etiqueta_alu_op = reg_dst [-CANT_BITS_ALU_CTRL - 1 : - CANT_BITS_ALU_CTRL - CANT_BITS_ALU_OP - 1 : -1 ]
+						etiqueta_alu_ctrl = reg_dst [-1 : -CANT_BITS_ALU_CTRL - 1 : -1]
+						
+						
+						if (reg_dst [- CANT_BITS_ALU_CTRL - CANT_BITS_ALU_OP - 4 ] == 1):
+							etiqueta_alu_src = 'Valor inmediato'
+						else:
+							etiqueta_alu_src = 'Registro B'
+
+						
+						
+						if (reg_dst [- CANT_BITS_ALU_CTRL - CANT_BITS_ALU_OP - 3 ] == 1):
+							etiqueta_mem_read = 'Si'
+						else:
+							etiqueta_mem_read = 'No'
+						 
+						if (reg_dst [- CANT_BITS_ALU_CTRL - CANT_BITS_ALU_OP - 2 ] == 1):
+							etiqueta_mem_write = 'Si'
+						else:
+							etiqueta_mem_write = 'No'
+						
+						if (reg_dst [- CANT_BITS_ALU_CTRL - CANT_BITS_ALU_OP - 5 ] == 1):
+							etiqueta_reg_write = 'Si'
+						else:
+							etiqueta_reg_write = 'No' 
+						
 						etiquetaRegDestinoValorMIPS.config (text = etiqueta_reg_dst)
 						etiquetaMemToRegValorMIPS.config (text = etiqueta_mem_to_reg)
 						etiquetaALUOpValorMIPS.config (text = etiqueta_alu_op)
