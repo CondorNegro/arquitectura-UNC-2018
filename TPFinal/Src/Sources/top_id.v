@@ -76,7 +76,10 @@ module top_id
 
 
     wire [clogb2 (CANT_REGISTROS - 1) - 1 : 0] wire_output_reg_A_decoder_TO_reg_A_register_file;
+    assign o_reg_rs = wire_output_reg_A_decoder_TO_reg_A_register_file;
+    
     wire [clogb2 (CANT_REGISTROS - 1) - 1 : 0] wire_output_reg_B_decoder_TO_reg_B_register_file;
+    assign o_reg_rt = wire_output_reg_B_decoder_TO_reg_B_register_file;
     
     wire [CANT_BITS_IMMEDIATE - 1 : 0] wire_output_immediate_decoder_TO_extension_signo;
   
