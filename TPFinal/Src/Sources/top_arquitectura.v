@@ -297,7 +297,6 @@ top_if
     .i_data_mem_programa (wire_data_mem_programa_input),
     .i_control_mux_PC (wire_control_mux_PC),
     .i_control_mux_addr_mem (wire_control_mux_addr_mem_IF),
-    .i_control_mux_ouput (wire_branch_dir),
     .i_branch_dir (wire_branch_dir),
     .o_instruction (wire_instruction_fetch),
     .o_direccion_adder_pc (wire_adder_contador_programa),
