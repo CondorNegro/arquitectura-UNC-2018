@@ -18,8 +18,7 @@ module database
         parameter CANT_BITS_REGISTROS = 32,
         parameter CANT_BITS_ALU_OP = 2,
         parameter CANT_BITS_ALU_CONTROL = 4,
-        parameter CANT_REGISTROS = 32, 
-        parameter CANT_BITS_IMMEDIATE = 16 
+        parameter CANT_REGISTROS = 32
    )
    (
         input i_clock,
@@ -42,7 +41,7 @@ module database
         input [CANT_BITS_REGISTROS - 1 : 0] i_data_A,
         input [CANT_BITS_REGISTROS - 1 : 0] i_data_B,
 
-        input [CANT_BITS_IMMEDIATE - 1 : 0] i_extension_signo_constante,
+        input [CANT_BITS_REGISTROS - 1 : 0] i_extension_signo_constante,
         input [clogb2 (CANT_REGISTROS - 1) - 1 : 0] i_reg_rs,
         input [clogb2 (CANT_REGISTROS - 1) - 1 : 0] i_reg_rt,
         input [clogb2 (CANT_REGISTROS - 1) - 1 : 0] i_reg_rd,
@@ -76,7 +75,7 @@ module database
     reg [CANT_BITS_REGISTROS - 1 : 0] reg_data_A;
     reg [CANT_BITS_REGISTROS - 1 : 0] reg_data_B;
 
-    reg [CANT_BITS_IMMEDIATE - 1 : 0] reg_extension_signo_constante;
+    reg [CANT_BITS_REGISTROS - 1 : 0] reg_extension_signo_constante;
     reg [clogb2 (CANT_REGISTROS - 1) - 1 : 0] reg_rs;
     reg [clogb2 (CANT_REGISTROS - 1) - 1 : 0] reg_rt;
     reg [clogb2 (CANT_REGISTROS - 1) - 1 : 0] reg_rd;

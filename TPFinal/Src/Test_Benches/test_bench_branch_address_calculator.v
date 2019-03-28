@@ -14,7 +14,6 @@ module test_bench_branch_address_calculator();
 		
 	// Parametros
     parameter CANT_BITS_ADDR = 11;
-    parameter CANT_BITS_IMMEDIATE = 16;
     parameter CANT_BITS_INSTRUCTION_INDEX_BRANCH = 26;
     parameter CANT_BITS_FLAG_BRANCH = 3;
     parameter CANT_BITS_REGISTROS = 32; 
@@ -25,7 +24,7 @@ module test_bench_branch_address_calculator();
 	// Entradas.
     reg [CANT_BITS_FLAG_BRANCH - 1 : 0] reg_i_flag_branch;
     reg [CANT_BITS_ADDR - 1 : 0] reg_i_adder_pc;
-    reg [CANT_BITS_IMMEDIATE - 1 : 0] reg_i_immediate_address;
+    reg [CANT_BITS_REGISTROS - 1 : 0] reg_i_immediate_address;
     reg [CANT_BITS_INSTRUCTION_INDEX_BRANCH - 1 : 0] reg_i_instruction_index_branch;
     reg [CANT_BITS_REGISTROS - 1 : 0] reg_i_dato_reg_A;
     reg [CANT_BITS_REGISTROS - 1 : 0] reg_i_dato_reg_B;
@@ -96,7 +95,6 @@ module test_bench_branch_address_calculator();
 branch_address_calculator
     #(
         .CANT_BITS_ADDR (CANT_BITS_ADDR),
-        .CANT_BITS_IMMEDIATE (CANT_BITS_IMMEDIATE),
         .CANT_BITS_INSTRUCTION_INDEX_BRANCH (CANT_BITS_INSTRUCTION_INDEX_BRANCH),
         .CANT_BITS_FLAG_BRANCH (CANT_BITS_FLAG_BRANCH),
         .CANT_BITS_REGISTROS (CANT_BITS_REGISTROS)

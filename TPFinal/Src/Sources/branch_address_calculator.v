@@ -22,7 +22,7 @@ module branch_address_calculator
    (
        input [CANT_BITS_FLAG_BRANCH - 1 : 0] i_flag_branch,
        input [CANT_BITS_ADDR - 1 : 0] i_adder_pc,
-       input [CANT_BITS_IMMEDIATE - 1 : 0] i_immediate_address,
+       input [CANT_BITS_REGISTROS - 1 : 0] i_immediate_address,
        input [CANT_BITS_INSTRUCTION_INDEX_BRANCH - 1 : 0] i_instruction_index_branch,
        input [CANT_BITS_REGISTROS - 1 : 0] i_dato_reg_A,
        input [CANT_BITS_REGISTROS - 1 : 0] i_dato_reg_B,

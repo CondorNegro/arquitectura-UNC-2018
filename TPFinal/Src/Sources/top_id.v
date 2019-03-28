@@ -45,7 +45,7 @@ module top_id
        output [CANT_BITS_REGISTROS - 1 : 0] o_data_A,
        output [CANT_BITS_REGISTROS - 1 : 0] o_data_B,
 
-       output [CANT_BITS_IMMEDIATE - 1 : 0] o_extension_signo_constante,
+       output [CANT_BITS_REGISTROS - 1 : 0] o_extension_signo_constante,
        output [clogb2 (CANT_REGISTROS - 1) - 1 : 0] o_reg_rs,
        output [clogb2 (CANT_REGISTROS - 1) - 1 : 0] o_reg_rt,
        output [clogb2 (CANT_REGISTROS - 1) - 1 : 0] o_reg_rd,
@@ -120,7 +120,6 @@ branch_address_calculator
         .CANT_BITS_INSTRUCTION_INDEX_BRANCH (CANT_BITS_INSTRUCTION_INDEX_BRANCH),
         .CANT_BITS_FLAG_BRANCH (CANT_BITS_FLAG_BRANCH),
         .CANT_BITS_ADDR (CANT_BITS_ADDR),
-        .CANT_BITS_IMMEDIATE (CANT_BITS_IMMEDIATE),
         .CANT_BITS_REGISTROS (CANT_BITS_REGISTROS)
     )
     u_branch_address_calculator_1

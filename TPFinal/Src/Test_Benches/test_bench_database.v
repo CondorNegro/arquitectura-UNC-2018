@@ -20,7 +20,7 @@ module test_bench_database();
     parameter CANT_BITS_ALU_OP = 2;
     parameter CANT_BITS_ALU_CONTROL = 4;
     parameter CANT_REGISTROS = 32;
-    parameter CANT_BITS_IMMEDIATE = 16; 
+    
     //Todo puerto de salida del modulo es un cable.
 	//Todo puerto de estimulo o generacion de entrada es un registro.
 
@@ -44,7 +44,7 @@ module test_bench_database();
     reg [CANT_BITS_REGISTROS - 1 : 0] reg_data_A;
     reg [CANT_BITS_REGISTROS - 1 : 0] reg_data_B;
 
-    reg [CANT_BITS_IMMEDIATE - 1 : 0] reg_extension_signo_constante;
+    reg [CANT_BITS_REGISTROS - 1 : 0] reg_extension_signo_constante;
     reg [clogb2 (CANT_REGISTROS - 1) - 1 : 0] reg_rs;
     reg [clogb2 (CANT_REGISTROS - 1) - 1 : 0] reg_rt;
     reg [clogb2 (CANT_REGISTROS - 1) - 1 : 0] reg_rd;
@@ -136,8 +136,7 @@ database
         .CANT_BITS_REGISTROS (CANT_BITS_REGISTROS),
         .CANT_BITS_ALU_OP (CANT_BITS_ALU_OP),
         .CANT_BITS_ALU_CONTROL (CANT_BITS_ALU_CONTROL),
-        .CANT_REGISTROS (CANT_REGISTROS),
-        .CANT_BITS_IMMEDIATE (CANT_BITS_IMMEDIATE)
+        .CANT_REGISTROS (CANT_REGISTROS)
 
      )
     u_database_1

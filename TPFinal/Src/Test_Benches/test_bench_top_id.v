@@ -58,7 +58,7 @@ module test_bench_top_id();
     wire [CANT_BITS_REGISTROS - 1 : 0] wire_o_data_A;
     wire [CANT_BITS_REGISTROS - 1 : 0] wire_o_data_B;
 
-    wire [CANT_BITS_IMMEDIATE - 1 : 0] wire_o_extension_signo_constante;
+    wire [CANT_BITS_REGISTROS - 1 : 0] wire_o_extension_signo_constante;
     wire [clogb2 (CANT_REGISTROS - 1) - 1 : 0] wire_o_reg_rs;
     wire [clogb2 (CANT_REGISTROS - 1) - 1 : 0] wire_o_reg_rt;
     wire [clogb2 (CANT_REGISTROS - 1) - 1 : 0] wire_o_reg_rd;
