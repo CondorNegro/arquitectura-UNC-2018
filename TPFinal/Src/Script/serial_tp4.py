@@ -356,7 +356,23 @@ def recibirDatosFromFPGA ():
 	global etiqueta_contador_ciclos
 	global etiqueta_resultado_adder_pc
 	global etiqueta_instruction_fetch
-	
+	global etiqueta_branch_dir
+	global etiqueta_control_salto
+	global etiqueta_dato_reg_A
+	global etiqueta_dato_reg_B
+	global etiqueta_valor_inmediato
+	global etiqueta_rs
+	global etiqueta_rd
+	global etiqueta_rt
+	global etiqueta_reg_dst
+	global etiqueta_mem_to_reg
+	global etiqueta_alu_op
+	global etiqueta_alu_ctrl
+	global etiqueta_alu_src
+	global etiqueta_mem_read
+	global etiqueta_mem_write
+	global etiqueta_reg_write
+		
 	
 	flag_receive = True
 	contador_de_programa = ""

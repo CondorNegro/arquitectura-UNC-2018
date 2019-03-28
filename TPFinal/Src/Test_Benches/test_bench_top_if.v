@@ -43,7 +43,7 @@ module test_bench_top_if();
   reg [RAM_WIDTH_PROGRAMA - 1 : 0] data_mem_programa;
   reg control_mux_PC;
   reg control_mux_addr_mem;
-  reg control_mux_ouput;
+  
   reg [ADDR_MEM_PROGRAMA_LENGTH - 1 : 0] branch_dir;
 
 
@@ -67,7 +67,6 @@ module test_bench_top_if();
    data_mem_programa = 0;
    control_mux_PC = 0;
    control_mux_addr_mem = 0;
-   control_mux_ouput = 0;
    branch_dir = 0;
 
    /* Primera prueba, pruebo contador de programa (Resultado esperado: el PC debe contar hasta que el enable sea cero.
@@ -130,11 +129,11 @@ module test_bench_top_if();
     #20 write_read_mem = 1'b0;
     /// de mem programa
      #10 control_mux_addr_mem= 1'b0; //tomo dir de pc y no de debug unit.
-     #10 control_mux_ouput = 1'b1;
+     
      #10 branch_dir = 10;
      #10 control_mux_PC = 1'b1;
      #10 enable_contador_PC = 1'b1;
-     #20 control_mux_ouput = 1'b0;
+     
      #10 enable_contador_PC = 1'b0;
 
 
@@ -176,7 +175,6 @@ top_if
     .i_data_mem_programa (data_mem_programa),
     .i_control_mux_PC (control_mux_PC),
     .i_control_mux_addr_mem (control_mux_addr_mem),
-    .i_control_mux_ouput (control_mux_ouput),
     .i_branch_dir (branch_dir),
     .o_instruction (wire_instruction),
     .o_direccion_PC_PLUS_4 (wire_direccion_PC_PLUS_4),

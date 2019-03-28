@@ -34,7 +34,7 @@ module top_if
 
        input i_control_mux_PC,
        input i_control_mux_addr_mem,
-       input i_control_mux_ouput,
+       
 
        input [CANT_BITS_ADDR - 1 : 0] i_branch_dir,
 
@@ -107,7 +107,7 @@ mux
       (
           .i_data_A (wire_output_data_mem_programa_TO_dataA_mux3),
           .i_data_B (32'b00000000001000010000100000100100), /* AND R1, R1, R1  (actua como NOP)*/
-          .i_selector (i_control_mux_ouput),
+          .i_selector (i_control_mux_PC),
           .o_result ( o_instruction)
       );
 
