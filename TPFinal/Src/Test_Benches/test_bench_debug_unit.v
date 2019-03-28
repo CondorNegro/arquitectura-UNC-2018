@@ -19,7 +19,7 @@ module test_bench_debug_unit();
    parameter ADDR_MEM_LENGTH = 11;            
    parameter CANTIDAD_ESTADOS = 34;
    parameter LONGITUD_INSTRUCCION = 32;
-   parameter CANT_BITS_CONTROL_DATABASE = 3;
+   parameter CANT_BITS_CONTROL_DATABASE = 4;
    
    //Todo puerto de salida del modulo es un cable.
    //Todo puerto de estimulo o generacion de entrada es un registro.

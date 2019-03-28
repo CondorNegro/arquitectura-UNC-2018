@@ -17,7 +17,7 @@ module debug_unit
   parameter ADDR_MEM_LENGTH = 11,      //  Cantidad de bits del bus de direcciones de la memoria.
   parameter CANTIDAD_ESTADOS = 34,      //  Cantidad de estados
   parameter LONGITUD_INSTRUCCION = 32,  //  Cantidad de bits de la instruccion
-  parameter CANT_BITS_CONTROL_DATABASE = 3  // Control de bits para el control de la DB.
+  parameter CANT_BITS_CONTROL_DATABASE = 4  // Control de bits para el control de la DB.
 
 )
 (
