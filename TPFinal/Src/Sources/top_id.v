@@ -39,27 +39,27 @@ module top_id
 
 
 
-       output [CANT_BITS_ADDR - 1 : 0] o_branch_dir,
-       output o_branch_control,
+       output  [CANT_BITS_ADDR - 1 : 0] o_branch_dir,
+       output  o_branch_control,
 
-       output [CANT_BITS_REGISTROS - 1 : 0] o_data_A,
-       output [CANT_BITS_REGISTROS - 1 : 0] o_data_B,
+       output reg [CANT_BITS_REGISTROS - 1 : 0] o_data_A,
+       output reg [CANT_BITS_REGISTROS - 1 : 0] o_data_B,
 
-       output [CANT_BITS_REGISTROS - 1 : 0] o_extension_signo_constante,
-       output [clogb2 (CANT_REGISTROS - 1) - 1 : 0] o_reg_rs,
-       output [clogb2 (CANT_REGISTROS - 1) - 1 : 0] o_reg_rt,
-       output [clogb2 (CANT_REGISTROS - 1) - 1 : 0] o_reg_rd,
+       output reg [CANT_BITS_REGISTROS - 1 : 0] o_extension_signo_constante,
+       output reg [clogb2 (CANT_REGISTROS - 1) - 1 : 0] o_reg_rs,
+       output reg [clogb2 (CANT_REGISTROS - 1) - 1 : 0] o_reg_rt,
+       output reg [clogb2 (CANT_REGISTROS - 1) - 1 : 0] o_reg_rd,
        
        // Control
 
-       output o_RegDst,
-       output o_RegWrite,
-       output o_ALUSrc,
-       output [CANT_BITS_ALU_OP - 1 : 0] o_ALUOp,
-       output o_MemRead,
-       output o_MemWrite,
-       output o_MemtoReg,
-       output [CANT_BITS_ALU_CONTROL - 1 : 0] o_ALUCtrl,   
+       output reg o_RegDst,
+       output reg o_RegWrite,
+       output reg o_ALUSrc,
+       output reg [CANT_BITS_ALU_OP - 1 : 0] o_ALUOp,
+       output reg o_MemRead,
+       output reg o_MemWrite,
+       output reg o_MemtoReg,
+       output reg [CANT_BITS_ALU_CONTROL - 1 : 0] o_ALUCtrl,   
 
        output o_led
    );
@@ -74,21 +74,77 @@ module top_id
     endfunction
 
 
-    wire [clogb2 (CANT_REGISTROS - 1) - 1 : 0] wire_output_reg_A_decoder_TO_reg_A_register_file;
-    assign o_reg_rs = wire_output_reg_A_decoder_TO_reg_A_register_file;
-    
-    wire [clogb2 (CANT_REGISTROS - 1) - 1 : 0] wire_output_reg_B_decoder_TO_reg_B_register_file;
-    assign o_reg_rt = wire_output_reg_B_decoder_TO_reg_B_register_file;
-    
-    wire [CANT_BITS_IMMEDIATE - 1 : 0] wire_output_immediate_decoder_TO_extension_signo;
-  
-    assign o_extension_signo_constante = {{(CANT_BITS_REGISTROS - CANT_BITS_IMMEDIATE) {wire_output_immediate_decoder_TO_extension_signo[CANT_BITS_IMMEDIATE - 1]}},wire_output_immediate_decoder_TO_extension_signo}; // Extension de signo.
-
     wire [CANT_BITS_FLAG_BRANCH - 1 : 0] wire_output_flag_branch_decoder_TO_flag_branch_branch_address_calculator;
     wire [CANT_BITS_INSTRUCTION_INDEX_BRANCH - 1 : 0] wire_output_instruction_index_branch_decoder_TO_instruction_index_branch_branch_address_calculator;
     
+
+
+    wire [CANT_BITS_REGISTROS - 1 : 0] wire_o_data_A;
+    wire [CANT_BITS_REGISTROS - 1 : 0] wire_o_data_B;
+    wire [CANT_BITS_REGISTROS - 1 : 0] wire_o_extension_signo_constante;
+    wire [clogb2 (CANT_REGISTROS - 1) - 1 : 0] wire_o_reg_rs;
+    wire [clogb2 (CANT_REGISTROS - 1) - 1 : 0] wire_o_reg_rt;
+    wire [clogb2 (CANT_REGISTROS - 1) - 1 : 0] wire_o_reg_rd;
+    wire wire_o_RegDst;
+    wire wire_o_RegWrite;
+    wire wire_o_ALUSrc;
+    wire [CANT_BITS_ALU_OP - 1 : 0] wire_o_ALUOp;
+    wire wire_o_MemRead;
+    wire wire_o_MemWrite;
+    wire wire_o_MemtoReg;
+    wire [CANT_BITS_ALU_CONTROL - 1 : 0] wire_o_ALUCtrl;
+
+
+
+    wire [clogb2 (CANT_REGISTROS - 1) - 1 : 0] wire_output_reg_A_decoder_TO_reg_A_register_file;
+    assign wire_o_reg_rs = wire_output_reg_A_decoder_TO_reg_A_register_file;
     
+    wire [clogb2 (CANT_REGISTROS - 1) - 1 : 0] wire_output_reg_B_decoder_TO_reg_B_register_file;
+    assign wire_o_reg_rt = wire_output_reg_B_decoder_TO_reg_B_register_file;
     
+    wire [CANT_BITS_IMMEDIATE - 1 : 0] wire_output_immediate_decoder_TO_extension_signo;
+  
+    assign wire_o_extension_signo_constante = {{(CANT_BITS_REGISTROS - CANT_BITS_IMMEDIATE) {wire_output_immediate_decoder_TO_extension_signo[CANT_BITS_IMMEDIATE - 1]}},wire_output_immediate_decoder_TO_extension_signo}; // Extension de signo.
+
+
+
+    
+    always@(negedge i_clock) begin
+      if (~i_soft_reset) begin
+            o_data_A <= 0;
+            o_data_B <= 0;
+            o_extension_signo_constante <= 0;
+            o_reg_rs <= 0;
+            o_reg_rt <= 0;
+            o_reg_rd <= 0;       
+            o_RegDst <= 0;
+            o_RegWrite <= 0;
+            o_ALUSrc <= 0;
+            o_ALUOp <= 0;
+            o_MemRead <= 0;
+            o_MemWrite <= 0;
+            o_MemtoReg <= 0;
+            o_ALUCtrl <= 0;   
+      end
+      else begin
+            o_data_A <= wire_o_data_A;
+            o_data_B <= wire_o_data_B;
+            o_extension_signo_constante <= wire_o_extension_signo_constante;
+            o_reg_rs <= wire_o_reg_rs;
+            o_reg_rt <= wire_o_reg_rt;
+            o_reg_rd <= wire_o_reg_rd;       
+            o_RegDst <= wire_o_RegDst;
+            o_RegWrite <= wire_o_RegWrite;
+            o_ALUSrc <= wire_o_ALUSrc;
+            o_ALUOp <= wire_o_ALUOp;
+            o_MemRead <= wire_o_MemRead;
+            o_MemWrite <= wire_o_MemWrite;
+            o_MemtoReg <= wire_o_MemtoReg;
+            o_ALUCtrl <= wire_o_ALUCtrl; 
+      end
+    end
+
+   
 
 
 decoder
@@ -108,7 +164,7 @@ decoder
         .i_instruction (i_instruction),
         .o_reg_A (wire_output_reg_A_decoder_TO_reg_A_register_file),
         .o_reg_B (wire_output_reg_B_decoder_TO_reg_B_register_file),
-        .o_reg_W (o_reg_rd),
+        .o_reg_W (wire_o_reg_rd),
         .o_flag_branch (wire_output_flag_branch_decoder_TO_flag_branch_branch_address_calculator),
         .o_immediate (wire_output_immediate_decoder_TO_extension_signo),
         .o_instruction_index_branch (wire_output_instruction_index_branch_decoder_TO_instruction_index_branch_branch_address_calculator)
@@ -126,9 +182,9 @@ branch_address_calculator
     (
         .i_flag_branch (wire_output_flag_branch_decoder_TO_flag_branch_branch_address_calculator),
         .i_adder_pc (i_out_adder_pc),
-        .i_dato_reg_A (o_data_A),
-        .i_dato_reg_B (o_data_B),
-        .i_immediate_address (o_extension_signo_constante),
+        .i_dato_reg_A (wire_o_data_A),
+        .i_dato_reg_B (wire_o_data_B),
+        .i_immediate_address (wire_o_extension_signo_constante),
         .i_instruction_index_branch (wire_output_instruction_index_branch_decoder_TO_instruction_index_branch_branch_address_calculator),
         .o_branch_control (o_branch_control),
         .o_branch_dir (o_branch_dir)
@@ -150,8 +206,8 @@ register_file
         .i_reg_Write (i_reg_write),
         .i_data_write (i_data_write),
         .i_control_write (i_control_write_reg),
-        .o_data_A (o_data_A),
-        .o_data_B (o_data_B),
+        .o_data_A (wire_o_data_A),
+        .o_data_B (wire_o_data_B),
         .o_led (o_led)
     );
 
@@ -170,8 +226,8 @@ control
         .i_clock (i_clock),
         .i_soft_reset (i_soft_reset),
         .i_instruction (i_instruction),
-        .o_RegDst (o_RegDst),
-        .o_RegWrite (o_RegWrite),
+        .o_RegDst (wire_o_RegDst),
+        .o_RegWrite (wire_o_RegWrite),
         .o_ALUSrc (o_ALUSrc),
         .o_ALUOp (o_ALUOp),
         .o_ALUCtrl (o_ALUCtrl),
