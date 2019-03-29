@@ -13,7 +13,7 @@
 `define FREC_CLK_MHZ                            50.0       // Frecuencia del clock en MHZ.
 `define BAUD_RATE_TOP                           9600       // Baud rate.
 `define CANT_BIT_STOP_TOP                       2       // Cantidad de bits de parada en trama uart.
-`define HALT_OPCODE                             0       //  Opcode de la instruccion HALT.
+`define HALT_OPCODE                             32'hFFFFFFFF       //  Opcode de la instruccion HALT.
 `define RAM_WIDTH_DATOS                         32
 `define RAM_WIDTH_PROGRAMA                      32
 `define RAM_PERFORMANCE_DATOS                   "LOW_LATENCY"
@@ -337,15 +337,15 @@ module test_bench_top_arquitectura();
         #52160 uart_txd_in_reg = 1'b0;
 
         //primer dato - tercera instruccion //0000 0000
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b1;
+        #52160 uart_txd_in_reg = 1'b1;
+        #52160 uart_txd_in_reg = 1'b1;
+        #52160 uart_txd_in_reg = 1'b1;
         
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b1;
+        #52160 uart_txd_in_reg = 1'b1;
+        #52160 uart_txd_in_reg = 1'b1;
+        #52160 uart_txd_in_reg = 1'b1;
         
         //bits de stop
         #52160 uart_txd_in_reg = 1'b1;
@@ -355,15 +355,15 @@ module test_bench_top_arquitectura();
         #52160 uart_txd_in_reg = 1'b0;
 
         //segundo dato - tercera instruccion //0000 0000
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b1;
+        #52160 uart_txd_in_reg = 1'b1;
+        #52160 uart_txd_in_reg = 1'b1;
+        #52160 uart_txd_in_reg = 1'b1;
         
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b1;
+        #52160 uart_txd_in_reg = 1'b1;
+        #52160 uart_txd_in_reg = 1'b1;
+        #52160 uart_txd_in_reg = 1'b1;
         
         //bits de stop
         #52160 uart_txd_in_reg = 1'b1;
@@ -373,15 +373,15 @@ module test_bench_top_arquitectura();
         #52160 uart_txd_in_reg = 1'b0;
 
         //tercer dato - tercera instruccion //0000 0000
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b1;
+        #52160 uart_txd_in_reg = 1'b1;
+        #52160 uart_txd_in_reg = 1'b1;
+        #52160 uart_txd_in_reg = 1'b1;
         
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b1;
+        #52160 uart_txd_in_reg = 1'b1;
+        #52160 uart_txd_in_reg = 1'b1;
+        #52160 uart_txd_in_reg = 1'b1;
         
         //bits de stop
         #52160 uart_txd_in_reg = 1'b1;
@@ -391,15 +391,15 @@ module test_bench_top_arquitectura();
         #52160 uart_txd_in_reg = 1'b0;
 
         //cuarto dato - tercera instruccion //0000 0000
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b1;
+        #52160 uart_txd_in_reg = 1'b1;
+        #52160 uart_txd_in_reg = 1'b1;
+        #52160 uart_txd_in_reg = 1'b1;
         
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b1;
+        #52160 uart_txd_in_reg = 1'b1;
+        #52160 uart_txd_in_reg = 1'b1;
+        #52160 uart_txd_in_reg = 1'b1;
         
         //bits de stop
         #52160 uart_txd_in_reg = 1'b1;
