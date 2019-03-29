@@ -15,7 +15,7 @@ module test_bench_debug_unit();
        
    // Parametros
    parameter OUTPUT_WORD_LENGTH = 8;    //  Cantidad de bits de la palabra a transmitir.
-   parameter HALT_OPCODE = 0;           //  Opcode de la instruccion HALT.            
+   parameter HALT_OPCODE = 32'hFFFFFFFF;           //  Opcode de la instruccion HALT.            
    parameter ADDR_MEM_LENGTH = 11;            
    parameter CANTIDAD_ESTADOS = 34;
    parameter LONGITUD_INSTRUCCION = 32;
