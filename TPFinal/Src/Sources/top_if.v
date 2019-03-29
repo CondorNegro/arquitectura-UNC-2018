@@ -51,14 +51,17 @@ wire [ CANT_BITS_ADDR - 1 : 0 ] wire_output_mux2_TO_addr_memoria_programa;
 wire [CANT_BITS_ADDR - 1 : 0] wire_output_mux1_TO_idata_pc;
 wire [RAM_WIDTH_PROGRAMA - 1 : 0] wire_output_data_mem_programa_TO_dataA_mux3;
 
-reg reg_control_branch;
+wire [RAM_WIDTH_PROGRAMA - 1 : 0] wire_output_mux3_TO_IR;
+reg reg_intruction_register;
+assign o_instruction = reg_intruction_register;
 
-always@(posedge i_clock) begin
+
+always@(negedge i_clock) begin
   if (~i_soft_reset) begin
-    reg_control_branch <= 1'b0;
+    reg_intruction_register <= 1'b0;
   end
   else begin
-    reg_control_branch <= i_control_mux_PC;
+    reg_intruction_register <= wire_output_mux3_TO_IR;
   end
 end
 
@@ -116,8 +119,8 @@ mux
       (
           .i_data_A (wire_output_data_mem_programa_TO_dataA_mux3),
           .i_data_B (32'b00000000001000010000100000100100), /* AND R1, R1, R1  (actua como NOP)*/
-          .i_selector (reg_control_branch),
-          .o_result ( o_instruction)
+          .i_selector (i_control_mux_PC),
+          .o_result ( wire_output_mux3_TO_IR)
       );
 
 adder
