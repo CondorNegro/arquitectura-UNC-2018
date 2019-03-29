@@ -19,6 +19,8 @@ CANT_BITS_TARGET = 26
 DEPTH_MEM = 2048
 CANT_REGISTROS = 32
 NOMBRE_DE_ARCHIVO =  'assembler_MIPS.txt'
+HALT_INSTRUCTION = '1' * WIDTH_MEM
+
 global constantes_letras #Etiquetas
 global constantes_numeros #Valores de las etiquetas
 
@@ -372,7 +374,7 @@ for comando in arreglo_parseo:
 				
 				
 		else: #Instruccion HALT
-			cadena_binaria = '0' * WIDTH_MEM
+			cadena_binaria = HALT_INSTRUCTION
 		arreglo_binario.append (cadena_binaria)
 		
 print ("\nArreglo binario: ")

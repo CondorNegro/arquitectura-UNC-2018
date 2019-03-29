@@ -28,6 +28,7 @@ CANT_REGSITROS = 32
 CANT_BITS_ADDR_REGISTROS = int (math.log(CANT_REGSITROS, 2))
 CANT_BITS_ALU_CTRL = 4
 CANT_BITS_ALU_OP = 2
+HALT_INSTRUCTION = '1' * CANT_BITS_INSTRUCCION
 
 # Variables globales
 
@@ -877,7 +878,7 @@ def recibirDatosFromFPGA ():
 						contador_etapas = contador_etapas + 1
 						contador_subetapas = 0
 						flag_receive = False
-						if ((modo_ejecucion == '0') or (instruction_fetch == ('0' * 32))): #Continuo
+						if ((modo_ejecucion == '0') or (instruction_fetch == (HALT_INSTRUCTION))): #Continuo
 							activarBotones (1)
 						else: #Debug
 							activarBotones (4) 
