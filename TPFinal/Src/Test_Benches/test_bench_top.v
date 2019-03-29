@@ -145,7 +145,7 @@ module test_bench_top_arquitectura();
 
 
 
-         
+        
 
 
 
@@ -240,20 +240,20 @@ module test_bench_top_arquitectura();
 
 
         /////////////////////////////////////
-        // Segunda instruccion (LWU R3,C{R2})
+        // Segunda instruccion (J 2)
         /////////////////////////////////////
 
         //bit de inicio
         #52160 uart_txd_in_reg = 1'b0;
         
-        //primer dato - segunda instruccion //1001 1100
-        #52160 uart_txd_in_reg = 1'b1;
+        //primer dato - segunda instruccion //0000 1000
         #52160 uart_txd_in_reg = 1'b0;
         #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b1;
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b0;
         
         #52160 uart_txd_in_reg = 1'b1;
-        #52160 uart_txd_in_reg = 1'b1;
+        #52160 uart_txd_in_reg = 1'b0;
         #52160 uart_txd_in_reg = 1'b0;
         #52160 uart_txd_in_reg = 1'b0;
         
@@ -267,16 +267,16 @@ module test_bench_top_arquitectura();
         //bit de inicio
         #52160 uart_txd_in_reg = 1'b0;
         
-        //segundo dato - segunda instruccion //0100 0011
+        //segundo dato - segunda instruccion //0000 0000
         #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b1;
+        #52160 uart_txd_in_reg = 1'b0;
         #52160 uart_txd_in_reg = 1'b0;
         #52160 uart_txd_in_reg = 1'b0;
         
         #52160 uart_txd_in_reg = 1'b0;
         #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b1;
-        #52160 uart_txd_in_reg = 1'b1;
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b0;
         
         //bits de stop
         #52160 uart_txd_in_reg = 1'b1;
@@ -309,15 +309,15 @@ module test_bench_top_arquitectura();
         //bit de inicio
         #52160 uart_txd_in_reg = 1'b0;
         
-        //cuarto dato - segunda instruccion //0001 0100
+        //cuarto dato - segunda instruccion //0000 0010
         #52160 uart_txd_in_reg = 1'b0;
         #52160 uart_txd_in_reg = 1'b0;
         #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b1;
+        #52160 uart_txd_in_reg = 1'b0;
         
         #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b1;
         #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b1;
         #52160 uart_txd_in_reg = 1'b0;
         
         //bits de stop
@@ -330,13 +330,13 @@ module test_bench_top_arquitectura();
 
 
          ////////////////////////////
-        // Quinta instruccion (HALT)
+        // Tercera instruccion (HALT)
         ////////////////////////////
         
         //bit de inicio
         #52160 uart_txd_in_reg = 1'b0;
 
-        //primer dato - quinta instruccion //0000 0000
+        //primer dato - tercera instruccion //0000 0000
         #52160 uart_txd_in_reg = 1'b0;
         #52160 uart_txd_in_reg = 1'b0;
         #52160 uart_txd_in_reg = 1'b0;
@@ -354,7 +354,7 @@ module test_bench_top_arquitectura();
         //bit de inicio
         #52160 uart_txd_in_reg = 1'b0;
 
-        //segundo dato - quinta instruccion //0000 0000
+        //segundo dato - tercera instruccion //0000 0000
         #52160 uart_txd_in_reg = 1'b0;
         #52160 uart_txd_in_reg = 1'b0;
         #52160 uart_txd_in_reg = 1'b0;
@@ -372,7 +372,7 @@ module test_bench_top_arquitectura();
         //bit de inicio
         #52160 uart_txd_in_reg = 1'b0;
 
-        //tercer dato - quinta instruccion //0000 0000
+        //tercer dato - tercera instruccion //0000 0000
         #52160 uart_txd_in_reg = 1'b0;
         #52160 uart_txd_in_reg = 1'b0;
         #52160 uart_txd_in_reg = 1'b0;
@@ -390,7 +390,7 @@ module test_bench_top_arquitectura();
         //bit de inicio
         #52160 uart_txd_in_reg = 1'b0;
 
-        //cuarto dato - quinta instruccion //0000 0000
+        //cuarto dato - tercera instruccion //0000 0000
         #52160 uart_txd_in_reg = 1'b0;
         #52160 uart_txd_in_reg = 1'b0;
         #52160 uart_txd_in_reg = 1'b0;
@@ -412,6 +412,7 @@ module test_bench_top_arquitectura();
 
 
 
+       
         ///// START MIPS ///////
 
 
@@ -435,7 +436,10 @@ module test_bench_top_arquitectura();
         
         //bits de stop
         #52160 uart_txd_in_reg = 1'b1;
-        #52160 uart_txd_in_reg = 1'b1;
+        #52160 uart_txd_in_reg = 1'b1; 
+
+
+
 
 
 
@@ -695,7 +699,7 @@ module test_bench_top_arquitectura();
         //bit de inicio
         #52160 uart_txd_in_reg = 1'b0;
 
-        //ahora paso a estado de envio de BRANCH parte H.
+        //Branch-H //0101 1000
         #52160 uart_txd_in_reg = 1'b0;
         #52160 uart_txd_in_reg = 1'b1;
         #52160 uart_txd_in_reg = 1'b0;
@@ -710,13 +714,13 @@ module test_bench_top_arquitectura();
         #52160 uart_txd_in_reg = 1'b1;
 
 
-       //ahora paso a estado de envio de BRANCH parte L.
+       
        // Dejo un intervalo de tiempo.
        #520080 uart_txd_in_reg = 1'b1;
        //bit de inicio
        #52160 uart_txd_in_reg = 1'b0;
     
-       //ahora paso a estado de envio de BRANCH parte L.
+       //BRANCH-L //0110 0000
        #52160 uart_txd_in_reg = 1'b0;
        #52160 uart_txd_in_reg = 1'b1;
        #52160 uart_txd_in_reg = 1'b1;
@@ -731,56 +735,729 @@ module test_bench_top_arquitectura();
        #52160 uart_txd_in_reg = 1'b1;
 
 
-       //ahora paso a estado de envio de dato de REG A parte 3.
+       
+       // Dejo un intervalo de tiempo.
+       #520080 uart_txd_in_reg = 1'b1;
+       //bit de inicio
+       #52160 uart_txd_in_reg = 1'b0;
+    
+       //REG-A - 3 //0110 1000
+       #52160 uart_txd_in_reg = 1'b0;
+       #52160 uart_txd_in_reg = 1'b1;
+       #52160 uart_txd_in_reg = 1'b1;
+       #52160 uart_txd_in_reg = 1'b0;
+       
+       #52160 uart_txd_in_reg = 1'b1;
+       #52160 uart_txd_in_reg = 1'b0;
+       #52160 uart_txd_in_reg = 1'b0;
+       #52160 uart_txd_in_reg = 1'b0;
+       //bits de stop
+       #52160 uart_txd_in_reg = 1'b1;
+       #52160 uart_txd_in_reg = 1'b1;
+
+
+
+
+       
+       // Dejo un intervalo de tiempo.
+        #520080 uart_txd_in_reg = 1'b1;
+        //bit de inicio
+        #52160 uart_txd_in_reg = 1'b0;
+    
+        //REG-A - 2 // 0111 0000
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b1;
+        #52160 uart_txd_in_reg = 1'b1;
+        #52160 uart_txd_in_reg = 1'b1;
+        
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b0;
+        //bits de stop
+        #52160 uart_txd_in_reg = 1'b1;
+        #52160 uart_txd_in_reg = 1'b1;
+
+
+       
+
+        #520080 uart_txd_in_reg = 1'b1;
+       //bit de inicio
+       #52160 uart_txd_in_reg = 1'b0;
+    
+        // REG-A - 1 // 0111 1000
+       #52160 uart_txd_in_reg = 1'b0;
+       #52160 uart_txd_in_reg = 1'b1;
+       #52160 uart_txd_in_reg = 1'b1;
+       #52160 uart_txd_in_reg = 1'b1;
+       
+       #52160 uart_txd_in_reg = 1'b1;
+       #52160 uart_txd_in_reg = 1'b0;
+       #52160 uart_txd_in_reg = 1'b0;
+       #52160 uart_txd_in_reg = 1'b0;
+       //bits de stop
+       #52160 uart_txd_in_reg = 1'b1;
+       #52160 uart_txd_in_reg = 1'b1;
+
+
+       
+
+       #520080 uart_txd_in_reg = 1'b1;
+        //bit de inicio
+        #52160 uart_txd_in_reg = 1'b0;
+        
+        // REG-A - 0 // 1000 0000
+        #52160 uart_txd_in_reg = 1'b1;
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b0;
+        
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b0;
+        //bits de stop
+        #52160 uart_txd_in_reg = 1'b1;
+        #52160 uart_txd_in_reg = 1'b1;
+
+
+        
+        #520080 uart_txd_in_reg = 1'b1;
+        //bit de inicio
+        #52160 uart_txd_in_reg = 1'b0;
+
+        // REG-B - 3 // 1000 1000
+        #52160 uart_txd_in_reg = 1'b1;
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b0;
+        
+        #52160 uart_txd_in_reg = 1'b1;
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b0;
+        //bits de stop
+        #52160 uart_txd_in_reg = 1'b1;
+        #52160 uart_txd_in_reg = 1'b1;
+
+
+       
+        #520080 uart_txd_in_reg = 1'b1;
+        //bit de inicio
+        #52160 uart_txd_in_reg = 1'b0;
+
+        // REG-B - 2 // 1001 0000
+        #52160 uart_txd_in_reg = 1'b1;
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b1;
+        
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b0;
+        //bits de stop
+        #52160 uart_txd_in_reg = 1'b1;
+        #52160 uart_txd_in_reg = 1'b1;
+
+
+       
+
+        #520080 uart_txd_in_reg = 1'b1;
+        //bit de inicio
+        #52160 uart_txd_in_reg = 1'b0;
+        
+        // REG-B - 1 // 1001 1000
+        #52160 uart_txd_in_reg = 1'b1;
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b1;
+        
+        #52160 uart_txd_in_reg = 1'b1;
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b0;
+        //bits de stop
+        #52160 uart_txd_in_reg = 1'b1;
+        #52160 uart_txd_in_reg = 1'b1;
+
+       
+
+        #520080 uart_txd_in_reg = 1'b1;
+        //bit de inicio
+        #52160 uart_txd_in_reg = 1'b0;
+        
+        // REG-B - 0 // 1010 0000
+        #52160 uart_txd_in_reg = 1'b1;
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b1;
+        #52160 uart_txd_in_reg = 1'b0;
+        
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b0;
+        //bits de stop
+        #52160 uart_txd_in_reg = 1'b1;
+        #52160 uart_txd_in_reg = 1'b1;
+
+
+       
+        #520080 uart_txd_in_reg = 1'b1;
+        //bit de inicio
+        #52160 uart_txd_in_reg = 1'b0;
+        
+        // EXTENSION SIGNO - 3 // 1010 1000
+        #52160 uart_txd_in_reg = 1'b1;
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b1;
+        #52160 uart_txd_in_reg = 1'b0;
+        
+        #52160 uart_txd_in_reg = 1'b1;
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b0;
+        //bits de stop
+        #52160 uart_txd_in_reg = 1'b1;
+        #52160 uart_txd_in_reg = 1'b1;
+
+
+       
+        #520080 uart_txd_in_reg = 1'b1;
+        //bit de inicio
+        #52160 uart_txd_in_reg = 1'b0;
+        
+        // EXTENSION SIGNO - 2 // 1011 0000
+        #52160 uart_txd_in_reg = 1'b1;
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b1;
+        #52160 uart_txd_in_reg = 1'b1;
+        
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b0;
+        //bits de stop
+        #52160 uart_txd_in_reg = 1'b1;
+        #52160 uart_txd_in_reg = 1'b1;
+
+
+       
+        #520080 uart_txd_in_reg = 1'b1;
+        //bit de inicio
+        #52160 uart_txd_in_reg = 1'b0;
+        
+        // EXTENSION SIGNO - 1 // 1011 1000
+        #52160 uart_txd_in_reg = 1'b1;
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b1;
+        #52160 uart_txd_in_reg = 1'b1;
+        
+        #52160 uart_txd_in_reg = 1'b1;
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b0;
+        //bits de stop
+        #52160 uart_txd_in_reg = 1'b1;
+        #52160 uart_txd_in_reg = 1'b1;
+
+       
+
+        #520080 uart_txd_in_reg = 1'b1;
+        //bit de inicio
+        #52160 uart_txd_in_reg = 1'b0;
+        
+        // EXTENSION SIGNO - 0 // 1100 0000
+        #52160 uart_txd_in_reg = 1'b1;
+        #52160 uart_txd_in_reg = 1'b1;
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b0;
+        
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b0;
+        //bits de stop
+        #52160 uart_txd_in_reg = 1'b1;
+        #52160 uart_txd_in_reg = 1'b1;
+
+
+       
+        #520080 uart_txd_in_reg = 1'b1;
+        //bit de inicio
+        #52160 uart_txd_in_reg = 1'b0;
+        
+        // REG ADDRESS - H // 1100 1000
+        #52160 uart_txd_in_reg = 1'b1;
+        #52160 uart_txd_in_reg = 1'b1;
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b0;
+        
+        #52160 uart_txd_in_reg = 1'b1;
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b0;
+        //bits de stop
+        #52160 uart_txd_in_reg = 1'b1;
+        #52160 uart_txd_in_reg = 1'b1;
+
+
+       
+        #520080 uart_txd_in_reg = 1'b1;
+        //bit de inicio
+        #52160 uart_txd_in_reg = 1'b0;
+        
+        // REG-ADDRESS // 1101 0000
+        #52160 uart_txd_in_reg = 1'b1;
+        #52160 uart_txd_in_reg = 1'b1;
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b1;
+        
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b0;
+        //bits de stop
+        #52160 uart_txd_in_reg = 1'b1;
+        #52160 uart_txd_in_reg = 1'b1;
+
+
+       
+        #520080 uart_txd_in_reg = 1'b1;
+        //bit de inicio
+        #52160 uart_txd_in_reg = 1'b0;
+        // SEÑALES CONTROL ID/EX - H // 1101 1000
+        #52160 uart_txd_in_reg = 1'b1;
+        #52160 uart_txd_in_reg = 1'b1;
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b1;
+        
+        #52160 uart_txd_in_reg = 1'b1;
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b0;
+        //bits de stop
+        #52160 uart_txd_in_reg = 1'b1;
+        #52160 uart_txd_in_reg = 1'b1;
+
+
+    
+
+
+       
+        #520080 uart_txd_in_reg = 1'b1;
+        //bit de inicio
+        #52160 uart_txd_in_reg = 1'b0;
+        // SEÑALES CONTROL ID/EX - L // 1110 0000
+        #52160 uart_txd_in_reg = 1'b1;
+        #52160 uart_txd_in_reg = 1'b1;
+        #52160 uart_txd_in_reg = 1'b1;
+        #52160 uart_txd_in_reg = 1'b0;
+        
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b0;
+        //bits de stop
+        #52160 uart_txd_in_reg = 1'b1;
+        #52160 uart_txd_in_reg = 1'b1;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        ///// START MIPS ///////
+
+
         // Dejo un intervalo de tiempo.
-       #520080 uart_txd_in_reg = 1'b1;
-       //bit de inicio
-       #52160 uart_txd_in_reg = 1'b0;
+		#520080 uart_txd_in_reg = 1'b1;
+
+        //bit de inicio
+        #52160 uart_txd_in_reg = 1'b0;
+
+        
+        //quinto dato - start MIPS //0000 0111
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b0;
+        
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b1;
+        #52160 uart_txd_in_reg = 1'b1;
+        #52160 uart_txd_in_reg = 1'b1;
+        
+        //bits de stop
+        #52160 uart_txd_in_reg = 1'b1;
+        #52160 uart_txd_in_reg = 1'b1; 
+
+
+
+
+
+
+
+        // Dejo un intervalo de tiempo.
+		#520080 uart_txd_in_reg = 1'b1;
+
+
+        ///////////////////////////
+        // Obtener valores del MIPS
+        ///////////////////////////
+
+        //bit de inicio
+        #52160 uart_txd_in_reg = 1'b0;
+
+        
+        //PC-H //0000 1000
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b0;
+        
+        #52160 uart_txd_in_reg = 1'b1;
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b0;
+        
+        //bits de stop
+        #52160 uart_txd_in_reg = 1'b1;
+        #52160 uart_txd_in_reg = 1'b1;
+        
+        
+        // Dejo un intervalo de tiempo.
+        #520080 uart_txd_in_reg = 1'b1;
     
-              //ahora paso a estado de envio de dato de REG A parte 3.
-       #52160 uart_txd_in_reg = 1'b0;
-       #52160 uart_txd_in_reg = 1'b1;
-       #52160 uart_txd_in_reg = 1'b1;
-       #52160 uart_txd_in_reg = 1'b0;
+        //bit de inicio
+        #52160 uart_txd_in_reg = 1'b0;
+        
+                
+        //PC-L //0001 0000
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b1;
+        
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b0;
+        
+        //bits de stop
+        #52160 uart_txd_in_reg = 1'b1;
+        #52160 uart_txd_in_reg = 1'b1;
+
+
+
+        // Dejo un intervalo de tiempo.
+        #520080 uart_txd_in_reg = 1'b1;
+    
+        //bit de inicio
+        #52160 uart_txd_in_reg = 1'b0;
+        
+                
+        //CC-H //0001 1000
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b1;
+        
+        #52160 uart_txd_in_reg = 1'b1;
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b0;
+        
+        //bits de stop
+        #52160 uart_txd_in_reg = 1'b1;
+        #52160 uart_txd_in_reg = 1'b1;
+
+
+        // Dejo un intervalo de tiempo.
+        #520080 uart_txd_in_reg = 1'b1;
+    
+        //bit de inicio
+        #52160 uart_txd_in_reg = 1'b0;
+        
+                
+        //CC-L //0010 0000
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b1;
+        #52160 uart_txd_in_reg = 1'b0;
+        
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b0;
+        
+        //bits de stop
+        #52160 uart_txd_in_reg = 1'b1;
+        #52160 uart_txd_in_reg = 1'b1;
+
+
+
+        // Dejo un intervalo de tiempo.
+        #520080 uart_txd_in_reg = 1'b1;
+    
+        //bit de inicio
+        #52160 uart_txd_in_reg = 1'b0;
+        
+                
+        //PC4-H //0010 1000
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b1;
+        #52160 uart_txd_in_reg = 1'b0;
+        
+        #52160 uart_txd_in_reg = 1'b1;
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b0;
+        
+        //bits de stop
+        #52160 uart_txd_in_reg = 1'b1;
+        #52160 uart_txd_in_reg = 1'b1;
+
+
+        // Dejo un intervalo de tiempo.
+        #520080 uart_txd_in_reg = 1'b1;
+    
+        //bit de inicio
+        #52160 uart_txd_in_reg = 1'b0;
+        
+                
+        //PC4-L //0011 0000
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b1;
+        #52160 uart_txd_in_reg = 1'b1;
+        
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b0;
+        
+        //bits de stop
+        #52160 uart_txd_in_reg = 1'b1;
+        #52160 uart_txd_in_reg = 1'b1;
+
+
+
+
+
+        // Dejo un intervalo de tiempo.
+        #520080 uart_txd_in_reg = 1'b1;
+    
+        //bit de inicio
+        #52160 uart_txd_in_reg = 1'b0;
+        
+                
+        //Instruction-3 //0011 1000
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b1;
+        #52160 uart_txd_in_reg = 1'b1;
+        
+        #52160 uart_txd_in_reg = 1'b1;
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b0;
+        
+        //bits de stop
+        #52160 uart_txd_in_reg = 1'b1;
+        #52160 uart_txd_in_reg = 1'b1;
+
+
+
+
+        // Dejo un intervalo de tiempo.
+        #520080 uart_txd_in_reg = 1'b1;
+    
+        //bit de inicio
+        #52160 uart_txd_in_reg = 1'b0;
+        
+                
+        //Instruction-2 //0100 0000
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b1;
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b0;
+        
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b0;
+        
+        //bits de stop
+        #52160 uart_txd_in_reg = 1'b1;
+        #52160 uart_txd_in_reg = 1'b1;
+
+
+
+
+
+        // Dejo un intervalo de tiempo.
+        #520080 uart_txd_in_reg = 1'b1;
+    
+        //bit de inicio
+        #52160 uart_txd_in_reg = 1'b0;
+        
+                
+        //Instruction-1 //0100 1000
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b1;
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b0;
+        
+        #52160 uart_txd_in_reg = 1'b1;
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b0;
+        
+        //bits de stop
+        #52160 uart_txd_in_reg = 1'b1;
+        #52160 uart_txd_in_reg = 1'b1;
+
+
+        // Dejo un intervalo de tiempo.
+        #520080 uart_txd_in_reg = 1'b1;
+    
+        //bit de inicio
+        #52160 uart_txd_in_reg = 1'b0;
+        
+                
+        //Instruction-0 //0101 0000
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b1;
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b1;
+        
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b0;
+        
+        //bits de stop
+        #52160 uart_txd_in_reg = 1'b1;
+        #52160 uart_txd_in_reg = 1'b1;
+
+
+
+
+        
+        
+
+        // Dejo un intervalo de tiempo.
+        #520080 uart_txd_in_reg = 1'b1;
+        //bit de inicio
+        #52160 uart_txd_in_reg = 1'b0;
+
+        //Branch-H //0101 1000
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b1;
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b1;
+        
+        #52160 uart_txd_in_reg = 1'b1;
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b0;
+        //bits de stop
+        #52160 uart_txd_in_reg = 1'b1;
+        #52160 uart_txd_in_reg = 1'b1;
+
+
        
-       #52160 uart_txd_in_reg = 1'b1;
-       #52160 uart_txd_in_reg = 1'b0;
-       #52160 uart_txd_in_reg = 1'b0;
-       #52160 uart_txd_in_reg = 1'b0;
-       //bits de stop
-       #52160 uart_txd_in_reg = 1'b1;
-       #52160 uart_txd_in_reg = 1'b1;
-
-
-
-
-       //ahora paso a estado de envio de dato de REG A parte 2.
        // Dejo un intervalo de tiempo.
-          #520080 uart_txd_in_reg = 1'b1;
-          //bit de inicio
-          #52160 uart_txd_in_reg = 1'b0;
+       #520080 uart_txd_in_reg = 1'b1;
+       //bit de inicio
+       #52160 uart_txd_in_reg = 1'b0;
+    
+       //BRANCH-L //0110 0000
+       #52160 uart_txd_in_reg = 1'b0;
+       #52160 uart_txd_in_reg = 1'b1;
+       #52160 uart_txd_in_reg = 1'b1;
+       #52160 uart_txd_in_reg = 1'b0;
        
-          //ahora paso a estado de envio de  REG A parte 2
-          #52160 uart_txd_in_reg = 1'b0;
-          #52160 uart_txd_in_reg = 1'b1;
-          #52160 uart_txd_in_reg = 1'b1;
-          #52160 uart_txd_in_reg = 1'b1;
-          
-          #52160 uart_txd_in_reg = 1'b0;
-          #52160 uart_txd_in_reg = 1'b0;
-          #52160 uart_txd_in_reg = 1'b0;
-          #52160 uart_txd_in_reg = 1'b0;
-          //bits de stop
-          #52160 uart_txd_in_reg = 1'b1;
-          #52160 uart_txd_in_reg = 1'b1;
+       #52160 uart_txd_in_reg = 1'b0;
+       #52160 uart_txd_in_reg = 1'b0;
+       #52160 uart_txd_in_reg = 1'b0;
+       #52160 uart_txd_in_reg = 1'b0;
+       //bits de stop
+       #52160 uart_txd_in_reg = 1'b1;
+       #52160 uart_txd_in_reg = 1'b1;
 
 
-       //ahora paso a estado de envio de dato de REG A parte 1.
+       
+       // Dejo un intervalo de tiempo.
+       #520080 uart_txd_in_reg = 1'b1;
+       //bit de inicio
+       #52160 uart_txd_in_reg = 1'b0;
+    
+       //REG-A - 3 //0110 1000
+       #52160 uart_txd_in_reg = 1'b0;
+       #52160 uart_txd_in_reg = 1'b1;
+       #52160 uart_txd_in_reg = 1'b1;
+       #52160 uart_txd_in_reg = 1'b0;
+       
+       #52160 uart_txd_in_reg = 1'b1;
+       #52160 uart_txd_in_reg = 1'b0;
+       #52160 uart_txd_in_reg = 1'b0;
+       #52160 uart_txd_in_reg = 1'b0;
+       //bits de stop
+       #52160 uart_txd_in_reg = 1'b1;
+       #52160 uart_txd_in_reg = 1'b1;
+
+
+
+
+       
+       // Dejo un intervalo de tiempo.
+        #520080 uart_txd_in_reg = 1'b1;
+        //bit de inicio
+        #52160 uart_txd_in_reg = 1'b0;
+    
+        //REG-A - 2 // 0111 0000
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b1;
+        #52160 uart_txd_in_reg = 1'b1;
+        #52160 uart_txd_in_reg = 1'b1;
+        
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b0;
+        //bits de stop
+        #52160 uart_txd_in_reg = 1'b1;
+        #52160 uart_txd_in_reg = 1'b1;
+
+
+       
 
         #520080 uart_txd_in_reg = 1'b1;
        //bit de inicio
        #52160 uart_txd_in_reg = 1'b0;
     
+        // REG-A - 1 // 0111 1000
        #52160 uart_txd_in_reg = 1'b0;
        #52160 uart_txd_in_reg = 1'b1;
        #52160 uart_txd_in_reg = 1'b1;
@@ -795,76 +1472,59 @@ module test_bench_top_arquitectura();
        #52160 uart_txd_in_reg = 1'b1;
 
 
-       //ahora paso a estado de envio de dato de REG A parte 0.
+       
 
        #520080 uart_txd_in_reg = 1'b1;
-      //bit de inicio
-      #52160 uart_txd_in_reg = 1'b0;
-   
-      #52160 uart_txd_in_reg = 1'b1;
-      #52160 uart_txd_in_reg = 1'b0;
-      #52160 uart_txd_in_reg = 1'b0;
-      #52160 uart_txd_in_reg = 1'b0;
-      
-      #52160 uart_txd_in_reg = 1'b0;
-      #52160 uart_txd_in_reg = 1'b0;
-      #52160 uart_txd_in_reg = 1'b0;
-      #52160 uart_txd_in_reg = 1'b0;
-      //bits de stop
-      #52160 uart_txd_in_reg = 1'b1;
-      #52160 uart_txd_in_reg = 1'b1;
+        //bit de inicio
+        #52160 uart_txd_in_reg = 1'b0;
+        
+        // REG-A - 0 // 1000 0000
+        #52160 uart_txd_in_reg = 1'b1;
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b0;
+        
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b0;
+        //bits de stop
+        #52160 uart_txd_in_reg = 1'b1;
+        #52160 uart_txd_in_reg = 1'b1;
 
 
-       //ahora paso a estado de envio de dato de REG B parte 3.
-              #520080 uart_txd_in_reg = 1'b1;
-      //bit de inicio
-      #52160 uart_txd_in_reg = 1'b0;
-   
-      #52160 uart_txd_in_reg = 1'b1;
-      #52160 uart_txd_in_reg = 1'b0;
-      #52160 uart_txd_in_reg = 1'b0;
-      #52160 uart_txd_in_reg = 1'b0;
-      
-      #52160 uart_txd_in_reg = 1'b1;
-      #52160 uart_txd_in_reg = 1'b0;
-      #52160 uart_txd_in_reg = 1'b0;
-      #52160 uart_txd_in_reg = 1'b0;
-      //bits de stop
-      #52160 uart_txd_in_reg = 1'b1;
-      #52160 uart_txd_in_reg = 1'b1;
+        
+        #520080 uart_txd_in_reg = 1'b1;
+        //bit de inicio
+        #52160 uart_txd_in_reg = 1'b0;
+
+        // REG-B - 3 // 1000 1000
+        #52160 uart_txd_in_reg = 1'b1;
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b0;
+        
+        #52160 uart_txd_in_reg = 1'b1;
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b0;
+        //bits de stop
+        #52160 uart_txd_in_reg = 1'b1;
+        #52160 uart_txd_in_reg = 1'b1;
 
 
-       //ahora paso a estado de envio de dato de REG B parte 2.
-          #520080 uart_txd_in_reg = 1'b1;
-          //bit de inicio
-          #52160 uart_txd_in_reg = 1'b0;
        
-          #52160 uart_txd_in_reg = 1'b1;
-          #52160 uart_txd_in_reg = 1'b0;
-          #52160 uart_txd_in_reg = 1'b0;
-          #52160 uart_txd_in_reg = 1'b1;
-          
-          #52160 uart_txd_in_reg = 1'b0;
-          #52160 uart_txd_in_reg = 1'b0;
-          #52160 uart_txd_in_reg = 1'b0;
-          #52160 uart_txd_in_reg = 1'b0;
-          //bits de stop
-          #52160 uart_txd_in_reg = 1'b1;
-          #52160 uart_txd_in_reg = 1'b1;
-
-
-       //ahora paso a estado de envio de dato de REG B parte 1.
-
         #520080 uart_txd_in_reg = 1'b1;
         //bit de inicio
         #52160 uart_txd_in_reg = 1'b0;
-        
+
+        // REG-B - 2 // 1001 0000
         #52160 uart_txd_in_reg = 1'b1;
         #52160 uart_txd_in_reg = 1'b0;
         #52160 uart_txd_in_reg = 1'b0;
         #52160 uart_txd_in_reg = 1'b1;
         
-        #52160 uart_txd_in_reg = 1'b1;
+        #52160 uart_txd_in_reg = 1'b0;
         #52160 uart_txd_in_reg = 1'b0;
         #52160 uart_txd_in_reg = 1'b0;
         #52160 uart_txd_in_reg = 1'b0;
@@ -872,31 +1532,54 @@ module test_bench_top_arquitectura();
         #52160 uart_txd_in_reg = 1'b1;
         #52160 uart_txd_in_reg = 1'b1;
 
-       //ahora paso a estado de envio de dato de REG B parte 0.
 
-        #520080 uart_txd_in_reg = 1'b1;
-       //bit de inicio
-       #52160 uart_txd_in_reg = 1'b0;
        
-       #52160 uart_txd_in_reg = 1'b1;
-       #52160 uart_txd_in_reg = 1'b0;
-       #52160 uart_txd_in_reg = 1'b1;
-       #52160 uart_txd_in_reg = 1'b0;
+
+        #520080 uart_txd_in_reg = 1'b1;
+        //bit de inicio
+        #52160 uart_txd_in_reg = 1'b0;
+        
+        // REG-B - 1 // 1001 1000
+        #52160 uart_txd_in_reg = 1'b1;
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b1;
+        
+        #52160 uart_txd_in_reg = 1'b1;
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b0;
+        //bits de stop
+        #52160 uart_txd_in_reg = 1'b1;
+        #52160 uart_txd_in_reg = 1'b1;
+
        
-       #52160 uart_txd_in_reg = 1'b0;
-       #52160 uart_txd_in_reg = 1'b0;
-       #52160 uart_txd_in_reg = 1'b0;
-       #52160 uart_txd_in_reg = 1'b0;
-       //bits de stop
-       #52160 uart_txd_in_reg = 1'b1;
-       #52160 uart_txd_in_reg = 1'b1;
 
-
-       //ahora paso a estado de envio de dato inmediato con extension de signo parte 3.
         #520080 uart_txd_in_reg = 1'b1;
         //bit de inicio
         #52160 uart_txd_in_reg = 1'b0;
         
+        // REG-B - 0 // 1010 0000
+        #52160 uart_txd_in_reg = 1'b1;
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b1;
+        #52160 uart_txd_in_reg = 1'b0;
+        
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b0;
+        //bits de stop
+        #52160 uart_txd_in_reg = 1'b1;
+        #52160 uart_txd_in_reg = 1'b1;
+
+
+       
+        #520080 uart_txd_in_reg = 1'b1;
+        //bit de inicio
+        #52160 uart_txd_in_reg = 1'b0;
+        
+        // EXTENSION SIGNO - 3 // 1010 1000
         #52160 uart_txd_in_reg = 1'b1;
         #52160 uart_txd_in_reg = 1'b0;
         #52160 uart_txd_in_reg = 1'b1;
@@ -911,11 +1594,12 @@ module test_bench_top_arquitectura();
         #52160 uart_txd_in_reg = 1'b1;
 
 
-       //ahora paso a estado de envio de dato inmediato con extension de signo parte 2.
+       
         #520080 uart_txd_in_reg = 1'b1;
         //bit de inicio
         #52160 uart_txd_in_reg = 1'b0;
         
+        // EXTENSION SIGNO - 2 // 1011 0000
         #52160 uart_txd_in_reg = 1'b1;
         #52160 uart_txd_in_reg = 1'b0;
         #52160 uart_txd_in_reg = 1'b1;
@@ -930,11 +1614,12 @@ module test_bench_top_arquitectura();
         #52160 uart_txd_in_reg = 1'b1;
 
 
-       //ahora paso a estado de envio de dato inmediato con extension de signo parte 1.
+       
         #520080 uart_txd_in_reg = 1'b1;
         //bit de inicio
         #52160 uart_txd_in_reg = 1'b0;
         
+        // EXTENSION SIGNO - 1 // 1011 1000
         #52160 uart_txd_in_reg = 1'b1;
         #52160 uart_txd_in_reg = 1'b0;
         #52160 uart_txd_in_reg = 1'b1;
@@ -948,11 +1633,13 @@ module test_bench_top_arquitectura();
         #52160 uart_txd_in_reg = 1'b1;
         #52160 uart_txd_in_reg = 1'b1;
 
-       //ahora paso a estado de envio de dato inmediato con extension de signo parte 0.
+       
+
         #520080 uart_txd_in_reg = 1'b1;
         //bit de inicio
         #52160 uart_txd_in_reg = 1'b0;
         
+        // EXTENSION SIGNO - 0 // 1100 0000
         #52160 uart_txd_in_reg = 1'b1;
         #52160 uart_txd_in_reg = 1'b1;
         #52160 uart_txd_in_reg = 1'b0;
@@ -967,11 +1654,12 @@ module test_bench_top_arquitectura();
         #52160 uart_txd_in_reg = 1'b1;
 
 
-       //ahora paso a estado de envio de direcciones de registros rs, rt y rd parte H.
+       
         #520080 uart_txd_in_reg = 1'b1;
         //bit de inicio
         #52160 uart_txd_in_reg = 1'b0;
         
+        // REG ADDRESS - H // 1100 1000
         #52160 uart_txd_in_reg = 1'b1;
         #52160 uart_txd_in_reg = 1'b1;
         #52160 uart_txd_in_reg = 1'b0;
@@ -986,11 +1674,12 @@ module test_bench_top_arquitectura();
         #52160 uart_txd_in_reg = 1'b1;
 
 
-       //ahora paso a estado de envio de direcciones de registros rs, rt y rd parte L.
+       
         #520080 uart_txd_in_reg = 1'b1;
         //bit de inicio
         #52160 uart_txd_in_reg = 1'b0;
         
+        // REG-ADDRESS // 1101 0000
         #52160 uart_txd_in_reg = 1'b1;
         #52160 uart_txd_in_reg = 1'b1;
         #52160 uart_txd_in_reg = 1'b0;
@@ -1005,11 +1694,11 @@ module test_bench_top_arquitectura();
         #52160 uart_txd_in_reg = 1'b1;
 
 
-       //ahora paso a estado de envio de señales de control en etapa ID/EX parte H.
+       
         #520080 uart_txd_in_reg = 1'b1;
         //bit de inicio
         #52160 uart_txd_in_reg = 1'b0;
-        
+        // SEÑALES CONTROL ID/EX - H // 1101 1000
         #52160 uart_txd_in_reg = 1'b1;
         #52160 uart_txd_in_reg = 1'b1;
         #52160 uart_txd_in_reg = 1'b0;
@@ -1027,40 +1716,23 @@ module test_bench_top_arquitectura();
     
 
 
-       //ahora paso a estado de ESPERA.
-               #520080 uart_txd_in_reg = 1'b1;
-       //bit de inicio
-       #52160 uart_txd_in_reg = 1'b0;
        
-       #52160 uart_txd_in_reg = 1'b1;
-       #52160 uart_txd_in_reg = 1'b1;
-       #52160 uart_txd_in_reg = 1'b1;
-       #52160 uart_txd_in_reg = 1'b0;
-       
-       #52160 uart_txd_in_reg = 1'b0;
-       #52160 uart_txd_in_reg = 1'b0;
-       #52160 uart_txd_in_reg = 1'b0;
-       #52160 uart_txd_in_reg = 1'b0;
-       //bits de stop
-       #52160 uart_txd_in_reg = 1'b1;
-       #52160 uart_txd_in_reg = 1'b1;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+        #520080 uart_txd_in_reg = 1'b1;
+        //bit de inicio
+        #52160 uart_txd_in_reg = 1'b0;
+        // SEÑALES CONTROL ID/EX - L // 1110 0000
+        #52160 uart_txd_in_reg = 1'b1;
+        #52160 uart_txd_in_reg = 1'b1;
+        #52160 uart_txd_in_reg = 1'b1;
+        #52160 uart_txd_in_reg = 1'b0;
+        
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b0;
+        //bits de stop
+        #52160 uart_txd_in_reg = 1'b1;
+        #52160 uart_txd_in_reg = 1'b1;
 
 
 
@@ -1119,7 +1791,10 @@ module test_bench_top_arquitectura();
         
         //bits de stop
         #52160 uart_txd_in_reg = 1'b1;
-        #52160 uart_txd_in_reg = 1'b1;
+        #52160 uart_txd_in_reg = 1'b1; 
+
+
+
 
 
 
@@ -1379,7 +2054,7 @@ module test_bench_top_arquitectura();
         //bit de inicio
         #52160 uart_txd_in_reg = 1'b0;
 
-        //ahora paso a estado de envio de BRANCH parte H.
+        //Branch-H //0101 1000
         #52160 uart_txd_in_reg = 1'b0;
         #52160 uart_txd_in_reg = 1'b1;
         #52160 uart_txd_in_reg = 1'b0;
@@ -1394,13 +2069,13 @@ module test_bench_top_arquitectura();
         #52160 uart_txd_in_reg = 1'b1;
 
 
-       //ahora paso a estado de envio de BRANCH parte L.
+       
        // Dejo un intervalo de tiempo.
        #520080 uart_txd_in_reg = 1'b1;
        //bit de inicio
        #52160 uart_txd_in_reg = 1'b0;
     
-       //ahora paso a estado de envio de BRANCH parte L.
+       //BRANCH-L //0110 0000
        #52160 uart_txd_in_reg = 1'b0;
        #52160 uart_txd_in_reg = 1'b1;
        #52160 uart_txd_in_reg = 1'b1;
@@ -1415,56 +2090,57 @@ module test_bench_top_arquitectura();
        #52160 uart_txd_in_reg = 1'b1;
 
 
-       //ahora paso a estado de envio de dato de REG A parte 3.
-        // Dejo un intervalo de tiempo.
-       #520080 uart_txd_in_reg = 1'b1;
-       //bit de inicio
-       #52160 uart_txd_in_reg = 1'b0;
-    
-              //ahora paso a estado de envio de dato de REG A parte 3.
-       #52160 uart_txd_in_reg = 1'b0;
-       #52160 uart_txd_in_reg = 1'b1;
-       #52160 uart_txd_in_reg = 1'b1;
-       #52160 uart_txd_in_reg = 1'b0;
        
-       #52160 uart_txd_in_reg = 1'b1;
-       #52160 uart_txd_in_reg = 1'b0;
-       #52160 uart_txd_in_reg = 1'b0;
-       #52160 uart_txd_in_reg = 1'b0;
-       //bits de stop
-       #52160 uart_txd_in_reg = 1'b1;
-       #52160 uart_txd_in_reg = 1'b1;
-
-
-
-
-       //ahora paso a estado de envio de dato de REG A parte 2.
        // Dejo un intervalo de tiempo.
-          #520080 uart_txd_in_reg = 1'b1;
-          //bit de inicio
-          #52160 uart_txd_in_reg = 1'b0;
+       #520080 uart_txd_in_reg = 1'b1;
+       //bit de inicio
+       #52160 uart_txd_in_reg = 1'b0;
+    
+       //REG-A - 3 //0110 1000
+       #52160 uart_txd_in_reg = 1'b0;
+       #52160 uart_txd_in_reg = 1'b1;
+       #52160 uart_txd_in_reg = 1'b1;
+       #52160 uart_txd_in_reg = 1'b0;
        
-          //ahora paso a estado de envio de  REG A parte 2
-          #52160 uart_txd_in_reg = 1'b0;
-          #52160 uart_txd_in_reg = 1'b1;
-          #52160 uart_txd_in_reg = 1'b1;
-          #52160 uart_txd_in_reg = 1'b1;
-          
-          #52160 uart_txd_in_reg = 1'b0;
-          #52160 uart_txd_in_reg = 1'b0;
-          #52160 uart_txd_in_reg = 1'b0;
-          #52160 uart_txd_in_reg = 1'b0;
-          //bits de stop
-          #52160 uart_txd_in_reg = 1'b1;
-          #52160 uart_txd_in_reg = 1'b1;
+       #52160 uart_txd_in_reg = 1'b1;
+       #52160 uart_txd_in_reg = 1'b0;
+       #52160 uart_txd_in_reg = 1'b0;
+       #52160 uart_txd_in_reg = 1'b0;
+       //bits de stop
+       #52160 uart_txd_in_reg = 1'b1;
+       #52160 uart_txd_in_reg = 1'b1;
 
 
-       //ahora paso a estado de envio de dato de REG A parte 1.
+
+
+       
+       // Dejo un intervalo de tiempo.
+        #520080 uart_txd_in_reg = 1'b1;
+        //bit de inicio
+        #52160 uart_txd_in_reg = 1'b0;
+    
+        //REG-A - 2 // 0111 0000
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b1;
+        #52160 uart_txd_in_reg = 1'b1;
+        #52160 uart_txd_in_reg = 1'b1;
+        
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b0;
+        //bits de stop
+        #52160 uart_txd_in_reg = 1'b1;
+        #52160 uart_txd_in_reg = 1'b1;
+
+
+       
 
         #520080 uart_txd_in_reg = 1'b1;
        //bit de inicio
        #52160 uart_txd_in_reg = 1'b0;
     
+        // REG-A - 1 // 0111 1000
        #52160 uart_txd_in_reg = 1'b0;
        #52160 uart_txd_in_reg = 1'b1;
        #52160 uart_txd_in_reg = 1'b1;
@@ -1479,76 +2155,59 @@ module test_bench_top_arquitectura();
        #52160 uart_txd_in_reg = 1'b1;
 
 
-       //ahora paso a estado de envio de dato de REG A parte 0.
+       
 
        #520080 uart_txd_in_reg = 1'b1;
-      //bit de inicio
-      #52160 uart_txd_in_reg = 1'b0;
-   
-      #52160 uart_txd_in_reg = 1'b1;
-      #52160 uart_txd_in_reg = 1'b0;
-      #52160 uart_txd_in_reg = 1'b0;
-      #52160 uart_txd_in_reg = 1'b0;
-      
-      #52160 uart_txd_in_reg = 1'b0;
-      #52160 uart_txd_in_reg = 1'b0;
-      #52160 uart_txd_in_reg = 1'b0;
-      #52160 uart_txd_in_reg = 1'b0;
-      //bits de stop
-      #52160 uart_txd_in_reg = 1'b1;
-      #52160 uart_txd_in_reg = 1'b1;
+        //bit de inicio
+        #52160 uart_txd_in_reg = 1'b0;
+        
+        // REG-A - 0 // 1000 0000
+        #52160 uart_txd_in_reg = 1'b1;
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b0;
+        
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b0;
+        //bits de stop
+        #52160 uart_txd_in_reg = 1'b1;
+        #52160 uart_txd_in_reg = 1'b1;
 
 
-       //ahora paso a estado de envio de dato de REG B parte 3.
-              #520080 uart_txd_in_reg = 1'b1;
-      //bit de inicio
-      #52160 uart_txd_in_reg = 1'b0;
-   
-      #52160 uart_txd_in_reg = 1'b1;
-      #52160 uart_txd_in_reg = 1'b0;
-      #52160 uart_txd_in_reg = 1'b0;
-      #52160 uart_txd_in_reg = 1'b0;
-      
-      #52160 uart_txd_in_reg = 1'b1;
-      #52160 uart_txd_in_reg = 1'b0;
-      #52160 uart_txd_in_reg = 1'b0;
-      #52160 uart_txd_in_reg = 1'b0;
-      //bits de stop
-      #52160 uart_txd_in_reg = 1'b1;
-      #52160 uart_txd_in_reg = 1'b1;
+        
+        #520080 uart_txd_in_reg = 1'b1;
+        //bit de inicio
+        #52160 uart_txd_in_reg = 1'b0;
+
+        // REG-B - 3 // 1000 1000
+        #52160 uart_txd_in_reg = 1'b1;
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b0;
+        
+        #52160 uart_txd_in_reg = 1'b1;
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b0;
+        //bits de stop
+        #52160 uart_txd_in_reg = 1'b1;
+        #52160 uart_txd_in_reg = 1'b1;
 
 
-       //ahora paso a estado de envio de dato de REG B parte 2.
-          #520080 uart_txd_in_reg = 1'b1;
-          //bit de inicio
-          #52160 uart_txd_in_reg = 1'b0;
        
-          #52160 uart_txd_in_reg = 1'b1;
-          #52160 uart_txd_in_reg = 1'b0;
-          #52160 uart_txd_in_reg = 1'b0;
-          #52160 uart_txd_in_reg = 1'b1;
-          
-          #52160 uart_txd_in_reg = 1'b0;
-          #52160 uart_txd_in_reg = 1'b0;
-          #52160 uart_txd_in_reg = 1'b0;
-          #52160 uart_txd_in_reg = 1'b0;
-          //bits de stop
-          #52160 uart_txd_in_reg = 1'b1;
-          #52160 uart_txd_in_reg = 1'b1;
-
-
-       //ahora paso a estado de envio de dato de REG B parte 1.
-
         #520080 uart_txd_in_reg = 1'b1;
         //bit de inicio
         #52160 uart_txd_in_reg = 1'b0;
-        
+
+        // REG-B - 2 // 1001 0000
         #52160 uart_txd_in_reg = 1'b1;
         #52160 uart_txd_in_reg = 1'b0;
         #52160 uart_txd_in_reg = 1'b0;
         #52160 uart_txd_in_reg = 1'b1;
         
-        #52160 uart_txd_in_reg = 1'b1;
+        #52160 uart_txd_in_reg = 1'b0;
         #52160 uart_txd_in_reg = 1'b0;
         #52160 uart_txd_in_reg = 1'b0;
         #52160 uart_txd_in_reg = 1'b0;
@@ -1556,31 +2215,54 @@ module test_bench_top_arquitectura();
         #52160 uart_txd_in_reg = 1'b1;
         #52160 uart_txd_in_reg = 1'b1;
 
-       //ahora paso a estado de envio de dato de REG B parte 0.
 
-        #520080 uart_txd_in_reg = 1'b1;
-       //bit de inicio
-       #52160 uart_txd_in_reg = 1'b0;
        
-       #52160 uart_txd_in_reg = 1'b1;
-       #52160 uart_txd_in_reg = 1'b0;
-       #52160 uart_txd_in_reg = 1'b1;
-       #52160 uart_txd_in_reg = 1'b0;
+
+        #520080 uart_txd_in_reg = 1'b1;
+        //bit de inicio
+        #52160 uart_txd_in_reg = 1'b0;
+        
+        // REG-B - 1 // 1001 1000
+        #52160 uart_txd_in_reg = 1'b1;
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b1;
+        
+        #52160 uart_txd_in_reg = 1'b1;
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b0;
+        //bits de stop
+        #52160 uart_txd_in_reg = 1'b1;
+        #52160 uart_txd_in_reg = 1'b1;
+
        
-       #52160 uart_txd_in_reg = 1'b0;
-       #52160 uart_txd_in_reg = 1'b0;
-       #52160 uart_txd_in_reg = 1'b0;
-       #52160 uart_txd_in_reg = 1'b0;
-       //bits de stop
-       #52160 uart_txd_in_reg = 1'b1;
-       #52160 uart_txd_in_reg = 1'b1;
 
-
-       //ahora paso a estado de envio de dato inmediato con extension de signo parte 3.
         #520080 uart_txd_in_reg = 1'b1;
         //bit de inicio
         #52160 uart_txd_in_reg = 1'b0;
         
+        // REG-B - 0 // 1010 0000
+        #52160 uart_txd_in_reg = 1'b1;
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b1;
+        #52160 uart_txd_in_reg = 1'b0;
+        
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b0;
+        //bits de stop
+        #52160 uart_txd_in_reg = 1'b1;
+        #52160 uart_txd_in_reg = 1'b1;
+
+
+       
+        #520080 uart_txd_in_reg = 1'b1;
+        //bit de inicio
+        #52160 uart_txd_in_reg = 1'b0;
+        
+        // EXTENSION SIGNO - 3 // 1010 1000
         #52160 uart_txd_in_reg = 1'b1;
         #52160 uart_txd_in_reg = 1'b0;
         #52160 uart_txd_in_reg = 1'b1;
@@ -1595,11 +2277,12 @@ module test_bench_top_arquitectura();
         #52160 uart_txd_in_reg = 1'b1;
 
 
-       //ahora paso a estado de envio de dato inmediato con extension de signo parte 2.
+       
         #520080 uart_txd_in_reg = 1'b1;
         //bit de inicio
         #52160 uart_txd_in_reg = 1'b0;
         
+        // EXTENSION SIGNO - 2 // 1011 0000
         #52160 uart_txd_in_reg = 1'b1;
         #52160 uart_txd_in_reg = 1'b0;
         #52160 uart_txd_in_reg = 1'b1;
@@ -1614,11 +2297,12 @@ module test_bench_top_arquitectura();
         #52160 uart_txd_in_reg = 1'b1;
 
 
-       //ahora paso a estado de envio de dato inmediato con extension de signo parte 1.
+       
         #520080 uart_txd_in_reg = 1'b1;
         //bit de inicio
         #52160 uart_txd_in_reg = 1'b0;
         
+        // EXTENSION SIGNO - 1 // 1011 1000
         #52160 uart_txd_in_reg = 1'b1;
         #52160 uart_txd_in_reg = 1'b0;
         #52160 uart_txd_in_reg = 1'b1;
@@ -1632,11 +2316,13 @@ module test_bench_top_arquitectura();
         #52160 uart_txd_in_reg = 1'b1;
         #52160 uart_txd_in_reg = 1'b1;
 
-       //ahora paso a estado de envio de dato inmediato con extension de signo parte 0.
+       
+
         #520080 uart_txd_in_reg = 1'b1;
         //bit de inicio
         #52160 uart_txd_in_reg = 1'b0;
         
+        // EXTENSION SIGNO - 0 // 1100 0000
         #52160 uart_txd_in_reg = 1'b1;
         #52160 uart_txd_in_reg = 1'b1;
         #52160 uart_txd_in_reg = 1'b0;
@@ -1651,11 +2337,12 @@ module test_bench_top_arquitectura();
         #52160 uart_txd_in_reg = 1'b1;
 
 
-       //ahora paso a estado de envio de direcciones de registros rs, rt y rd parte H.
+       
         #520080 uart_txd_in_reg = 1'b1;
         //bit de inicio
         #52160 uart_txd_in_reg = 1'b0;
         
+        // REG ADDRESS - H // 1100 1000
         #52160 uart_txd_in_reg = 1'b1;
         #52160 uart_txd_in_reg = 1'b1;
         #52160 uart_txd_in_reg = 1'b0;
@@ -1670,11 +2357,12 @@ module test_bench_top_arquitectura();
         #52160 uart_txd_in_reg = 1'b1;
 
 
-       //ahora paso a estado de envio de direcciones de registros rs, rt y rd parte L.
+       
         #520080 uart_txd_in_reg = 1'b1;
         //bit de inicio
         #52160 uart_txd_in_reg = 1'b0;
         
+        // REG-ADDRESS // 1101 0000
         #52160 uart_txd_in_reg = 1'b1;
         #52160 uart_txd_in_reg = 1'b1;
         #52160 uart_txd_in_reg = 1'b0;
@@ -1689,11 +2377,11 @@ module test_bench_top_arquitectura();
         #52160 uart_txd_in_reg = 1'b1;
 
 
-       //ahora paso a estado de envio de señales de control en etapa ID/EX parte H.
+       
         #520080 uart_txd_in_reg = 1'b1;
         //bit de inicio
         #52160 uart_txd_in_reg = 1'b0;
-        
+        // SEÑALES CONTROL ID/EX - H // 1101 1000
         #52160 uart_txd_in_reg = 1'b1;
         #52160 uart_txd_in_reg = 1'b1;
         #52160 uart_txd_in_reg = 1'b0;
@@ -1711,56 +2399,23 @@ module test_bench_top_arquitectura();
     
 
 
-       //ahora paso a estado de ESPERA.
-               #520080 uart_txd_in_reg = 1'b1;
-       //bit de inicio
-       #52160 uart_txd_in_reg = 1'b0;
        
-       #52160 uart_txd_in_reg = 1'b1;
-       #52160 uart_txd_in_reg = 1'b1;
-       #52160 uart_txd_in_reg = 1'b1;
-       #52160 uart_txd_in_reg = 1'b0;
-       
-       #52160 uart_txd_in_reg = 1'b0;
-       #52160 uart_txd_in_reg = 1'b0;
-       #52160 uart_txd_in_reg = 1'b0;
-       #52160 uart_txd_in_reg = 1'b0;
-       //bits de stop
-       #52160 uart_txd_in_reg = 1'b1;
-       #52160 uart_txd_in_reg = 1'b1;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+        #520080 uart_txd_in_reg = 1'b1;
+        //bit de inicio
+        #52160 uart_txd_in_reg = 1'b0;
+        // SEÑALES CONTROL ID/EX - L // 1110 0000
+        #52160 uart_txd_in_reg = 1'b1;
+        #52160 uart_txd_in_reg = 1'b1;
+        #52160 uart_txd_in_reg = 1'b1;
+        #52160 uart_txd_in_reg = 1'b0;
+        
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b0;
+        //bits de stop
+        #52160 uart_txd_in_reg = 1'b1;
+        #52160 uart_txd_in_reg = 1'b1;
 
 
 
