@@ -40,6 +40,7 @@
 `define CANT_BITS_INSTRUCTION_INDEX_BRANCH_TOP  26
 `define CANT_BITS_FLAG_BRANCH_TOP               3 
 `define CANT_BITS_ADDR_REGISTROS                5
+`define HALT_INSTRUCTION                        32'hFFFFFFFF
 
 module top_arquitectura(
   i_clock_top, 
@@ -58,7 +59,7 @@ parameter WIDTH_WORD_TOP    = `WIDTH_WORD_TOP;
 parameter FREC_CLK_MHZ      = `FREC_CLK_MHZ;
 parameter BAUD_RATE_TOP     = `BAUD_RATE_TOP;
 parameter CANT_BIT_STOP_TOP = `CANT_BIT_STOP_TOP;
-parameter HALT_OPCODE =   32'hFFFFFFFF;
+parameter HALT_INSTRUCTION  = `HALT_INSTRUCTION;
 parameter RAM_WIDTH_DATOS           = `RAM_WIDTH_DATOS;
 parameter RAM_WIDTH_PROGRAMA        =  `RAM_WIDTH_PROGRAMA;
 parameter RAM_PERFORMANCE_DATOS     =  `RAM_PERFORMANCE_DATOS;
@@ -196,7 +197,7 @@ debug_unit
         .ADDR_MEM_LENGTH (ADDR_MEM_PROGRAMA_LENGTH),                 
         .LONGITUD_INSTRUCCION (LONG_INSTRUCCION),              
         .OUTPUT_WORD_LENGTH (WIDTH_WORD_TOP),   
-        .HALT_OPCODE (HALT_OPCODE),
+        .HALT_INSTRUCTION   (HALT_INSTRUCTION ,
         .CANT_BITS_CONTROL_DATABASE (CANT_BITS_CONTROL_DATABASE_TOP)          
      ) 
    u_debug_unit1    // Una sola instancia de este modulo
