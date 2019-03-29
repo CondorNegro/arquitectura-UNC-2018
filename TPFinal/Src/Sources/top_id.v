@@ -228,12 +228,12 @@ control
         .i_instruction (i_instruction),
         .o_RegDst (wire_o_RegDst),
         .o_RegWrite (wire_o_RegWrite),
-        .o_ALUSrc (o_ALUSrc),
-        .o_ALUOp (o_ALUOp),
-        .o_ALUCtrl (o_ALUCtrl),
-        .o_MemRead (o_MemRead),
-        .o_MemWrite (o_MemWrite),
-        .o_MemtoReg (o_MemtoReg)
+        .o_ALUSrc (wire_o_ALUSrc),
+        .o_ALUOp (wire_o_ALUOp),
+        .o_ALUCtrl (wire_o_ALUCtrl),
+        .o_MemRead (wire_o_MemRead),
+        .o_MemWrite (wire_o_MemWrite),
+        .o_MemtoReg (wire_o_MemtoReg)
     );
 
 
