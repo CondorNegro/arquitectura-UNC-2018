@@ -626,7 +626,7 @@ always @ ( * ) begin //Output logic
          o_addr_mem_programa = 0;
          o_next_dato_mem_programa = 0;
          reg_next_modo_ejecucion = i_data_rx [2];// Continuo en cero, paso a paso en 1.
-         o_enable_mem = 1;
+         o_enable_mem = 0;
          o_rsta_mem = 0;
          o_regcea_mem = 0;
          o_led = 0;
@@ -666,7 +666,7 @@ always @ ( * ) begin //Output logic
          o_addr_mem_programa = 0;
          o_next_dato_mem_programa = 0;
          reg_next_modo_ejecucion = o_modo_ejecucion;// Continuo en cero, paso a paso en 1.
-         o_enable_mem = 1;
+         o_enable_mem = 0;
          o_rsta_mem = 0;
          o_regcea_mem = 0;
          o_led = 0;
@@ -683,7 +683,7 @@ always @ ( * ) begin //Output logic
          o_addr_mem_programa = 0;
          o_next_dato_mem_programa = 0;
          reg_next_modo_ejecucion = o_modo_ejecucion;// Continuo en cero, paso a paso en 1.
-         o_enable_mem = 1;
+         o_enable_mem = 0;
          o_rsta_mem = 0;
          o_regcea_mem = 0;
          o_led = 0;
@@ -700,7 +700,7 @@ always @ ( * ) begin //Output logic
           o_addr_mem_programa = 0;
           o_next_dato_mem_programa = 0;
           reg_next_modo_ejecucion = o_modo_ejecucion;// Continuo en cero, paso a paso en 1.
-          o_enable_mem = 1;
+          o_enable_mem = 0;
           o_rsta_mem = 0;
           o_regcea_mem = 0;
           o_led = 0;
@@ -718,7 +718,7 @@ always @ ( * ) begin //Output logic
           o_addr_mem_programa = 0;
           o_next_dato_mem_programa = 0;
           reg_next_modo_ejecucion = o_modo_ejecucion;// Continuo en cero, paso a paso en 1.
-          o_enable_mem = 1;
+          o_enable_mem = 0;
           o_rsta_mem = 0;
           o_regcea_mem = 0;
           o_led = 0;
@@ -735,7 +735,7 @@ always @ ( * ) begin //Output logic
           o_addr_mem_programa = 0;
           o_next_dato_mem_programa = 0;
           reg_next_modo_ejecucion = o_modo_ejecucion;// Continuo en cero, paso a paso en 1.
-          o_enable_mem = 1;
+          o_enable_mem = 0;
           o_rsta_mem = 0;
           o_regcea_mem = 0;
           o_led = 0;
@@ -752,7 +752,7 @@ always @ ( * ) begin //Output logic
          o_addr_mem_programa = 0;
          o_next_dato_mem_programa = 0;
          reg_next_modo_ejecucion = o_modo_ejecucion;// Continuo en cero, paso a paso en 1.
-         o_enable_mem = 1;
+         o_enable_mem = 0;
          o_rsta_mem = 0;
          o_regcea_mem = 0;
          o_led = 0;
@@ -769,7 +769,7 @@ always @ ( * ) begin //Output logic
          o_addr_mem_programa = 0;
          o_next_dato_mem_programa = 0;
          reg_next_modo_ejecucion = o_modo_ejecucion;// Continuo en cero, paso a paso en 1.
-         o_enable_mem = 1;
+         o_enable_mem = 0;
          o_rsta_mem = 0;
          o_regcea_mem = 0;
          o_led = 0;
@@ -788,7 +788,7 @@ always @ ( * ) begin //Output logic
          o_addr_mem_programa = 0;
          o_next_dato_mem_programa = 0;
          reg_next_modo_ejecucion = o_modo_ejecucion;// Continuo en cero, paso a paso en 1.
-         o_enable_mem = 1;
+         o_enable_mem = 0;
          o_rsta_mem = 0;
          o_regcea_mem = 0;
          o_led = 0;
@@ -806,7 +806,7 @@ always @ ( * ) begin //Output logic
          o_addr_mem_programa = 0;
          o_next_dato_mem_programa = 0;
          reg_next_modo_ejecucion = o_modo_ejecucion;// Continuo en cero, paso a paso en 1.
-         o_enable_mem = 1;
+         o_enable_mem = 0;
          o_rsta_mem = 0;
          o_regcea_mem = 0;
          o_led = 0;
@@ -823,7 +823,7 @@ always @ ( * ) begin //Output logic
          o_addr_mem_programa = 0;
          o_next_dato_mem_programa = 0;
          reg_next_modo_ejecucion = o_modo_ejecucion;// Continuo en cero, paso a paso en 1.
-         o_enable_mem = 1;
+         o_enable_mem = 0;
          o_rsta_mem = 0;
          o_regcea_mem = 0;
          o_led = 0;
@@ -840,7 +840,7 @@ always @ ( * ) begin //Output logic
           o_addr_mem_programa = 0;
           o_next_dato_mem_programa = 0;
           reg_next_modo_ejecucion = o_modo_ejecucion;// Continuo en cero, paso a paso en 1.
-          o_enable_mem = 1;
+          o_enable_mem = 0;
           o_rsta_mem = 0;
           o_regcea_mem = 0;
           o_led = 0;
@@ -857,7 +857,7 @@ always @ ( * ) begin //Output logic
           o_addr_mem_programa = 0;
           o_next_dato_mem_programa = 0;
           reg_next_modo_ejecucion = o_modo_ejecucion;// Continuo en cero, paso a paso en 1.
-          o_enable_mem = 1;
+          o_enable_mem = 0;
           o_rsta_mem = 0;
           o_regcea_mem = 0;
           o_led = 0;
@@ -874,7 +874,7 @@ always @ ( * ) begin //Output logic
           o_addr_mem_programa = 0;
           o_next_dato_mem_programa = 0;
           reg_next_modo_ejecucion = o_modo_ejecucion;// Continuo en cero, paso a paso en 1.
-          o_enable_mem = 1;
+          o_enable_mem = 0;
           o_rsta_mem = 0;
           o_regcea_mem = 0;
           o_led = 0;
@@ -891,7 +891,7 @@ always @ ( * ) begin //Output logic
           o_addr_mem_programa = 0;
           o_next_dato_mem_programa = 0;
           reg_next_modo_ejecucion = o_modo_ejecucion;// Continuo en cero, paso a paso en 1.
-          o_enable_mem = 1;
+          o_enable_mem = 0;
           o_rsta_mem = 0;
           o_regcea_mem = 0;
           o_led = 0;
@@ -908,7 +908,7 @@ always @ ( * ) begin //Output logic
           o_addr_mem_programa = 0;
           o_next_dato_mem_programa = 0;
           reg_next_modo_ejecucion = o_modo_ejecucion;// Continuo en cero, paso a paso en 1.
-          o_enable_mem = 1;
+          o_enable_mem = 0;
           o_rsta_mem = 0;
           o_regcea_mem = 0;
           o_led = 0;
@@ -925,7 +925,7 @@ always @ ( * ) begin //Output logic
           o_addr_mem_programa = 0;
           o_next_dato_mem_programa = 0;
           reg_next_modo_ejecucion = o_modo_ejecucion;// Continuo en cero, paso a paso en 1.
-          o_enable_mem = 1;
+          o_enable_mem = 0;
           o_rsta_mem = 0;
           o_regcea_mem = 0;
           o_led = 0;
@@ -942,7 +942,7 @@ always @ ( * ) begin //Output logic
           o_addr_mem_programa = 0;
           o_next_dato_mem_programa = 0;
           reg_next_modo_ejecucion = o_modo_ejecucion;// Continuo en cero, paso a paso en 1.
-          o_enable_mem = 1;
+          o_enable_mem = 0;
           o_rsta_mem = 0;
           o_regcea_mem = 0;
           o_led = 0;
@@ -959,7 +959,7 @@ always @ ( * ) begin //Output logic
           o_addr_mem_programa = 0;
           o_next_dato_mem_programa = 0;
           reg_next_modo_ejecucion = o_modo_ejecucion;// Continuo en cero, paso a paso en 1.
-          o_enable_mem = 1;
+          o_enable_mem = 0;
           o_rsta_mem = 0;
           o_regcea_mem = 0;
           o_led = 0;
@@ -976,7 +976,7 @@ always @ ( * ) begin //Output logic
           o_addr_mem_programa = 0;
           o_next_dato_mem_programa = 0;
           reg_next_modo_ejecucion = o_modo_ejecucion;// Continuo en cero, paso a paso en 1.
-          o_enable_mem = 1;
+          o_enable_mem = 0;
           o_rsta_mem = 0;
           o_regcea_mem = 0;
           o_led = 0;
@@ -993,7 +993,7 @@ always @ ( * ) begin //Output logic
           o_addr_mem_programa = 0;
           o_next_dato_mem_programa = 0;
           reg_next_modo_ejecucion = o_modo_ejecucion;// Continuo en cero, paso a paso en 1.
-          o_enable_mem = 1;
+          o_enable_mem = 0;
           o_rsta_mem = 0;
           o_regcea_mem = 0;
           o_led = 0;
@@ -1010,7 +1010,7 @@ always @ ( * ) begin //Output logic
           o_addr_mem_programa = 0;
           o_next_dato_mem_programa = 0;
           reg_next_modo_ejecucion = o_modo_ejecucion;// Continuo en cero, paso a paso en 1.
-          o_enable_mem = 1;
+          o_enable_mem = 0;
           o_rsta_mem = 0;
           o_regcea_mem = 0;
           o_led = 0;
@@ -1027,7 +1027,7 @@ always @ ( * ) begin //Output logic
           o_addr_mem_programa = 0;
           o_next_dato_mem_programa = 0;
           reg_next_modo_ejecucion = o_modo_ejecucion;// Continuo en cero, paso a paso en 1.
-          o_enable_mem = 1;
+          o_enable_mem = 0;
           o_rsta_mem = 0;
           o_regcea_mem = 0;
           o_led = 0;
@@ -1044,7 +1044,7 @@ always @ ( * ) begin //Output logic
           o_addr_mem_programa = 0;
           o_next_dato_mem_programa = 0;
           reg_next_modo_ejecucion = o_modo_ejecucion;// Continuo en cero, paso a paso en 1.
-          o_enable_mem = 1;
+          o_enable_mem = 0;
           o_rsta_mem = 0;
           o_regcea_mem = 0;
           o_led = 0;
@@ -1061,7 +1061,7 @@ always @ ( * ) begin //Output logic
           o_addr_mem_programa = 0;
           o_next_dato_mem_programa = 0;
           reg_next_modo_ejecucion = o_modo_ejecucion;// Continuo en cero, paso a paso en 1.
-          o_enable_mem = 1;
+          o_enable_mem = 0;
           o_rsta_mem = 0;
           o_regcea_mem = 0;
           o_led = 0;
@@ -1078,7 +1078,7 @@ always @ ( * ) begin //Output logic
           o_addr_mem_programa = 0;
           o_next_dato_mem_programa = 0;
           reg_next_modo_ejecucion = o_modo_ejecucion;// Continuo en cero, paso a paso en 1.
-          o_enable_mem = 1;
+          o_enable_mem = 0;
           o_rsta_mem = 0;
           o_regcea_mem = 0;
           o_led = 0;
@@ -1095,7 +1095,7 @@ always @ ( * ) begin //Output logic
           o_addr_mem_programa = 0;
           o_next_dato_mem_programa = 0;
           reg_next_modo_ejecucion = o_modo_ejecucion;// Continuo en cero, paso a paso en 1.
-          o_enable_mem = 1;
+          o_enable_mem = 0;
           o_rsta_mem = 0;
           o_regcea_mem = 0;
           o_led = 0;
@@ -1112,7 +1112,7 @@ always @ ( * ) begin //Output logic
           o_addr_mem_programa = 0;
           o_next_dato_mem_programa = 0;
           reg_next_modo_ejecucion = o_modo_ejecucion;// Continuo en cero, paso a paso en 1.
-          o_enable_mem = 1;
+          o_enable_mem = 0;
           o_rsta_mem = 0;
           o_regcea_mem = 0;
           o_led = 0;
@@ -1129,7 +1129,7 @@ always @ ( * ) begin //Output logic
           o_addr_mem_programa = 0;
           o_next_dato_mem_programa = 0;
           reg_next_modo_ejecucion = o_modo_ejecucion;// Continuo en cero, paso a paso en 1.
-          o_enable_mem = 1;
+          o_enable_mem = 0;
           o_rsta_mem = 0;
           o_regcea_mem = 0;
           o_led = 0;
