@@ -15,7 +15,6 @@
 `define FREC_CLK_MHZ                            50.0       // Frecuencia del clock en MHZ.
 `define BAUD_RATE_TOP                           9600       // Baud rate.
 `define CANT_BIT_STOP_TOP                       2       // Cantidad de bits de parada en trama uart.
-`define HALT_OPCODE                             0       //  Opcode de la instruccion HALT.
 `define RAM_WIDTH_DATOS                         32
 `define RAM_WIDTH_PROGRAMA                      32
 `define RAM_PERFORMANCE_DATOS                   "LOW_LATENCY"
@@ -59,7 +58,7 @@ parameter WIDTH_WORD_TOP    = `WIDTH_WORD_TOP;
 parameter FREC_CLK_MHZ      = `FREC_CLK_MHZ;
 parameter BAUD_RATE_TOP     = `BAUD_RATE_TOP;
 parameter CANT_BIT_STOP_TOP = `CANT_BIT_STOP_TOP;
-parameter HALT_OPCODE       = `HALT_OPCODE;   
+parameter HALT_OPCODE =   32'hFFFFFFFF;
 parameter RAM_WIDTH_DATOS           = `RAM_WIDTH_DATOS;
 parameter RAM_WIDTH_PROGRAMA        =  `RAM_WIDTH_PROGRAMA;
 parameter RAM_PERFORMANCE_DATOS     =  `RAM_PERFORMANCE_DATOS;

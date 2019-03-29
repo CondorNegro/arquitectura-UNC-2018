@@ -66,16 +66,16 @@ module memoria_programa
       integer ram_index;
       initial
         for (ram_index = 0; ram_index < RAM_DEPTH; ram_index = ram_index + 1)
-           BRAM[ram_index] = {RAM_WIDTH{1'b0}};
+           BRAM[ram_index] = {RAM_WIDTH{1'b1}};
     end
   endgenerate
 
   always @(posedge i_clk) begin
     if (~i_soft_reset) begin
       ram_data <= 0;
-      BRAM [reg_contador] <= {RAM_WIDTH{1'b0}};
+      BRAM [reg_contador] <= {RAM_WIDTH{1'b1}};
       o_led <= 0;
-      if ( reg_contador == (RAM_DEPTH-1) ||  (BRAM [reg_contador]=={RAM_WIDTH{1'b0}}) ) begin
+      if ( reg_contador == (RAM_DEPTH-1) ||  (BRAM [reg_contador]=={RAM_WIDTH{1'b1}}) ) begin
         reg_contador <= reg_contador;
         o_reset_ack <= 0;
       end
@@ -124,11 +124,11 @@ module memoria_programa
 
       // The following is a 2 clock cycle read latency with improve clock-to-out timing
 
-      reg [RAM_WIDTH-1:0] reg_data_out = {RAM_WIDTH{1'b0}};
+      reg [RAM_WIDTH-1:0] reg_data_out = {RAM_WIDTH{1'b1}};
 
       always @(posedge i_clk)
         if (i_rsta)
-          reg_data_out <= {RAM_WIDTH {1'b0}};
+          reg_data_out <= {RAM_WIDTH {1'b1}};
         else if (i_regcea)
           reg_data_out <= ram_data;
 

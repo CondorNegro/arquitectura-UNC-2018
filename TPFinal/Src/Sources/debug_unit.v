@@ -13,7 +13,7 @@
 module debug_unit
 #(
   parameter OUTPUT_WORD_LENGTH = 8,    //  Cantidad de bits de la palabra a transmitir.
-  parameter HALT_OPCODE = 0,           //  Opcode de la instruccion HALT.
+  parameter HALT_OPCODE = 32'hFFFFFFFF,           //  Opcode de la instruccion HALT.
   parameter ADDR_MEM_LENGTH = 11,      //  Cantidad de bits del bus de direcciones de la memoria.
   parameter CANTIDAD_ESTADOS = 34,      //  Cantidad de estados
   parameter LONGITUD_INSTRUCCION = 32,  //  Cantidad de bits de la instruccion
@@ -166,7 +166,7 @@ always @ ( posedge i_clock ) begin //Memory
      if ((reg_state == EJECUCION) && (reg_next_modo_ejecucion == 1'b1)) begin //Modo debug en EJECUCION.
           flag_enable_pc <= 1'b1;
      end
-     else if ((i_instruction_fetch == 0) && (reg_next_modo_ejecucion == 1'b0)) begin //Modo continuo con HALT.
+     else if ((i_instruction_fetch == HALT_OPCODE) && (reg_next_modo_ejecucion == 1'b0)) begin //Modo continuo con HALT.
           flag_enable_pc <= 1'b1;
      end
      else begin
@@ -211,7 +211,7 @@ always@( * ) begin //NEXT - STATE logic
        end
 
        READ_PROGRAMA : begin
-           if ((reg_instruccion == { LONGITUD_INSTRUCCION {1'b0} }) && (flag_send_mem == 1) && (reg_contador_datos ==  0) ) begin
+           if ((reg_instruccion == { LONGITUD_INSTRUCCION {1'b1} }) && (flag_send_mem == 1) && (reg_contador_datos ==  0) ) begin
                reg_next_state = ESPERA_START;
            end
            else begin
@@ -228,7 +228,7 @@ always@( * ) begin //NEXT - STATE logic
        end
 
         EJECUCION : begin
-           if (i_instruction_fetch == 0 && reg_next_modo_ejecucion == 1'b0) begin //Modo continuo con HALT.
+           if (i_instruction_fetch == HALT_OPCODE && reg_next_modo_ejecucion == 1'b0) begin //Modo continuo con HALT.
                reg_next_state = SEND_PC_H;
            end
            else if (reg_next_modo_ejecucion == 1'b1) begin // Modo Debug
@@ -512,10 +512,10 @@ always@( * ) begin //NEXT - STATE logic
               if (reg_next_modo_ejecucion == 1'b0) begin
                 reg_next_state = ESPERA;
               end
-              else if ((i_instruction_fetch == 0) && (i_dato_database != 0)) begin
+              else if ((i_instruction_fetch == HALT_OPCODE) && (i_dato_database != 0)) begin
                 reg_next_state = ESPERA_START;
               end
-              else if ((i_instruction_fetch == 0) && (i_dato_database == 0)) begin
+              else if ((i_instruction_fetch == HALT_OPCODE) && (i_dato_database == 0)) begin
                  reg_next_state = ESPERA;
               end
               else begin
