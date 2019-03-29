@@ -57,7 +57,7 @@ module test_bench_memoria_programa();
        #20 reg_soft_reset = 1'b0;
        #20 reg_soft_reset = 1'b1;
        #10  reg_ena = 1'b1;
-       //#100 reg_regcea = 1'b1; // Lectura de posicion 0, tiene que haber un 0 porque no se guardo nada todavia.
+       //#100 reg_regcea = 1'b1; // Lectura de posicion 0, tiene que haber un FFFF FFFF porque no se guardo nada todavia.
        
        //#100 data_in = 8'b00001111; // Dato a guardar.
        #20 reg_wea = 1'b1; // Ahora se guarda el dato.
