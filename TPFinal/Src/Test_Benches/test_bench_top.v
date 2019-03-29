@@ -150,7 +150,7 @@ module test_bench_top_arquitectura();
 
 
         /////////////////////////////////////
-        // Primera instruccion (LWU R1,B{R2})
+        // Primera instruccion (LWU R1,8{R2})
         /////////////////////////////////////
 
         // Dejo un intervalo de tiempo.
