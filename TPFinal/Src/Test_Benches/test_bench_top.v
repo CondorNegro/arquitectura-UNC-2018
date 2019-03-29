@@ -240,7 +240,7 @@ module test_bench_top_arquitectura();
 
 
         /////////////////////////////////////
-        // Segunda instruccion (J 2)
+        // Segunda instruccion (J 8)
         /////////////////////////////////////
 
         //bit de inicio
@@ -309,15 +309,15 @@ module test_bench_top_arquitectura();
         //bit de inicio
         #52160 uart_txd_in_reg = 1'b0;
         
-        //cuarto dato - segunda instruccion //0000 0010
+        //cuarto dato - segunda instruccion //0000 0100
         #52160 uart_txd_in_reg = 1'b0;
         #52160 uart_txd_in_reg = 1'b0;
         #52160 uart_txd_in_reg = 1'b0;
         #52160 uart_txd_in_reg = 1'b0;
         
         #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b0;
         #52160 uart_txd_in_reg = 1'b1;
+        #52160 uart_txd_in_reg = 1'b0;
         #52160 uart_txd_in_reg = 1'b0;
         
         //bits de stop
