@@ -197,7 +197,7 @@ debug_unit
         .ADDR_MEM_LENGTH (ADDR_MEM_PROGRAMA_LENGTH),                 
         .LONGITUD_INSTRUCCION (LONG_INSTRUCCION),              
         .OUTPUT_WORD_LENGTH (WIDTH_WORD_TOP),   
-        .HALT_INSTRUCTION   (HALT_INSTRUCTION ,
+        .HALT_INSTRUCTION   (HALT_INSTRUCTION),
         .CANT_BITS_CONTROL_DATABASE (CANT_BITS_CONTROL_DATABASE_TOP)          
      ) 
    u_debug_unit1    // Una sola instancia de este modulo
