@@ -2455,7 +2455,7 @@ top_arquitectura
        .FREC_CLK_MHZ               (FREC_CLK_MHZ),
        .BAUD_RATE_TOP              (BAUD_RATE_TOP),
        .CANT_BIT_STOP_TOP          (CANT_BIT_STOP_TOP),
-       .HALT_INSTRUCTION           (HALT_INSTRUCTION),    
+       .HALT_INSTRUCTION_TOP       (HALT_INSTRUCTION),    
        .RAM_WIDTH_DATOS            (RAM_WIDTH_DATOS),
        .RAM_WIDTH_PROGRAMA         (RAM_WIDTH_PROGRAMA),
        .RAM_PERFORMANCE_DATOS      (RAM_PERFORMANCE_DATOS),
