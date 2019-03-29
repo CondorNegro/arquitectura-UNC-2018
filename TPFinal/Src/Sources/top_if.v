@@ -56,12 +56,19 @@ reg [RAM_WIDTH_PROGRAMA - 1 : 0] reg_intruction_register;
 assign o_instruction = reg_intruction_register;
 
 
+wire [CANT_BITS_ADDR - 1 : 0] wire_direccion_adder_pc;
+reg [RAM_WIDTH_PROGRAMA - 1 : 0] reg_direccion_adder_pc;
+assign o_direccion_adder_pc = reg_direccion_adder_pc;
+
+
 always@(negedge i_clock) begin
   if (~i_soft_reset) begin
     reg_intruction_register <= 32'hFFFFFFFF;
+    reg_direccion_adder_pc <= 1;
   end
   else begin
     reg_intruction_register <= wire_output_mux3_TO_IR;
+    reg_direccion_adder_pc <= wire_direccion_adder_pc;
   end
 end
 
@@ -131,7 +138,7 @@ adder
    (
        .i_data_A (o_contador_programa),
        .i_data_B (10'b0000000001),
-       .o_result (o_direccion_adder_pc)
+       .o_result (wire_direccion_adder_pc)
    );
 
 
