@@ -48,7 +48,6 @@ module control
                                 o_RegDst = 1;
                                 o_RegWrite = 1;
                                 o_ALUSrc = 1;
-                                o_ALUOp = 2'b10;
                                 o_MemRead = 0;
                                 o_MemWrite = 0;
                                 o_MemtoReg = 0;
@@ -58,7 +57,6 @@ module control
                                 o_RegDst = 1;
                                 o_RegWrite = 1;
                                 o_ALUSrc = 1;
-                                o_ALUOp = 2'b10;
                                 o_MemRead = 0;
                                 o_MemWrite = 0;
                                 o_MemtoReg = 0;
@@ -68,7 +66,6 @@ module control
                                 o_RegDst = 1;
                                 o_RegWrite = 1;
                                 o_ALUSrc = 1;
-                                o_ALUOp = 2'b10;
                                 o_MemRead = 0;
                                 o_MemWrite = 0;
                                 o_MemtoReg = 0;
@@ -78,7 +75,6 @@ module control
                                 o_RegDst = 1;
                                 o_RegWrite = 1;
                                 o_ALUSrc = 0;
-                                o_ALUOp = 2'b10;
                                 o_MemRead = 0;
                                 o_MemWrite = 0;
                                 o_MemtoReg = 0;
@@ -88,7 +84,6 @@ module control
                                 o_RegDst = 1;
                                 o_RegWrite = 1;
                                 o_ALUSrc = 0;
-                                o_ALUOp = 2'b10;
                                 o_MemRead = 0;
                                 o_MemWrite = 0;
                                 o_MemtoReg = 0;
@@ -98,7 +93,6 @@ module control
                                 o_RegDst = 1;
                                 o_RegWrite = 1;
                                 o_ALUSrc = 0;
-                                o_ALUOp = 2'b10;
                                 o_MemRead = 0;
                                 o_MemWrite = 0;
                                 o_MemtoReg = 0;
@@ -108,7 +102,6 @@ module control
                                 o_RegDst = 1;
                                 o_RegWrite = 1;
                                 o_ALUSrc = 0;
-                                o_ALUOp = 2'b10;
                                 o_MemRead = 0;
                                 o_MemWrite = 0;
                                 o_MemtoReg = 0;
@@ -118,7 +111,6 @@ module control
                                 o_RegDst = 1;
                                 o_RegWrite = 1;
                                 o_ALUSrc = 0;
-                                o_ALUOp = 2'b10;
                                 o_MemRead = 0;
                                 o_MemWrite = 0;
                                 o_MemtoReg = 0;
@@ -128,7 +120,6 @@ module control
                                 o_RegDst = 1;
                                 o_RegWrite = 1;
                                 o_ALUSrc = 0;
-                                o_ALUOp = 2'b10;
                                 o_MemRead = 0;
                                 o_MemWrite = 0;
                                 o_MemtoReg = 0;
@@ -138,7 +129,6 @@ module control
                                 o_RegDst = 1;
                                 o_RegWrite = 1;
                                 o_ALUSrc = 0;
-                                o_ALUOp = 2'b10;
                                 o_MemRead = 0;
                                 o_MemWrite = 0;
                                 o_MemtoReg = 0;
@@ -148,7 +138,6 @@ module control
                                 o_RegDst = 1;
                                 o_RegWrite = 1;
                                 o_ALUSrc = 0;
-                                o_ALUOp = 2'b10;
                                 o_MemRead = 0;
                                 o_MemWrite = 0;
                                 o_MemtoReg = 0;
@@ -158,7 +147,6 @@ module control
                                 o_RegDst = 1;
                                 o_RegWrite = 1;
                                 o_ALUSrc = 0;
-                                o_ALUOp = 2'b10;
                                 o_MemRead = 0;
                                 o_MemWrite = 0;
                                 o_MemtoReg = 0;
@@ -168,7 +156,6 @@ module control
                                 o_RegDst = 1;
                                 o_RegWrite = 1;
                                 o_ALUSrc = 0;
-                                o_ALUOp = 2'b10;
                                 o_MemRead = 0;
                                 o_MemWrite = 0;
                                 o_MemtoReg = 0;
@@ -178,7 +165,6 @@ module control
                                 o_RegDst = 0;
                                 o_RegWrite = 0;
                                 o_ALUSrc = 0;
-                                o_ALUOp = 2'b01;
                                 o_MemRead = 0;
                                 o_MemWrite = 0;
                                 o_MemtoReg = 0;
@@ -188,7 +174,6 @@ module control
                                 o_RegDst = 1;
                                 o_RegWrite = 1;
                                 o_ALUSrc = 0;
-                                o_ALUOp = 2'b01;
                                 o_MemRead = 0;
                                 o_MemWrite = 0;
                                 o_MemtoReg = 0;
@@ -198,7 +183,6 @@ module control
                                 o_RegDst = 0;
                                 o_RegWrite = 0;
                                 o_ALUSrc = 0;
-                                o_ALUOp = 2'b00;
                                 o_MemRead = 0;
                                 o_MemWrite = 0;
                                 o_MemtoReg = 0;
@@ -212,7 +196,6 @@ module control
                                 o_RegDst = 0;
                                 o_RegWrite = 1;
                                 o_ALUSrc = 1;
-                                o_ALUOp = 2'b00;
                                 o_MemRead = 1;
                                 o_MemWrite = 0;
                                 o_MemtoReg = 1;
@@ -222,7 +205,6 @@ module control
                                 o_RegDst = 0;
                                 o_RegWrite = 1;
                                 o_ALUSrc = 1;
-                                o_ALUOp = 2'b00;
                                 o_MemRead = 1;
                                 o_MemWrite = 0;
                                 o_MemtoReg = 1;
@@ -232,7 +214,6 @@ module control
                                 o_RegDst = 0;
                                 o_RegWrite = 1;
                                 o_ALUSrc = 1;
-                                o_ALUOp = 2'b00;
                                 o_MemRead = 1;
                                 o_MemWrite = 0;
                                 o_MemtoReg = 1;
@@ -242,7 +223,6 @@ module control
                                 o_RegDst = 0;
                                 o_RegWrite = 1;
                                 o_ALUSrc = 1;
-                                o_ALUOp = 2'b00;
                                 o_MemRead = 1;
                                 o_MemWrite = 0;
                                 o_MemtoReg = 1;
@@ -252,7 +232,6 @@ module control
                                 o_RegDst = 0;
                                 o_RegWrite = 1;
                                 o_ALUSrc = 1;
-                                o_ALUOp = 2'b00;
                                 o_MemRead = 1;
                                 o_MemWrite = 0;
                                 o_MemtoReg = 1;
@@ -262,7 +241,6 @@ module control
                                 o_RegDst = 0;
                                 o_RegWrite = 1;
                                 o_ALUSrc = 1;
-                                o_ALUOp = 2'b00;
                                 o_MemRead = 1;
                                 o_MemWrite = 0;
                                 o_MemtoReg = 1;
@@ -272,7 +250,6 @@ module control
                                 o_RegDst = 0;
                                 o_RegWrite = 0;
                                 o_ALUSrc = 1;
-                                o_ALUOp = 2'b00;
                                 o_MemRead = 0;
                                 o_MemWrite = 1;
                                 o_MemtoReg = 0;
@@ -282,7 +259,6 @@ module control
                                 o_RegDst = 0;
                                 o_RegWrite = 0;
                                 o_ALUSrc = 1;
-                                o_ALUOp = 2'b00;
                                 o_MemRead = 0;
                                 o_MemWrite = 1;
                                 o_MemtoReg = 0;
@@ -292,7 +268,6 @@ module control
                                 o_RegDst = 0;
                                 o_RegWrite = 0;
                                 o_ALUSrc = 1;
-                                o_ALUOp = 2'b00;
                                 o_MemRead = 0;
                                 o_MemWrite = 1;
                                 o_MemtoReg = 0;
@@ -302,7 +277,6 @@ module control
                                 o_RegDst = 0;
                                 o_RegWrite = 1;
                                 o_ALUSrc = 1;
-                                o_ALUOp = 2'b10;
                                 o_MemRead = 0;
                                 o_MemWrite = 0;
                                 o_MemtoReg = 0;
@@ -312,7 +286,6 @@ module control
                                 o_RegDst = 0;
                                 o_RegWrite = 1;
                                 o_ALUSrc = 1;
-                                o_ALUOp = 2'b10;
                                 o_MemRead = 0;
                                 o_MemWrite = 0;
                                 o_MemtoReg = 0;
@@ -322,7 +295,6 @@ module control
                                 o_RegDst = 0;
                                 o_RegWrite = 1;
                                 o_ALUSrc = 1;
-                                o_ALUOp = 2'b10;
                                 o_MemRead = 0;
                                 o_MemWrite = 0;
                                 o_MemtoReg = 0;
@@ -332,7 +304,6 @@ module control
                                 o_RegDst = 0;
                                 o_RegWrite = 1;
                                 o_ALUSrc = 1;
-                                o_ALUOp = 2'b10;
                                 o_MemRead = 0;
                                 o_MemWrite = 0;
                                 o_MemtoReg = 0;
@@ -342,7 +313,6 @@ module control
                                 o_RegDst = 0;
                                 o_RegWrite = 1;
                                 o_ALUSrc = 1;
-                                o_ALUOp = 2'b00;
                                 o_MemRead = 0;
                                 o_MemWrite = 0;
                                 o_MemtoReg = 0;
@@ -352,7 +322,6 @@ module control
                                 o_RegDst = 0;
                                 o_RegWrite = 1;
                                 o_ALUSrc = 1;
-                                o_ALUOp = 2'b10;
                                 o_MemRead = 0;
                                 o_MemWrite = 0;
                                 o_MemtoReg = 0;
@@ -362,7 +331,6 @@ module control
                                 o_RegDst = 0;
                                 o_RegWrite = 0;
                                 o_ALUSrc = 1;
-                                o_ALUOp = 2'b01;
                                 o_MemRead = 0;
                                 o_MemWrite = 0;
                                 o_MemtoReg = 0;
@@ -372,7 +340,6 @@ module control
                                 o_RegDst = 0;
                                 o_RegWrite = 0;
                                 o_ALUSrc = 1;
-                                o_ALUOp = 2'b01;
                                 o_MemRead = 0;
                                 o_MemWrite = 0;
                                 o_MemtoReg = 0;
@@ -382,7 +349,6 @@ module control
                                 o_RegDst = 0;
                                 o_RegWrite = 0;
                                 o_ALUSrc = 0;
-                                o_ALUOp = 2'b01;
                                 o_MemRead = 0;
                                 o_MemWrite = 0;
                                 o_MemtoReg = 0;
@@ -392,7 +358,6 @@ module control
                                 o_RegDst = 0;
                                 o_RegWrite = 1;
                                 o_ALUSrc = 0;
-                                o_ALUOp = 2'b01;
                                 o_MemRead = 0;
                                 o_MemWrite = 0;
                                 o_MemtoReg = 0;
@@ -403,7 +368,6 @@ module control
                                 o_RegDst = 0;
                                 o_RegWrite = 0;
                                 o_ALUSrc = 0;
-                                o_ALUOp = 2'b00;
                                 o_MemRead = 0;
                                 o_MemWrite = 0;
                                 o_MemtoReg = 0;
@@ -415,7 +379,6 @@ module control
             o_RegDst = o_RegDst;
             o_RegWrite = o_RegWrite;
             o_ALUSrc = o_ALUSrc;
-            o_ALUOp = o_ALUOp;
             o_MemRead = o_MemRead;
             o_MemWrite = o_MemWrite;
             o_MemtoReg = o_MemtoReg;
