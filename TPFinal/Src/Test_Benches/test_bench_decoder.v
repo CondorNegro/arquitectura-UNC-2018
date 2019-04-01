@@ -28,6 +28,7 @@ module test_bench_decoder();
 
 	// Entradas.
     reg [CANT_BITS_INSTRUCCION - 1 : 0] reg_instruction;
+    reg reg_enable_etapa;
     wire [CANT_BITS_ADDRESS_REGISTROS - 1 : 0] wire_A;
     wire [CANT_BITS_ADDRESS_REGISTROS - 1 : 0] wire_B;
     wire [CANT_BITS_ADDRESS_REGISTROS - 1 : 0] wire_W;
@@ -37,8 +38,9 @@ module test_bench_decoder();
 
 	initial	begin
 	   reg_instruction = 2;
-       
+       reg_enable_etapa = 1'b0;
        #20 reg_instruction = 32'b00000000000000010001000011000000; //SLL R2,R1,3
+       #20 reg_enable_etapa = 1'b1;
        #20 reg_instruction = 32'b00000000001000100001100000000100; //SLLV R3,R2,R1
        #20 reg_instruction = 32'b00000000001000100001100000100001; //ADDU R3,R1,R2
        #20 reg_instruction = 32'b00000010100000000000000000001000; //JR R20.
@@ -69,6 +71,7 @@ decoder
     u_decoder_1
     (
         .i_instruction (reg_instruction),
+        .i_enable_etapa (reg_enable_etapa),
         .o_reg_A (wire_A),
         .o_reg_B (wire_B),
         .o_reg_W (wire_W),

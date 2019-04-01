@@ -181,6 +181,7 @@ decoder
     u_decoder_1
     (
         .i_instruction (i_instruction),
+        .i_enable_etapa (i_enable_etapa),
         .o_reg_A (wire_output_reg_A_decoder_TO_reg_A_register_file),
         .o_reg_B (wire_output_reg_B_decoder_TO_reg_B_register_file),
         .o_reg_W (wire_o_reg_rd),
@@ -246,6 +247,7 @@ control
         .i_clock (i_clock),
         .i_soft_reset (i_soft_reset),
         .i_instruction (i_instruction),
+        .i_enable_etapa (i_enable_etapa),
         .o_RegDst (wire_o_RegDst),
         .o_RegWrite (wire_o_RegWrite),
         .o_ALUSrc (wire_o_ALUSrc),

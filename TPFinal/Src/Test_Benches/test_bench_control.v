@@ -28,6 +28,7 @@ module test_bench_control();
     reg reg_clock;
     reg reg_soft_reset;
     reg [CANT_BITS_INSTRUCTION - 1 : 0] reg_instruction;
+    reg reg_enable_etapa;
     wire wire_RegDst;
     wire wire_RegWrite;
     wire wire_ALUSrc;
@@ -41,9 +42,12 @@ module test_bench_control();
        reg_clock = 1'b0;
        reg_soft_reset = 1'b0; // Reset en 0. 
 	   reg_instruction = 32'b00000000000000010001000011000000; //SLL R2,R1,3
+       reg_enable_etapa = 1'b1;
        #20 reg_soft_reset = 1'b1;
        #20 reg_instruction = 32'b00000000001000100001100000000100; //SLLV R3,R2,R1
+       #20 reg_enable_etapa = 1'b0;
        #20 reg_instruction = 32'b00000000001000100001100000100001; //ADDU R3,R1,R2
+       #20 reg_enable_etapa = 1'b1;
        #20 reg_instruction = 32'b00000010100000000000000000001000; //JR R20.
        #20 reg_instruction = 32'b00010010100000110000000000001001; //BEQ R20,R3,9
        #20 reg_instruction = 32'b00001000000000000000000000000111; //J 7
@@ -79,6 +83,7 @@ control
         .i_clock (reg_clock),
         .i_soft_reset (reg_soft_reset),
         .i_instruction (reg_instruction),
+        .i_enable_etapa (reg_enable_etapa),
         .o_RegDst (wire_RegDst),
         .o_RegWrite (wire_RegWrite),
         .o_ALUSrc (wire_ALUSrc),
