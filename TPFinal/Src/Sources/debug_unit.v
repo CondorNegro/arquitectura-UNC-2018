@@ -525,16 +525,16 @@ always@( * ) begin //NEXT - STATE logic
 
         SEND_CONTROL_SIGNALS_L : begin
           if ((~i_rx_done & registro_rx_done) && (i_data_rx == 8'b11100000)) begin
-              if (reg_next_modo_ejecucion == 1'b0) begin
+              if (reg_next_modo_ejecucion == 1'b0) begin // Modo continuo.
                 reg_next_state = ESPERA;
               end
               else if ((i_instruction_fetch == HALT_INSTRUCTION) && (i_dato_database != HALT_INSTRUCTION)) begin
-                reg_next_state = ESPERA_START;
+                reg_next_state = ESPERA_START; // Modo debug, penultima instruccion.
               end
               else if ((i_instruction_fetch == HALT_INSTRUCTION) && (i_dato_database == HALT_INSTRUCTION)) begin
-                 reg_next_state = ESPERA;
+                 reg_next_state = ESPERA; // Modo debug, ultima instruccion.
               end
-              else begin
+              else begin // Modo debug instrucciones anteriores.
                   reg_next_state = ESPERA_START;
               end
           end
