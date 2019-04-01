@@ -38,6 +38,7 @@ module top_if
 
        input [CANT_BITS_ADDR - 1 : 0] i_branch_dir,
 
+       input i_enable_pipeline,
 
        output [RAM_WIDTH_PROGRAMA - 1 : 0] o_instruction,
        output [CANT_BITS_ADDR - 1 : 0] o_direccion_adder_pc,
@@ -67,8 +68,14 @@ always@(negedge i_clock) begin
     reg_direccion_adder_pc <= 1;
   end
   else begin
-    reg_intruction_register <= wire_output_mux3_TO_IR;
-    reg_direccion_adder_pc <= wire_direccion_adder_pc;
+    if (i_enable_pipeline) begin
+        reg_intruction_register <= wire_output_mux3_TO_IR;
+        reg_direccion_adder_pc <= wire_direccion_adder_pc;
+    end
+    else begin
+        reg_intruction_register <= reg_intruction_register;
+        reg_direccion_adder_pc <= reg_direccion_adder_pc;
+    end
   end
 end
 

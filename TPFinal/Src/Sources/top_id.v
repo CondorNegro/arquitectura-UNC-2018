@@ -37,7 +37,7 @@ module top_id
        input [clogb2 (CANT_REGISTROS - 1) - 1 : 0] i_reg_write,
        input [CANT_BITS_REGISTROS - 1 : 0] i_data_write,
 
-
+       input i_enable_pipeline,
 
        output  [CANT_BITS_ADDR - 1 : 0] o_branch_dir,
        output  o_branch_control,
@@ -127,21 +127,39 @@ module top_id
             o_ALUCtrl <= 0;   
       end
       else begin
-            o_data_A <= wire_o_data_A;
-            o_data_B <= wire_o_data_B;
-            o_extension_signo_constante <= wire_o_extension_signo_constante;
-            o_reg_rs <= wire_o_reg_rs;
-            o_reg_rt <= wire_o_reg_rt;
-            o_reg_rd <= wire_o_reg_rd;       
-            o_RegDst <= wire_o_RegDst;
-            o_RegWrite <= wire_o_RegWrite;
-            o_ALUSrc <= wire_o_ALUSrc;
-            o_ALUOp <= wire_o_ALUOp;
-            o_MemRead <= wire_o_MemRead;
-            o_MemWrite <= wire_o_MemWrite;
-            o_MemtoReg <= wire_o_MemtoReg;
-            o_ALUCtrl <= wire_o_ALUCtrl; 
-      end
+            if (i_enable_pipeline) begin
+                o_data_A <= wire_o_data_A;
+                o_data_B <= wire_o_data_B;
+                o_extension_signo_constante <= wire_o_extension_signo_constante;
+                o_reg_rs <= wire_o_reg_rs;
+                o_reg_rt <= wire_o_reg_rt;
+                o_reg_rd <= wire_o_reg_rd;       
+                o_RegDst <= wire_o_RegDst;
+                o_RegWrite <= wire_o_RegWrite;
+                o_ALUSrc <= wire_o_ALUSrc;
+                o_ALUOp <= wire_o_ALUOp;
+                o_MemRead <= wire_o_MemRead;
+                o_MemWrite <= wire_o_MemWrite;
+                o_MemtoReg <= wire_o_MemtoReg;
+                o_ALUCtrl <= wire_o_ALUCtrl;
+            end
+            else begin
+                o_data_A <= o_data_A;
+                o_data_B <= o_data_B;
+                o_extension_signo_constante <= o_extension_signo_constante;
+                o_reg_rs <= o_reg_rs;
+                o_reg_rt <= o_reg_rt;
+                o_reg_rd <= o_reg_rd;       
+                o_RegDst <= o_RegDst;
+                o_RegWrite <= o_RegWrite;
+                o_ALUSrc <= o_ALUSrc;
+                o_ALUOp <= o_ALUOp;
+                o_MemRead <= o_MemRead;
+                o_MemWrite <= o_MemWrite;
+                o_MemtoReg <= o_MemtoReg;
+                o_ALUCtrl <= o_ALUCtrl;
+            end 
+    end
     end
 
    

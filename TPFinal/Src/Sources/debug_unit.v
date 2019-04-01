@@ -42,6 +42,7 @@ module debug_unit
   output reg o_enable_PC,
   output reg o_control_mux_addr_mem_top_if,
   output reg [CANT_BITS_CONTROL_DATABASE - 1 : 0] o_control_database,
+  output reg o_enable_pipeline,
   output reg o_led
  );
 
@@ -552,6 +553,7 @@ always @ ( * ) begin //Output logic
          o_regcea_mem = 1;
          o_led = 1;
          o_enable_PC = 0;
+         o_enable_pipeline = 0;
          o_control_mux_addr_mem_top_if = 1;
          o_control_database = 0;
        end
@@ -569,6 +571,7 @@ always @ ( * ) begin //Output logic
          o_regcea_mem = 0;
          o_led = 0;
          o_enable_PC = 0;
+         o_enable_pipeline = 0;
          o_control_mux_addr_mem_top_if = 1;
          o_control_database = 0;
        end
@@ -586,6 +589,7 @@ always @ ( * ) begin //Output logic
          o_regcea_mem = 0;
          o_led = 0;
          o_enable_PC = 0;
+         o_enable_pipeline = 0;
          o_control_mux_addr_mem_top_if = 1; 
          o_control_database = 0;
        end
@@ -614,6 +618,7 @@ always @ ( * ) begin //Output logic
          o_regcea_mem = 0; 
          o_led = 0;
          o_enable_PC = 0;
+         o_enable_pipeline = 0;
          o_control_mux_addr_mem_top_if = 1;
          o_control_database = 0;
        end
@@ -631,6 +636,7 @@ always @ ( * ) begin //Output logic
          o_regcea_mem = 0;
          o_led = 0;
          o_enable_PC = 0;
+         o_enable_pipeline = 0;
          o_control_mux_addr_mem_top_if = 0;
          o_control_database = 0;
        end
@@ -643,15 +649,18 @@ always @ ( * ) begin //Output logic
          o_addr_mem_programa = 0;
          o_next_dato_mem_programa = 0;
          reg_next_modo_ejecucion = o_modo_ejecucion;// Continuo en cero, paso a paso en 1.
-         o_enable_mem = 1;
+         
          o_rsta_mem = 0;
          o_regcea_mem = 0;
          o_led = 0;
+         o_enable_pipeline = 1; 
          if (flag_enable_pc == 1'b1) begin
             o_enable_PC = 0; // Deshabilito el enable pc.
+            o_enable_mem = 0; // Deshabilito memoria de programa.
          end
          else begin
             o_enable_PC = 1;
+            o_enable_mem = 1;
          end
          o_control_mux_addr_mem_top_if = 0;
          o_control_database = 1;
@@ -671,6 +680,7 @@ always @ ( * ) begin //Output logic
          o_regcea_mem = 0;
          o_led = 0;
          o_enable_PC = 0;
+         o_enable_pipeline = 0;
          o_control_mux_addr_mem_top_if = 0;
          o_control_database = 2;
        end
@@ -688,6 +698,7 @@ always @ ( * ) begin //Output logic
          o_regcea_mem = 0;
          o_led = 0;
          o_enable_PC = 0;
+         o_enable_pipeline = 0;
          o_control_mux_addr_mem_top_if = 0;
          o_control_database = 2;
        end
@@ -705,6 +716,7 @@ always @ ( * ) begin //Output logic
           o_regcea_mem = 0;
           o_led = 0;
           o_enable_PC = 0;
+          o_enable_pipeline = 0;
           o_control_mux_addr_mem_top_if = 0;
           o_control_database = 3;
         end
@@ -723,6 +735,7 @@ always @ ( * ) begin //Output logic
           o_regcea_mem = 0;
           o_led = 0;
           o_enable_PC = 0;
+          o_enable_pipeline = 0;
           o_control_mux_addr_mem_top_if = 0;
           o_control_database = 3;
         end
@@ -740,6 +753,7 @@ always @ ( * ) begin //Output logic
           o_regcea_mem = 0;
           o_led = 0;
           o_enable_PC = 0;
+          o_enable_pipeline = 0;
           o_control_mux_addr_mem_top_if = 0;
           o_control_database = 4;
         end
@@ -757,6 +771,7 @@ always @ ( * ) begin //Output logic
          o_regcea_mem = 0;
          o_led = 0;
          o_enable_PC = 0;
+         o_enable_pipeline = 0;
          o_control_mux_addr_mem_top_if = 0;
          o_control_database = 4;
        end
@@ -774,6 +789,7 @@ always @ ( * ) begin //Output logic
          o_regcea_mem = 0;
          o_led = 0;
          o_enable_PC = 0;
+         o_enable_pipeline = 0;
          o_control_mux_addr_mem_top_if = 0;
          o_control_database = 5;
        end
@@ -793,6 +809,7 @@ always @ ( * ) begin //Output logic
          o_regcea_mem = 0;
          o_led = 0;
          o_enable_PC = 0;
+         o_enable_pipeline = 0;
          o_control_mux_addr_mem_top_if = 0;
          o_control_database = 5;
        end
@@ -811,6 +828,7 @@ always @ ( * ) begin //Output logic
          o_regcea_mem = 0;
          o_led = 0;
          o_enable_PC = 0;
+         o_enable_pipeline = 0;
          o_control_mux_addr_mem_top_if = 0;
          o_control_database = 5;
        end
@@ -828,6 +846,7 @@ always @ ( * ) begin //Output logic
          o_regcea_mem = 0;
          o_led = 0;
          o_enable_PC = 0;
+         o_enable_pipeline = 0;
          o_control_mux_addr_mem_top_if = 0;
          o_control_database = 5;
        end
@@ -845,6 +864,7 @@ always @ ( * ) begin //Output logic
           o_regcea_mem = 0;
           o_led = 0;
           o_enable_PC = 0;
+          o_enable_pipeline = 0;
           o_control_mux_addr_mem_top_if = 0;
           o_control_database = 6;          
         end 
@@ -862,6 +882,7 @@ always @ ( * ) begin //Output logic
           o_regcea_mem = 0;
           o_led = 0;
           o_enable_PC = 0;
+          o_enable_pipeline = 0;
           o_control_mux_addr_mem_top_if = 0;
           o_control_database = 6;
         end
@@ -879,6 +900,7 @@ always @ ( * ) begin //Output logic
           o_regcea_mem = 0;
           o_led = 0;
           o_enable_PC = 0;
+          o_enable_pipeline = 0;
           o_control_mux_addr_mem_top_if = 0;
           o_control_database = 7;          
         end
@@ -896,6 +918,7 @@ always @ ( * ) begin //Output logic
           o_regcea_mem = 0;
           o_led = 0;
           o_enable_PC = 0;
+          o_enable_pipeline = 0;
           o_control_mux_addr_mem_top_if = 0;
           o_control_database = 7;
         end 
@@ -913,6 +936,7 @@ always @ ( * ) begin //Output logic
           o_regcea_mem = 0;
           o_led = 0;
           o_enable_PC = 0;
+          o_enable_pipeline = 0;
           o_control_mux_addr_mem_top_if = 0;
           o_control_database = 7;          
         end 
@@ -930,6 +954,7 @@ always @ ( * ) begin //Output logic
           o_regcea_mem = 0;
           o_led = 0;
           o_enable_PC = 0;
+          o_enable_pipeline = 0;
           o_control_mux_addr_mem_top_if = 0;
           o_control_database = 7;  
         end
@@ -947,6 +972,7 @@ always @ ( * ) begin //Output logic
           o_regcea_mem = 0;
           o_led = 0;
           o_enable_PC = 0;
+          o_enable_pipeline = 0;
           o_control_mux_addr_mem_top_if = 0;
           o_control_database = 8;
         end 
@@ -964,6 +990,7 @@ always @ ( * ) begin //Output logic
           o_regcea_mem = 0;
           o_led = 0;
           o_enable_PC = 0;
+          o_enable_pipeline = 0;
           o_control_mux_addr_mem_top_if = 0;
           o_control_database = 8;
         end 
@@ -981,6 +1008,7 @@ always @ ( * ) begin //Output logic
           o_regcea_mem = 0;
           o_led = 0;
           o_enable_PC = 0;
+          o_enable_pipeline = 0;
           o_control_mux_addr_mem_top_if = 0;
           o_control_database = 8;
         end 
@@ -998,6 +1026,7 @@ always @ ( * ) begin //Output logic
           o_regcea_mem = 0;
           o_led = 0;
           o_enable_PC = 0;
+          o_enable_pipeline = 0;
           o_control_mux_addr_mem_top_if = 0;
           o_control_database = 8;
         end 
@@ -1015,6 +1044,7 @@ always @ ( * ) begin //Output logic
           o_regcea_mem = 0;
           o_led = 0;
           o_enable_PC = 0;
+          o_enable_pipeline = 0;
           o_control_mux_addr_mem_top_if = 0;
           o_control_database = 9;
         end 
@@ -1032,6 +1062,7 @@ always @ ( * ) begin //Output logic
           o_regcea_mem = 0;
           o_led = 0;
           o_enable_PC = 0;
+          o_enable_pipeline = 0;
           o_control_mux_addr_mem_top_if = 0;
           o_control_database = 9;
         end 
@@ -1049,6 +1080,7 @@ always @ ( * ) begin //Output logic
           o_regcea_mem = 0;
           o_led = 0;
           o_enable_PC = 0;
+          o_enable_pipeline = 0;
           o_control_mux_addr_mem_top_if = 0;
           o_control_database = 9;
         end 
@@ -1066,6 +1098,7 @@ always @ ( * ) begin //Output logic
           o_regcea_mem = 0;
           o_led = 0;
           o_enable_PC = 0;
+          o_enable_pipeline = 0;
           o_control_mux_addr_mem_top_if = 0;
           o_control_database = 9;
         end 
@@ -1083,6 +1116,7 @@ always @ ( * ) begin //Output logic
           o_regcea_mem = 0;
           o_led = 0;
           o_enable_PC = 0;
+          o_enable_pipeline = 0;
           o_control_mux_addr_mem_top_if = 0;
           o_control_database = 10;
         end  
@@ -1100,6 +1134,7 @@ always @ ( * ) begin //Output logic
           o_regcea_mem = 0;
           o_led = 0;
           o_enable_PC = 0;
+          o_enable_pipeline = 0;
           o_control_mux_addr_mem_top_if = 0;
           o_control_database = 10;
         end 
@@ -1117,6 +1152,7 @@ always @ ( * ) begin //Output logic
           o_regcea_mem = 0;
           o_led = 0;
           o_enable_PC = 0;
+          o_enable_pipeline = 0;
           o_control_mux_addr_mem_top_if = 0;
           o_control_database = 11;
         end 
@@ -1134,6 +1170,7 @@ always @ ( * ) begin //Output logic
           o_regcea_mem = 0;
           o_led = 0;
           o_enable_PC = 0;
+          o_enable_pipeline = 0;
           o_control_mux_addr_mem_top_if = 0;
           o_control_database = 11;  
         end 
@@ -1152,6 +1189,7 @@ always @ ( * ) begin //Output logic
          o_regcea_mem = 1;
          o_led = 1;
          o_enable_PC = 0;
+         o_enable_pipeline = 0;
          o_control_mux_addr_mem_top_if = 1;
          o_control_database = 0;
        end

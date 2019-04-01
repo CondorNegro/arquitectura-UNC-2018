@@ -107,6 +107,7 @@ wire wire_tx_start;
 wire wire_rate_baud_generator;
 wire wire_soft_reset;
 
+
 // Instruction fetch.
 wire [ADDR_MEM_PROGRAMA_LENGTH - 1 : 0] wire_addr_mem_programa;
 wire [RAM_WIDTH_PROGRAMA - 1 : 0] wire_data_mem_programa_input;
@@ -138,6 +139,8 @@ wire [ADDR_MEM_PROGRAMA_LENGTH - 1 : 0] wire_contador_programa;
 wire [ADDR_MEM_PROGRAMA_LENGTH - 1 : 0] wire_adder_contador_programa;
 
 // Instruction decode.
+
+wire wire_enable_pipeline;
 
 wire wire_control_write_reg_ID;
 wire [CANT_BITS_REGISTROS_TOP - 1 : 0] wire_data_write_ID;
@@ -223,6 +226,7 @@ debug_unit
     .o_enable_PC (wire_enable_PC),
     .o_control_mux_addr_mem_top_if (wire_control_mux_addr_mem_IF),
     .o_control_database (wire_control_database),
+    .o_enable_pipeline (wire_enable_pipeline),
     .o_led (o_leds[0])
    );
 
@@ -298,6 +302,7 @@ top_if
     .i_control_mux_PC (wire_control_mux_PC),
     .i_control_mux_addr_mem (wire_control_mux_addr_mem_IF),
     .i_branch_dir (wire_branch_dir),
+    .i_enable_pipeline (wire_enable_pipeline),
     .o_instruction (wire_instruction_fetch),
     .o_direccion_adder_pc (wire_adder_contador_programa),
     .o_contador_programa (wire_contador_programa),
@@ -333,7 +338,7 @@ top_id
         .i_control_write_reg (wire_control_write_reg_ID),
         .i_reg_write (wire_reg_write_ID),
         .i_data_write (wire_data_write_ID),
-
+        .i_enable_pipeline (wire_enable_pipeline),
         .o_branch_dir (wire_branch_dir),
         .o_branch_control (wire_control_mux_PC),
         .o_data_A (wire_data_A),

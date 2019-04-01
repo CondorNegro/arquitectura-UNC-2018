@@ -46,6 +46,7 @@ module test_bench_top_if();
   
   reg [ADDR_MEM_PROGRAMA_LENGTH - 1 : 0] branch_dir;
 
+  reg enable_pipeline;
 
   wire [RAM_WIDTH_PROGRAMA - 1 : 0] wire_instruction;
   wire [ADDR_MEM_PROGRAMA_LENGTH - 1 : 0] wire_direccion_PC_PLUS_4;
@@ -54,99 +55,100 @@ module test_bench_top_if();
   wire wire_reset_ack_mem;
 
   initial    begin
-   clock = 1'b0;
-   soft_reset = 1'b1; // Reset en 0. (Normal cerrado el boton del reset).
+            clock = 1'b0;
+            soft_reset = 1'b1; // Reset en 0. (Normal cerrado el boton del reset).
 
 
-   enable_contador_PC = 0;
-   enable_mem = 0;
-   write_read_mem = 0;
-   rsta_mem = 0;
-   regcea_mem = 0;
-   addr_mem_programa = 0;
-   data_mem_programa = 0;
-   control_mux_PC = 0;
-   control_mux_addr_mem = 0;
-   branch_dir = 0;
+            enable_contador_PC = 0;
+            enable_mem = 0;
+            write_read_mem = 0;
+            rsta_mem = 0;
+            regcea_mem = 0;
+            addr_mem_programa = 0;
+            data_mem_programa = 0;
+            control_mux_PC = 0;
+            control_mux_addr_mem = 0;
+            branch_dir = 0;
+            enable_pipeline = 1'b1;
 
-   /* Primera prueba, pruebo contador de programa (Resultado esperado: el PC debe contar hasta que el enable sea cero.
-   Ademas despues de la instruccion cinco la salida de memoria debe ser halt). */
+            /* Primera prueba, pruebo contador de programa (Resultado esperado: el PC debe contar hasta que el enable sea cero.
+            Ademas despues de la instruccion cinco la salida de memoria debe ser halt). */
 
-   #5 soft_reset = 1'b0;
-   #100 soft_reset = 1'b1;
-   #200  enable_mem = 1'b1;
-   #10 enable_contador_PC = 1'b1;
-   #10 enable_contador_PC = 1'b0;
+            #5 soft_reset = 1'b0;
+            #100 soft_reset = 1'b1;
+            #200  enable_mem = 1'b1;
+            #10 enable_contador_PC = 1'b1;
+            #10 enable_contador_PC = 1'b0;
 
-   /// de mem_programa
-   #10 control_mux_addr_mem= 1'b1; //mem de programa toma la dir de debug unit para escribir las instruc. (no se toma la dir de pc)
-   #20 data_mem_programa = 8'b00000101; // Dato a guardar.
-   #20 addr_mem_programa = 11'b0000001; // Seteo de direccion de mem.
-   #20 write_read_mem = 1'b1; // Ahora se guarda el dato.
-   #20 write_read_mem = 1'b0;
-   #20 data_mem_programa = 8'b00000010; // Dato a guardar.
-   #20 addr_mem_programa = 11'b0000010; // Seteo de direccion de mem.
-   #20 write_read_mem = 1'b1; // Ahora se guarda el dato.
-   #20 write_read_mem = 1'b0; // Ahora se guarda el dato.
-   #20 addr_mem_programa = 11'b0000011; // Lectura del 1 que se guardo.
-   #20 data_mem_programa = 8'b00000101; // Dato a guardar.
-   #20 addr_mem_programa = 11'b0000100; // Seteo de direccion de mem.
-   #20 write_read_mem = 1'b1; // Ahora se guarda el dato.
-   #20 write_read_mem = 1'b0;
-   /// de mem programa
-    #10 control_mux_addr_mem= 1'b0; //tomo dir de pc y no de debug unit.
-    #10 enable_contador_PC = 1'b1;
-    #20 enable_contador_PC = 1'b0;
-
-
-
-
-
-    /* Segunda prueba: pruebo direccion de salto y envio de nop a la salida. (Resultado esperado: el PC debe detenerse en el halt
-    leido en la direccion de salto (direccion 10)). La salida envia NOP y al ultimo un HALT. */
-
-
-    #100 soft_reset = 1'b0;
-    #100 soft_reset = 1'b1;
-    #10  enable_mem = 1'b1;
-    #10 enable_contador_PC = 1'b1;
-    #10 enable_contador_PC = 1'b0;
-
-    /// de mem_programa
-    #10 control_mux_addr_mem= 1'b1; //mem de programa toma la dir de debug unit para escribir las instruc. (no se toma la dir de pc)
-    #20 data_mem_programa = 8'b00000101; // Dato a guardar.
-    #20 addr_mem_programa = 11'b0000001; // Seteo de direccion de mem.
-    #20 write_read_mem = 1'b1; // Ahora se guarda el dato.
-    #20 write_read_mem = 1'b0;
-    #20 data_mem_programa = 8'b00000010; // Dato a guardar.
-    #20 addr_mem_programa = 11'b0000010; // Seteo de direccion de mem.
-    #20 write_read_mem = 1'b1; // Ahora se guarda el dato.
-    #20 write_read_mem = 1'b0; // Ahora se guarda el dato.
-    #20 addr_mem_programa = 11'b0000011; // Lectura del 1 que se guardo.
-    #20 data_mem_programa = 8'b00000101; // Dato a guardar.
-    #20 addr_mem_programa = 11'b0000100; // Seteo de direccion de mem.
-    #20 write_read_mem = 1'b1; // Ahora se guarda el dato.
-    #20 write_read_mem = 1'b0;
-    /// de mem programa
-     #10 control_mux_addr_mem= 1'b0; //tomo dir de pc y no de debug unit.
-     
-     #10 branch_dir = 10;
-     #10 control_mux_PC = 1'b1;
-     #10 enable_contador_PC = 1'b1;
-     
-     #10 enable_contador_PC = 1'b0;
+            /// de mem_programa
+            #10 control_mux_addr_mem= 1'b1; //mem de programa toma la dir de debug unit para escribir las instruc. (no se toma la dir de pc)
+            #20 data_mem_programa = 8'b00000101; // Dato a guardar.
+            #20 addr_mem_programa = 11'b0000001; // Seteo de direccion de mem.
+            #20 write_read_mem = 1'b1; // Ahora se guarda el dato.
+            #20 write_read_mem = 1'b0;
+            #20 data_mem_programa = 8'b00000010; // Dato a guardar.
+            #20 addr_mem_programa = 11'b0000010; // Seteo de direccion de mem.
+            #20 write_read_mem = 1'b1; // Ahora se guarda el dato.
+            #20 write_read_mem = 1'b0; // Ahora se guarda el dato.
+            #20 addr_mem_programa = 11'b0000011; // Lectura del 1 que se guardo.
+            #20 data_mem_programa = 8'b00000101; // Dato a guardar.
+            #20 addr_mem_programa = 11'b0000100; // Seteo de direccion de mem.
+            #20 write_read_mem = 1'b1; // Ahora se guarda el dato.
+            #20 write_read_mem = 1'b0;
+            /// de mem programa
+            #10 control_mux_addr_mem= 1'b0; //tomo dir de pc y no de debug unit.
+            #10 enable_contador_PC = 1'b1;
+            #20 enable_contador_PC = 1'b0;
 
 
 
 
-   // Prueba reset.
-   #3000000 soft_reset = 1'b0; // Reset.
-   #3000000 soft_reset = 1'b1; // Desactivo el reset.
+
+            /* Segunda prueba: pruebo direccion de salto y envio de nop a la salida. (Resultado esperado: el PC debe detenerse en el halt
+            leido en la direccion de salto (direccion 10)). La salida envia NOP y al ultimo un HALT. */
+
+
+            #100 soft_reset = 1'b0;
+            #100 soft_reset = 1'b1;
+            #10  enable_mem = 1'b1;
+            #10 enable_contador_PC = 1'b1;
+            #10 enable_contador_PC = 1'b0;
+            #10 enable_pipeline = 1'b0;
+            /// de mem_programa
+            #10 control_mux_addr_mem= 1'b1; //mem de programa toma la dir de debug unit para escribir las instruc. (no se toma la dir de pc)
+            #20 data_mem_programa = 8'b00000101; // Dato a guardar.
+            #20 addr_mem_programa = 11'b0000001; // Seteo de direccion de mem.
+            #20 write_read_mem = 1'b1; // Ahora se guarda el dato.
+            #20 write_read_mem = 1'b0;
+            #20 data_mem_programa = 8'b00000010; // Dato a guardar.
+            #20 addr_mem_programa = 11'b0000010; // Seteo de direccion de mem.
+            #20 write_read_mem = 1'b1; // Ahora se guarda el dato.
+            #20 write_read_mem = 1'b0; // Ahora se guarda el dato.
+            #20 addr_mem_programa = 11'b0000011; // Lectura del 1 que se guardo.
+            #20 data_mem_programa = 8'b00000101; // Dato a guardar.
+            #20 addr_mem_programa = 11'b0000100; // Seteo de direccion de mem.
+            #20 write_read_mem = 1'b1; // Ahora se guarda el dato.
+            #20 write_read_mem = 1'b0;
+            /// de mem programa
+            #10 control_mux_addr_mem= 1'b0; //tomo dir de pc y no de debug unit.
+            #10 enable_pipeline = 1'b1;
+            #10 branch_dir = 10;
+            #10 control_mux_PC = 1'b1;
+            #10 enable_contador_PC = 1'b1;
+            
+            #10 enable_contador_PC = 1'b0;
 
 
 
 
-   #5000000 $finish;
+          // Prueba reset.
+          #3000000 soft_reset = 1'b0; // Reset.
+          #3000000 soft_reset = 1'b1; // Desactivo el reset.
+
+
+
+
+          #5000000 $finish;
   end
 
   always #2.5 clock=~clock;  // Simulacion de clock.
@@ -176,6 +178,7 @@ top_if
     .i_control_mux_PC (control_mux_PC),
     .i_control_mux_addr_mem (control_mux_addr_mem),
     .i_branch_dir (branch_dir),
+    .i_enable_pipeline (enable_pipeline),
     .o_instruction (wire_instruction),
     .o_direccion_PC_PLUS_4 (wire_direccion_PC_PLUS_4),
     .o_contador_programa (wire_contador_programa),

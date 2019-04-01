@@ -50,6 +50,8 @@ module test_bench_top_id();
     reg [clogb2 (CANT_REGISTROS - 1) - 1 : 0] reg_i_reg_write;
     reg [CANT_BITS_REGISTROS - 1 : 0] reg_i_data_write;
 
+    reg reg_enable_pipeline;
+
 
 
     wire [CANT_BITS_ADDR - 1 : 0] wire_o_branch_dir;
@@ -85,15 +87,18 @@ module test_bench_top_id();
         reg_i_reg_write = 0;
         reg_i_control_write_reg = 0;
         reg_i_data_write = 4;
+        reg_enable_pipeline = 1'b1;
 
 		#10 reg_i_soft_reset = 1'b1; // Desactivo la accion del reset.
-
+        
 
         #50 reg_i_out_adder_pc = 5;
         #50 reg_i_instruction = 32'b00000000001000100001100000000100; //SLLV R3,R2,R1
         #50 reg_i_instruction = 32'b00000000001000100001100000100001; //ADDU R3,R1,R2
         #50 reg_i_instruction = 32'b00000010100000000000000000001000; //JR R20.
+        #20 reg_enable_pipeline = 1'b0;
         #50 reg_i_instruction = 32'b00010010100000110000000000001001; //BEQ R20,R3,9
+        #20 reg_enable_pipeline = 1'b1;
         #50 reg_i_instruction = 32'b00001000000000000000000000000111; //J 7
         #50 reg_i_instruction = 32'b10000010101000010000000000001000; //LB R1,8(R21)
         #50 reg_i_instruction = 32'b10100010101000010000000000001000; //SB R1,8(R21)
@@ -139,7 +144,7 @@ top_id
         .i_control_write_reg (reg_i_control_write_reg),
         .i_reg_write (reg_i_reg_write),
         .i_data_write (reg_i_data_write),
-
+        .i_enable_pipeline (reg_enable_pipeline),
         .o_branch_dir (wire_o_branch_dir),
         .o_branch_control (wire_o_branch_control),
         .o_data_A (wire_o_data_A),
