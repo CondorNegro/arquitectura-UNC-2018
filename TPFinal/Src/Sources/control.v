@@ -584,7 +584,7 @@ module control
         case (o_ALUOp)
             2'b00: //Load o Store.
                 begin
-                    if (i_instruction [CANT_BITS_INSTRUCTION - 1 : CANT_BITS_INSTRUCTION - CANT_BITS_ESPECIAL] == 15) begin
+                    if (i_instruction [CANT_BITS_INSTRUCTION - 1 : CANT_BITS_INSTRUCTION - CANT_BITS_ESPECIAL] == 15) begin //LUI
                         o_ALUCtrl = 4'b1000;
                     end
                     else begin

@@ -28,6 +28,8 @@ module test_bench_branch_address_calculator();
     reg [CANT_BITS_INSTRUCTION_INDEX_BRANCH - 1 : 0] reg_i_instruction_index_branch;
     reg [CANT_BITS_REGISTROS - 1 : 0] reg_i_dato_reg_A;
     reg [CANT_BITS_REGISTROS - 1 : 0] reg_i_dato_reg_B;
+    reg reg_enable_etapa;
+
     wire wire_o_branch_control;
     wire [CANT_BITS_ADDR - 1 : 0] wire_o_branch_dir;
 	
@@ -39,6 +41,7 @@ module test_bench_branch_address_calculator();
         reg_i_instruction_index_branch = 0;
         reg_i_dato_reg_A = 7;
         reg_i_dato_reg_B = 5;
+        reg_enable_etapa = 1'b1;
         
         #20 reg_i_flag_branch = 0; //salida esperada : 
                                    //o_branch_control = 1'b0;
@@ -49,12 +52,12 @@ module test_bench_branch_address_calculator();
                                    //o_branch_control = 1'b1;
                                    //o_branch_dir = 7;
 
-
+        #20 reg_enable_etapa = 1'b0;
         #20 reg_i_flag_branch = 2; //salida esperada : 
                                    //o_branch_control = 1'b1;
                                    //o_branch_dir = 7;
 
-
+        #20 reg_enable_etapa = 1'b1;
         #20 reg_i_flag_branch = 3; //salida esperada : 
                                    //o_branch_control = 1'b0;
                                    //o_branch_dir = 1;
@@ -107,6 +110,7 @@ branch_address_calculator
         .i_instruction_index_branch (reg_i_instruction_index_branch),
         .i_dato_reg_A (reg_i_dato_reg_A),
         .i_dato_reg_B (reg_i_dato_reg_B),
+        .i_enable_etapa (reg_enable_etapa),
         .o_branch_control (wire_o_branch_control),
         .o_branch_dir (wire_o_branch_dir)
     );

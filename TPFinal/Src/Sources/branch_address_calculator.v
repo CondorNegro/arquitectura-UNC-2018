@@ -26,6 +26,7 @@ module branch_address_calculator
        input [CANT_BITS_INSTRUCTION_INDEX_BRANCH - 1 : 0] i_instruction_index_branch,
        input [CANT_BITS_REGISTROS - 1 : 0] i_dato_reg_A,
        input [CANT_BITS_REGISTROS - 1 : 0] i_dato_reg_B,
+       input i_enable_etapa,
        output reg o_branch_control,
        output reg [CANT_BITS_ADDR - 1 : 0] o_branch_dir
       
@@ -36,63 +37,69 @@ module branch_address_calculator
     wire [CANT_BITS_ADDR - 1 : 0] wire_resultado_sumador;
 
     always@(*) begin
-      case (i_flag_branch) 
-        
-        0:
-            begin
-              o_branch_control = 1'b0;
-              o_branch_dir = wire_resultado_sumador;
-              
-            end
+      if (i_enable_etapa) begin
+          case (i_flag_branch) 
+            
+            0:
+                begin
+                  o_branch_control = 1'b0;
+                  o_branch_dir = wire_resultado_sumador;
+                  
+                end
 
-        1://JR
-            begin
-              o_branch_control = 1'b1;
-              o_branch_dir = i_dato_reg_A;
-            end
+            1://JR
+                begin
+                  o_branch_control = 1'b1;
+                  o_branch_dir = i_dato_reg_A;
+                end
 
-        2://JALR
-            begin
-              o_branch_control = 1'b1;
-              o_branch_dir = i_dato_reg_A;
-            end
+            2://JALR
+                begin
+                  o_branch_control = 1'b1;
+                  o_branch_dir = i_dato_reg_A;
+                end
 
-        3://BEQ
-            begin
-              if ((i_dato_reg_A - i_dato_reg_B) == 0) begin
-                o_branch_control = 1'b1;
-              end
-              else begin
-                o_branch_control = 1'b0;
-              end
-              o_branch_dir = wire_resultado_sumador;
-            end
+            3://BEQ
+                begin
+                  if ((i_dato_reg_A - i_dato_reg_B) == 0) begin
+                    o_branch_control = 1'b1;
+                  end
+                  else begin
+                    o_branch_control = 1'b0;
+                  end
+                  o_branch_dir = wire_resultado_sumador;
+                end
 
-        4://BNE
-            begin
-              if ((i_dato_reg_A - i_dato_reg_B) != 0) begin
-                o_branch_control = 1'b1;
-              end
-              else begin
-                o_branch_control = 1'b0;
-              o_branch_dir = wire_resultado_sumador;
-             end
-            end
-        
-        5://J, JAL
-            begin
-              o_branch_control = 1'b1;
-              o_branch_dir = i_instruction_index_branch [CANT_BITS_ADDR - 1 : 0];
-              //en MIPS se deberia concatenar con BITS MSB del PC, 
-            end
+            4://BNE
+                begin
+                  if ((i_dato_reg_A - i_dato_reg_B) != 0) begin
+                    o_branch_control = 1'b1;
+                  end
+                  else begin
+                    o_branch_control = 1'b0;
+                  o_branch_dir = wire_resultado_sumador;
+                end
+                end
+            
+            5://J, JAL
+                begin
+                  o_branch_control = 1'b1;
+                  o_branch_dir = i_instruction_index_branch [CANT_BITS_ADDR - 1 : 0];
+                  //en MIPS se deberia concatenar con BITS MSB del PC, 
+                end
 
-        default:
-            begin
-              o_branch_control = 1'b0;
-              o_branch_dir = wire_resultado_sumador;
-            end
+            default:
+                begin
+                  o_branch_control = 1'b0;
+                  o_branch_dir = wire_resultado_sumador;
+                end
 
-      endcase
+          endcase
+      end
+      else begin
+            o_branch_control = o_branch_control;
+            o_branch_dir = o_branch_dir;
+      end
     end
 
 

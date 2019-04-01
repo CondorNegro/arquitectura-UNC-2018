@@ -309,7 +309,7 @@ module test_bench_top_arquitectura();
         //bit de inicio
         #52160 uart_txd_in_reg = 1'b0;
         
-        //cuarto dato - segunda instruccion //0000 0100
+        //cuarto dato - segunda instruccion //0000 1000
         #52160 uart_txd_in_reg = 1'b0;
         #52160 uart_txd_in_reg = 1'b0;
         #52160 uart_txd_in_reg = 1'b0;

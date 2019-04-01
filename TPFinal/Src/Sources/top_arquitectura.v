@@ -339,6 +339,7 @@ top_id
         .i_reg_write (wire_reg_write_ID),
         .i_data_write (wire_data_write_ID),
         .i_enable_pipeline (wire_enable_pipeline),
+        .i_enable_etapa (wire_enable_PC),
         .o_branch_dir (wire_branch_dir),
         .o_branch_control (wire_control_mux_PC),
         .o_data_A (wire_data_A),

@@ -38,6 +38,7 @@ module top_id
        input [CANT_BITS_REGISTROS - 1 : 0] i_data_write,
 
        input i_enable_pipeline,
+       input i_enable_etapa, 
 
        output  [CANT_BITS_ADDR - 1 : 0] o_branch_dir,
        output  o_branch_control,
@@ -204,6 +205,7 @@ branch_address_calculator
         .i_dato_reg_B (wire_o_data_B),
         .i_immediate_address (wire_o_extension_signo_constante),
         .i_instruction_index_branch (wire_output_instruction_index_branch_decoder_TO_instruction_index_branch_branch_address_calculator),
+        .i_enable_etapa (i_enable_etapa),
         .o_branch_control (o_branch_control),
         .o_branch_dir (o_branch_dir)
     );
