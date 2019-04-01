@@ -64,7 +64,7 @@ assign o_direccion_adder_pc = reg_direccion_adder_pc;
 
 always@(negedge i_clock) begin
   if (~i_soft_reset) begin
-    reg_intruction_register <= 32'hFFFFFFFF;
+    reg_intruction_register <= 32'b00000000001000010000100000100100; // NOP (AND R1,R1,R1)
     reg_direccion_adder_pc <= 1;
   end
   else begin
