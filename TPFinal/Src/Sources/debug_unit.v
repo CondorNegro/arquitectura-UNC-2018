@@ -114,7 +114,7 @@ reg flag_send_mem; //Sirve para que el primer dato que se envia sea la instrucci
 
 
 reg flag_enable_pc; //Flag para habilitar o no el enable_pc.
-
+reg flag_enable_pipeline; //Flag para habilitar o no el enable_pipeline.
 
 always @ ( posedge i_clock ) begin //Memory
   // Se resetean los registros.
@@ -176,6 +176,21 @@ always @ ( posedge i_clock ) begin //Memory
 
  end
 
+end
+
+// Always para que no se desensincronicen los flancos del clock en modo debug.
+always@ ( negedge i_clock ) begin
+    if (~ i_reset) begin
+      flag_enable_pipeline <= 1'b0;
+    end
+    else begin
+        if (reg_state == EJECUCION) begin
+              flag_enable_pipeline <= 1'b1; //Habilito pipelines.
+        end
+        else begin
+              flag_enable_pipeline <= 1'b0;
+        end
+    end
 end
 
 
@@ -661,6 +676,12 @@ always @ ( * ) begin //Output logic
          else begin
             o_enable_PC = 1;
             o_enable_mem = 1;
+         end
+         if (flag_enable_pipeline == 1'b1) begin
+            o_enable_pipeline = 1;
+         end
+         else begin
+            o_enable_pipeline = 0;
          end
          o_control_mux_addr_mem_top_if = 0;
          o_control_database = 1;
