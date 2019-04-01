@@ -528,11 +528,8 @@ always@( * ) begin //NEXT - STATE logic
               if (reg_next_modo_ejecucion == 1'b0) begin // Modo continuo.
                 reg_next_state = ESPERA;
               end
-              else if ((i_instruction_fetch == HALT_INSTRUCTION) && (i_dato_database != HALT_INSTRUCTION)) begin
-                reg_next_state = ESPERA_START; // Modo debug, penultima instruccion.
-              end
-              else if ((i_instruction_fetch == HALT_INSTRUCTION) && (i_dato_database == HALT_INSTRUCTION)) begin
-                 reg_next_state = ESPERA; // Modo debug, ultima instruccion.
+              else if (i_instruction_fetch == HALT_INSTRUCTION) begin
+                reg_next_state = ESPERA; // Modo debug, ultima instruccion.
               end
               else begin // Modo debug instrucciones anteriores.
                   reg_next_state = ESPERA_START;
