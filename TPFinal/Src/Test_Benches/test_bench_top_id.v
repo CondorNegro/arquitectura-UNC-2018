@@ -57,6 +57,9 @@ module test_bench_top_id();
     wire [CANT_BITS_ADDR - 1 : 0] wire_o_branch_dir;
     wire wire_o_branch_control;
 
+    wire [CANT_BITS_ADDR - 1 : 0] wire_o_branch_dir_to_database;
+    wire wire_o_branch_control_to_database;
+
     wire [CANT_BITS_REGISTROS - 1 : 0] wire_o_data_A;
     wire [CANT_BITS_REGISTROS - 1 : 0] wire_o_data_B;
 
@@ -151,6 +154,8 @@ top_id
         .i_enable_etapa (reg_enable_etapa),
         .o_branch_dir (wire_o_branch_dir),
         .o_branch_control (wire_o_branch_control),
+        .o_branch_dir_to_database (wire_o_branch_dir_to_database),
+        .o_branch_control_to_database (wire_o_branch_control_to_database),
         .o_data_A (wire_o_data_A),
         .o_data_B (wire_o_data_B),
         .o_extension_signo_constante (wire_o_extension_signo_constante),

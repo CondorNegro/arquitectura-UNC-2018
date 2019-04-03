@@ -145,7 +145,8 @@ wire wire_enable_pipeline;
 wire wire_control_write_reg_ID;
 wire [CANT_BITS_REGISTROS_TOP - 1 : 0] wire_data_write_ID;
 wire [CANT_BITS_ADDR_REGISTROS - 1 : 0] wire_reg_write_ID;
-
+wire wire_control_mux_PC_to_database;
+wire [ADDR_MEM_PROGRAMA_LENGTH - 1 : 0] wire_branch_dir_to_database;
 wire [CANT_BITS_REGISTROS_TOP - 1 : 0] wire_data_A;
 wire [CANT_BITS_REGISTROS_TOP - 1 : 0] wire_data_B;
 wire [CANT_BITS_REGISTROS_TOP - 1 : 0] wire_extension_signo_constante;
@@ -342,6 +343,8 @@ top_id
         .i_enable_etapa (wire_enable_PC),
         .o_branch_dir (wire_branch_dir),
         .o_branch_control (wire_control_mux_PC),
+        .o_branch_dir_to_database (wire_branch_dir_to_database),
+        .o_branch_control_to_database (wire_control_mux_PC_to_database),
         .o_data_A (wire_data_A),
         .o_data_B (wire_data_B),
         .o_extension_signo_constante (wire_extension_signo_constante),
@@ -399,8 +402,8 @@ database
         .i_contador_ciclos (wire_contador_ciclos),
 		.i_adder_pc (wire_adder_contador_programa),
 		.i_instruction_fetch (wire_instruction_fetch),
-        .i_branch_dir (wire_branch_dir),
-        .i_branch_control (wire_control_mux_PC),
+        .i_branch_dir (wire_branch_dir_to_database),
+        .i_branch_control (wire_control_mux_PC_to_database),
         .i_data_A (wire_data_A),
         .i_data_B (wire_data_B),
         .i_extension_signo_constante (wire_extension_signo_constante),

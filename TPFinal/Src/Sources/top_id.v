@@ -43,6 +43,9 @@ module top_id
        output  [CANT_BITS_ADDR - 1 : 0] o_branch_dir,
        output  o_branch_control,
 
+       output  reg [CANT_BITS_ADDR - 1 : 0] o_branch_dir_to_database, //Para guardar coherencia de datos almacenados en database.
+       output  reg o_branch_control_to_database, //Para guardar coherencia de datos almacenados en database.
+
        output reg [CANT_BITS_REGISTROS - 1 : 0] o_data_A,
        output reg [CANT_BITS_REGISTROS - 1 : 0] o_data_B,
 
@@ -125,7 +128,9 @@ module top_id
             o_MemRead <= 0;
             o_MemWrite <= 0;
             o_MemtoReg <= 0;
-            o_ALUCtrl <= 0;   
+            o_ALUCtrl <= 0;
+            o_branch_dir_to_database <= 0;
+            o_branch_control_to_database <= 0;   
       end
       else begin
             if (i_enable_pipeline) begin
@@ -143,6 +148,8 @@ module top_id
                 o_MemWrite <= wire_o_MemWrite;
                 o_MemtoReg <= wire_o_MemtoReg;
                 o_ALUCtrl <= wire_o_ALUCtrl;
+                o_branch_dir_to_database <= o_branch_dir;
+                o_branch_control_to_database <= o_branch_control;  
             end
             else begin
                 o_data_A <= o_data_A;
@@ -159,6 +166,8 @@ module top_id
                 o_MemWrite <= o_MemWrite;
                 o_MemtoReg <= o_MemtoReg;
                 o_ALUCtrl <= o_ALUCtrl;
+                o_branch_dir_to_database <= o_branch_dir_to_database;
+                o_branch_control_to_database <= o_branch_control_to_database;  
             end 
     end
     end
