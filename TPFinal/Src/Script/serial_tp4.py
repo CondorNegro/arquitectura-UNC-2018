@@ -121,6 +121,7 @@ def getHexadecimal (binario):
 	if ( (len(binario) > 0) and ((len(binario)% 4) == 0) ):
 		for i in range(0, len(binario), 4):
 			grupoCuatro = binario[i : i + 4]
+			
 			try:
 				decimal =  int (grupoCuatro, 2)
 				if (decimal > 9 and decimal < 16):
@@ -795,9 +796,9 @@ def recibirDatosFromFPGA ():
 						ser.flushInput()
 						rs = rs + rs_aux
 
-						etiqueta_rs = 'R' + str (int (rs [-CANT_BITS_ADDR_REGISTROS * 2 - 1 : -CANT_BITS_ADDR_REGISTROS * 3 -1 : - 1], 2))
-						etiqueta_rt = 'R' + str (int (rs [-CANT_BITS_ADDR_REGISTROS - 1 : -CANT_BITS_ADDR_REGISTROS * 2 - 1: - 1], 2 ))
-						etiqueta_rd = 'R' + str (int (rs [-1 : -CANT_BITS_ADDR_REGISTROS - 1 : -1]))
+						etiqueta_rs = 'R' + str (int (rs [-CANT_BITS_ADDR_REGISTROS * 3 : -CANT_BITS_ADDR_REGISTROS * 2 ], 2))
+						etiqueta_rt = 'R' + str (int (rs [-CANT_BITS_ADDR_REGISTROS * 2 : -CANT_BITS_ADDR_REGISTROS], 2 ))
+						etiqueta_rd = 'R' + str (int (rs [-CANT_BITS_ADDR_REGISTROS : ], 2))
 						
 						etiquetaRSValorMIPS.config (text = etiqueta_rs)
 						etiquetaRTValorMIPS.config (text = etiqueta_rt)
