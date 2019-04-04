@@ -162,7 +162,18 @@ wire wire_MemWrite;
 wire wire_MemtoReg;
 wire [CANT_BITS_FLAG_BRANCH_TOP - 1 : 0] wire_flag_branch;
 wire [CANT_BITS_ALU_CONTROL_TOP - 1 : 0] wire_ALUCtrl; 
+wire [ADDR_MEM_PROGRAMA_LENGTH - 1 : 0] wire_out_adder_pc_ID_EX;
 
+
+// Ejecucion.
+
+wire wire_EX_to_MEM_RegWrite;
+wire wire_EX_to_MEM_MemRead;
+wire wire_EX_to_MEM_MemWrite;
+wire wire_EX_to_MEM_MemtoReg;
+wire [CANT_BITS_REGISTROS_TOP - 1 : 0] wire_resultado_ALU;
+wire [ADDR_MEM_DATOS_LENGTH - 1 : 0] wire_EX_to_MEM_data_write_mem;
+wire [CANT_BITS_ADDR_REGISTROS - 1 : 0] wire_registro_destino;
 
 // Asignaciones de wires.
 
@@ -341,6 +352,7 @@ top_id
         .i_data_write (wire_data_write_ID),
         .i_enable_pipeline (wire_enable_pipeline),
         .i_enable_etapa (wire_enable_PC),
+        .o_out_adder_pc (wire_out_adder_pc_ID_EX),
         .o_branch_dir (wire_branch_dir),
         .o_branch_control (wire_control_mux_PC),
         .o_branch_dir_to_database (wire_branch_dir_to_database),
@@ -363,7 +375,48 @@ top_id
 
         .o_led (o_leds[2])
     );
-   
+
+
+// Modulo top de la etapa de instruction decode.
+top_ejecucion
+    #(
+        .WIDTH_DATA_MEM (RAM_WIDTH_DATOS),
+        .CANT_REGISTROS (CANT_REGISTROS_TOP),
+        .CANT_BITS_ADDR  (ADDR_MEM_PROGRAMA_LENGTH),
+        .CANT_BITS_REGISTROS (CANT_BITS_REGISTROS_TOP),
+        .CANT_BITS_ALU_CONTROL (CANT_BITS_ALU_CONTROL_TOP)
+        
+     ) 
+    u_top_ejecucion_1    // Una sola instancia de este modulo.
+    (
+        .i_clock (i_clock),
+        .i_soft_reset (wire_soft_reset),
+        .i_enable_pipeline (wire_enable_pipeline),
+        .i_adder_pc (wire_out_adder_pc_ID_EX),
+        .i_data_A (wire_data_A),
+        .i_data_B (wire_data_B),
+        .i_extension_signo_constante (wire_extension_signo_constante),
+        .i_reg_rs (wire_reg_rs),
+        .i_reg_rt (wire_reg_rt),
+        .i_reg_rd (wire_reg_rd),
+        .i_RegDst (wire_RegDst),
+        .i_RegWrite (wire_RegWrite),
+        .i_ALUSrc (wire_ALUSrc),
+        .i_MemRead (wire_MemRead),
+        .i_MemWrite (wire_MemWrite),
+        .i_MemtoReg (wire_MemtoReg),
+        .i_ALUCtrl (wire_ALUCtrl), 
+        .o_RegWrite (wire_EX_to_MEM_RegWrite),
+        .o_MemRead (wire_EX_to_MEM_MemRead),
+        .o_MemWrite (wire_EX_to_MEM_MemWrite),
+        .o_MemtoReg (wire_EX_to_MEM_MemtoReg),
+        .o_result (wire_resultado_ALU),
+        .o_data_write_to_mem (wire_EX_to_MEM_data_write_mem),
+        .o_registro_destino (wire_registro_destino),
+        .o_led ()
+    );
+
+    
 
 
 // Modulo contador de ciclos.
