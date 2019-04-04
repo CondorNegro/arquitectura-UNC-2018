@@ -78,7 +78,7 @@ module top_ejecucion
 
     wire wire_control_mux_primer_operando_alu;
 
-    assign wire_control_mux_primer_operando_alu = (i_ALUCtrl == 14);
+    assign wire_control_mux_primer_operando_alu = (i_ALUCtrl == 14); // Es un salto o no.
 
     assign wire_data_write_to_mem = i_data_B;
 
