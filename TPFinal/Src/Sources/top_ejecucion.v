@@ -76,7 +76,13 @@ module top_ejecucion
     wire [CANT_BITS_REGISTROS - 1 : 0] wire_segundo_operando_alu;
     wire [CANT_BITS_REGISTROS - 1 : 0] wire_primer_operando_alu;
 
-    
+    wire wire_control_mux_primer_operando_alu;
+
+    assign wire_control_mux_primer_operando_alu = (i_ALUCtrl == 14) ? i_data_B : i_data_A;
+
+    assign wire_data_write_to_mem = i_data_B;
+
+
     always@(negedge i_clock) begin
       if (~i_soft_reset) begin
             o_RegWrite <= 1'b0;
@@ -136,6 +142,18 @@ mux
        .i_data_B (i_extension_signo_constante),
        .i_selector (i_ALUSrc),
        .o_result (wire_segundo_operando_alu)
+    );
+
+mux
+   #(
+       .INPUT_OUTPUT_LENGTH (CANT_BITS_REGISTROS)
+    )
+    u_mux_first_operand_alu_1
+   (
+       .i_data_A (i_data_A),
+       .i_data_B (i_adder_pc),
+       .i_selector (wire_control_mux_primer_operando_alu),
+       .o_result (wire_primer_operando_alu)
     );
 
 
