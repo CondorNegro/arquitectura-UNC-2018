@@ -151,7 +151,7 @@ mux
     u_mux_first_operand_alu_1
    (
        .i_data_A (i_data_A),
-       .i_data_B (i_adder_pc),
+       .i_data_B ({ { (CANT_BITS_REGISTROS - CANT_BITS_ADDR) {1'b0}}, i_adder_pc}),
        .i_selector (wire_control_mux_primer_operando_alu),
        .o_result (wire_primer_operando_alu)
     );
