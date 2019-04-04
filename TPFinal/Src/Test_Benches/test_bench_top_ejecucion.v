@@ -84,15 +84,15 @@ module test_bench_top_ejecucion();
         #20 reg_i_enable_pipeline = 1'b1;
         #20 reg_i_data_B = 2;
 
-        #20 reg_i_RegDst = 1;
-        #20 reg_i_ALUSrc = 1;
+        #20 reg_i_RegDst = 1; // Modifico selector de mux
+        #20 reg_i_ALUSrc = 1; // Modifico selector de mux
 
         #20 reg_i_ALUCtrl = 4'b1000; // LUI
         #20 reg_i_ALUCtrl = 4'b1110; // SALTO
         #20 reg_i_ALUCtrl = 4'b0010; // ADDU
         #20 reg_i_ALUCtrl = 4'b0111; // SLTI
 
-        #20 reg_i_data_B = -1; 
+        #20 reg_i_data_B = -1; // Aca valor de ALU se debe invertir.
 
 
 		#10000 reg_i_soft_reset = 1'b0; // Reset.
@@ -102,7 +102,7 @@ module test_bench_top_ejecucion();
 		#500000 $finish;
 	end
 	
-	always #2.5 clock=~clock;  // Simulacion de clock.
+	always #2.5 reg_i_clock=~reg_i_clock;  // Simulacion de clock.
     
 
 
