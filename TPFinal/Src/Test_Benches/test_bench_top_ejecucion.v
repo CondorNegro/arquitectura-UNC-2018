@@ -145,7 +145,7 @@ top_ejecucion
 
         .o_result (wire_o_result),
         .o_data_write_to_mem (wire_o_data_write_to_mem),
-        .o_registro_destino()wire_o_registro_destino,
+        .o_registro_destino (wire_o_registro_destino),
         .o_led (wire_o_led)
     );
    
