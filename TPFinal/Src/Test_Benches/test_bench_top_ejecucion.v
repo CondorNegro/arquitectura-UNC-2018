@@ -21,7 +21,13 @@ module test_bench_top_ejecucion();
 	
 	//Todo puerto de salida del modulo es un cable.
 	//Todo puerto de estimulo o generacion de entrada es un registro.
-	
+	//  The following function calculates the address width based on specified RAM depth
+    function integer clogb2;
+        input integer depth;
+            for (clogb2=0; depth>0; clogb2=clogb2+1)
+                depth = depth >> 1;
+    endfunction
+    
 	// ENTRADAS.
     reg reg_i_clock;
     reg reg_i_soft_reset;
