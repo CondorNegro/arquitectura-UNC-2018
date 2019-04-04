@@ -27,9 +27,9 @@ module alu
    /* Control general */
    always@(*) begin
     case (i_ALUCtrl) //6 bits LSB.
-        4'b1011://SLL v
+        4'b1011://SLL //SLLV
             begin 
-                o_resultado = i_datoA + i_datoB;
+                o_resultado = i_datoA << i_datoB;
             end
         4'b1100://SRL //SRLV
             begin
@@ -39,11 +39,11 @@ module alu
             begin
                 o_resultado = i_datoA >>> i_datoB;
             end
-        4'b0010://ADDU //ADDI
+        4'b0010://ADDU //ADDI //LOAD
             begin
                 o_resultado = i_datoA + i_datoB;
             end
-        4'b0110://SUBU
+        4'b0110://SUBU //SALTOS
             begin
                 o_resultado = i_datoA - i_datoB;
             end
@@ -63,9 +63,14 @@ module alu
             begin
                 o_resultado = ~ (i_datoA | i_datoB);
             end
-        4'b0111://SLT //SLTI
+        4'b0111://SLT //SLTI DUDA
             begin
-                o_resultado = i_datoA + i_datoB;
+                o_resultado = i_datoA < i_datoB;
+            end
+
+        4'b1000://LUI DUDA
+            begin
+                o_resultado = i_datoA < i_datoB;
             end
 
 
