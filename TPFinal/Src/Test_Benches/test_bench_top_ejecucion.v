@@ -98,8 +98,10 @@ module test_bench_top_ejecucion();
         #20 reg_i_ALUCtrl = 4'b1110; // SALTO
         #20 reg_i_ALUCtrl = 4'b0010; // ADDU
         #20 reg_i_ALUCtrl = 4'b0111; // SLTI
-
-        #20 reg_i_data_B = -1; // Aca valor de ALU se debe invertir.
+        
+        #20 reg_i_ALUSrc = 0; // Modifico selector de mux
+        #20 reg_i_data_B = -1; 
+        #20 reg_i_data_A = -5; // Aca valor de ALU se debe invertir.
 
 
 		#10000 reg_i_soft_reset = 1'b0; // Reset.
