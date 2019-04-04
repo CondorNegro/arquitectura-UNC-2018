@@ -39,7 +39,7 @@ module top_id
 
        input i_enable_pipeline,
        input i_enable_etapa, 
-
+       output reg [CANT_BITS_ADDR - 1 : 0] o_out_adder_pc,
        output  [CANT_BITS_ADDR - 1 : 0] o_branch_dir,
        output  o_branch_control,
 
@@ -130,7 +130,8 @@ module top_id
             o_MemtoReg <= 0;
             o_ALUCtrl <= 0;
             o_branch_dir_to_database <= 0;
-            o_branch_control_to_database <= 0;   
+            o_branch_control_to_database <= 0; 
+            o_out_adder_pc <= 0;  
       end
       else begin
             if (i_enable_pipeline) begin
@@ -149,7 +150,8 @@ module top_id
                 o_MemtoReg <= wire_o_MemtoReg;
                 o_ALUCtrl <= wire_o_ALUCtrl;
                 o_branch_dir_to_database <= o_branch_dir;
-                o_branch_control_to_database <= o_branch_control;  
+                o_branch_control_to_database <= o_branch_control;
+                o_out_adder_pc <= i_out_adder_pc;  
             end
             else begin
                 o_data_A <= o_data_A;
@@ -167,7 +169,8 @@ module top_id
                 o_MemtoReg <= o_MemtoReg;
                 o_ALUCtrl <= o_ALUCtrl;
                 o_branch_dir_to_database <= o_branch_dir_to_database;
-                o_branch_control_to_database <= o_branch_control_to_database;  
+                o_branch_control_to_database <= o_branch_control_to_database;
+                o_out_adder_pc <= o_out_adder_pc;  
             end 
     end
     end

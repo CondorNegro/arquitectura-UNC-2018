@@ -80,7 +80,7 @@ module test_bench_top_id();
 
     wire wire_o_led;
 
-	
+	wire [CANT_BITS_ADDR - 1 : 0] wire_out_adder_pc;
 	
 	initial	begin
 		reg_i_clock = 1'b0;
@@ -152,6 +152,7 @@ top_id
         .i_data_write (reg_i_data_write),
         .i_enable_pipeline (reg_enable_pipeline),
         .i_enable_etapa (reg_enable_etapa),
+        .o_out_adder_pc (wire_out_adder_pc),
         .o_branch_dir (wire_o_branch_dir),
         .o_branch_control (wire_o_branch_control),
         .o_branch_dir_to_database (wire_o_branch_dir_to_database),
