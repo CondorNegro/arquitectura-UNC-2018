@@ -58,16 +58,52 @@ module test_bench_top_ejecucion();
 	
 	
 	initial	begin
-        
-		#10000 hard_reset = 1'b0; // Reset.
-		#10000 hard_reset = 1'b1; // Desactivo el reset.
+        reg_i_soft_reset = 1'b1;
+        reg_i_clock = 0;
+
+        reg_i_enable_pipeline = 1'b1;
+
+        reg_i_adder_pc = 5;
+        reg_i_data_A = 0;
+        reg_i_data_B = 0;
+        reg_i_extension_signo_constante = 20;
+        reg_i_reg_rs = 1;
+        reg_i_reg_rt = 2;
+        reg_i_reg_rd = 3;
+        reg_i_RegDst = 0;
+        reg_i_RegWrite = 0;
+        reg_i_ALUSrc = 0;
+        reg_i_MemRead = 0;
+        reg_i_MemWrite = 0;
+        reg_i_MemtoReg = 0;
+        reg_i_ALUCtrl = 4'b0010;
+
+
+        #20 reg_i_enable_pipeline = 1'b0;
+        #20 reg_i_data_A = 1;
+        #20 reg_i_enable_pipeline = 1'b1;
+        #20 reg_i_data_B = 2;
+
+        #20 reg_i_RegDst = 1;
+        #20 reg_i_ALUSrc = 1;
+
+        #20 reg_i_ALUCtrl = 4'b1000; // LUI
+        #20 reg_i_ALUCtrl = 4'b1110; // SALTO
+        #20 reg_i_ALUCtrl = 4'b0010; // ADDU
+        #20 reg_i_ALUCtrl = 4'b0111; // SLTI
+
+        #20 reg_i_data_B = -1; 
+
+
+		#10000 reg_i_soft_reset = 1'b0; // Reset.
+		#10000 reg_i_soft_reset = 1'b1; // Desactivo el reset.
 		
 		
 		#500000 $finish;
 	end
 	
 	always #2.5 clock=~clock;  // Simulacion de clock.
-    always #5 rate=~rate;  // Simulacion de rate.
+    
 
 
 // Modulo para pasarle los estimulos del banco de pruebas.
