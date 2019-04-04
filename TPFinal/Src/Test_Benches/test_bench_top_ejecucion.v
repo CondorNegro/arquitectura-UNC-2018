@@ -84,7 +84,8 @@ module test_bench_top_ejecucion();
         reg_i_MemtoReg = 0;
         reg_i_ALUCtrl = 4'b0010;
 
-
+        #20 reg_i_soft_reset = 1'b0;
+        #20 reg_i_soft_reset = 1'b1;
         #20 reg_i_enable_pipeline = 1'b0;
         #20 reg_i_data_A = 1;
         #20 reg_i_enable_pipeline = 1'b1;
