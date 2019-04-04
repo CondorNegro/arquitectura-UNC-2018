@@ -574,7 +574,7 @@ module control
                 end
             2'b01: //Saltos.
                 begin
-                    o_ALUCtrl = 4'b0110;
+                    o_ALUCtrl = 4'b1110;
                 end
             2'b10: // Tipo R. 
                 begin
