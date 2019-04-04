@@ -12,75 +12,66 @@
 module alu
    #(
        
-       parameter CANT_BITS_ALU_CONTROL = 4
+       parameter CANT_BITS_ALU_CONTROL = 4,
+       parameter CANT_BITS_DATO = 32
     
     )
    (
        input [CANT_BITS_ALU_CONTROL - 1 : 0]  i_ALUCtrl,
-       output reg o_MemtoReg     
+       input [CANT_BITS_DATO - 1 : 0]  i_datoA,
+       input [CANT_BITS_DATO - 1 : 0]  i_datoB,
+       output [CANT_BITS_DATO - 1 : 0] o_resultado     
    );
 
 
    /* Control general */
    always@(*) begin
     case (i_ALUCtrl) //6 bits LSB.
-        4'b1011://SLL
+        4'b1011://SLL v
             begin 
-                //COMPLETAR
+                o_resultado = i_datoA + i_datoB;
             end
-        4'b1100://SRL
+        4'b1100://SRL //SRLV
             begin
-                //COMPLETAR
+                o_resultado = i_datoA >> i_datoB;
             end
-        4'b1101://SRA
+        4'b1101://SRA //SRAV
             begin
-                //COMPLETAR
-            end
-        4'b1011://SLLV
-            begin
-                //COMPLETAR
-            end
-        4'b1100://SRLV
-            begin
-                //COMPLETAR
-            end
-        4'b1101://SRAV
-            begin
-                //COMPLETAR
+                o_resultado = i_datoA >>> i_datoB;
             end
         4'b0010://ADDU //ADDI
             begin
-                //COMPLETAR
+                o_resultado = i_datoA + i_datoB;
             end
         4'b0110://SUBU
             begin
-                //COMPLETAR
+                o_resultado = i_datoA - i_datoB;
             end
         4'b0000://AND //ANDI
             begin
-                //COMPLETAR
+                o_resultado = i_datoA & i_datoB;
             end
         4'b0001://OR //ORI
             begin
-                //COMPLETAR
+                o_resultado = i_datoA | i_datoB;
             end
         4'b1001://XOR //XORI
             begin
-                //COMPLETAR
+                o_resultado = i_datoA ^ i_datoB;
             end
         4'b1010://NOR
             begin
-                //COMPLETAR
+                o_resultado = ~ (i_datoA | i_datoB);
             end
         4'b0111://SLT //SLTI
             begin
-                //COMPLETAR
+                o_resultado = i_datoA + i_datoB;
             end
 
 
-        default:
+        default: //ADD
             begin
-                //COMPLETAR
+                o_resultado = i_datoA + i_datoB;
             end
     endcase
    end
