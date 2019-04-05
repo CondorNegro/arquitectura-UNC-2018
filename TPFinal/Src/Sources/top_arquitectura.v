@@ -173,7 +173,15 @@ wire wire_EX_to_MEM_MemWrite;
 wire wire_EX_to_MEM_MemtoReg;
 wire [CANT_BITS_REGISTROS_TOP - 1 : 0] wire_resultado_ALU;
 wire [ADDR_MEM_DATOS_LENGTH - 1 : 0] wire_EX_to_MEM_data_write_mem;
-wire [CANT_BITS_ADDR_REGISTROS - 1 : 0] wire_registro_destino;
+wire [CANT_BITS_ADDR_REGISTROS - 1 : 0] wire_EX_to_MEM_registro_destino;
+
+
+// MEM.
+
+wire wire_MEM_to_WB_RegWrite;
+wire wire_MEM_to_WB_MemtoReg;
+wire [CANT_BITS_ADDR_REGISTROS - 1 : 0] wire_MEM_to_WB_registro_destino;
+
 
 // Asignaciones de wires.
 
@@ -189,7 +197,7 @@ assign wire_soft_reset_ack = wire_soft_reset_ack_prog;
 //assign uart_rxd_out = prueba;
 //assign o_leds[1] = 1'b0;
 //assign o_leds[2] = 1'b0;
-assign o_leds[3] = 1'b0;
+//assign o_leds[3] = 1'b0;
 
 
 // Modulo clock_wizard.
@@ -413,11 +421,39 @@ top_ejecucion
         .o_MemtoReg (wire_EX_to_MEM_MemtoReg),
         .o_result (wire_resultado_ALU),
         .o_data_write_to_mem (wire_EX_to_MEM_data_write_mem),
-        .o_registro_destino (wire_registro_destino),
+        .o_registro_destino (wire_EX_to_MEM_registro_destino),
         .o_led ()
     );
 **/
 
+/**
+// Modulo top de la etapa de memoria de datos de la instruccion.
+top_mem
+    #(
+        .RAM_WIDTH (RAM_WIDTH_DATOS),
+        .RAM_PERFORMANCE (RAM_PERFORMANCE_DATOS),
+        .INIT_FILE (INIT_FILE_DATOS),
+        .RAM_DEPTH (RAM_DEPTH_DATOS),
+        .CANT_REGISTROS (CANT_REGISTROS_TOP),
+        .CANT_BITS_ADDR (ADDR_MEM_DATOS_LENGTH),
+        .CANT_BITS_REGISTROS (CANT_BITS_REGISTROS_TOP)
+    )
+    u_top_mem_1
+    (
+        .i_clock (i_clock),
+        .i_soft_reset (wire_soft_reset),
+        .i_enable_pipeline (wire_enable_pipeline),
+        .i_RegWrite (wire_EX_to_MEM_RegWrite),
+        .i_MemRead (wire_EX_to_MEM_MemRead),
+        .i_MemWrite (wire_EX_to_MEM_MemWrite),
+        .i_MemtoReg (wire_EX_to_MEM_MemtoReg),
+        .i_registro_destino (wire_EX_to_MEM_registro_destino),
+        .o_RegWrite (wire_MEM_to_WB_RegWrite),
+        .o_MemtoReg (wire_MEM_to_WB_MemtoReg),
+        .o_registro_destino (wire_MEM_to_WB_registro_destino),
+        .o_led (o_leds [3])
+    );
+**/
 // Modulo top de la etapa write back de la instruccion.
 /**
 
@@ -428,16 +464,18 @@ top_write_back
     )
     u_top_write_back_1
     (
-        .i_registro_destino (),
+        .i_registro_destino (wire_MEM_to_WB_registro_destino),
         .i_data_mem (),
         .i_data_alu (),
-        .i_RegWrite (),
-        .i_MemtoReg (),
+        .i_RegWrite (wire_MEM_to_WB_RegWrite),
+        .i_MemtoReg (wire_MEM_to_WB_MemtoReg),
         .o_registro_destino (wire_reg_write_ID),
         .o_RegWrite (wire_control_write_reg_ID),
         .o_data_write (wire_data_write_ID),
         .o_led ()
     );
+
+
 
 **/  
 
@@ -497,68 +535,6 @@ database
         .o_dato (wire_dato_database)
     );
 
-// Memorias.
 
-/**memoria_datos
-   #(
-        .RAM_WIDTH (RAM_WIDTH_DATOS),
-        .RAM_PERFORMANCE (RAM_PERFORMANCE_DATOS),
-        .INIT_FILE (INIT_FILE_DATOS),
-        .RAM_DEPTH (RAM_DEPTH_DATOS)
-    ) 
-   u_memoria_datos_1    
-   (
-     .i_clk (i_clock),
-     .i_addr (wire_addr_mem_datos),
-     .i_data (wire_datos_in_mem_data),           
-     .i_wea (wire_wr_rd_mem_datos),             
-     .i_ena (wire_enable_mem),              
-     .i_rsta (wire_rsta_mem),             
-     .i_regcea (wire_regcea_mem),           
-     .i_soft_reset (wire_soft_reset),
-     .i_bit_sucio (wire_bit_sucio),      
-     .o_data (wire_datos_out_mem_data),           
-     .o_reset_ack (wire_soft_reset_ack_datos),
-     .o_addr_bit_sucio (wire_addr_control_bit_sucio)    
-   );**/
-
-/*memoria_programa
-    #(
-        .RAM_WIDTH (RAM_WIDTH_PROGRAMA),
-        .RAM_PERFORMANCE (RAM_PERFORMANCE_PROGRAMA),
-        .INIT_FILE (INIT_FILE_PROGRAMA),
-        .RAM_DEPTH (RAM_DEPTH_PROGRAMA)
-    )
-    u_memoria_programa_1
-    (
-        .i_clk (i_clock),
-        .i_addr (wire_addr_mem_programa),
-        .i_data (wire_data_mem_programa_input),           
-        .i_wea (wire_wr_rd_mem_prog),              
-        .i_ena (wire_enable_mem),             
-        .i_rsta (wire_rsta_mem),             
-        .i_regcea (wire_regcea_mem),           
-        .i_soft_reset (wire_soft_reset),       
-        .o_data (wire_data_mem_programa_output),           
-        .o_reset_ack (wire_soft_reset_ack_prog),
-        .o_led (o_leds[1])       
-    );*/
-
-// Control de bit de sucio en memoria de datos.
-
-/**control_bit_sucio_mem_data
-    #(
-        .RAM_DEPTH (RAM_DEPTH_DATOS)
-    )
-    u_control_bit_sucio_mem_data_1
-    (
-        .i_addr (wire_addr_control_bit_sucio),                         
-        .i_clk (i_clock),                         
-        .i_wea (wire_wr_rd_mem_datos),                            
-        .i_ena (wire_enable_mem), 
-        .i_soft_reset (wire_soft_reset),                           
-        .i_soft_reset_ack_mem_datos (wire_soft_reset_ack_datos),      
-        .o_bit_sucio (wire_bit_sucio) 
-    );**/
 
 endmodule
