@@ -41,6 +41,7 @@
 `define CANT_BITS_FLAG_BRANCH_TOP               3 
 `define CANT_BITS_ADDR_REGISTROS                5
 `define HALT_INSTRUCTION_TOP                    32'hFFFFFFFF
+`define CANT_BITS_SELECT_BYTES_TOP                  2
 
 module top_arquitectura(
   i_clock_top, 
@@ -84,7 +85,8 @@ parameter CANT_BITS_CEROS_TOP       = `CANT_BITS_CEROS_TOP;
 parameter CANT_BITS_ID_LSB_TOP      = `CANT_BITS_ID_LSB_TOP;
 parameter CANT_BITS_INSTRUCTION_INDEX_BRANCH_TOP = `CANT_BITS_INSTRUCTION_INDEX_BRANCH_TOP;
 parameter CANT_BITS_FLAG_BRANCH_TOP = `CANT_BITS_FLAG_BRANCH_TOP;
-parameter CANT_BITS_ADDR_REGISTROS  = `CANT_BITS_ADDR_REGISTROS; 
+parameter CANT_BITS_ADDR_REGISTROS  = `CANT_BITS_ADDR_REGISTROS;
+parameter CANT_BITS_SELECT_BYTES_TOP    = `CANT_BITS_SELECT_BYTES_TOP; 
 
 // Entradas - Salidas
 input i_clock_top;                              // Clock.
@@ -162,8 +164,9 @@ wire wire_MemWrite;
 wire wire_MemtoReg;
 wire [CANT_BITS_FLAG_BRANCH_TOP - 1 : 0] wire_flag_branch;
 wire [CANT_BITS_ALU_CONTROL_TOP - 1 : 0] wire_ALUCtrl; 
-wire [ADDR_MEM_PROGRAMA_LENGTH - 1 : 0] wire_out_adder_pc_ID_EX;
-wire wire_halt_detected_ID_TO_EX;
+wire [ADDR_MEM_PROGRAMA_LENGTH - 1 : 0] wire_out_adder_pc_ID_to_EX;
+wire wire_halt_detected_ID_to_EX;
+wire [CANT_BITS_SELECT_BYTES_TOP - 1 : 0] wire_select_bytes_mem_datos_ID_to_EX;
 
 // Ejecucion.
 
@@ -174,13 +177,15 @@ wire wire_EX_to_MEM_MemtoReg;
 wire [CANT_BITS_REGISTROS_TOP - 1 : 0] wire_resultado_ALU;
 wire [ADDR_MEM_DATOS_LENGTH - 1 : 0] wire_EX_to_MEM_data_write_mem;
 wire [CANT_BITS_ADDR_REGISTROS - 1 : 0] wire_EX_to_MEM_registro_destino;
-
+wire [CANT_BITS_SELECT_BYTES_TOP - 1 : 0] wire_select_bytes_mem_datos_EX_to_MEM;
+wire wire_halt_detected_EX_to_MEM;
 
 // MEM.
 
 wire wire_MEM_to_WB_RegWrite;
 wire wire_MEM_to_WB_MemtoReg;
 wire [CANT_BITS_ADDR_REGISTROS - 1 : 0] wire_MEM_to_WB_registro_destino;
+wire wire_halt_detected_MEM_to_WB;
 
 
 // Asignaciones de wires.
@@ -231,7 +236,7 @@ debug_unit
     .i_rx_done (wire_rx_done),
     .i_data_rx (wire_data_rx),
     .i_soft_reset_ack (wire_soft_reset_ack),
-    .i_flag_halt (wire_halt_detected_ID_TO_EX),
+    .i_flag_halt (wire_halt_detected_ID_to_EX),//CAMBIAR por wire_halt_detected_MEM_to_WB
     .i_dato_database (wire_dato_database),
     .o_tx_start (wire_tx_start),
     .o_data_tx (wire_data_tx),
@@ -346,7 +351,8 @@ top_id
         .CANT_BITS_FLAG_BRANCH (CANT_BITS_FLAG_BRANCH_TOP),
         .CANT_BITS_ALU_OP (CANT_BITS_ALU_OP_TOP),
         .CANT_BITS_ALU_CONTROL (CANT_BITS_ALU_CONTROL_TOP),
-        .HALT_INSTRUCTION_TOP_ID (HALT_INSTRUCTION_TOP)  
+        .HALT_INSTRUCTION_TOP_ID (HALT_INSTRUCTION_TOP),
+        .CANT_BITS_SELECT_BYTES (CANT_BITS_SELECT_BYTES_TOP)  
      ) 
     u_top_id_1    // Una sola instancia de este modulo.
     (
@@ -361,7 +367,7 @@ top_id
         .i_data_write (wire_data_write_ID),
         .i_enable_pipeline (wire_enable_pipeline),
         .i_enable_etapa (wire_enable_PC),
-        .o_out_adder_pc (wire_out_adder_pc_ID_EX),
+        .o_out_adder_pc (wire_out_adder_pc_ID_to_EX),
         .o_branch_dir (wire_branch_dir),
         .o_branch_control (wire_control_mux_PC),
         .o_branch_dir_to_database (wire_branch_dir_to_database),
@@ -381,7 +387,8 @@ top_id
         .o_MemWrite (wire_MemWrite),
         .o_MemtoReg (wire_MemtoReg),
         .o_ALUCtrl (wire_ALUCtrl),   
-        .o_halt_detected (wire_halt_detected_ID_TO_EX),
+        .o_halt_detected (wire_halt_detected_ID_to_EX),
+        .o_select_bytes_mem_datos (wire_select_bytes_mem_datos_ID_to_EX),
         .o_led (o_leds[2])
     );
 
@@ -394,7 +401,8 @@ top_ejecucion
         .CANT_REGISTROS (CANT_REGISTROS_TOP),
         .CANT_BITS_ADDR  (ADDR_MEM_PROGRAMA_LENGTH),
         .CANT_BITS_REGISTROS (CANT_BITS_REGISTROS_TOP),
-        .CANT_BITS_ALU_CONTROL (CANT_BITS_ALU_CONTROL_TOP)
+        .CANT_BITS_ALU_CONTROL (CANT_BITS_ALU_CONTROL_TOP),
+        .CANT_BITS_SELECT_BYTES (CANT_BITS_SELECT_BYTES_TOP) 
         
      ) 
     u_top_ejecucion_1    // Una sola instancia de este modulo.
@@ -402,7 +410,7 @@ top_ejecucion
         .i_clock (i_clock),
         .i_soft_reset (wire_soft_reset),
         .i_enable_pipeline (wire_enable_pipeline),
-        .i_adder_pc (wire_out_adder_pc_ID_EX),
+        .i_adder_pc (wire_out_adder_pc_ID_to_EX),
         .i_data_A (wire_data_A),
         .i_data_B (wire_data_B),
         .i_extension_signo_constante (wire_extension_signo_constante),
@@ -415,7 +423,9 @@ top_ejecucion
         .i_MemRead (wire_MemRead),
         .i_MemWrite (wire_MemWrite),
         .i_MemtoReg (wire_MemtoReg),
-        .i_ALUCtrl (wire_ALUCtrl), 
+        .i_ALUCtrl (wire_ALUCtrl),
+        .i_halt_detected (wire_halt_detected_ID_to_EX),
+        .i_select_bytes_mem_datos (wire_select_bytes_mem_datos_ID_to_EX), 
         .o_RegWrite (wire_EX_to_MEM_RegWrite),
         .o_MemRead (wire_EX_to_MEM_MemRead),
         .o_MemWrite (wire_EX_to_MEM_MemWrite),
@@ -423,6 +433,8 @@ top_ejecucion
         .o_result (wire_resultado_ALU),
         .o_data_write_to_mem (wire_EX_to_MEM_data_write_mem),
         .o_registro_destino (wire_EX_to_MEM_registro_destino),
+        .o_halt_detected (wire_halt_detected_EX_to_MEM),
+        .o_select_bytes_mem_datos (wire_select_bytes_mem_datos_EX_to_MEM),
         .o_led ()
     );
 **/
@@ -437,7 +449,8 @@ top_mem
         .RAM_DEPTH (RAM_DEPTH_DATOS),
         .CANT_REGISTROS (CANT_REGISTROS_TOP),
         .CANT_BITS_ADDR (ADDR_MEM_DATOS_LENGTH),
-        .CANT_BITS_REGISTROS (CANT_BITS_REGISTROS_TOP)
+        .CANT_BITS_REGISTROS (CANT_BITS_REGISTROS_TOP),
+        .CANT_BITS_SELECT_BYTES (CANT_BITS_SELECT_BYTES_TOP) 
     )
     u_top_mem_1
     (
@@ -449,9 +462,12 @@ top_mem
         .i_MemWrite (wire_EX_to_MEM_MemWrite),
         .i_MemtoReg (wire_EX_to_MEM_MemtoReg),
         .i_registro_destino (wire_EX_to_MEM_registro_destino),
+        .i_select_bytes_mem_datos (wire_select_bytes_mem_datos_EX_to_MEM),
+        .i_halt_detected (wire_halt_detected_EX_to_MEM),
         .o_RegWrite (wire_MEM_to_WB_RegWrite),
         .o_MemtoReg (wire_MEM_to_WB_MemtoReg),
         .o_registro_destino (wire_MEM_to_WB_registro_destino),
+        .o_halt_detected (wire_halt_detected_MEM_to_WB),
         .o_led (o_leds [3])
     );
 **/
@@ -470,6 +486,7 @@ top_write_back
         .i_data_alu (),
         .i_RegWrite (wire_MEM_to_WB_RegWrite),
         .i_MemtoReg (wire_MEM_to_WB_MemtoReg),
+        .i_halt_detected (wire_halt_detected_MEM_to_WB),
         .o_registro_destino (wire_reg_write_ID),
         .o_RegWrite (wire_control_write_reg_ID),
         .o_data_write (wire_data_write_ID),
@@ -506,7 +523,8 @@ database
         .CANT_BITS_REGISTROS (CANT_BITS_REGISTROS_TOP),
         .CANT_BITS_ALU_OP (CANT_BITS_ALU_OP_TOP),
         .CANT_BITS_ALU_CONTROL (CANT_BITS_ALU_CONTROL_TOP),
-        .CANT_REGISTROS (CANT_REGISTROS_TOP)
+        .CANT_REGISTROS (CANT_REGISTROS_TOP),
+        .CANT_BITS_SELECT_BYTES (CANT_BITS_SELECT_BYTES_TOP)
      )
     u_database_1
     (
@@ -533,6 +551,8 @@ database
         .i_MemWrite (wire_MemWrite),
         .i_MemtoReg (wire_MemtoReg),
         .i_ALUCtrl (wire_ALUCtrl),
+        .i_select_bytes_mem_datos_ID_to_EX (wire_select_bytes_mem_datos_ID_to_EX),
+        .i_halt_detected_ID_to_EX (wire_halt_detected_ID_to_EX),
         .o_dato (wire_dato_database)
     );
 

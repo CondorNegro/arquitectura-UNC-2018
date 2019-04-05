@@ -39,6 +39,7 @@
 `define CANT_BITS_INSTRUCTION_INDEX_BRANCH_TOP  26
 `define CANT_BITS_FLAG_BRANCH_TOP               3 
 `define CANT_BITS_ADDR_REGISTROS                5
+`define CANT_BITS_SELECT_BYTES_TOP              2
 
 
 module test_bench_top_arquitectura();
@@ -74,7 +75,8 @@ module test_bench_top_arquitectura();
    parameter CANT_BITS_ID_LSB_TOP      = `CANT_BITS_ID_LSB_TOP;
    parameter CANT_BITS_INSTRUCTION_INDEX_BRANCH_TOP = `CANT_BITS_INSTRUCTION_INDEX_BRANCH_TOP;
    parameter CANT_BITS_FLAG_BRANCH_TOP = `CANT_BITS_FLAG_BRANCH_TOP;
-   parameter CANT_BITS_ADDR_REGISTROS  = `CANT_BITS_ADDR_REGISTROS; 
+   parameter CANT_BITS_ADDR_REGISTROS  = `CANT_BITS_ADDR_REGISTROS;
+   parameter CANT_BITS_SELECT_BYTES_TOP    = `CANT_BITS_SELECT_BYTES_TOP;  
    
    //Todo puerto de salida del modulo es un cable.
    //Todo puerto de estimulo o generacion de entrada es un registro.
@@ -3842,7 +3844,8 @@ top_arquitectura
        .ADDR_MEM_DATOS_LENGTH      (ADDR_MEM_DATOS_LENGTH),
        .LONG_INSTRUCCION           (LONG_INSTRUCCION),
        .CANT_BITS_CONTROL_DATABASE_TOP (CANT_BITS_CONTROL_DATABASE_TOP),
-       .CANT_SWITCHES               (CANT_SWITCHES)
+       .CANT_SWITCHES               (CANT_SWITCHES),
+       .CANT_BITS_SELECT_BYTES_TOP  (CANT_BITS_SELECT_BYTES_TOP) 
     ) 
    u_top_arquitectura_1
    (
