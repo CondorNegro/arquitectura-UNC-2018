@@ -41,7 +41,7 @@
 `define CANT_BITS_FLAG_BRANCH_TOP               3 
 `define CANT_BITS_ADDR_REGISTROS                5
 `define HALT_INSTRUCTION_TOP                    32'hFFFFFFFF
-`define CANT_BITS_SELECT_BYTES_TOP                  2
+`define CANT_BITS_SELECT_BYTES_MEM_DATA_TOP     2
 
 module top_arquitectura(
   i_clock_top, 
@@ -86,7 +86,7 @@ parameter CANT_BITS_ID_LSB_TOP      = `CANT_BITS_ID_LSB_TOP;
 parameter CANT_BITS_INSTRUCTION_INDEX_BRANCH_TOP = `CANT_BITS_INSTRUCTION_INDEX_BRANCH_TOP;
 parameter CANT_BITS_FLAG_BRANCH_TOP = `CANT_BITS_FLAG_BRANCH_TOP;
 parameter CANT_BITS_ADDR_REGISTROS  = `CANT_BITS_ADDR_REGISTROS;
-parameter CANT_BITS_SELECT_BYTES_TOP    = `CANT_BITS_SELECT_BYTES_TOP; 
+parameter CANT_BITS_SELECT_BYTES_MEM_DATA_TOP    = `CANT_BITS_SELECT_BYTES_MEM_DATA_TOP; 
 
 // Entradas - Salidas
 input i_clock_top;                              // Clock.
@@ -166,7 +166,7 @@ wire [CANT_BITS_FLAG_BRANCH_TOP - 1 : 0] wire_flag_branch;
 wire [CANT_BITS_ALU_CONTROL_TOP - 1 : 0] wire_ALUCtrl; 
 wire [ADDR_MEM_PROGRAMA_LENGTH - 1 : 0] wire_out_adder_pc_ID_to_EX;
 wire wire_halt_detected_ID_to_EX;
-wire [CANT_BITS_SELECT_BYTES_TOP - 1 : 0] wire_select_bytes_mem_datos_ID_to_EX;
+wire [CANT_BITS_SELECT_BYTES_MEM_DATA_TOP - 1 : 0] wire_select_bytes_mem_datos_ID_to_EX;
 
 // Ejecucion.
 
@@ -177,7 +177,7 @@ wire wire_EX_to_MEM_MemtoReg;
 wire [CANT_BITS_REGISTROS_TOP - 1 : 0] wire_resultado_ALU;
 wire [ADDR_MEM_DATOS_LENGTH - 1 : 0] wire_EX_to_MEM_data_write_mem;
 wire [CANT_BITS_ADDR_REGISTROS - 1 : 0] wire_EX_to_MEM_registro_destino;
-wire [CANT_BITS_SELECT_BYTES_TOP - 1 : 0] wire_select_bytes_mem_datos_EX_to_MEM;
+wire [CANT_BITS_SELECT_BYTES_MEM_DATA_TOP - 1 : 0] wire_select_bytes_mem_datos_EX_to_MEM;
 wire wire_halt_detected_EX_to_MEM;
 
 // MEM.
@@ -352,7 +352,7 @@ top_id
         .CANT_BITS_ALU_OP (CANT_BITS_ALU_OP_TOP),
         .CANT_BITS_ALU_CONTROL (CANT_BITS_ALU_CONTROL_TOP),
         .HALT_INSTRUCTION_TOP_ID (HALT_INSTRUCTION_TOP),
-        .CANT_BITS_SELECT_BYTES (CANT_BITS_SELECT_BYTES_TOP)  
+        .CANT_BITS_SELECT_BYTES_MEM_DATA (CANT_BITS_SELECT_BYTES_MEM_DATA_TOP)  
      ) 
     u_top_id_1    // Una sola instancia de este modulo.
     (
@@ -402,7 +402,7 @@ top_ejecucion
         .CANT_BITS_ADDR  (ADDR_MEM_PROGRAMA_LENGTH),
         .CANT_BITS_REGISTROS (CANT_BITS_REGISTROS_TOP),
         .CANT_BITS_ALU_CONTROL (CANT_BITS_ALU_CONTROL_TOP),
-        .CANT_BITS_SELECT_BYTES (CANT_BITS_SELECT_BYTES_TOP) 
+        .CANT_BITS_SELECT_BYTES (CANT_BITS_SELECT_BYTES_MEM_DATA_TOP) 
         
      ) 
     u_top_ejecucion_1    // Una sola instancia de este modulo.
@@ -450,7 +450,7 @@ top_mem
         .CANT_REGISTROS (CANT_REGISTROS_TOP),
         .CANT_BITS_ADDR (ADDR_MEM_DATOS_LENGTH),
         .CANT_BITS_REGISTROS (CANT_BITS_REGISTROS_TOP),
-        .CANT_BITS_SELECT_BYTES (CANT_BITS_SELECT_BYTES_TOP) 
+        .CANT_BITS_SELECT_BYTES (CANT_BITS_SELECT_BYTES_MEM_DATA_TOP) 
     )
     u_top_mem_1
     (
@@ -524,7 +524,7 @@ database
         .CANT_BITS_ALU_OP (CANT_BITS_ALU_OP_TOP),
         .CANT_BITS_ALU_CONTROL (CANT_BITS_ALU_CONTROL_TOP),
         .CANT_REGISTROS (CANT_REGISTROS_TOP),
-        .CANT_BITS_SELECT_BYTES (CANT_BITS_SELECT_BYTES_TOP)
+        .CANT_BITS_SELECT_BYTES (CANT_BITS_SELECT_BYTES_MEM_DATA_TOP)
      )
     u_database_1
     (

@@ -34,7 +34,8 @@ module test_bench_top_id();
     parameter CANT_BITS_FLAG_BRANCH = 3;
     parameter CANT_BITS_ALU_OP = 2;
     parameter CANT_BITS_ALU_CONTROL = 4;
-    parameter HALT_INSTRUCTION = 32'hFFFFFFFF;   
+    parameter HALT_INSTRUCTION = 32'hFFFFFFFF;
+    parameter CANT_BITS_SELECT_BYTES_MEM_DATA = 2;   
 
 	//Todo puerto de salida del modulo es un cable.
 	//Todo puerto de estimulo o generacion de entrada es un registro.
@@ -82,6 +83,7 @@ module test_bench_top_id();
     wire wire_o_led;
     wire wire_halt_detected;
 	wire [CANT_BITS_ADDR - 1 : 0] wire_out_adder_pc;
+    wire [CANT_BITS_SELECT_BYTES_MEM_DATA - 1 : 0] wire_select_bytes_mem_datos;
 	
 	initial	begin
 		reg_i_clock = 1'b0;
@@ -139,7 +141,8 @@ top_id
         .CANT_BITS_FLAG_BRANCH (CANT_BITS_FLAG_BRANCH),
         .CANT_BITS_ALU_OP (CANT_BITS_ALU_OP),
         .CANT_BITS_ALU_CONTROL (CANT_BITS_ALU_CONTROL),
-        .HALT_INSTRUCTION_TOP_ID (HALT_INSTRUCTION)  
+        .HALT_INSTRUCTION_TOP_ID (HALT_INSTRUCTION),
+        .CANT_BITS_SELECT_BYTES_MEM_DATA (CANT_BITS_SELECT_BYTES_MEM_DATA)   
      ) 
     u_top_id_1    // Una sola instancia de este modulo.
     (
@@ -175,6 +178,7 @@ top_id
         .o_MemtoReg (wire_o_MemtoReg),
         .o_ALUCtrl (wire_o_ALUCtrl),   
         .o_halt_detected (wire_halt_detected),
+        .o_select_bytes_mem_datos (wire_select_bytes_mem_datos),
         .o_led(wire_o_led)
     );
    

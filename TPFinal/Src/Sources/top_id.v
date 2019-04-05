@@ -24,7 +24,8 @@ module top_id
        parameter CANT_BITS_FLAG_BRANCH = 3,
        parameter CANT_BITS_ALU_OP = 2,
        parameter CANT_BITS_ALU_CONTROL = 4,
-       parameter HALT_INSTRUCTION_TOP_ID = 32'hFFFFFFFF  
+       parameter HALT_INSTRUCTION_TOP_ID = 32'hFFFFFFFF,
+       parameter CANT_BITS_SELECT_BYTES_MEM_DATA = 2  
    )
    (
        input i_clock,
@@ -54,7 +55,8 @@ module top_id
        output reg [clogb2 (CANT_REGISTROS - 1) - 1 : 0] o_reg_rs,
        output reg [clogb2 (CANT_REGISTROS - 1) - 1 : 0] o_reg_rt,
        output reg [clogb2 (CANT_REGISTROS - 1) - 1 : 0] o_reg_rd,
-       
+       output reg o_halt_detected,
+
        // Control
 
        output reg o_RegDst,
@@ -65,7 +67,8 @@ module top_id
        output reg o_MemWrite,
        output reg o_MemtoReg,
        output reg [CANT_BITS_ALU_CONTROL - 1 : 0] o_ALUCtrl,   
-       output reg o_halt_detected,
+       output reg [CANT_BITS_SELECT_BYTES_MEM_DATA - 1 : 0] o_select_bytes_mem_datos,
+       
        output o_led
    );
 
@@ -111,7 +114,7 @@ module top_id
   
     assign wire_o_extension_signo_constante = {{(CANT_BITS_REGISTROS - CANT_BITS_IMMEDIATE) {wire_output_immediate_decoder_TO_extension_signo[CANT_BITS_IMMEDIATE - 1]}},wire_output_immediate_decoder_TO_extension_signo}; // Extension de signo.
 
-
+    wire [CANT_BITS_SELECT_BYTES_MEM_DATA - 1 : 0] wire_select_bytes_mem_datos;
 
     
     always@(negedge i_clock) begin
@@ -134,6 +137,7 @@ module top_id
             o_branch_control_to_database <= 0; 
             o_out_adder_pc <= 0;  
             o_halt_detected <= 0;
+            o_select_bytes_mem_datos <= 0;
       end
       else begin
             if (i_enable_pipeline) begin
@@ -155,6 +159,7 @@ module top_id
                 o_branch_control_to_database <= o_branch_control;
                 o_out_adder_pc <= i_out_adder_pc;  
                 o_halt_detected <= wire_halt_detected_ID_TO_EX;
+                o_select_bytes_mem_datos <= wire_select_bytes_mem_datos;
             end
             else begin
                 o_data_A <= o_data_A;
@@ -174,7 +179,8 @@ module top_id
                 o_branch_dir_to_database <= o_branch_dir_to_database;
                 o_branch_control_to_database <= o_branch_control_to_database;
                 o_out_adder_pc <= o_out_adder_pc; 
-                o_halt_detected <= o_halt_detected; 
+                o_halt_detected <= o_halt_detected;
+                o_select_bytes_mem_datos <= o_select_bytes_mem_datos; 
             end 
     end
     end
@@ -257,7 +263,8 @@ control
         .CANT_BITS_ALU_OP (CANT_BITS_ALU_OP),
         .CANT_BITS_ESPECIAL (CANT_BITS_ESPECIAL),
         .CANT_BITS_ID_LSB (CANT_BITS_ID_LSB),
-        .CANT_BITS_ALU_CONTROL (CANT_BITS_ALU_CONTROL)
+        .CANT_BITS_ALU_CONTROL (CANT_BITS_ALU_CONTROL),
+        .CANT_BITS_SELECT_BYTES_MEM_DATA (CANT_BITS_SELECT_BYTES_MEM_DATA)
 
     )
     u_control_1
@@ -273,7 +280,8 @@ control
         .o_ALUCtrl (wire_o_ALUCtrl),
         .o_MemRead (wire_o_MemRead),
         .o_MemWrite (wire_o_MemWrite),
-        .o_MemtoReg (wire_o_MemtoReg)
+        .o_MemtoReg (wire_o_MemtoReg),
+        .o_select_bytes_mem_datos (wire_select_bytes_mem_datos)
     );
 
 
