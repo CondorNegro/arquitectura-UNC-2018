@@ -17,7 +17,8 @@ module top_ejecucion
        parameter CANT_REGISTROS= 32,
        parameter CANT_BITS_ADDR = 11,
        parameter CANT_BITS_REGISTROS = 32,
-       parameter CANT_BITS_ALU_CONTROL = 4  
+       parameter CANT_BITS_ALU_CONTROL = 4,
+       parameter CANT_BITS_SELECT_BYTES_MEM_DATA = 2  
    )
    (
        input i_clock,
@@ -35,6 +36,7 @@ module top_ejecucion
        input [clogb2 (CANT_REGISTROS - 1) - 1 : 0] i_reg_rs,
        input [clogb2 (CANT_REGISTROS - 1) - 1 : 0] i_reg_rt,
        input [clogb2 (CANT_REGISTROS - 1) - 1 : 0] i_reg_rd,
+       input i_halt_detected,
        
        // Control
 
@@ -44,15 +46,19 @@ module top_ejecucion
        input i_MemRead,
        input i_MemWrite,
        input i_MemtoReg,
-       input [CANT_BITS_ALU_CONTROL - 1 : 0] i_ALUCtrl, 
+       input [CANT_BITS_ALU_CONTROL - 1 : 0] i_ALUCtrl,
+       input [CANT_BITS_SELECT_BYTES_MEM_DATA - 1 : 0] i_select_bytes_mem_datos,
+      
 
 
        output reg o_RegWrite,
        output reg o_MemRead,
        output reg o_MemWrite,
        output reg o_MemtoReg,
+       output reg [CANT_BITS_SELECT_BYTES_MEM_DATA - 1 : 0] o_select_bytes_mem_datos,
 
 
+       output reg o_halt_detected,
        output reg [WIDTH_DATA_MEM - 1 : 0] o_result,
        output reg [WIDTH_DATA_MEM - 1 : 0] o_data_write_to_mem,
        output reg [clogb2 (CANT_REGISTROS - 1) - 1 : 0] o_registro_destino,
@@ -92,6 +98,8 @@ module top_ejecucion
             o_result   <= 0;
             o_data_write_to_mem <= 0;
             o_registro_destino <= 0;
+            o_halt_detected <= 1'b0;
+            o_select_bytes_mem_datos <= 0;
       end
       else begin
             if (i_enable_pipeline) begin
@@ -102,6 +110,8 @@ module top_ejecucion
                 o_result   <= wire_result_alu;
                 o_data_write_to_mem <= wire_data_write_to_mem;
                 o_registro_destino <= wire_registro_destino;
+                o_halt_detected <= i_halt_detected;
+                o_select_bytes_mem_datos <= i_select_bytes_mem_datos;
             end
             else begin
                 o_RegWrite <= o_RegWrite;
@@ -111,6 +121,8 @@ module top_ejecucion
                 o_result   <= o_result;
                 o_data_write_to_mem <= o_data_write_to_mem;
                 o_registro_destino <= o_registro_destino;
+                o_halt_detected <= o_halt_detected;
+                o_select_bytes_mem_datos <= o_select_bytes_mem_datos;
             end 
     end
     end

@@ -19,7 +19,8 @@ module top_mem
        parameter RAM_DEPTH = 1024,
        parameter CANT_REGISTROS= 32,
        parameter CANT_BITS_ADDR = 10,
-       parameter CANT_BITS_REGISTROS = 32
+       parameter CANT_BITS_REGISTROS = 32,
+       parameter CANT_BITS_SELECT_BYTES_MEM_DATA = 2
  
    )
    (
@@ -28,7 +29,7 @@ module top_mem
        
        input i_enable_pipeline,
        
-       
+       input i_halt_detected,
        
        // Control
 
@@ -38,12 +39,15 @@ module top_mem
        input i_MemRead,
        input i_MemWrite,
        input i_MemtoReg,
+       input [CANT_BITS_SELECT_BYTES_MEM_DATA - 1 : 0] i_select_bytes_mem_datos,
        input [clogb2 (CANT_REGISTROS - 1) - 1 : 0] i_registro_destino,
+
        
        
        output reg o_RegWrite,
        output reg o_MemtoReg,
        output reg [clogb2 (CANT_REGISTROS - 1) - 1 : 0] o_registro_destino,
+       output reg o_halt_detected,
 
        output o_led
    );
@@ -66,17 +70,20 @@ module top_mem
             o_RegWrite <= 1'b0;
             o_MemtoReg <= 1'b0;
             o_registro_destino <= 0;
+            o_halt_detected <= 1'b0;
       end
       else begin
             if (i_enable_pipeline) begin
                 o_RegWrite <= i_RegWrite;
                 o_MemtoReg <= i_MemtoReg;
                 o_registro_destino <= i_registro_destino;
+                o_halt_detected <= i_halt_detected;
             end
             else begin
                 o_RegWrite <= o_RegWrite;
                 o_MemtoReg <= o_MemtoReg;
                 o_registro_destino <= o_registro_destino;
+                o_halt_detected <= o_halt_detected;
             end 
     end
     end

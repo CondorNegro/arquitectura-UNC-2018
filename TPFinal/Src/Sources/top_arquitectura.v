@@ -188,6 +188,12 @@ wire [CANT_BITS_ADDR_REGISTROS - 1 : 0] wire_MEM_to_WB_registro_destino;
 wire wire_halt_detected_MEM_to_WB;
 
 
+// WB 
+
+
+wire wire_halt_detected_WB_to_DEBUG_UNIT;
+
+
 // Asignaciones de wires.
 
 //Borrar y dejar el segundo 
@@ -236,7 +242,7 @@ debug_unit
     .i_rx_done (wire_rx_done),
     .i_data_rx (wire_data_rx),
     .i_soft_reset_ack (wire_soft_reset_ack),
-    .i_flag_halt (wire_halt_detected_ID_to_EX),//CAMBIAR por wire_halt_detected_MEM_to_WB
+    .i_flag_halt (wire_halt_detected_ID_to_EX),//CAMBIAR por wire_halt_detected_WB_to_DEBUG_UNIT
     .i_dato_database (wire_dato_database),
     .o_tx_start (wire_tx_start),
     .o_data_tx (wire_data_tx),
@@ -402,7 +408,7 @@ top_ejecucion
         .CANT_BITS_ADDR  (ADDR_MEM_PROGRAMA_LENGTH),
         .CANT_BITS_REGISTROS (CANT_BITS_REGISTROS_TOP),
         .CANT_BITS_ALU_CONTROL (CANT_BITS_ALU_CONTROL_TOP),
-        .CANT_BITS_SELECT_BYTES (CANT_BITS_SELECT_BYTES_MEM_DATA_TOP) 
+        .CANT_BITS_SELECT_BYTES_MEM_DATA (CANT_BITS_SELECT_BYTES_MEM_DATA_TOP) 
         
      ) 
     u_top_ejecucion_1    // Una sola instancia de este modulo.
@@ -450,7 +456,7 @@ top_mem
         .CANT_REGISTROS (CANT_REGISTROS_TOP),
         .CANT_BITS_ADDR (ADDR_MEM_DATOS_LENGTH),
         .CANT_BITS_REGISTROS (CANT_BITS_REGISTROS_TOP),
-        .CANT_BITS_SELECT_BYTES (CANT_BITS_SELECT_BYTES_MEM_DATA_TOP) 
+        .CANT_BITS_SELECT_BYTES_MEM_DATA (CANT_BITS_SELECT_BYTES_MEM_DATA_TOP) 
     )
     u_top_mem_1
     (
@@ -487,6 +493,7 @@ top_write_back
         .i_RegWrite (wire_MEM_to_WB_RegWrite),
         .i_MemtoReg (wire_MEM_to_WB_MemtoReg),
         .i_halt_detected (wire_halt_detected_MEM_to_WB),
+        .o_halt_detected (wire_halt_detected_WB_to_DEBUG_UNIT),
         .o_registro_destino (wire_reg_write_ID),
         .o_RegWrite (wire_control_write_reg_ID),
         .o_data_write (wire_data_write_ID),

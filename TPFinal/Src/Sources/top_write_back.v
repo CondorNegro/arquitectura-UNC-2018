@@ -26,11 +26,14 @@ module top_write_back
 
        input i_RegWrite,
        input i_MemtoReg,
+
+       input i_halt_detected,
        
 
        output [clogb2 (CANT_REGISTROS - 1) - 1 : 0] o_registro_destino,
        output o_RegWrite,
        output [CANT_BITS_REGISTROS - 1 : 0] o_data_write,
+       output o_halt_detected,
 
 
        output o_led
@@ -48,6 +51,7 @@ module top_write_back
 
     assign o_registro_destino = i_registro_destino;
     assign o_RegWrite = i_RegWrite;
+    assign o_halt_detected = i_halt_detected;
 
 
 

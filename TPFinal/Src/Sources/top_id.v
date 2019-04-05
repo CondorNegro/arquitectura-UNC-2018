@@ -136,7 +136,7 @@ module top_id
             o_branch_dir_to_database <= 0;
             o_branch_control_to_database <= 0; 
             o_out_adder_pc <= 0;  
-            o_halt_detected <= 0;
+            o_halt_detected <= 1'b0;
             o_select_bytes_mem_datos <= 0;
       end
       else begin
