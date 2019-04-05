@@ -377,7 +377,7 @@ top_id
     );
 
 
-// Modulo top de la etapa de instruction decode.
+// Modulo top de la etapa de ejecucion de la instruccion.
 top_ejecucion
     #(
         .WIDTH_DATA_MEM (RAM_WIDTH_DATOS),
@@ -416,7 +416,29 @@ top_ejecucion
         .o_led ()
     );
 
-    
+
+// Modulo top de la etapa write back de la instruccion.
+/**
+
+top_write_back
+    #(
+        .CANT_REGISTROS (CANT_REGISTROS_TOP),
+        .CANT_BITS_REGISTROS (CANT_BITS_REGISTROS_TOP)
+    )
+    u_top_write_back_1
+    (
+        .i_registro_destino (),
+        .i_data_mem (),
+        .i_data_alu (),
+        .i_RegWrite (),
+        .i_MemtoReg (),
+        .o_registro_destino (wire_reg_write_ID),
+        .o_RegWrite (wire_control_write_reg_ID),
+        .o_data_write (wire_data_write_ID),
+        .o_led ()
+    );
+
+**/  
 
 
 // Modulo contador de ciclos.
