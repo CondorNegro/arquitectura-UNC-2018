@@ -29,18 +29,32 @@ module decoder
         output reg [CANT_BITS_ADDRESS_REGISTROS - 1 : 0] o_reg_W,
         output reg [CANT_BITS_FLAG_BRANCH - 1 : 0] o_flag_branch, 
         output reg [CANT_BITS_IMMEDIATE - 1 : 0] o_immediate,
-        output reg [CANT_BITS_INSTRUCTION_INDEX_BRANCH - 1 : 0] o_instruction_index_branch
+        output reg [CANT_BITS_INSTRUCTION_INDEX_BRANCH - 1 : 0] o_instruction_index_branch,
+        output reg o_halt_detected
     );
 
 
 always@(*) begin
     if (i_enable_etapa) begin
-            if (i_instruction [CANT_BITS_INSTRUCCION - 1 : CANT_BITS_INSTRUCCION - CANT_BITS_ESPECIAL] == {CANT_BITS_ESPECIAL{1'b0}}) //6 bits MSB en cero.
+            if (i_instruction == 32'hFFFFFFFF) begin
+                 o_halt_detected = 1'b1;
+                 o_reg_A = i_instruction [CANT_BITS_INSTRUCCION - CANT_BITS_ESPECIAL - 1 :
+                 CANT_BITS_INSTRUCCION - CANT_BITS_ESPECIAL - CANT_BITS_ADDRESS_REGISTROS];
+                 o_reg_B = i_instruction [CANT_BITS_ADDRESS_REGISTROS * 3 + CANT_BITS_ID_LSB - 1:
+                 CANT_BITS_ADDRESS_REGISTROS * 2 + CANT_BITS_ID_LSB];
+                 o_reg_W = i_instruction [CANT_BITS_ADDRESS_REGISTROS * 2 + CANT_BITS_ID_LSB - 1:
+                 CANT_BITS_ADDRESS_REGISTROS + CANT_BITS_ID_LSB];
+                 o_flag_branch = 3'b000;
+                 o_immediate = i_instruction [CANT_BITS_IMMEDIATE - 1 : 0];
+                 o_instruction_index_branch = i_instruction [CANT_BITS_INSTRUCTION_INDEX_BRANCH - 1 : 0];
+            end
+            else if (i_instruction [CANT_BITS_INSTRUCCION - 1 : CANT_BITS_INSTRUCCION - CANT_BITS_ESPECIAL] == {CANT_BITS_ESPECIAL{1'b0}}) //6 bits MSB en cero.
             begin
             case (i_instruction [CANT_BITS_ID_LSB - 1 : 0]) //6 bits LSB.
                 
                     0://SLL
                         begin 
+                            o_halt_detected = 1'b0;
                             o_reg_A = i_instruction [CANT_BITS_INSTRUCCION - CANT_BITS_ESPECIAL - 1 :
                             CANT_BITS_INSTRUCCION - CANT_BITS_ESPECIAL - CANT_BITS_ADDRESS_REGISTROS];
                             o_reg_B = i_instruction [CANT_BITS_ADDRESS_REGISTROS * 3 + CANT_BITS_ID_LSB - 1: CANT_BITS_ADDRESS_REGISTROS * 2 + CANT_BITS_ID_LSB];
@@ -51,6 +65,7 @@ always@(*) begin
                         end
                     2://SRL
                         begin
+                            o_halt_detected = 1'b0;
                             o_reg_A = i_instruction [CANT_BITS_INSTRUCCION - CANT_BITS_ESPECIAL - 1 :
                             CANT_BITS_INSTRUCCION - CANT_BITS_ESPECIAL - CANT_BITS_ADDRESS_REGISTROS];
                             o_reg_B = i_instruction [CANT_BITS_ADDRESS_REGISTROS * 3 + CANT_BITS_ID_LSB - 1: CANT_BITS_ADDRESS_REGISTROS * 2 + CANT_BITS_ID_LSB];
@@ -61,6 +76,7 @@ always@(*) begin
                         end
                     3://SRA
                         begin
+                            o_halt_detected = 1'b0;
                             o_reg_A = i_instruction [CANT_BITS_INSTRUCCION - CANT_BITS_ESPECIAL - 1 :
                             CANT_BITS_INSTRUCCION - CANT_BITS_ESPECIAL - CANT_BITS_ADDRESS_REGISTROS];
                             o_reg_B = i_instruction [CANT_BITS_ADDRESS_REGISTROS * 3 + CANT_BITS_ID_LSB - 1: CANT_BITS_ADDRESS_REGISTROS * 2 + CANT_BITS_ID_LSB];
@@ -71,6 +87,7 @@ always@(*) begin
                         end
                     8://JR
                         begin
+                            o_halt_detected = 1'b0;
                             o_reg_A = i_instruction [CANT_BITS_INSTRUCCION - CANT_BITS_ESPECIAL - 1 :
                             CANT_BITS_INSTRUCCION - CANT_BITS_ESPECIAL - CANT_BITS_ADDRESS_REGISTROS];
                             o_reg_B = i_instruction [CANT_BITS_ADDRESS_REGISTROS * 3 + CANT_BITS_ID_LSB - 1: CANT_BITS_ADDRESS_REGISTROS * 2 + CANT_BITS_ID_LSB];
@@ -81,6 +98,7 @@ always@(*) begin
                         end
                     9://JALR 
                         begin
+                            o_halt_detected = 1'b0;
                             o_reg_A = i_instruction [CANT_BITS_INSTRUCCION - CANT_BITS_ESPECIAL - 1 :
                             CANT_BITS_INSTRUCCION - CANT_BITS_ESPECIAL - CANT_BITS_ADDRESS_REGISTROS];
                             o_reg_B = i_instruction [CANT_BITS_ADDRESS_REGISTROS * 3 + CANT_BITS_ID_LSB - 1: CANT_BITS_ADDRESS_REGISTROS * 2 + CANT_BITS_ID_LSB];
@@ -92,6 +110,7 @@ always@(*) begin
                         end
                     default:
                         begin
+                            o_halt_detected = 1'b0;
                             o_reg_A = i_instruction [CANT_BITS_INSTRUCCION - CANT_BITS_ESPECIAL - 1 :
                             CANT_BITS_INSTRUCCION - CANT_BITS_ESPECIAL - CANT_BITS_ADDRESS_REGISTROS];
                             o_reg_B = i_instruction [CANT_BITS_ADDRESS_REGISTROS * 3 + CANT_BITS_ID_LSB - 1:
@@ -108,6 +127,7 @@ always@(*) begin
             case (i_instruction [CANT_BITS_INSTRUCCION - 1 : CANT_BITS_INSTRUCCION - CANT_BITS_ESPECIAL])//6 bits MSB.
                     4://BEQ
                         begin
+                            o_halt_detected = 1'b0;
                             o_reg_A = i_instruction [CANT_BITS_INSTRUCCION - CANT_BITS_ESPECIAL - 1 :
                             CANT_BITS_INSTRUCCION - CANT_BITS_ESPECIAL - CANT_BITS_ADDRESS_REGISTROS];
                             o_reg_B = i_instruction [CANT_BITS_ADDRESS_REGISTROS * 3 + CANT_BITS_ID_LSB - 1:
@@ -120,6 +140,7 @@ always@(*) begin
                         end
                     5://BNE
                         begin
+                            o_halt_detected = 1'b0;
                             o_reg_A = i_instruction [CANT_BITS_INSTRUCCION - CANT_BITS_ESPECIAL - 1 :
                             CANT_BITS_INSTRUCCION - CANT_BITS_ESPECIAL - CANT_BITS_ADDRESS_REGISTROS];
                             o_reg_B = i_instruction [CANT_BITS_ADDRESS_REGISTROS * 3 + CANT_BITS_ID_LSB - 1:
@@ -132,6 +153,7 @@ always@(*) begin
                         end
                     2://J
                         begin
+                            o_halt_detected = 1'b0;
                             o_reg_A = i_instruction [CANT_BITS_INSTRUCCION - CANT_BITS_ESPECIAL - 1 :
                             CANT_BITS_INSTRUCCION - CANT_BITS_ESPECIAL - CANT_BITS_ADDRESS_REGISTROS];
                             o_reg_B = i_instruction [CANT_BITS_ADDRESS_REGISTROS * 3 + CANT_BITS_ID_LSB - 1:
@@ -144,6 +166,7 @@ always@(*) begin
                         end
                     3://JAL
                         begin
+                            o_halt_detected = 1'b0;
                             o_reg_A = i_instruction [CANT_BITS_INSTRUCCION - CANT_BITS_ESPECIAL - 1 :
                             CANT_BITS_INSTRUCCION - CANT_BITS_ESPECIAL - CANT_BITS_ADDRESS_REGISTROS];
                             o_reg_B = i_instruction [CANT_BITS_ADDRESS_REGISTROS * 3 + CANT_BITS_ID_LSB - 1:
@@ -155,6 +178,7 @@ always@(*) begin
                         end
                     default:
                         begin
+                            o_halt_detected = 1'b0;
                             o_reg_A = i_instruction [CANT_BITS_INSTRUCCION - CANT_BITS_ESPECIAL - 1 :
                             CANT_BITS_INSTRUCCION - CANT_BITS_ESPECIAL - CANT_BITS_ADDRESS_REGISTROS];
                             o_reg_B = i_instruction [CANT_BITS_ADDRESS_REGISTROS * 3 + CANT_BITS_ID_LSB - 1:
@@ -169,6 +193,7 @@ always@(*) begin
         end
     end
     else begin
+        o_halt_detected = o_halt_detected;
         o_reg_A = o_reg_A;
         o_reg_B = o_reg_B;
         o_reg_W = o_reg_W;

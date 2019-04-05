@@ -27,7 +27,7 @@ module debug_unit
   input i_rx_done,
   input [OUTPUT_WORD_LENGTH - 1 : 0] i_data_rx,
   input i_soft_reset_ack,
-  input [LONGITUD_INSTRUCCION - 1 : 0] i_instruction_fetch,
+  input i_flag_halt,
   input [LONGITUD_INSTRUCCION - 1 : 0] i_dato_database,
   output reg o_tx_start,
   output reg [OUTPUT_WORD_LENGTH - 1 : 0] o_data_tx,
@@ -124,7 +124,7 @@ always @ ( posedge i_clock ) begin //Memory
      reg_instruccion <= 1;
      reg_contador_datos <= 0;
      reg_contador_addr_mem <= 0;
-     o_dato_mem_programa <= 0;
+     o_dato_mem_programa <= HALT_INSTRUCTION;
      flag_send_mem<=0;
      o_modo_ejecucion <= 0; // Continuo.
      flag_enable_pc <= 1'b0;
@@ -167,7 +167,7 @@ always @ ( posedge i_clock ) begin //Memory
      if ((reg_state == EJECUCION) && (reg_next_modo_ejecucion == 1'b1)) begin //Modo debug en EJECUCION.
           flag_enable_pc <= 1'b1;
      end
-     else if ((i_instruction_fetch == HALT_INSTRUCTION) && (reg_next_modo_ejecucion == 1'b0)) begin //Modo continuo con HALT.
+     else if ( (i_flag_halt) && (reg_next_modo_ejecucion == 1'b0)) begin //Modo continuo con HALT.
           flag_enable_pc <= 1'b1;
      end
      else begin
@@ -244,7 +244,7 @@ always@( * ) begin //NEXT - STATE logic
        end
 
         EJECUCION : begin
-           if (i_instruction_fetch == HALT_INSTRUCTION && reg_next_modo_ejecucion == 1'b0) begin //Modo continuo con HALT.
+           if ( (i_flag_halt) && reg_next_modo_ejecucion == 1'b0) begin //Modo continuo con HALT.
                reg_next_state = SEND_PC_H;
            end
            else if (reg_next_modo_ejecucion == 1'b1) begin // Modo Debug
@@ -528,7 +528,7 @@ always@( * ) begin //NEXT - STATE logic
               if (reg_next_modo_ejecucion == 1'b0) begin // Modo continuo.
                 reg_next_state = ESPERA;
               end
-              else if (i_instruction_fetch == HALT_INSTRUCTION) begin
+              else if (i_flag_halt) begin
                 reg_next_state = ESPERA; // Modo debug, ultima instruccion.
               end
               else begin // Modo debug instrucciones anteriores.
@@ -594,7 +594,7 @@ always @ ( * ) begin //Output logic
          o_soft_reset = 1; //Logica por nivel bajo.
          o_write_mem_programa = 0; //Write es en 1.
          o_addr_mem_programa = 0;
-         o_next_dato_mem_programa = 0;
+         o_next_dato_mem_programa = HALT_INSTRUCTION;
          reg_next_modo_ejecucion = 0; // Continuo.
          o_enable_mem = 1;
          o_rsta_mem = 0;
@@ -641,7 +641,7 @@ always @ ( * ) begin //Output logic
          o_soft_reset = 1; //Logica por nivel bajo.
          o_write_mem_programa = 0; //Write es en 1.
          o_addr_mem_programa = 0;
-         o_next_dato_mem_programa = 0;
+         o_next_dato_mem_programa = HALT_INSTRUCTION;
          reg_next_modo_ejecucion = i_data_rx [2];// Continuo en cero, paso a paso en 1.
          o_enable_mem = 0;
          o_rsta_mem = 0;

@@ -163,7 +163,7 @@ wire wire_MemtoReg;
 wire [CANT_BITS_FLAG_BRANCH_TOP - 1 : 0] wire_flag_branch;
 wire [CANT_BITS_ALU_CONTROL_TOP - 1 : 0] wire_ALUCtrl; 
 wire [ADDR_MEM_PROGRAMA_LENGTH - 1 : 0] wire_out_adder_pc_ID_EX;
-
+wire wire_halt_detected_ID_TO_EX;
 
 // Ejecucion.
 
@@ -223,7 +223,7 @@ debug_unit
     .i_rx_done (wire_rx_done),
     .i_data_rx (wire_data_rx),
     .i_soft_reset_ack (wire_soft_reset_ack),
-    .i_instruction_fetch (wire_instruction_fetch),
+    .i_flag_halt (wire_halt_detected_ID_TO_EX),
     .i_dato_database (wire_dato_database),
     .o_tx_start (wire_tx_start),
     .o_data_tx (wire_data_tx),
@@ -372,12 +372,13 @@ top_id
         .o_MemWrite (wire_MemWrite),
         .o_MemtoReg (wire_MemtoReg),
         .o_ALUCtrl (wire_ALUCtrl),   
-
+        .o_halt_detected (wire_halt_detected_ID_TO_EX),
         .o_led (o_leds[2])
     );
 
 
 // Modulo top de la etapa de ejecucion de la instruccion.
+/**
 top_ejecucion
     #(
         .WIDTH_DATA_MEM (RAM_WIDTH_DATOS),
@@ -415,7 +416,7 @@ top_ejecucion
         .o_registro_destino (wire_registro_destino),
         .o_led ()
     );
-
+**/
 
 // Modulo top de la etapa write back de la instruccion.
 /**

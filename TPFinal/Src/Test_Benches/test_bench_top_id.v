@@ -79,7 +79,7 @@ module test_bench_top_id();
     wire [CANT_BITS_ALU_CONTROL - 1 : 0] wire_o_ALUCtrl;   
 
     wire wire_o_led;
-
+    wire wire_halt_detected;
 	wire [CANT_BITS_ADDR - 1 : 0] wire_out_adder_pc;
 	
 	initial	begin
@@ -172,7 +172,7 @@ top_id
         .o_MemWrite (wire_o_MemWrite),
         .o_MemtoReg (wire_o_MemtoReg),
         .o_ALUCtrl (wire_o_ALUCtrl),   
-
+        .o_halt_detected (wire_halt_detected),
         .o_led(wire_o_led)
     );
    

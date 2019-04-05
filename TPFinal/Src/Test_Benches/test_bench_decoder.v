@@ -35,6 +35,7 @@ module test_bench_decoder();
     wire [CANT_BITS_FLAG_BRANCH - 1 : 0] wire_flag_branch; 
     wire [CANT_BITS_IMMEDIATE - 1 : 0] wire_immediate;
     wire [CANT_BITS_INSTRUCTION_INDEX_BRANCH - 1 : 0] wire_instruction_index_branch;
+    wire wire_halt_detected;
 
 	initial	begin
 	   reg_instruction = 2;
@@ -47,7 +48,7 @@ module test_bench_decoder();
        #20 reg_instruction = 32'b00010010100000110000000000001001; //BEQ R20,R3,9
        #20 reg_instruction = 32'b00001000000000000000000000000111; //J 7
        #20 reg_instruction = 32'b10000010101000010000000000001000; //LB R1,8(R21)
-       #20 reg_instruction = 32'b00000000000000000000000000000000; // HALT.
+       #20 reg_instruction = 32'b11111111111111111111111111111111; // HALT.
      
 
 	   #500000 $finish;
@@ -77,7 +78,8 @@ decoder
         .o_reg_W (wire_W),
         .o_flag_branch (wire_flag_branch),
         .o_immediate (wire_immediate),
-        .o_instruction_index_branch (wire_instruction_index_branch)
+        .o_instruction_index_branch (wire_instruction_index_branch),
+        .o_halt_detected (wire_halt_detected)
     );
 
 endmodule

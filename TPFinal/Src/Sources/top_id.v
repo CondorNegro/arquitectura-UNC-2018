@@ -64,7 +64,7 @@ module top_id
        output reg o_MemWrite,
        output reg o_MemtoReg,
        output reg [CANT_BITS_ALU_CONTROL - 1 : 0] o_ALUCtrl,   
-
+       output reg o_halt_detected,
        output o_led
    );
 
@@ -97,7 +97,7 @@ module top_id
     wire wire_o_MemWrite;
     wire wire_o_MemtoReg;
     wire [CANT_BITS_ALU_CONTROL - 1 : 0] wire_o_ALUCtrl;
-
+    wire wire_halt_detected_ID_TO_EX;
 
 
     wire [clogb2 (CANT_REGISTROS - 1) - 1 : 0] wire_output_reg_A_decoder_TO_reg_A_register_file;
@@ -132,6 +132,7 @@ module top_id
             o_branch_dir_to_database <= 0;
             o_branch_control_to_database <= 0; 
             o_out_adder_pc <= 0;  
+            o_halt_detected <= 0;
       end
       else begin
             if (i_enable_pipeline) begin
@@ -152,6 +153,7 @@ module top_id
                 o_branch_dir_to_database <= o_branch_dir;
                 o_branch_control_to_database <= o_branch_control;
                 o_out_adder_pc <= i_out_adder_pc;  
+                o_halt_detected <= wire_halt_detected_ID_TO_EX;
             end
             else begin
                 o_data_A <= o_data_A;
@@ -170,7 +172,8 @@ module top_id
                 o_ALUCtrl <= o_ALUCtrl;
                 o_branch_dir_to_database <= o_branch_dir_to_database;
                 o_branch_control_to_database <= o_branch_control_to_database;
-                o_out_adder_pc <= o_out_adder_pc;  
+                o_out_adder_pc <= o_out_adder_pc; 
+                o_halt_detected <= o_halt_detected; 
             end 
     end
     end
@@ -199,7 +202,8 @@ decoder
         .o_reg_W (wire_o_reg_rd),
         .o_flag_branch (wire_output_flag_branch_decoder_TO_flag_branch_branch_address_calculator),
         .o_immediate (wire_output_immediate_decoder_TO_extension_signo),
-        .o_instruction_index_branch (wire_output_instruction_index_branch_decoder_TO_instruction_index_branch_branch_address_calculator)
+        .o_instruction_index_branch (wire_output_instruction_index_branch_decoder_TO_instruction_index_branch_branch_address_calculator),
+        .o_halt_detected (wire_halt_detected_ID_TO_EX)
     );
 
 

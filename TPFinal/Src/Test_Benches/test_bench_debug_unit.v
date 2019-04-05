@@ -31,7 +31,7 @@ module test_bench_debug_unit();
    reg  reg_i_rx_done;
    reg  [OUTPUT_WORD_LENGTH - 1 : 0]  reg_i_data_rx;
    reg  reg_i_soft_reset_ack;
-   reg [LONGITUD_INSTRUCCION - 1 : 0] reg_instruction_fetch;
+   reg reg_instruction_fetch;
    reg [LONGITUD_INSTRUCCION - 1 : 0] reg_dato_database; 
 
    // Salidas.
@@ -62,7 +62,7 @@ module test_bench_debug_unit();
        reg_i_data_rx = 0;
        reg_i_rx_done = 1'b0; //tiene que pasar a 1 cuando recibe el dato completamente.
        reg_i_soft_reset_ack = 1'b1; //despues tiene que valer 0.
-       reg_instruction_fetch = 1;
+       reg_instruction_fetch = 0;
        reg_dato_database = 32'b10101010111111110000000011110000;
 
 
@@ -283,6 +283,7 @@ module test_bench_debug_unit();
 
 
        //ahora paso a estado de ESPERA.
+       #10 reg_instruction_fetch = 1;
        #50 reg_i_data_rx = 8'b11100000;
        #10 reg_i_rx_done = 1'b1;
        #10 reg_i_rx_done = 1'b0;
@@ -318,7 +319,7 @@ debug_unit
        .i_rx_done (reg_i_rx_done),
        .i_data_rx (reg_i_data_rx),
        .i_soft_reset_ack (reg_i_soft_reset_ack),
-       .i_instruction_fetch (reg_instruction_fetch),
+       .i_flag_halt (reg_instruction_fetch),
        .i_dato_database (reg_dato_database),
        .o_tx_start (wire_o_tx_start),
        .o_data_tx (wire_o_data_tx),
