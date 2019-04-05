@@ -23,7 +23,8 @@ module top_id
        parameter CANT_BITS_INSTRUCTION_INDEX_BRANCH = 26,
        parameter CANT_BITS_FLAG_BRANCH = 3,
        parameter CANT_BITS_ALU_OP = 2,
-       parameter CANT_BITS_ALU_CONTROL = 4  
+       parameter CANT_BITS_ALU_CONTROL = 4,
+       parameter HALT_INSTRUCTION_TOP_ID = 32'hFFFFFFFF  
    )
    (
        input i_clock,
@@ -190,7 +191,8 @@ decoder
         .CANT_BITS_CEROS (CANT_BITS_CEROS),
         .CANT_BITS_ID_LSB (CANT_BITS_ID_LSB),
         .CANT_BITS_INSTRUCTION_INDEX_BRANCH (CANT_BITS_INSTRUCTION_INDEX_BRANCH),
-        .CANT_BITS_FLAG_BRANCH (CANT_BITS_FLAG_BRANCH)
+        .CANT_BITS_FLAG_BRANCH (CANT_BITS_FLAG_BRANCH),
+        .HALT_INSTRUCTION (HALT_INSTRUCTION_TOP_ID)
 
     )
     u_decoder_1

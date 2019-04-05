@@ -33,7 +33,8 @@ module test_bench_top_id();
     parameter CANT_BITS_INSTRUCTION_INDEX_BRANCH = 26;
     parameter CANT_BITS_FLAG_BRANCH = 3;
     parameter CANT_BITS_ALU_OP = 2;
-    parameter CANT_BITS_ALU_CONTROL = 4;  
+    parameter CANT_BITS_ALU_CONTROL = 4;
+    parameter HALT_INSTRUCTION = 32'hFFFFFFFF;   
 
 	//Todo puerto de salida del modulo es un cable.
 	//Todo puerto de estimulo o generacion de entrada es un registro.
@@ -137,7 +138,8 @@ top_id
         .CANT_BITS_INSTRUCTION_INDEX_BRANCH (CANT_BITS_INSTRUCTION_INDEX_BRANCH),
         .CANT_BITS_FLAG_BRANCH (CANT_BITS_FLAG_BRANCH),
         .CANT_BITS_ALU_OP (CANT_BITS_ALU_OP),
-        .CANT_BITS_ALU_CONTROL (CANT_BITS_ALU_CONTROL)  
+        .CANT_BITS_ALU_CONTROL (CANT_BITS_ALU_CONTROL),
+        .HALT_INSTRUCTION_TOP_ID (HALT_INSTRUCTION)  
      ) 
     u_top_id_1    // Una sola instancia de este modulo.
     (

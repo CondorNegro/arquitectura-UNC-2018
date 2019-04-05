@@ -19,7 +19,8 @@ module decoder
         parameter CANT_BITS_CEROS = 5,
         parameter CANT_BITS_ID_LSB = 6,
         parameter CANT_BITS_INSTRUCTION_INDEX_BRANCH = 26,
-        parameter CANT_BITS_FLAG_BRANCH = 3 
+        parameter CANT_BITS_FLAG_BRANCH = 3,
+        parameter HALT_INSTRUCTION = 32'hFFFFFFFF
     )
     (
         input [CANT_BITS_INSTRUCCION - 1 : 0] i_instruction,
@@ -36,7 +37,7 @@ module decoder
 
 always@(*) begin
     if (i_enable_etapa) begin
-            if (i_instruction == 32'hFFFFFFFF) begin
+            if (i_instruction == HALT_INSTRUCTION) begin
                  o_halt_detected = 1'b1;
                  o_reg_A = i_instruction [CANT_BITS_INSTRUCCION - CANT_BITS_ESPECIAL - 1 :
                  CANT_BITS_INSTRUCCION - CANT_BITS_ESPECIAL - CANT_BITS_ADDRESS_REGISTROS];

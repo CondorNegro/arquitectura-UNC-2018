@@ -20,7 +20,8 @@ module test_bench_decoder();
     parameter CANT_BITS_CEROS = 5;
     parameter CANT_BITS_ID_LSB = 6;
     parameter CANT_BITS_INSTRUCTION_INDEX_BRANCH = 26;
-    parameter CANT_BITS_FLAG_BRANCH = 3; 
+    parameter CANT_BITS_FLAG_BRANCH = 3;
+    parameter HALT_INSTRUCTION = 32'hFFFFFFFF; 
 
 
     //Todo puerto de salida del modulo es un cable.
@@ -67,7 +68,8 @@ decoder
         .CANT_BITS_CEROS (CANT_BITS_CEROS),
         .CANT_BITS_ID_LSB (CANT_BITS_ID_LSB),
         .CANT_BITS_INSTRUCTION_INDEX_BRANCH (CANT_BITS_INSTRUCTION_INDEX_BRANCH),
-        .CANT_BITS_FLAG_BRANCH (CANT_BITS_FLAG_BRANCH)
+        .CANT_BITS_FLAG_BRANCH (CANT_BITS_FLAG_BRANCH),
+        .HALT_INSTRUCTION (HALT_INSTRUCTION)
     )
     u_decoder_1
     (
