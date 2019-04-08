@@ -232,46 +232,37 @@ module database
             reg_result_alu <= i_result_alu;
             reg_data_write_to_mem <= i_data_write_to_mem;            
         end
-        else if (i_control == 2) begin // Se devuelve el contador de programa a la salida.
-            o_dato <= reg_pc;
+        else if (i_control == 2) begin // Se devuelve el contador de programa y el contador de ciclos a la salida.
+            o_dato <= {reg_pc, reg_contador_ciclos};
         end
-        else if (i_control == 3) begin // Se devuelve el contador de ciclos a la salida.
-            o_dato <= reg_contador_ciclos;
+        else if (i_control == 3) begin // Se devuelve la salida del adder del instruction fetch en la salida de este modulo. Tambien la direccion y el control del salto.
+            o_dato <= {reg_adder_pc, {((CANT_BITS_REGISTROS/2) - ADDR_LENGTH){1'b0}} , reg_branch_control, reg_branch_dir};
         end
-        // Instruccion fetch.
-        else if (i_control == 4) begin //Se devuelve la salida del adder del instruction fetch en la salida de este modulo.
-            o_dato <= reg_adder_pc;
-        end
-        else if (i_control == 5) begin // Se devuelve la instruccion que pasa a la etapa de ID en la salida de este modulo. 
+        
+        else if (i_control == 4) begin // Se devuelve la instruccion que pasa a la etapa de ID en la salida de este modulo. 
             o_dato <= reg_instruction_fetch;
         end
-        // Instruction decode.
-        else if (i_control == 6) begin // Se devuelve la direccion y el control del salto en la salida de este modulo. 
-            o_dato <= {reg_branch_control, reg_branch_dir};
-        end
-        else if (i_control == 7) begin // Se devuelve el contenido de reg_data_A  en la salida de este modulo. 
+        
+        else if (i_control == 5) begin // Se devuelve el contenido de reg_data_A  en la salida de este modulo. 
             o_dato <= reg_data_A;
         end
-        else if (i_control == 8) begin // Se devuelve el contenido de reg_data_B  en la salida de este modulo. 
+        else if (i_control == 6) begin // Se devuelve el contenido de reg_data_B  en la salida de este modulo. 
             o_dato <= reg_data_B;
         end
-        else if (i_control == 9) begin // Se devuelve el contenido de reg_extension_signo_constante en la salida de este modulo. 
+        else if (i_control == 7) begin // Se devuelve el contenido de reg_extension_signo_constante en la salida de este modulo. 
             o_dato <= reg_extension_signo_constante;
         end
-        else if (i_control == 10) begin // Se devuelve el contenido de reg_rs, reg_rt y reg_rd en la salida de este modulo. 
-            o_dato <= {reg_rs, reg_rt, reg_rd};
-        end
-        else if (i_control == 11) begin // Se devuelve el contenido de las señales de control en la salida de este modulo. 
-            o_dato <= {reg_select_bytes_mem_data_ID_to_EX, reg_halt_detected_ID_to_EX, reg_RegDst, reg_RegWrite_ID_to_EX, reg_ALUSrc, reg_MemRead_ID_to_EX, reg_MemWrite_ID_to_EX, reg_MemtoReg_ID_to_EX, reg_ALUOp, reg_ALUCtrl};
+        else if (i_control == 8) begin // Se devuelve el contenido de reg_rs, reg_rt y reg_rd en la salida de este modulo, ademas de las señales de control de la etapa ID. 
+            o_dato <= {reg_select_bytes_mem_data_ID_to_EX, reg_halt_detected_ID_to_EX, reg_RegDst, reg_RegWrite_ID_to_EX, reg_ALUSrc, reg_MemRead_ID_to_EX, reg_MemWrite_ID_to_EX, reg_MemtoReg_ID_to_EX, reg_ALUOp, reg_ALUCtrl, {((CANT_BITS_REGISTROS/2) - clogb2 (CANT_REGISTROS - 1) * 3){1'b0}}, reg_rs, reg_rt, reg_rd};
         end
         // Ejecucion
-        else if (i_control == 12) begin // Se devuelve el resultado de la ALU.
+        else if (i_control == 9) begin // Se devuelve el resultado de la ALU.
             o_dato <= reg_result_alu; 
         end
-        else if (i_control == 13) begin // Se devuelve lo que se va a escribir en memoria.
+        else if (i_control == 10) begin // Se devuelve lo que se va a escribir en memoria.
             o_dato <= reg_data_write_to_mem;
         end
-        else if (i_control == 14) begin // Se devuelven señales de control y el registro destino.
+        else if (i_control == 11) begin // Se devuelven señales de control y el registro destino de la etapa EX.
             o_dato <= {reg_RegWrite_EX_to_MEM, reg_MemRead_EX_to_MEM, reg_MemWrite_EX_to_MEM, reg_MemtoReg_EX_to_MEM, reg_select_bytes_mem_datos_EX_to_MEM, reg_halt_detected_EX_to_MEM, reg_registro_destino_EX_to_MEM};
         end
         else begin

@@ -110,40 +110,50 @@ module test_bench_database();
         reg_MemRead_ID_to_EX = 0;
         reg_MemWrite_ID_to_EX = 1;
         reg_MemtoReg_ID_to_EX = 0;
-        reg_select_bytes_mem_data_ID_to_EX = 0;
-        reg_halt_detected_ID_to_EX = 0;
+        reg_select_bytes_mem_data_ID_to_EX = 2;
+        reg_halt_detected_ID_to_EX = 1;
 
         
-        reg_ALUCtrl = 0;
+        reg_ALUCtrl = 4;
 
         reg_RegWrite_EX_to_MEM = 0;
-        reg_MemRead_EX_to_MEM = 0;
+        reg_MemRead_EX_to_MEM = 1;
         reg_MemWrite_EX_to_MEM = 0; 
-        reg_MemtoReg_EX_to_MEM = 0;
-        reg_select_bytes_mem_datos_EX_to_MEM = 0;
+        reg_MemtoReg_EX_to_MEM = 1;
+        reg_select_bytes_mem_datos_EX_to_MEM = 3;
         reg_halt_detected_EX_to_MEM = 0; 
-        reg_registro_destino_EX_to_MEM = 0;
-        reg_result_alu = 0;
-        reg_data_write_to_mem = 0;
+        reg_registro_destino_EX_to_MEM = 1;
+        reg_result_alu = 5;
+        reg_data_write_to_mem = 6;
 
 
 	   
 		#10 soft_reset = 1'b0; // Desactivo la accion del reset.
 	    #10 soft_reset = 1'b1; // Desactivo la accion del reset.
 	   
-		#10 control = 1;
+		#10 control = 0;
+
+        #10 control = 1;
 	  
+		#20 control = 2;
+
 		#20 control = 3;
 
-		#20 control = 6;
+        #20 control = 4;
 
-        #20 control = 7;
+		#20 control = 5;
 
-		#20 control = 8;
+        #20 control = 6;
+
+		#20 control = 7;
+
+        #20 control = 8;
 
         #20 control = 9;
 
-		#20 control = 11;
+        #20 control = 10;
+
+        #20 control = 11;
 
 
 		// Test 4: Prueba reset.
