@@ -66,7 +66,10 @@ module test_bench_debug_unit();
        reg_flag_halt = 0;
        reg_dato_database = 32'b10101010111111110000000011110000;
 
-
+        
+         #10 reg_i_reset = 1'b0;
+         #10 reg_i_reset = 1'b1;
+        
        //hasta aca estoy en el estado 1 (ESPERA).
        #10 reg_i_rx_done = 1'b1;
        #10 reg_i_rx_done = 1'b0;
@@ -122,6 +125,48 @@ module test_bench_debug_unit();
        #10 reg_i_rx_done = 1'b1;
        #10 reg_i_rx_done = 1'b0; //1 instruccion, 4 veces tengo que mandar el rx done (8bits x 4 = 32)
        
+       
+       
+       
+       
+       
+       
+       
+       
+       //MANDO HALT PARA SALIR DE READ PROGRAMA
+      #10 reg_i_data_rx = 8'b11111111;
+      #10 reg_i_rx_done = 1'b1;
+      #10 reg_i_rx_done = 1'b0;
+     
+             
+      #10 reg_i_data_rx = 8'b11111111;
+        #10 reg_i_rx_done = 1'b1;
+        #10 reg_i_rx_done = 1'b0;
+      
+      #10 reg_i_data_rx = 8'b11111111;
+        #10 reg_i_rx_done = 1'b1;
+        #10 reg_i_rx_done = 1'b0;
+      
+      
+      #10 reg_i_data_rx = 8'b11111111;
+        #10 reg_i_rx_done = 1'b1;
+        #10 reg_i_rx_done = 1'b0;
+
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
        //ahora paso a estado 5 (ESPERA_START).
        #10 reg_i_data_rx = 8'b00000111;
        #10 reg_i_rx_done = 1'b1;
@@ -153,7 +198,8 @@ module test_bench_debug_unit();
        #10 reg_i_rx_done = 1'b0;
 
 
-
+        //ahora paso a estado de ESPERA.
+       #10 reg_flag_halt = 1;
 
        #10 reg_i_data_rx = 8'b10100000; //NO HAGO NADA
        #10 reg_i_rx_done = 1'b1;
@@ -184,11 +230,199 @@ module test_bench_debug_unit();
        #10 reg_i_rx_done = 1'b0;
 
 
+#10 reg_i_data_rx = 8'b00001000; // PART3
+       #10 reg_i_rx_done = 1'b1;
+       #10 reg_i_rx_done = 1'b0;
 
 
 
-       //ahora paso a estado de ESPERA.
-       #10 reg_flag_halt = 1;
+       #10 reg_i_data_rx = 8'b00010000; // PART2
+       #10 reg_i_rx_done = 1'b1;
+       #10 reg_i_rx_done = 1'b0;
+
+
+
+       #10 reg_i_data_rx = 8'b00011000; //PART1
+       #10 reg_i_rx_done = 1'b1;
+       #10 reg_i_rx_done = 1'b0;
+
+
+
+       #10 reg_i_data_rx = 8'b00100000; //PART0
+       #10 reg_i_rx_done = 1'b1;
+       #10 reg_i_rx_done = 1'b0;
+       
+ 
+
+#10 reg_i_data_rx = 8'b00001000; // PART3
+       #10 reg_i_rx_done = 1'b1;
+       #10 reg_i_rx_done = 1'b0;
+
+
+
+       #10 reg_i_data_rx = 8'b00010000; // PART2
+       #10 reg_i_rx_done = 1'b1;
+       #10 reg_i_rx_done = 1'b0;
+
+
+
+       #10 reg_i_data_rx = 8'b00011000; //PART1
+       #10 reg_i_rx_done = 1'b1;
+       #10 reg_i_rx_done = 1'b0;
+
+
+
+       #10 reg_i_data_rx = 8'b00100000; //PART0
+       #10 reg_i_rx_done = 1'b1;
+       #10 reg_i_rx_done = 1'b0;
+       
+       
+
+#10 reg_i_data_rx = 8'b00001000; // PART3
+       #10 reg_i_rx_done = 1'b1;
+       #10 reg_i_rx_done = 1'b0;
+
+
+
+       #10 reg_i_data_rx = 8'b00010000; // PART2
+       #10 reg_i_rx_done = 1'b1;
+       #10 reg_i_rx_done = 1'b0;
+
+
+
+       #10 reg_i_data_rx = 8'b00011000; //PART1
+       #10 reg_i_rx_done = 1'b1;
+       #10 reg_i_rx_done = 1'b0;
+
+
+
+       #10 reg_i_data_rx = 8'b00100000; //PART0
+       #10 reg_i_rx_done = 1'b1;
+       #10 reg_i_rx_done = 1'b0;
+       
+       
+       
+#10 reg_i_data_rx = 8'b00001000; // PART3
+              #10 reg_i_rx_done = 1'b1;
+              #10 reg_i_rx_done = 1'b0;
+       
+       
+       
+              #10 reg_i_data_rx = 8'b00010000; // PART2
+              #10 reg_i_rx_done = 1'b1;
+              #10 reg_i_rx_done = 1'b0;
+       
+       
+       
+              #10 reg_i_data_rx = 8'b00011000; //PART1
+              #10 reg_i_rx_done = 1'b1;
+              #10 reg_i_rx_done = 1'b0;
+       
+       
+       
+              #10 reg_i_data_rx = 8'b00100000; //PART0
+              #10 reg_i_rx_done = 1'b1;
+              #10 reg_i_rx_done = 1'b0;
+            
+            
+            
+            
+#10 reg_i_data_rx = 8'b00001000; // PART3
+                     #10 reg_i_rx_done = 1'b1;
+                     #10 reg_i_rx_done = 1'b0;
+              
+              
+              
+                     #10 reg_i_data_rx = 8'b00010000; // PART2
+                     #10 reg_i_rx_done = 1'b1;
+                     #10 reg_i_rx_done = 1'b0;
+              
+              
+              
+                     #10 reg_i_data_rx = 8'b00011000; //PART1
+                     #10 reg_i_rx_done = 1'b1;
+                     #10 reg_i_rx_done = 1'b0;
+              
+              
+              
+                     #10 reg_i_data_rx = 8'b00100000; //PART0
+                     #10 reg_i_rx_done = 1'b1;
+                     #10 reg_i_rx_done = 1'b0;
+                     
+                     
+                     
+                     
+#10 reg_i_data_rx = 8'b00001000; // PART3
+                            #10 reg_i_rx_done = 1'b1;
+                            #10 reg_i_rx_done = 1'b0;
+                     
+                     
+                     
+                            #10 reg_i_data_rx = 8'b00010000; // PART2
+                            #10 reg_i_rx_done = 1'b1;
+                            #10 reg_i_rx_done = 1'b0;
+                     
+                     
+                     
+                            #10 reg_i_data_rx = 8'b00011000; //PART1
+                            #10 reg_i_rx_done = 1'b1;
+                            #10 reg_i_rx_done = 1'b0;
+                     
+                     
+                     
+                            #10 reg_i_data_rx = 8'b00100000; //PART0
+                            #10 reg_i_rx_done = 1'b1;
+                            #10 reg_i_rx_done = 1'b0;
+                            
+                            
+                            
+                            
+#10 reg_i_data_rx = 8'b00001000; // PART3
+                                   #10 reg_i_rx_done = 1'b1;
+                                   #10 reg_i_rx_done = 1'b0;
+                            
+                            
+                            
+                                   #10 reg_i_data_rx = 8'b00010000; // PART2
+                                   #10 reg_i_rx_done = 1'b1;
+                                   #10 reg_i_rx_done = 1'b0;
+                            
+                            
+                            
+                                   #10 reg_i_data_rx = 8'b00011000; //PART1
+                                   #10 reg_i_rx_done = 1'b1;
+                                   #10 reg_i_rx_done = 1'b0;
+                            
+                            
+                            
+                                   #10 reg_i_data_rx = 8'b00100000; //PART0
+                                   #10 reg_i_rx_done = 1'b1;
+                                   #10 reg_i_rx_done = 1'b0;
+
+
+#10 reg_i_data_rx = 8'b00001000; // PART3
+       #10 reg_i_rx_done = 1'b1;
+       #10 reg_i_rx_done = 1'b0;
+
+
+
+       #10 reg_i_data_rx = 8'b00010000; // PART2
+       #10 reg_i_rx_done = 1'b1;
+       #10 reg_i_rx_done = 1'b0;
+
+
+
+       #10 reg_i_data_rx = 8'b00011000; //PART1
+       #10 reg_i_rx_done = 1'b1;
+       #10 reg_i_rx_done = 1'b0;
+
+
+
+       #10 reg_i_data_rx = 8'b00100000; //PART0
+       #10 reg_i_rx_done = 1'b1;
+       #10 reg_i_rx_done = 1'b0;
+
+       
        
 
        
