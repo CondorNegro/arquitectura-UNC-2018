@@ -531,7 +531,7 @@ database
         .CANT_BITS_ALU_OP (CANT_BITS_ALU_OP_TOP),
         .CANT_BITS_ALU_CONTROL (CANT_BITS_ALU_CONTROL_TOP),
         .CANT_REGISTROS (CANT_REGISTROS_TOP),
-        .CANT_BITS_SELECT_BYTES (CANT_BITS_SELECT_BYTES_MEM_DATA_TOP)
+        .CANT_BITS_SELECT_BYTES_MEM_DATA (CANT_BITS_SELECT_BYTES_MEM_DATA_TOP)
      )
     u_database_1
     (
@@ -558,7 +558,7 @@ database
         .i_MemWrite_ID_to_EX (wire_MemWrite_ID_to_EX),
         .i_MemtoReg_ID_to_EX (wire_MemtoReg_ID_to_EX),
         .i_ALUCtrl (wire_ALUCtrl),
-        .i_select_bytes_mem_datos_ID_to_EX (wire_select_bytes_mem_datos_ID_to_EX),
+        .i_select_bytes_mem_data_ID_to_EX (wire_select_bytes_mem_datos_ID_to_EX),
         .i_halt_detected_ID_to_EX (wire_halt_detected_ID_to_EX),
         .o_dato (wire_dato_database)
     );
