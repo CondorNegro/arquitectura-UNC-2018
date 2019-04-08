@@ -236,7 +236,7 @@ module database
             o_dato <= {reg_pc, reg_contador_ciclos};
         end
         else if (i_control == 3) begin // Se devuelve la salida del adder del instruction fetch en la salida de este modulo. Tambien la direccion y el control del salto.
-            o_dato <= {reg_adder_pc, {((CANT_BITS_REGISTROS/2) - ADDR_LENGTH){1'b0}} , reg_branch_control, reg_branch_dir};
+            o_dato <= {reg_adder_pc, {((CANT_BITS_REGISTROS/2) - ADDR_LENGTH - 1){1'b0}} , reg_branch_control, reg_branch_dir};
         end
         
         else if (i_control == 4) begin // Se devuelve la instruccion que pasa a la etapa de ID en la salida de este modulo. 
