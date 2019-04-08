@@ -21,6 +21,7 @@ module test_bench_database();
     parameter CANT_BITS_ALU_CONTROL = 4;
     parameter CANT_REGISTROS = 32;
     parameter CANT_BITS_SELECT_BYTES_MEM_DATA = 2;
+    parameter WIDTH_DATA_MEM = 32;
     
     //Todo puerto de salida del modulo es un cable.
 	//Todo puerto de estimulo o generacion de entrada es un registro.
@@ -64,6 +65,19 @@ module test_bench_database();
     reg reg_halt_detected_ID_to_EX;
 
 
+    // Ejecucion
+
+    reg reg_RegWrite_EX_to_MEM;
+    reg reg_MemRead_EX_to_MEM;
+    reg reg_MemWrite_EX_to_MEM; 
+    reg reg_MemtoReg_EX_to_MEM;
+    reg [CANT_BITS_SELECT_BYTES_MEM_DATA - 1 : 0] reg_select_bytes_mem_datos_EX_to_MEM;
+    reg reg_halt_detected_EX_to_MEM; 
+    reg [clogb2 (CANT_REGISTROS - 1) - 1 : 0] reg_registro_destino_EX_to_MEM;
+    reg [CANT_BITS_REGISTROS - 1 : 0] reg_result_alu;
+    reg [WIDTH_DATA_MEM - 1 : 0] reg_data_write_to_mem;
+
+
     wire [LONGITUD_INSTRUCCION - 1 : 0] wire_dato;
     
     //  The following function calculates the address width based on specified RAM depth
@@ -98,8 +112,19 @@ module test_bench_database();
         reg_MemtoReg_ID_to_EX = 0;
         reg_select_bytes_mem_data_ID_to_EX = 0;
         reg_halt_detected_ID_to_EX = 0;
+
         
         reg_ALUCtrl = 0;
+
+        reg_RegWrite_EX_to_MEM = 0;
+        reg_MemRead_EX_to_MEM = 0;
+        reg_MemWrite_EX_to_MEM = 0; 
+        reg_MemtoReg_EX_to_MEM = 0;
+        reg_select_bytes_mem_datos_EX_to_MEM = 0;
+        reg_halt_detected_EX_to_MEM = 0; 
+        reg_registro_destino_EX_to_MEM = 0;
+        reg_result_alu = 0;
+        reg_data_write_to_mem = 0;
 
 
 	   
@@ -142,7 +167,8 @@ database
         .CANT_BITS_ALU_OP (CANT_BITS_ALU_OP),
         .CANT_BITS_ALU_CONTROL (CANT_BITS_ALU_CONTROL),
         .CANT_REGISTROS (CANT_REGISTROS),
-        .CANT_BITS_SELECT_BYTES_MEM_DATA (CANT_BITS_SELECT_BYTES_MEM_DATA)
+        .CANT_BITS_SELECT_BYTES_MEM_DATA (CANT_BITS_SELECT_BYTES_MEM_DATA),
+        .WIDTH_DATA_MEM (WIDTH_DATA_MEM)
 
      )
     u_database_1
@@ -172,6 +198,15 @@ database
         .i_ALUCtrl (reg_ALUCtrl),
         .i_halt_detected_ID_to_EX (reg_halt_detected_ID_to_EX),
         .i_select_bytes_mem_data_ID_to_EX (reg_select_bytes_mem_data_ID_to_EX),
+        .i_RegWrite_EX_to_MEM (reg_RegWrite_EX_to_MEM),
+        .i_MemRead_EX_to_MEM (reg_MemRead_EX_to_MEM),
+        .i_MemWrite_EX_to_MEM (reg_MemWrite_EX_to_MEM), 
+        .i_MemtoReg_EX_to_MEM (reg_MemtoReg_EX_to_MEM),
+        .i_select_bytes_mem_datos_EX_to_MEM (reg_select_bytes_mem_datos_EX_to_MEM),
+        .i_halt_detected_EX_to_MEM (reg_halt_detected_EX_to_MEM), 
+        .i_registro_destino_EX_to_MEM (reg_registro_destino_EX_to_MEM),
+        .i_result_alu (reg_result_alu),
+        .i_data_write_to_mem (reg_data_write_to_mem),
         .o_dato (wire_dato)
     );
 

@@ -19,7 +19,8 @@ module database
         parameter CANT_BITS_ALU_OP = 2,
         parameter CANT_BITS_ALU_CONTROL = 4,
         parameter CANT_REGISTROS = 32,
-        parameter CANT_BITS_SELECT_BYTES_MEM_DATA = 2
+        parameter CANT_BITS_SELECT_BYTES_MEM_DATA = 2,
+        parameter WIDTH_DATA_MEM = 32
    )
    (
         input i_clock,
@@ -60,6 +61,19 @@ module database
         input [CANT_BITS_ALU_CONTROL - 1 : 0] i_ALUCtrl,
         input [CANT_BITS_SELECT_BYTES_MEM_DATA - 1 : 0] i_select_bytes_mem_data_ID_to_EX,
 
+
+        // Ejecucion
+
+        input i_RegWrite_EX_to_MEM,
+        input i_MemRead_EX_to_MEM,
+        input i_MemWrite_EX_to_MEM, 
+        input i_MemtoReg_EX_to_MEM,
+        input [CANT_BITS_SELECT_BYTES_MEM_DATA - 1 : 0] i_select_bytes_mem_datos_EX_to_MEM,
+        input i_halt_detected_EX_to_MEM, 
+        input [clogb2 (CANT_REGISTROS - 1) - 1 : 0] i_registro_destino_EX_to_MEM,
+        input [CANT_BITS_REGISTROS - 1 : 0] i_result_alu,
+        input [WIDTH_DATA_MEM - 1 : 0] i_data_write_to_mem,
+
         output reg [LONGITUD_INSTRUCCION - 1 : 0] o_dato
 
    );
@@ -95,6 +109,18 @@ module database
     reg [CANT_BITS_ALU_CONTROL - 1 : 0] reg_ALUCtrl;
     reg [CANT_BITS_SELECT_BYTES_MEM_DATA - 1 : 0] reg_select_bytes_mem_data_ID_to_EX; 
 
+    // Ejecucion
+
+    reg reg_RegWrite_EX_to_MEM;
+    reg reg_MemRead_EX_to_MEM;
+    reg reg_MemWrite_EX_to_MEM; 
+    reg reg_MemtoReg_EX_to_MEM;
+    reg [CANT_BITS_SELECT_BYTES_MEM_DATA - 1 : 0] reg_select_bytes_mem_datos_EX_to_MEM;
+    reg reg_halt_detected_EX_to_MEM; 
+    reg [clogb2 (CANT_REGISTROS - 1) - 1 : 0] reg_registro_destino_EX_to_MEM;
+    reg [CANT_BITS_REGISTROS - 1 : 0] reg_result_alu;
+    reg [WIDTH_DATA_MEM - 1 : 0] reg_data_write_to_mem;
+
    //  The following function calculates the address width based on specified RAM depth
     function integer clogb2;
         input integer depth;
@@ -127,6 +153,15 @@ module database
         reg_ALUCtrl <= 0;
         reg_select_bytes_mem_data_ID_to_EX <= 0;
         reg_halt_detected_ID_to_EX <= 0;
+        reg_RegWrite_EX_to_MEM <= 0;
+        reg_MemRead_EX_to_MEM <= 0;
+        reg_MemWrite_EX_to_MEM <= 0; 
+        reg_MemtoReg_EX_to_MEM <= 0;
+        reg_select_bytes_mem_datos_EX_to_MEM <= 0;
+        reg_halt_detected_EX_to_MEM <= 0; 
+        reg_registro_destino_EX_to_MEM <= 0;
+        reg_result_alu <= 0;
+        reg_data_write_to_mem <= 0;
     end
     else begin
         if (i_control == 0) begin // No se hace nada, se mantienen los valores.
@@ -153,6 +188,15 @@ module database
             reg_ALUCtrl <= reg_ALUCtrl;
             reg_select_bytes_mem_data_ID_to_EX <= reg_select_bytes_mem_data_ID_to_EX;
             reg_halt_detected_ID_to_EX <= reg_halt_detected_ID_to_EX;
+            reg_RegWrite_EX_to_MEM <= reg_RegWrite_EX_to_MEM;
+            reg_MemRead_EX_to_MEM <= reg_MemRead_EX_to_MEM;
+            reg_MemWrite_EX_to_MEM <= reg_MemWrite_EX_to_MEM; 
+            reg_MemtoReg_EX_to_MEM <= reg_MemtoReg_EX_to_MEM;
+            reg_select_bytes_mem_datos_EX_to_MEM <= reg_select_bytes_mem_datos_EX_to_MEM;
+            reg_halt_detected_EX_to_MEM <= reg_halt_detected_EX_to_MEM; 
+            reg_registro_destino_EX_to_MEM <= reg_registro_destino_EX_to_MEM;
+            reg_result_alu <= reg_result_alu;
+            reg_data_write_to_mem <= reg_data_write_to_mem;
         end 
         if (i_control == 1) begin // Se guardan los valores de las entradas en los registros.
             reg_pc <= i_pc;
@@ -177,7 +221,16 @@ module database
             reg_MemtoReg_ID_to_EX <= i_MemtoReg_ID_to_EX;
             reg_ALUCtrl <= i_ALUCtrl;
             reg_select_bytes_mem_data_ID_to_EX <= i_select_bytes_mem_data_ID_to_EX;
-            reg_halt_detected_ID_to_EX <= i_halt_detected_ID_to_EX;            
+            reg_halt_detected_ID_to_EX <= i_halt_detected_ID_to_EX;
+            reg_RegWrite_EX_to_MEM <= i_RegWrite_EX_to_MEM;
+            reg_MemRead_EX_to_MEM <= i_MemRead_EX_to_MEM;
+            reg_MemWrite_EX_to_MEM <= i_MemWrite_EX_to_MEM; 
+            reg_MemtoReg_EX_to_MEM <= i_MemtoReg_EX_to_MEM;
+            reg_select_bytes_mem_datos_EX_to_MEM <= i_select_bytes_mem_datos_EX_to_MEM;
+            reg_halt_detected_EX_to_MEM <= i_halt_detected_EX_to_MEM; 
+            reg_registro_destino_EX_to_MEM <= i_registro_destino_EX_to_MEM;
+            reg_result_alu <= i_result_alu;
+            reg_data_write_to_mem <= i_data_write_to_mem;            
         end
         else if (i_control == 2) begin // Se devuelve el contador de programa a la salida.
             o_dato <= reg_pc;
@@ -185,12 +238,14 @@ module database
         else if (i_control == 3) begin // Se devuelve el contador de ciclos a la salida.
             o_dato <= reg_contador_ciclos;
         end
+        // Instruccion fetch.
         else if (i_control == 4) begin //Se devuelve la salida del adder del instruction fetch en la salida de este modulo.
             o_dato <= reg_adder_pc;
         end
         else if (i_control == 5) begin // Se devuelve la instruccion que pasa a la etapa de ID en la salida de este modulo. 
             o_dato <= reg_instruction_fetch;
         end
+        // Instruction decode.
         else if (i_control == 6) begin // Se devuelve la direccion y el control del salto en la salida de este modulo. 
             o_dato <= {reg_branch_control, reg_branch_dir};
         end
@@ -208,6 +263,16 @@ module database
         end
         else if (i_control == 11) begin // Se devuelve el contenido de las señales de control en la salida de este modulo. 
             o_dato <= {reg_select_bytes_mem_data_ID_to_EX, reg_halt_detected_ID_to_EX, reg_RegDst, reg_RegWrite_ID_to_EX, reg_ALUSrc, reg_MemRead_ID_to_EX, reg_MemWrite_ID_to_EX, reg_MemtoReg_ID_to_EX, reg_ALUOp, reg_ALUCtrl};
+        end
+        // Ejecucion
+        else if (i_control == 12) begin // Se devuelve el resultado de la ALU.
+            o_dato <= reg_result_alu; 
+        end
+        else if (i_control == 13) begin // Se devuelve lo que se va a escribir en memoria.
+            o_dato <= reg_data_write_to_mem;
+        end
+        else if (i_control == 14) begin // Se devuelven señales de control y el registro destino.
+            o_dato <= {reg_RegWrite_EX_to_MEM, reg_MemRead_EX_to_MEM, reg_MemWrite_EX_to_MEM, reg_MemtoReg_EX_to_MEM, reg_select_bytes_mem_datos_EX_to_MEM, reg_halt_detected_EX_to_MEM, reg_registro_destino_EX_to_MEM};
         end
         else begin
             reg_pc <= 0;
@@ -233,6 +298,15 @@ module database
             reg_ALUCtrl <= 0;
             reg_select_bytes_mem_data_ID_to_EX <= 0;
             reg_halt_detected_ID_to_EX <= 0;
+            reg_RegWrite_EX_to_MEM <= 0;
+            reg_MemRead_EX_to_MEM <= 0;
+            reg_MemWrite_EX_to_MEM <= 0; 
+            reg_MemtoReg_EX_to_MEM <= 0;
+            reg_select_bytes_mem_datos_EX_to_MEM <= 0;
+            reg_halt_detected_EX_to_MEM <= 0; 
+            reg_registro_destino_EX_to_MEM <= 0;
+            reg_result_alu <= 0;
+            reg_data_write_to_mem <= 0;
         end
     end
 

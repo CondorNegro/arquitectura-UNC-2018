@@ -400,7 +400,7 @@ top_id
 
 
 // Modulo top de la etapa de ejecucion de la instruccion.
-/**
+
 top_ejecucion
     #(
         .WIDTH_DATA_MEM (RAM_WIDTH_DATOS),
@@ -443,7 +443,7 @@ top_ejecucion
         .o_select_bytes_mem_datos (wire_select_bytes_mem_datos_EX_to_MEM),
         .o_led ()
     );
-**/
+
 
 /**
 // Modulo top de la etapa de memoria de datos de la instruccion.
@@ -531,7 +531,8 @@ database
         .CANT_BITS_ALU_OP (CANT_BITS_ALU_OP_TOP),
         .CANT_BITS_ALU_CONTROL (CANT_BITS_ALU_CONTROL_TOP),
         .CANT_REGISTROS (CANT_REGISTROS_TOP),
-        .CANT_BITS_SELECT_BYTES_MEM_DATA (CANT_BITS_SELECT_BYTES_MEM_DATA_TOP)
+        .CANT_BITS_SELECT_BYTES_MEM_DATA (CANT_BITS_SELECT_BYTES_MEM_DATA_TOP),
+        .WIDTH_DATA_MEM (RAM_WIDTH_DATOS)
      )
     u_database_1
     (
@@ -560,6 +561,15 @@ database
         .i_ALUCtrl (wire_ALUCtrl),
         .i_select_bytes_mem_data_ID_to_EX (wire_select_bytes_mem_datos_ID_to_EX),
         .i_halt_detected_ID_to_EX (wire_halt_detected_ID_to_EX),
+        .i_RegWrite_EX_to_MEM (wire_EX_to_MEM_RegWrite),
+        .i_MemRead_EX_to_MEM (wire_EX_to_MEM_MemRead),
+        .i_MemWrite_EX_to_MEM (wire_EX_to_MEM_MemWrite), 
+        .i_MemtoReg_EX_to_MEM (wire_EX_to_MEM_MemtoReg),
+        .i_select_bytes_mem_datos_EX_to_MEM (wire_select_bytes_mem_datos_EX_to_MEM),
+        .i_halt_detected_EX_to_MEM (wire_halt_detected_EX_to_MEM), 
+        .i_registro_destino_EX_to_MEM (wire_EX_to_MEM_registro_destino),
+        .i_result_alu (wire_resultado_ALU),
+        .i_data_write_to_mem (wire_EX_to_MEM_data_write_mem),
         .o_dato (wire_dato_database)
     );
 
