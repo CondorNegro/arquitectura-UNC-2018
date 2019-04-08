@@ -19,6 +19,7 @@ module test_bench_control();
     parameter CANT_BITS_ALU_CONTROL = 4;
     parameter CANT_BITS_ESPECIAL = 6;
     parameter CANT_BITS_ID_LSB = 6;
+    parameter CANT_BITS_SELECT_BYTES_MEM_DATA = 2;
 
 
     //Todo puerto de salida del modulo es un cable.
@@ -36,7 +37,8 @@ module test_bench_control();
     wire [CANT_BITS_ALU_CONTROL - 1 : 0] wire_ALUCtrl;
     wire wire_MemRead;
     wire wire_MemWrite;
-    wire wire_MemtoReg;  
+    wire wire_MemtoReg;
+    wire [CANT_BITS_SELECT_BYTES_MEM_DATA - 1 : 0] wire_select_bytes_mem_datos;  
 
 	initial	begin
        reg_clock = 1'b0;
@@ -75,7 +77,8 @@ control
         .CANT_BITS_ALU_OP (CANT_BITS_ALU_OP),
         .CANT_BITS_ESPECIAL (CANT_BITS_ESPECIAL),
         .CANT_BITS_ID_LSB (CANT_BITS_ID_LSB),
-        .CANT_BITS_ALU_CONTROL (CANT_BITS_ALU_CONTROL)
+        .CANT_BITS_ALU_CONTROL (CANT_BITS_ALU_CONTROL),
+        .CANT_BITS_SELECT_BYTES_MEM_DATA (CANT_BITS_SELECT_BYTES_MEM_DATA)
 
     )
     u_control_1
@@ -91,7 +94,8 @@ control
         .o_ALUCtrl (wire_ALUCtrl),
         .o_MemRead (wire_MemRead),
         .o_MemWrite (wire_MemWrite),
-        .o_MemtoReg (wire_MemtoReg)
+        .o_MemtoReg (wire_MemtoReg),
+        .o_select_bytes_mem_datos (wire_select_bytes_mem_datos)
     );
 
 endmodule

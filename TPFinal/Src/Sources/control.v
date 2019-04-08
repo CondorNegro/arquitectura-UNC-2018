@@ -18,7 +18,8 @@ module control
        parameter CANT_BITS_ALU_OP = 2,
        parameter CANT_BITS_ALU_CONTROL = 4,
        parameter CANT_BITS_ESPECIAL = 6,
-       parameter CANT_BITS_ID_LSB = 6
+       parameter CANT_BITS_ID_LSB = 6,
+       parameter CANT_BITS_SELECT_BYTES_MEM_DATA = 2
     
     )
    (
@@ -33,7 +34,8 @@ module control
        output reg [CANT_BITS_ALU_CONTROL - 1 : 0] o_ALUCtrl,
        output reg o_MemRead,
        output reg o_MemWrite,
-       output reg o_MemtoReg     
+       output reg o_MemtoReg,
+       output reg [CANT_BITS_SELECT_BYTES_MEM_DATA - 1 : 0] o_select_bytes_mem_datos     
    );
 
 
@@ -51,6 +53,7 @@ module control
                                 o_MemRead = 0;
                                 o_MemWrite = 0;
                                 o_MemtoReg = 0;
+                                o_select_bytes_mem_datos = 0;
                             end
                         2://SRL
                             begin
@@ -60,6 +63,7 @@ module control
                                 o_MemRead = 0;
                                 o_MemWrite = 0;
                                 o_MemtoReg = 0;
+                                o_select_bytes_mem_datos = 0;
                             end
                         3://SRA
                             begin
@@ -69,6 +73,7 @@ module control
                                 o_MemRead = 0;
                                 o_MemWrite = 0;
                                 o_MemtoReg = 0;
+                                o_select_bytes_mem_datos = 0;
                             end
                         4://SLLV
                             begin
@@ -78,6 +83,7 @@ module control
                                 o_MemRead = 0;
                                 o_MemWrite = 0;
                                 o_MemtoReg = 0;
+                                o_select_bytes_mem_datos = 0;
                             end
                         6://SRLV
                             begin
@@ -87,6 +93,7 @@ module control
                                 o_MemRead = 0;
                                 o_MemWrite = 0;
                                 o_MemtoReg = 0;
+                                o_select_bytes_mem_datos = 0;
                             end
                         7://SRAV
                             begin
@@ -96,6 +103,7 @@ module control
                                 o_MemRead = 0;
                                 o_MemWrite = 0;
                                 o_MemtoReg = 0;
+                                o_select_bytes_mem_datos = 0;
                             end
                         33://ADDU
                             begin
@@ -105,6 +113,7 @@ module control
                                 o_MemRead = 0;
                                 o_MemWrite = 0;
                                 o_MemtoReg = 0;
+                                o_select_bytes_mem_datos = 0;
                             end
                         35://SUBU
                             begin
@@ -114,6 +123,7 @@ module control
                                 o_MemRead = 0;
                                 o_MemWrite = 0;
                                 o_MemtoReg = 0;
+                                o_select_bytes_mem_datos = 0;
                             end
                         36://AND
                             begin
@@ -123,6 +133,7 @@ module control
                                 o_MemRead = 0;
                                 o_MemWrite = 0;
                                 o_MemtoReg = 0;
+                                o_select_bytes_mem_datos = 0;
                             end
                         37://OR
                             begin
@@ -132,6 +143,7 @@ module control
                                 o_MemRead = 0;
                                 o_MemWrite = 0;
                                 o_MemtoReg = 0;
+                                o_select_bytes_mem_datos = 0;
                             end
                         38://XOR
                             begin
@@ -141,6 +153,7 @@ module control
                                 o_MemRead = 0;
                                 o_MemWrite = 0;
                                 o_MemtoReg = 0;
+                                o_select_bytes_mem_datos = 0;
                             end
                         39://NOR
                             begin
@@ -150,6 +163,7 @@ module control
                                 o_MemRead = 0;
                                 o_MemWrite = 0;
                                 o_MemtoReg = 0;
+                                o_select_bytes_mem_datos = 0;
                             end
                         42://SLT
                             begin
@@ -159,6 +173,7 @@ module control
                                 o_MemRead = 0;
                                 o_MemWrite = 0;
                                 o_MemtoReg = 0;
+                                o_select_bytes_mem_datos = 0;
                             end
                         8://JR
                             begin
@@ -168,6 +183,7 @@ module control
                                 o_MemRead = 0;
                                 o_MemWrite = 0;
                                 o_MemtoReg = 0;
+                                o_select_bytes_mem_datos = 0;
                             end
                         9://JALR 
                             begin
@@ -177,6 +193,7 @@ module control
                                 o_MemRead = 0;
                                 o_MemWrite = 0;
                                 o_MemtoReg = 0;
+                                o_select_bytes_mem_datos = 0;
                             end
                         default:
                             begin
@@ -186,6 +203,7 @@ module control
                                 o_MemRead = 0;
                                 o_MemWrite = 0;
                                 o_MemtoReg = 0;
+                                o_select_bytes_mem_datos = 0;
                             end
                     endcase
                 end
@@ -199,6 +217,7 @@ module control
                                 o_MemRead = 1;
                                 o_MemWrite = 0;
                                 o_MemtoReg = 1;
+                                o_select_bytes_mem_datos = 1;
                             end
                         33://LH
                             begin
@@ -208,6 +227,7 @@ module control
                                 o_MemRead = 1;
                                 o_MemWrite = 0;
                                 o_MemtoReg = 1;
+                                o_select_bytes_mem_datos = 2;
                             end
                         35://LW
                             begin
@@ -217,6 +237,7 @@ module control
                                 o_MemRead = 1;
                                 o_MemWrite = 0;
                                 o_MemtoReg = 1;
+                                o_select_bytes_mem_datos = 3;
                             end
                         39://LWU
                             begin
@@ -226,6 +247,7 @@ module control
                                 o_MemRead = 1;
                                 o_MemWrite = 0;
                                 o_MemtoReg = 1;
+                                o_select_bytes_mem_datos = 3;
                             end
                         36://LBU
                             begin
@@ -235,6 +257,7 @@ module control
                                 o_MemRead = 1;
                                 o_MemWrite = 0;
                                 o_MemtoReg = 1;
+                                o_select_bytes_mem_datos = 1;
                             end
                         37://LHU
                             begin
@@ -244,6 +267,7 @@ module control
                                 o_MemRead = 1;
                                 o_MemWrite = 0;
                                 o_MemtoReg = 1;
+                                o_select_bytes_mem_datos = 2;
                             end
                         40://SB
                             begin
@@ -253,6 +277,7 @@ module control
                                 o_MemRead = 0;
                                 o_MemWrite = 1;
                                 o_MemtoReg = 0;
+                                o_select_bytes_mem_datos = 1;
                             end
                         41://SH
                             begin
@@ -262,6 +287,7 @@ module control
                                 o_MemRead = 0;
                                 o_MemWrite = 1;
                                 o_MemtoReg = 0;
+                                o_select_bytes_mem_datos = 2;
                             end
                         43://SW
                             begin
@@ -271,6 +297,7 @@ module control
                                 o_MemRead = 0;
                                 o_MemWrite = 1;
                                 o_MemtoReg = 0;
+                                o_select_bytes_mem_datos = 3;
                             end
                         8://ADDI
                             begin
@@ -280,6 +307,7 @@ module control
                                 o_MemRead = 0;
                                 o_MemWrite = 0;
                                 o_MemtoReg = 0;
+                                o_select_bytes_mem_datos = 0;
                             end
                         12://ANDI
                             begin
@@ -289,6 +317,7 @@ module control
                                 o_MemRead = 0;
                                 o_MemWrite = 0;
                                 o_MemtoReg = 0;
+                                o_select_bytes_mem_datos = 0;
                             end
                         13://ORI
                             begin
@@ -298,6 +327,7 @@ module control
                                 o_MemRead = 0;
                                 o_MemWrite = 0;
                                 o_MemtoReg = 0;
+                                o_select_bytes_mem_datos = 0;
                             end
                         14://XORI
                             begin
@@ -307,6 +337,7 @@ module control
                                 o_MemRead = 0;
                                 o_MemWrite = 0;
                                 o_MemtoReg = 0;
+                                o_select_bytes_mem_datos = 0;
                             end
                         15://LUI
                             begin
@@ -316,6 +347,7 @@ module control
                                 o_MemRead = 0;
                                 o_MemWrite = 0;
                                 o_MemtoReg = 0;
+                                o_select_bytes_mem_datos = 0;
                             end
                         10://SLTI
                             begin
@@ -325,6 +357,7 @@ module control
                                 o_MemRead = 0;
                                 o_MemWrite = 0;
                                 o_MemtoReg = 0;
+                                o_select_bytes_mem_datos = 0;
                             end
                         4://BEQ
                             begin
@@ -334,6 +367,7 @@ module control
                                 o_MemRead = 0;
                                 o_MemWrite = 0;
                                 o_MemtoReg = 0;
+                                o_select_bytes_mem_datos = 0;
                             end
                         5://BNE
                             begin
@@ -343,6 +377,7 @@ module control
                                 o_MemRead = 0;
                                 o_MemWrite = 0;
                                 o_MemtoReg = 0;
+                                o_select_bytes_mem_datos = 0;
                             end
                         2://J
                             begin
@@ -352,6 +387,7 @@ module control
                                 o_MemRead = 0;
                                 o_MemWrite = 0;
                                 o_MemtoReg = 0;
+                                o_select_bytes_mem_datos = 0;
                             end
                         3://JAL
                             begin
@@ -361,6 +397,7 @@ module control
                                 o_MemRead = 0;
                                 o_MemWrite = 0;
                                 o_MemtoReg = 0;
+                                o_select_bytes_mem_datos = 0;
                             
                             end
                         default:
@@ -371,6 +408,7 @@ module control
                                 o_MemRead = 0;
                                 o_MemWrite = 0;
                                 o_MemtoReg = 0;
+                                o_select_bytes_mem_datos = 0;
                             end
                     endcase
                 end
@@ -382,6 +420,7 @@ module control
             o_MemRead = o_MemRead;
             o_MemWrite = o_MemWrite;
             o_MemtoReg = o_MemtoReg;
+            o_select_bytes_mem_datos = o_select_bytes_mem_datos;
         end    
    end
 
