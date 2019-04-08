@@ -156,12 +156,12 @@ wire [CANT_BITS_ADDR_REGISTROS - 1 : 0] wire_reg_rs;
 wire [CANT_BITS_ADDR_REGISTROS - 1 : 0] wire_reg_rt;
 wire [CANT_BITS_ADDR_REGISTROS - 1 : 0] wire_reg_rd;
 wire wire_RegDst;
-wire wire_RegWrite;
+wire wire_RegWrite_ID_to_EX;
 wire wire_ALUSrc;
 wire [CANT_BITS_ALU_OP_TOP - 1 : 0] wire_ALUOp;
-wire wire_MemRead;
-wire wire_MemWrite;
-wire wire_MemtoReg;
+wire wire_MemRead_ID_to_EX;
+wire wire_MemWrite_ID_to_EX;
+wire wire_MemtoReg_ID_to_EX;
 wire [CANT_BITS_FLAG_BRANCH_TOP - 1 : 0] wire_flag_branch;
 wire [CANT_BITS_ALU_CONTROL_TOP - 1 : 0] wire_ALUCtrl; 
 wire [ADDR_MEM_PROGRAMA_LENGTH - 1 : 0] wire_out_adder_pc_ID_to_EX;
@@ -386,12 +386,12 @@ top_id
         .o_reg_rd (wire_reg_rd),
 
         .o_RegDst (wire_RegDst),
-        .o_RegWrite (wire_RegWrite),
+        .o_RegWrite (wire_RegWrite_ID_to_EX),
         .o_ALUSrc (wire_ALUSrc),
         .o_ALUOp (wire_ALUOp),
-        .o_MemRead (wire_MemRead),
-        .o_MemWrite (wire_MemWrite),
-        .o_MemtoReg (wire_MemtoReg),
+        .o_MemRead (wire_MemRead_ID_to_EX),
+        .o_MemWrite (wire_MemWrite_ID_to_EX),
+        .o_MemtoReg (wire_MemtoReg_ID_to_EX),
         .o_ALUCtrl (wire_ALUCtrl),   
         .o_halt_detected (wire_halt_detected_ID_to_EX),
         .o_select_bytes_mem_datos (wire_select_bytes_mem_datos_ID_to_EX),
@@ -424,11 +424,11 @@ top_ejecucion
         .i_reg_rt (wire_reg_rt),
         .i_reg_rd (wire_reg_rd),
         .i_RegDst (wire_RegDst),
-        .i_RegWrite (wire_RegWrite),
+        .i_RegWrite (wire_RegWrite_ID_to_EX),
         .i_ALUSrc (wire_ALUSrc),
-        .i_MemRead (wire_MemRead),
-        .i_MemWrite (wire_MemWrite),
-        .i_MemtoReg (wire_MemtoReg),
+        .i_MemRead (wire_MemRead_ID_to_EX),
+        .i_MemWrite (wire_MemWrite_ID_to_EX),
+        .i_MemtoReg (wire_MemtoReg_ID_to_EX),
         .i_ALUCtrl (wire_ALUCtrl),
         .i_halt_detected (wire_halt_detected_ID_to_EX),
         .i_select_bytes_mem_datos (wire_select_bytes_mem_datos_ID_to_EX), 
@@ -551,12 +551,12 @@ database
         .i_reg_rt (wire_reg_rt),
         .i_reg_rd (wire_reg_rd),
         .i_RegDst (wire_RegDst),
-        .i_RegWrite (wire_RegWrite),
+        .i_RegWrite_ID_to_EX (wire_RegWrite_ID_to_EX),
         .i_ALUSrc (wire_ALUSrc),
         .i_ALUOp (wire_ALUOp),
-        .i_MemRead (wire_MemRead),
-        .i_MemWrite (wire_MemWrite),
-        .i_MemtoReg (wire_MemtoReg),
+        .i_MemRead_ID_to_EX (wire_MemRead_ID_to_EX),
+        .i_MemWrite_ID_to_EX (wire_MemWrite_ID_to_EX),
+        .i_MemtoReg_ID_to_EX (wire_MemtoReg_ID_to_EX),
         .i_ALUCtrl (wire_ALUCtrl),
         .i_select_bytes_mem_datos_ID_to_EX (wire_select_bytes_mem_datos_ID_to_EX),
         .i_halt_detected_ID_to_EX (wire_halt_detected_ID_to_EX),
