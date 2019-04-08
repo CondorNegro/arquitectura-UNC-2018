@@ -18,6 +18,7 @@ module test_bench_top_ejecucion();
     parameter CANT_BITS_ADDR = 11;
     parameter CANT_BITS_REGISTROS = 32;
     parameter CANT_BITS_ALU_CONTROL = 4;
+    parameter CANT_BITS_SELECT_BYTES_MEM_DATA = 2;
 	
 	//Todo puerto de salida del modulo es un cable.
 	//Todo puerto de estimulo o generacion de entrada es un registro.
@@ -39,6 +40,8 @@ module test_bench_top_ejecucion();
     reg [clogb2 (CANT_REGISTROS - 1) - 1 : 0] reg_i_reg_rs;
     reg [clogb2 (CANT_REGISTROS - 1) - 1 : 0] reg_i_reg_rt;
     reg [clogb2 (CANT_REGISTROS - 1) - 1 : 0] reg_i_reg_rd;
+    reg reg_i_halt_detected;
+
     // Control
     reg reg_i_RegDst;
     reg reg_i_RegWrite;
@@ -46,18 +49,21 @@ module test_bench_top_ejecucion();
     reg reg_i_MemRead;
     reg reg_i_MemWrite;
     reg reg_i_MemtoReg;
-    reg [CANT_BITS_ALU_CONTROL - 1 : 0] reg_i_ALUCtrl;                               
+    reg [CANT_BITS_ALU_CONTROL - 1 : 0] reg_i_ALUCtrl;
+    reg [CANT_BITS_SELECT_BYTES_MEM_DATA - 1 : 0] reg_i_select_bytes_mem_datos;                             
     
     //SALIDAS.
     wire wire_o_RegWrite;
     wire wire_o_MemRead;
     wire wire_o_MemWrite;
     wire wire_o_MemtoReg;
+    wire [CANT_BITS_SELECT_BYTES_MEM_DATA - 1 : 0] wire_o_select_bytes_mem_datos;   
 
 
     wire [WIDTH_DATA_MEM - 1 : 0] wire_o_result;
     wire [WIDTH_DATA_MEM - 1 : 0] wire_o_data_write_to_mem;
     wire [clogb2 (CANT_REGISTROS - 1) - 1 : 0] wire_o_registro_destino;
+    wire wire_o_halt_detected;
 
     wire wire_o_led;
     
@@ -83,6 +89,9 @@ module test_bench_top_ejecucion();
         reg_i_MemWrite = 0;
         reg_i_MemtoReg = 0;
         reg_i_ALUCtrl = 4'b0010;
+        reg_i_halt_detected = 1'b0;
+        reg_i_select_bytes_mem_datos = 2;
+
 
         #20 reg_i_soft_reset = 1'b0;
         #20 reg_i_soft_reset = 1'b1;
@@ -103,6 +112,8 @@ module test_bench_top_ejecucion();
         #20 reg_i_data_B = -1; 
         #20 reg_i_data_A = -5; // Aca valor de ALU se debe invertir.
 
+        #20 reg_i_halt_detected = 1'b1;
+        #20 reg_i_select_bytes_mem_datos = 1;
 
 		#10000 reg_i_soft_reset = 1'b0; // Reset.
 		#10000 reg_i_soft_reset = 1'b1; // Desactivo el reset.
@@ -122,7 +133,8 @@ top_ejecucion
         .CANT_REGISTROS (CANT_REGISTROS),
         .CANT_BITS_ADDR (CANT_BITS_ADDR),
         .CANT_BITS_REGISTROS (CANT_BITS_REGISTROS),
-        .CANT_BITS_ALU_CONTROL (CANT_BITS_ALU_CONTROL)
+        .CANT_BITS_ALU_CONTROL (CANT_BITS_ALU_CONTROL),
+        .CANT_BITS_SELECT_BYTES_MEM_DATA (CANT_BITS_SELECT_BYTES_MEM_DATA)
      ) 
     u_top_ejecucion_1    
     (
@@ -143,13 +155,17 @@ top_ejecucion
         .i_MemRead (reg_i_MemRead),
         .i_MemWrite (reg_i_MemWrite),
         .i_MemtoReg (reg_i_MemtoReg),
-        .i_ALUCtrl (reg_i_ALUCtrl), 
+        .i_ALUCtrl (reg_i_ALUCtrl),
+        .i_halt_detected (reg_i_halt_detected),
+        .i_select_bytes_mem_datos (reg_i_select_bytes_mem_datos), 
 
 
         .o_RegWrite (wire_o_RegWrite),
         .o_MemRead (wire_o_MemRead),
         .o_MemWrite (wire_o_MemWrite),
         .o_MemtoReg (wire_o_MemtoReg),
+        .o_halt_detected (wire_o_halt_detected),
+        .o_select_bytes_mem_datos (wire_o_select_bytes_mem_datos),
 
 
         .o_result (wire_o_result),
