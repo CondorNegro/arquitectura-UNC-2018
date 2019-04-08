@@ -29,6 +29,7 @@ CANT_BITS_ADDR_REGISTROS = int (math.log(CANT_REGSITROS, 2))
 CANT_BITS_ALU_CTRL = 4
 CANT_BITS_ALU_OP = 2
 HALT_INSTRUCTION = '1' * CANT_BITS_INSTRUCCION
+CANT_BITS_SELECT_BYTES_MEM_DATA = 2
 
 # Variables globales
 
@@ -834,7 +835,19 @@ def recibirDatosFromFPGA ():
 						
 						etiqueta_falg_halt_ID_to_EX = reg_dst [- CANT_BITS_ALU_CTRL - CANT_BITS_ALU_OP - 7 ]
 
-						etiqueta_select_bytes_mem_data_ID_to_EX = reg_dst [ - CANT_BITS_ALU_CTRL - CANT_BITS_ALU_OP - 9 : - CANT_BITS_ALU_CTRL - CANT_BITS_ALU_OP - 7 ]
+						select_bytes_condicion = int (reg_dst [ - CANT_BITS_ALU_CTRL - CANT_BITS_ALU_OP - 7 - \
+							CANT_BITS_SELECT_BYTES_MEM_DATA : - CANT_BITS_ALU_CTRL - CANT_BITS_ALU_OP - 7 ], 2)
+						if (select_bytes_condicion == 0):
+							etiqueta_select_bytes_mem_data_ID_to_EX = 'Ninguno'
+						elif (select_bytes_condicion == 1):
+							etiqueta_select_bytes_mem_data_ID_to_EX = 'Byte'
+						elif (select_bytes_condicion == 2):
+							etiqueta_select_bytes_mem_data_ID_to_EX = 'Halfword'			
+						elif (select_bytes_condicion == 3):
+							etiqueta_select_bytes_mem_data_ID_to_EX = 'Word'
+						else:
+							etiqueta_select_bytes_mem_data_ID_to_EX = 'Ninguno'
+
 
 						if (str (reg_dst [- CANT_BITS_ALU_CTRL - CANT_BITS_ALU_OP - 6 ]) == '1'):
 							etiqueta_reg_dst_ID_to_EX = 'Rd'
@@ -887,7 +900,7 @@ def recibirDatosFromFPGA ():
 						contador_etapas = contador_etapas + 1
 						contador_subetapas = 0
 						flag_receive = False
-						if ((modo_ejecucion == '0') or (instruction_fetch == (HALT_INSTRUCTION))): #Continuo
+						if ((modo_ejecucion == '0') or (etiqueta_falg_halt_ID_to_EX == ('1'))): #Continuo o Debug con halt
 							activarBotones (1)
 						else: #Debug
 							activarBotones (4) 
