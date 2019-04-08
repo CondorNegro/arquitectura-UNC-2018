@@ -244,7 +244,7 @@ debug_unit
     .i_rx_done (wire_rx_done),
     .i_data_rx (wire_data_rx),
     .i_soft_reset_ack (wire_soft_reset_ack),
-    .i_flag_halt (wire_halt_detected_ID_to_EX),//CAMBIAR por wire_halt_detected_WB_to_DEBUG_UNIT
+    .i_flag_halt (wire_halt_detected_EX_to_MEM),//CAMBIAR por wire_halt_detected_WB_to_DEBUG_UNIT
     .i_dato_database (wire_dato_database),
     .o_tx_start (wire_tx_start),
     .o_data_tx (wire_data_tx),
