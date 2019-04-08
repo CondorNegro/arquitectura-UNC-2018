@@ -20,6 +20,7 @@ module test_bench_database();
     parameter CANT_BITS_ALU_OP = 2;
     parameter CANT_BITS_ALU_CONTROL = 4;
     parameter CANT_REGISTROS = 32;
+    parameter CANT_BITS_SELECT_BYTES_MEM_DATA = 2;
     
     //Todo puerto de salida del modulo es un cable.
 	//Todo puerto de estimulo o generacion de entrada es un registro.
@@ -52,13 +53,15 @@ module test_bench_database();
     // Control de instruction decode.
 
     reg reg_RegDst;
-    reg reg_RegWrite;
+    reg reg_RegWrite_ID_to_EX;
     reg reg_ALUSrc;
     reg [CANT_BITS_ALU_OP - 1 : 0] reg_ALUOp;
-    reg reg_MemRead;
-    reg reg_MemWrite;
-    reg reg_MemtoReg;
+    reg reg_MemRead_ID_to_EX;
+    reg reg_MemWrite_ID_to_EX;
+    reg reg_MemtoReg_ID_to_EX;
     reg [CANT_BITS_ALU_CONTROL - 1 : 0] reg_ALUCtrl;
+    reg [CANT_BITS_SELECT_BYTES_MEM_DATA - 1 : 0] reg_select_bytes_mem_data_ID_to_EX;
+    reg reg_halt_detected_ID_to_EX;
 
 
     wire [LONGITUD_INSTRUCCION - 1 : 0] wire_dato;
@@ -87,12 +90,14 @@ module test_bench_database();
         reg_rt = 6;
         reg_rd = 7;
         reg_RegDst = 1;
-        reg_RegWrite = 0;
+        reg_RegWrite_ID_to_EX = 0;
         reg_ALUSrc = 0;
         reg_ALUOp = 2;
-        reg_MemRead = 0;
-        reg_MemWrite = 1;
-        reg_MemtoReg = 0;
+        reg_MemRead_ID_to_EX = 0;
+        reg_MemWrite_ID_to_EX = 1;
+        reg_MemtoReg_ID_to_EX = 0;
+        reg_select_bytes_mem_data_ID_to_EX = 0;
+        reg_halt_detected_ID_to_EX = 0;
         
         reg_ALUCtrl = 0;
 
@@ -136,7 +141,8 @@ database
         .CANT_BITS_REGISTROS (CANT_BITS_REGISTROS),
         .CANT_BITS_ALU_OP (CANT_BITS_ALU_OP),
         .CANT_BITS_ALU_CONTROL (CANT_BITS_ALU_CONTROL),
-        .CANT_REGISTROS (CANT_REGISTROS)
+        .CANT_REGISTROS (CANT_REGISTROS),
+        .CANT_BITS_SELECT_BYTES_MEM_DATA (CANT_BITS_SELECT_BYTES_MEM_DATA)
 
      )
     u_database_1
@@ -157,13 +163,15 @@ database
         .i_reg_rt (reg_rt),
         .i_reg_rd (reg_rd),
         .i_RegDst (reg_RegDst),
-        .i_RegWrite (reg_RegWrite),
+        .i_RegWrite_ID_to_EX (reg_RegWrite_ID_to_EX),
         .i_ALUSrc (reg_ALUSrc),
         .i_ALUOp (reg_ALUOp),
-        .i_MemRead (reg_MemRead),
-        .i_MemWrite (reg_MemWrite),
-        .i_MemtoReg (reg_MemtoReg),
+        .i_MemRead_ID_to_EX (reg_MemRead_ID_to_EX),
+        .i_MemWrite_ID_to_EX (reg_MemWrite_ID_to_EX),
+        .i_MemtoReg_ID_to_EX (reg_MemtoReg_ID_to_EX),
         .i_ALUCtrl (reg_ALUCtrl),
+        .i_halt_detected_ID_to_EX (reg_halt_detected_ID_to_EX),
+        .i_select_bytes_mem_data_ID_to_EX (reg_select_bytes_mem_data_ID_to_EX),
         .o_dato (wire_dato)
     );
 
