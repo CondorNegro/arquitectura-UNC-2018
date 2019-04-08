@@ -278,7 +278,7 @@ def writeSerial (data):
 		else:
 			print data
 			print ((int (data, 2)))
-		time.sleep (1.0) #Espera.
+		time.sleep (0.02) #Espera.
 		return 0
 	except:
 		print ("Error en la funcion writeSerial. Info a enviar invalida.")
@@ -300,7 +300,7 @@ def readResultado (cantBytes, cadenaComparacion):
 			print ("Error en la funcion readResultado. Cadena de comparacion invalida.")
 			exit (1)
 	contador_bytes = 0
-	time.sleep (0.2)
+	time.sleep (0.02)
 	global etiqueta_resultado_impresion
 	if (not FLAG_TEST):
 		while ((ser.inWaiting() > 0) and (contador_bytes < cantBytes)): #inWaiting -> cantidad de bytes en buffer esperando.
@@ -334,7 +334,7 @@ def readResultadoEjecucion (cantBytes):
 		exit (1)
 	
 	contador_bytes = 0
-	time.sleep (0.2)
+	time.sleep (0.02)
 	resultado = ""
 	if (not FLAG_TEST):
 		while ((ser.inWaiting() > 0) and (contador_bytes < cantBytes)): #inWaiting -> cantidad de bytes en buffer esperando.
@@ -1014,7 +1014,7 @@ def iniciarMIPSViaThread():
 	ser.flushOutput()
 	while (ser.inWaiting() > 0):
 		ser.read (1)
-	time.sleep(1)
+	time.sleep (0.02)
 	while (ser.inWaiting() > 0):
 		ser.read (1)
 	try:
