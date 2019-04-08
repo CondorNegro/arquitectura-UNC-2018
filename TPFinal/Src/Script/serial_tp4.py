@@ -50,14 +50,16 @@ etiqueta_valor_inmediato = ""
 etiqueta_rs = ""
 etiqueta_rd = ""
 etiqueta_rt = ""
-etiqueta_reg_dst = ""
-etiqueta_mem_to_reg = ""
+etiqueta_reg_dst_ID_to_EX = ""
+etiqueta_mem_to_reg_ID_to_EX = ""
 etiqueta_alu_op = ""
 etiqueta_alu_ctrl = ""
 etiqueta_alu_src = ""
-etiqueta_mem_read = ""
-etiqueta_mem_write = ""
-etiqueta_reg_write = ""
+etiqueta_mem_read_ID_to_EX = ""
+etiqueta_mem_write_ID_to_EX = ""
+etiqueta_reg_write_ID_to_EX = ""
+etiqueta_falg_halt_ID_to_EX = ""
+etiqueta_select_bytes_mem_data_ID_to_EX = ""
 lock = threading.Lock()
 modo_ejecucion = 0 #0: continuo - 1: debug
 
@@ -371,14 +373,14 @@ def recibirDatosFromFPGA ():
 	global etiqueta_rs
 	global etiqueta_rd
 	global etiqueta_rt
-	global etiqueta_reg_dst
-	global etiqueta_mem_to_reg
+	global etiqueta_reg_dst_ID_to_EX
+	global etiqueta_mem_to_reg_ID_to_EX
 	global etiqueta_alu_op
 	global etiqueta_alu_ctrl
 	global etiqueta_alu_src
-	global etiqueta_mem_read
-	global etiqueta_mem_write
-	global etiqueta_reg_write
+	global etiqueta_mem_read_ID_to_EX
+	global etiqueta_mem_write_ID_to_EX
+	global etiqueta_reg_write_ID_to_EX
 		
 	
 	flag_receive = True
@@ -830,15 +832,19 @@ def recibirDatosFromFPGA ():
 						ser.flushInput()
 						reg_dst = reg_dst + reg_dst_aux
 						
+						etiqueta_falg_halt_ID_to_EX = reg_dst [- CANT_BITS_ALU_CTRL - CANT_BITS_ALU_OP - 7 ]
+
+						etiqueta_select_bytes_mem_data_ID_to_EX = reg_dst [ - CANT_BITS_ALU_CTRL - CANT_BITS_ALU_OP - 9 : - CANT_BITS_ALU_CTRL - CANT_BITS_ALU_OP - 7 ]
+
 						if (str (reg_dst [- CANT_BITS_ALU_CTRL - CANT_BITS_ALU_OP - 6 ]) == '1'):
-							etiqueta_reg_dst = 'Rd'
+							etiqueta_reg_dst_ID_to_EX = 'Rd'
 						else:
-							etiqueta_reg_dst = 'Rt'
+							etiqueta_reg_dst_ID_to_EX = 'Rt'
 						
 						if (str (reg_dst [- CANT_BITS_ALU_CTRL - CANT_BITS_ALU_OP - 1 ]) == '1'):
-							etiqueta_mem_to_reg = 'Si'
+							etiqueta_mem_to_reg_ID_to_EX = 'Si'
 						else:
-							etiqueta_mem_to_reg = 'No'
+							etiqueta_mem_to_reg_ID_to_EX = 'No'
 
 						
 						etiqueta_alu_op = reg_dst [- CANT_BITS_ALU_CTRL - CANT_BITS_ALU_OP  : - CANT_BITS_ALU_CTRL ]
@@ -853,28 +859,31 @@ def recibirDatosFromFPGA ():
 						
 						
 						if (str (reg_dst [- CANT_BITS_ALU_CTRL - CANT_BITS_ALU_OP - 3 ]) == '1'):
-							etiqueta_mem_read = 'Si'
+							etiqueta_mem_read_ID_to_EX = 'Si'
 						else:
-							etiqueta_mem_read = 'No'
+							etiqueta_mem_read_ID_to_EX = 'No'
 						 
 						if (str (reg_dst [- CANT_BITS_ALU_CTRL - CANT_BITS_ALU_OP - 2 ]) == '1'):
-							etiqueta_mem_write = 'Si'
+							etiqueta_mem_write_ID_to_EX = 'Si'
 						else:
-							etiqueta_mem_write = 'No'
+							etiqueta_mem_write_ID_to_EX = 'No'
 						
 						if (str (reg_dst [- CANT_BITS_ALU_CTRL - CANT_BITS_ALU_OP - 5 ]) == '1'):
-							etiqueta_reg_write = 'Si'
+							etiqueta_reg_write_ID_to_EX = 'Si'
 						else:
-							etiqueta_reg_write = 'No' 
+							etiqueta_reg_write_ID_to_EX = 'No' 
 						
-						etiquetaRegDestinoValorMIPS.config (text = etiqueta_reg_dst)
-						etiquetaMemToRegValorMIPS.config (text = etiqueta_mem_to_reg)
+						etiquetaFlagHaltIDtoEXValorMIPS.config (text = etiqueta_falg_halt_ID_to_EX)
+						etiquetaSelectBytesMemDataIDtoEXValorMIPS.config (text = etiqueta_select_bytes_mem_data_ID_to_EX)
+						etiquetaRegDestinoIDtoEXValorMIPS.config (text = etiqueta_reg_dst_ID_to_EX)
+						etiquetaMemToRegIDtoEXValorMIPS.config (text = etiqueta_mem_to_reg_ID_to_EX)
 						etiquetaALUOpValorMIPS.config (text = etiqueta_alu_op)
 						etiquetaALUControlValorMIPS.config (text = etiqueta_alu_ctrl)
 						etiquetaALUSrcValorMIPS.config (text = etiqueta_alu_src)
-						etiquetaMemReadValorMIPS.config (text = etiqueta_mem_read)
-						etiquetaMemWriteValorMIPS.config (text = etiqueta_mem_write)
-						etiquetaRegWriteValorMIPS.config (text = etiqueta_reg_write)
+						etiquetaMemReadIDtoEXValorMIPS.config (text = etiqueta_mem_read_ID_to_EX)
+						etiquetaMemWriteIDtoEXValorMIPS.config (text = etiqueta_mem_write_ID_to_EX)
+						etiquetaRegWriteIDtoEXValorMIPS.config (text = etiqueta_reg_write_ID_to_EX)
+						
 						contador_etapas = contador_etapas + 1
 						contador_subetapas = 0
 						flag_receive = False
@@ -1251,58 +1260,73 @@ etiquetaRDValorMIPS = Label (root, text = etiqueta_rd,\
 	 fg = "black", font = "TkDefaultFont 12")
 etiquetaRDValorMIPS.place (x = 1200,  y = 70)
 
-etiquetaRegDestino = Label (root, text = "Registro destino: ", fg = "brown", font = "TkDefaultFont 12")
-etiquetaRegDestino.place (x = 900,  y = 100)
-etiquetaRegDestinoValorMIPS = Label (root, text = etiqueta_reg_dst,\
-	 fg = "black", font = "TkDefaultFont 12")
-etiquetaRegDestinoValorMIPS.place (x = 1200,  y = 100)
 
-etiquetaRegWrite = Label (root, text = "Escribir registro: ", fg = "brown", font = "TkDefaultFont 12")
-etiquetaRegWrite.place (x = 900,  y = 130)
-etiquetaRegWriteValorMIPS = Label (root, text = etiqueta_reg_write,\
+etiquetaFlagHaltIDtoEX = Label (root, text = "Flag HALT: ", fg = "brown", font = "TkDefaultFont 12")
+etiquetaFlagHaltIDtoEX.place (x = 900,  y = 100)
+etiquetaFlagHaltIDtoEXValorMIPS = Label (root, text = etiqueta_falg_halt_ID_to_EX,\
 	 fg = "black", font = "TkDefaultFont 12")
-etiquetaRegWriteValorMIPS.place (x = 1200,  y = 130)
+etiquetaFlagHaltIDtoEXValorMIPS.place (x = 1200,  y = 100)
+
+
+etiquetaSelectBytesMemDataIDtoEX = Label (root, text = "Seleccion en memoria de datos: ", fg = "brown", font = "TkDefaultFont 12")
+etiquetaSelectBytesMemDataIDtoEX.place (x = 900,  y = 130)
+etiquetaSelectBytesMemDataIDtoEXValorMIPS = Label (root, text = etiqueta_select_bytes_mem_data_ID_to_EX,\
+	 fg = "black", font = "TkDefaultFont 12")
+etiquetaSelectBytesMemDataIDtoEXValorMIPS.place (x = 1200,  y = 130)
+
+
+etiquetaRegDestinoIDtoEX = Label (root, text = "Registro destino: ", fg = "brown", font = "TkDefaultFont 12")
+etiquetaRegDestinoIDtoEX.place (x = 900,  y = 160)
+etiquetaRegDestinoIDtoEXValorMIPS = Label (root, text = etiqueta_reg_dst_ID_to_EX,\
+	 fg = "black", font = "TkDefaultFont 12")
+etiquetaRegDestinoIDtoEXValorMIPS.place (x = 1200,  y = 160)
+
+etiquetaRegWriteIDtoEX = Label (root, text = "Escribir registro: ", fg = "brown", font = "TkDefaultFont 12")
+etiquetaRegWriteIDtoEX.place (x = 900,  y = 190)
+etiquetaRegWriteIDtoEXValorMIPS = Label (root, text = etiqueta_reg_write_ID_to_EX,\
+	 fg = "black", font = "TkDefaultFont 12")
+etiquetaRegWriteIDtoEXValorMIPS.place (x = 1200,  y = 190)
 
 etiquetaALUSrc = Label (root, text = "Segundo operando ALU: ", fg = "brown", font = "TkDefaultFont 12")
-etiquetaALUSrc.place (x = 900,  y = 160)
+etiquetaALUSrc.place (x = 900,  y = 220)
 etiquetaALUSrcValorMIPS = Label (root, text = etiqueta_alu_src,\
 	 fg = "black", font = "TkDefaultFont 12")
-etiquetaALUSrcValorMIPS.place (x = 1200,  y = 160)
+etiquetaALUSrcValorMIPS.place (x = 1200,  y = 220)
 
 
 
 
-etiquetaMemRead = Label (root, text = "Lectura memoria de datos: ", fg = "brown", font = "TkDefaultFont 12")
-etiquetaMemRead.place (x = 900,  y = 190)
-etiquetaMemReadValorMIPS = Label (root, text = etiqueta_mem_read,\
+etiquetaMemReadIDtoEX = Label (root, text = "Lectura memoria de datos: ", fg = "brown", font = "TkDefaultFont 12")
+etiquetaMemReadIDtoEX.place (x = 900,  y = 250)
+etiquetaMemReadIDtoEXValorMIPS = Label (root, text = etiqueta_mem_read_ID_to_EX,\
 	 fg = "black", font = "TkDefaultFont 12")
-etiquetaMemReadValorMIPS.place (x = 1200,  y = 190)
+etiquetaMemReadIDtoEXValorMIPS.place (x = 1200,  y = 250)
 
-etiquetaMemWrite = Label (root, text = "Escritura memoria de datos: ", fg = "brown", font = "TkDefaultFont 12")
-etiquetaMemWrite.place (x = 900,  y = 220)
-etiquetaMemWriteValorMIPS = Label (root, text = etiqueta_mem_write,\
+etiquetaMemWriteIDtoEX = Label (root, text = "Escritura memoria de datos: ", fg = "brown", font = "TkDefaultFont 12")
+etiquetaMemWriteIDtoEX.place (x = 900,  y = 280)
+etiquetaMemWriteIDtoEXValorMIPS = Label (root, text = etiqueta_mem_write_ID_to_EX,\
 	 fg = "black", font = "TkDefaultFont 12")
-etiquetaMemWriteValorMIPS.place (x = 1200,  y = 220)
+etiquetaMemWriteIDtoEXValorMIPS.place (x = 1200,  y = 280)
 
-etiquetaMemToReg = Label (root, text = "Datos de memoria a registros: ", fg = "brown", font = "TkDefaultFont 12")
-etiquetaMemToReg.place (x = 900,  y = 250)
-etiquetaMemToRegValorMIPS = Label (root, text = etiqueta_mem_to_reg,\
+etiquetaMemToRegIDtoEX = Label (root, text = "Datos de memoria a registros: ", fg = "brown", font = "TkDefaultFont 12")
+etiquetaMemToRegIDtoEX.place (x = 900,  y = 310)
+etiquetaMemToRegIDtoEXValorMIPS = Label (root, text = etiqueta_mem_to_reg_ID_to_EX,\
 	 fg = "black", font = "TkDefaultFont 12")
-etiquetaMemToRegValorMIPS.place (x = 1200,  y = 250)
+etiquetaMemToRegIDtoEXValorMIPS.place (x = 1200,  y = 310)
 
 
 etiquetaALUOp = Label (root, text = "ALU op: ", fg = "brown", font = "TkDefaultFont 12")
-etiquetaALUOp.place (x = 900,  y = 280)
+etiquetaALUOp.place (x = 900,  y = 340)
 etiquetaALUOpValorMIPS = Label (root, text = etiqueta_alu_op,\
 	 fg = "black", font = "TkDefaultFont 12")
-etiquetaALUOpValorMIPS.place (x = 1200,  y = 280)
+etiquetaALUOpValorMIPS.place (x = 1200,  y = 340)
 
 
 etiquetaALUControl = Label (root, text = "ALU ctrl: ", fg = "brown", font = "TkDefaultFont 12")
-etiquetaALUControl.place (x = 900,  y = 310)
+etiquetaALUControl.place (x = 900,  y = 370)
 etiquetaALUControlValorMIPS = Label (root, text = etiqueta_alu_ctrl,\
 	 fg = "black", font = "TkDefaultFont 12")
-etiquetaALUControlValorMIPS.place (x = 1200,  y = 310)
+etiquetaALUControlValorMIPS.place (x = 1200,  y = 370)
 
 
 # Titulo de la GUI 
