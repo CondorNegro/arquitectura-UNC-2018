@@ -22,7 +22,7 @@
 `define INIT_FILE_PROGRAMA                      ""
 `define RAM_DEPTH_DATOS                         1024
 `define RAM_DEPTH_PROGRAMA                      1024
-`define CANT_ESTADOS_DEBUG_UNIT                 34
+`define CANT_ESTADOS_DEBUG_UNIT                 10
 `define ADDR_MEM_PROGRAMA_LENGTH                10
 `define ADDR_MEM_DATOS_LENGTH                   10
 `define LONG_INSTRUCCION                        32
@@ -442,11 +442,7 @@ module test_bench_top_arquitectura();
 
 
 
-
-
-
-
-        // Dejo un intervalo de tiempo.
+// Dejo un intervalo de tiempo.
 		#520080 uart_txd_in_reg = 1'b1;
 
 
@@ -457,8 +453,7 @@ module test_bench_top_arquitectura();
         //bit de inicio
         #52160 uart_txd_in_reg = 1'b0;
 
-        
-        //PC-H //0000 1000
+         // PART3
         #52160 uart_txd_in_reg = 1'b0;
         #52160 uart_txd_in_reg = 1'b0;
         #52160 uart_txd_in_reg = 1'b0;
@@ -469,649 +464,77 @@ module test_bench_top_arquitectura();
         #52160 uart_txd_in_reg = 1'b0;
         #52160 uart_txd_in_reg = 1'b0;
         
-        //bits de stop
         #52160 uart_txd_in_reg = 1'b1;
         #52160 uart_txd_in_reg = 1'b1;
         
-        
-        // Dejo un intervalo de tiempo.
-        #520080 uart_txd_in_reg = 1'b1;
-    
-        //bit de inicio
-        #52160 uart_txd_in_reg = 1'b0;
-        
-                
-        //PC-L //0001 0000
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b0;
+        //dejo intervalo
         #52160 uart_txd_in_reg = 1'b1;
-        
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b0;
-        
-        //bits de stop
-        #52160 uart_txd_in_reg = 1'b1;
-        #52160 uart_txd_in_reg = 1'b1;
-
-
-
-        // Dejo un intervalo de tiempo.
-        #520080 uart_txd_in_reg = 1'b1;
-    
-        //bit de inicio
-        #52160 uart_txd_in_reg = 1'b0;
-        
-                
-        //CC-H //0001 1000
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b1;
-        
-        #52160 uart_txd_in_reg = 1'b1;
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b0;
-        
-        //bits de stop
-        #52160 uart_txd_in_reg = 1'b1;
-        #52160 uart_txd_in_reg = 1'b1;
-
-
-        // Dejo un intervalo de tiempo.
-        #520080 uart_txd_in_reg = 1'b1;
-    
-        //bit de inicio
-        #52160 uart_txd_in_reg = 1'b0;
-        
-                
-        //CC-L //0010 0000
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b1;
-        #52160 uart_txd_in_reg = 1'b0;
-        
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b0;
-        
-        //bits de stop
-        #52160 uart_txd_in_reg = 1'b1;
-        #52160 uart_txd_in_reg = 1'b1;
-
-
-
-        // Dejo un intervalo de tiempo.
-        #520080 uart_txd_in_reg = 1'b1;
-    
-        //bit de inicio
-        #52160 uart_txd_in_reg = 1'b0;
-        
-                
-        //PC4-H //0010 1000
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b1;
-        #52160 uart_txd_in_reg = 1'b0;
-        
-        #52160 uart_txd_in_reg = 1'b1;
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b0;
-        
-        //bits de stop
-        #52160 uart_txd_in_reg = 1'b1;
-        #52160 uart_txd_in_reg = 1'b1;
-
-
-        // Dejo un intervalo de tiempo.
-        #520080 uart_txd_in_reg = 1'b1;
-    
-        //bit de inicio
-        #52160 uart_txd_in_reg = 1'b0;
-        
-                
-        //PC4-L //0011 0000
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b1;
-        #52160 uart_txd_in_reg = 1'b1;
-        
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b0;
-        
-        //bits de stop
-        #52160 uart_txd_in_reg = 1'b1;
-        #52160 uart_txd_in_reg = 1'b1;
-
-
-
-
-
-        // Dejo un intervalo de tiempo.
-        #520080 uart_txd_in_reg = 1'b1;
-    
-        //bit de inicio
-        #52160 uart_txd_in_reg = 1'b0;
-        
-                
-        //Instruction-3 //0011 1000
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b1;
-        #52160 uart_txd_in_reg = 1'b1;
-        
-        #52160 uart_txd_in_reg = 1'b1;
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b0;
-        
-        //bits de stop
-        #52160 uart_txd_in_reg = 1'b1;
-        #52160 uart_txd_in_reg = 1'b1;
-
-
-
-
-        // Dejo un intervalo de tiempo.
-        #520080 uart_txd_in_reg = 1'b1;
-    
-        //bit de inicio
-        #52160 uart_txd_in_reg = 1'b0;
-        
-                
-        //Instruction-2 //0100 0000
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b1;
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b0;
-        
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b0;
-        
-        //bits de stop
-        #52160 uart_txd_in_reg = 1'b1;
-        #52160 uart_txd_in_reg = 1'b1;
-
-
-
-
-
-        // Dejo un intervalo de tiempo.
-        #520080 uart_txd_in_reg = 1'b1;
-    
-        //bit de inicio
-        #52160 uart_txd_in_reg = 1'b0;
-        
-                
-        //Instruction-1 //0100 1000
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b1;
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b0;
-        
-        #52160 uart_txd_in_reg = 1'b1;
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b0;
-        
-        //bits de stop
-        #52160 uart_txd_in_reg = 1'b1;
-        #52160 uart_txd_in_reg = 1'b1;
-
-
-        // Dejo un intervalo de tiempo.
-        #520080 uart_txd_in_reg = 1'b1;
-    
-        //bit de inicio
-        #52160 uart_txd_in_reg = 1'b0;
-        
-                
-        //Instruction-0 //0101 0000
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b1;
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b1;
-        
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b0;
-        
-        //bits de stop
-        #52160 uart_txd_in_reg = 1'b1;
-        #52160 uart_txd_in_reg = 1'b1;
-
-
-
-
-        
-        
-
-        // Dejo un intervalo de tiempo.
-        #520080 uart_txd_in_reg = 1'b1;
-        //bit de inicio
-        #52160 uart_txd_in_reg = 1'b0;
-
-        //Branch-H //0101 1000
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b1;
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b1;
-        
-        #52160 uart_txd_in_reg = 1'b1;
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b0;
-        //bits de stop
-        #52160 uart_txd_in_reg = 1'b1;
-        #52160 uart_txd_in_reg = 1'b1;
-
-
-       
-       // Dejo un intervalo de tiempo.
-       #520080 uart_txd_in_reg = 1'b1;
-       //bit de inicio
-       #52160 uart_txd_in_reg = 1'b0;
-    
-       //BRANCH-L //0110 0000
-       #52160 uart_txd_in_reg = 1'b0;
-       #52160 uart_txd_in_reg = 1'b1;
-       #52160 uart_txd_in_reg = 1'b1;
-       #52160 uart_txd_in_reg = 1'b0;
-       
-       #52160 uart_txd_in_reg = 1'b0;
-       #52160 uart_txd_in_reg = 1'b0;
-       #52160 uart_txd_in_reg = 1'b0;
-       #52160 uart_txd_in_reg = 1'b0;
-       //bits de stop
-       #52160 uart_txd_in_reg = 1'b1;
-       #52160 uart_txd_in_reg = 1'b1;
-
-
-       
-       // Dejo un intervalo de tiempo.
-       #520080 uart_txd_in_reg = 1'b1;
-       //bit de inicio
-       #52160 uart_txd_in_reg = 1'b0;
-    
-       //REG-A - 3 //0110 1000
-       #52160 uart_txd_in_reg = 1'b0;
-       #52160 uart_txd_in_reg = 1'b1;
-       #52160 uart_txd_in_reg = 1'b1;
-       #52160 uart_txd_in_reg = 1'b0;
-       
-       #52160 uart_txd_in_reg = 1'b1;
-       #52160 uart_txd_in_reg = 1'b0;
-       #52160 uart_txd_in_reg = 1'b0;
-       #52160 uart_txd_in_reg = 1'b0;
-       //bits de stop
-       #52160 uart_txd_in_reg = 1'b1;
-       #52160 uart_txd_in_reg = 1'b1;
-
-
-
-
-       
-       // Dejo un intervalo de tiempo.
-        #520080 uart_txd_in_reg = 1'b1;
-        //bit de inicio
-        #52160 uart_txd_in_reg = 1'b0;
-    
-        //REG-A - 2 // 0111 0000
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b1;
-        #52160 uart_txd_in_reg = 1'b1;
-        #52160 uart_txd_in_reg = 1'b1;
-        
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b0;
-        //bits de stop
-        #52160 uart_txd_in_reg = 1'b1;
-        #52160 uart_txd_in_reg = 1'b1;
-
-
-       
-
-        #520080 uart_txd_in_reg = 1'b1;
-       //bit de inicio
-       #52160 uart_txd_in_reg = 1'b0;
-    
-        // REG-A - 1 // 0111 1000
-       #52160 uart_txd_in_reg = 1'b0;
-       #52160 uart_txd_in_reg = 1'b1;
-       #52160 uart_txd_in_reg = 1'b1;
-       #52160 uart_txd_in_reg = 1'b1;
-       
-       #52160 uart_txd_in_reg = 1'b1;
-       #52160 uart_txd_in_reg = 1'b0;
-       #52160 uart_txd_in_reg = 1'b0;
-       #52160 uart_txd_in_reg = 1'b0;
-       //bits de stop
-       #52160 uart_txd_in_reg = 1'b1;
-       #52160 uart_txd_in_reg = 1'b1;
-
-
-       
-
-       #520080 uart_txd_in_reg = 1'b1;
-        //bit de inicio
-        #52160 uart_txd_in_reg = 1'b0;
-        
-        // REG-A - 0 // 1000 0000
-        #52160 uart_txd_in_reg = 1'b1;
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b0;
-        
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b0;
-        //bits de stop
-        #52160 uart_txd_in_reg = 1'b1;
-        #52160 uart_txd_in_reg = 1'b1;
-
-
-        
-        #520080 uart_txd_in_reg = 1'b1;
-        //bit de inicio
-        #52160 uart_txd_in_reg = 1'b0;
-
-        // REG-B - 3 // 1000 1000
-        #52160 uart_txd_in_reg = 1'b1;
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b0;
-        
-        #52160 uart_txd_in_reg = 1'b1;
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b0;
-        //bits de stop
-        #52160 uart_txd_in_reg = 1'b1;
-        #52160 uart_txd_in_reg = 1'b1;
-
-
-       
-        #520080 uart_txd_in_reg = 1'b1;
-        //bit de inicio
-        #52160 uart_txd_in_reg = 1'b0;
-
-        // REG-B - 2 // 1001 0000
-        #52160 uart_txd_in_reg = 1'b1;
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b1;
-        
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b0;
-        //bits de stop
-        #52160 uart_txd_in_reg = 1'b1;
-        #52160 uart_txd_in_reg = 1'b1;
-
-
-       
-
-        #520080 uart_txd_in_reg = 1'b1;
-        //bit de inicio
-        #52160 uart_txd_in_reg = 1'b0;
-        
-        // REG-B - 1 // 1001 1000
-        #52160 uart_txd_in_reg = 1'b1;
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b1;
-        
-        #52160 uart_txd_in_reg = 1'b1;
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b0;
-        //bits de stop
-        #52160 uart_txd_in_reg = 1'b1;
-        #52160 uart_txd_in_reg = 1'b1;
-
-       
-
-        #520080 uart_txd_in_reg = 1'b1;
-        //bit de inicio
-        #52160 uart_txd_in_reg = 1'b0;
-        
-        // REG-B - 0 // 1010 0000
-        #52160 uart_txd_in_reg = 1'b1;
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b1;
-        #52160 uart_txd_in_reg = 1'b0;
-        
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b0;
-        //bits de stop
-        #52160 uart_txd_in_reg = 1'b1;
-        #52160 uart_txd_in_reg = 1'b1;
-
-
-       
-        #520080 uart_txd_in_reg = 1'b1;
-        //bit de inicio
-        #52160 uart_txd_in_reg = 1'b0;
-        
-        // EXTENSION SIGNO - 3 // 1010 1000
-        #52160 uart_txd_in_reg = 1'b1;
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b1;
-        #52160 uart_txd_in_reg = 1'b0;
-        
-        #52160 uart_txd_in_reg = 1'b1;
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b0;
-        //bits de stop
-        #52160 uart_txd_in_reg = 1'b1;
-        #52160 uart_txd_in_reg = 1'b1;
-
-
-       
-        #520080 uart_txd_in_reg = 1'b1;
-        //bit de inicio
-        #52160 uart_txd_in_reg = 1'b0;
-        
-        // EXTENSION SIGNO - 2 // 1011 0000
-        #52160 uart_txd_in_reg = 1'b1;
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b1;
-        #52160 uart_txd_in_reg = 1'b1;
-        
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b0;
-        //bits de stop
-        #52160 uart_txd_in_reg = 1'b1;
-        #52160 uart_txd_in_reg = 1'b1;
-
-
-       
-        #520080 uart_txd_in_reg = 1'b1;
-        //bit de inicio
-        #52160 uart_txd_in_reg = 1'b0;
-        
-        // EXTENSION SIGNO - 1 // 1011 1000
-        #52160 uart_txd_in_reg = 1'b1;
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b1;
-        #52160 uart_txd_in_reg = 1'b1;
-        
-        #52160 uart_txd_in_reg = 1'b1;
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b0;
-        //bits de stop
-        #52160 uart_txd_in_reg = 1'b1;
-        #52160 uart_txd_in_reg = 1'b1;
-
-       
-
-        #520080 uart_txd_in_reg = 1'b1;
-        //bit de inicio
-        #52160 uart_txd_in_reg = 1'b0;
-        
-        // EXTENSION SIGNO - 0 // 1100 0000
-        #52160 uart_txd_in_reg = 1'b1;
-        #52160 uart_txd_in_reg = 1'b1;
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b0;
-        
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b0;
-        //bits de stop
-        #52160 uart_txd_in_reg = 1'b1;
-        #52160 uart_txd_in_reg = 1'b1;
-
-
-       
-        #520080 uart_txd_in_reg = 1'b1;
-        //bit de inicio
-        #52160 uart_txd_in_reg = 1'b0;
-        
-        // REG ADDRESS - H // 1100 1000
-        #52160 uart_txd_in_reg = 1'b1;
-        #52160 uart_txd_in_reg = 1'b1;
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b0;
-        
-        #52160 uart_txd_in_reg = 1'b1;
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b0;
-        //bits de stop
-        #52160 uart_txd_in_reg = 1'b1;
-        #52160 uart_txd_in_reg = 1'b1;
-
-
-       
-        #520080 uart_txd_in_reg = 1'b1;
-        //bit de inicio
-        #52160 uart_txd_in_reg = 1'b0;
-        
-        // REG-ADDRESS // 1101 0000
-        #52160 uart_txd_in_reg = 1'b1;
-        #52160 uart_txd_in_reg = 1'b1;
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b1;
-        
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b0;
-        //bits de stop
-        #52160 uart_txd_in_reg = 1'b1;
-        #52160 uart_txd_in_reg = 1'b1;
-
-
-       
-        #520080 uart_txd_in_reg = 1'b1;
-        //bit de inicio
-        #52160 uart_txd_in_reg = 1'b0;
-        // SEÑALES CONTROL ID/EX - H // 1101 1000
-        #52160 uart_txd_in_reg = 1'b1;
-        #52160 uart_txd_in_reg = 1'b1;
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b1;
-        
-        #52160 uart_txd_in_reg = 1'b1;
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b0;
-        //bits de stop
-        #52160 uart_txd_in_reg = 1'b1;
-        #52160 uart_txd_in_reg = 1'b1;
-
-
-    
-
-
-       
-        #520080 uart_txd_in_reg = 1'b1;
-        //bit de inicio
-        #52160 uart_txd_in_reg = 1'b0;
-        // SEÑALES CONTROL ID/EX - L // 1110 0000
-        #52160 uart_txd_in_reg = 1'b1;
-        #52160 uart_txd_in_reg = 1'b1;
-        #52160 uart_txd_in_reg = 1'b1;
-        #52160 uart_txd_in_reg = 1'b0;
-        
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b0;
-        //bits de stop
-        #52160 uart_txd_in_reg = 1'b1;
-        #52160 uart_txd_in_reg = 1'b1;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        ///// START MIPS ///////
 
 
-        // Dejo un intervalo de tiempo.
-		#520080 uart_txd_in_reg = 1'b1;
 
         //bit de inicio
         #52160 uart_txd_in_reg = 1'b0;
 
-        
-        //quinto dato - start MIPS //0000 0111
+         // PART2
         #52160 uart_txd_in_reg = 1'b0;
         #52160 uart_txd_in_reg = 1'b0;
         #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b0;
-        
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b1;
-        #52160 uart_txd_in_reg = 1'b1;
         #52160 uart_txd_in_reg = 1'b1;
         
-        //bits de stop
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b0;
+        
         #52160 uart_txd_in_reg = 1'b1;
-        #52160 uart_txd_in_reg = 1'b1; 
+        #52160 uart_txd_in_reg = 1'b1;
+        
+        //dejo intervalo
+        #52160 uart_txd_in_reg = 1'b1;
 
+
+
+
+        //bit de inicio
+        #52160 uart_txd_in_reg = 1'b0;
+
+         // PART1
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b1;
+        
+        #52160 uart_txd_in_reg = 1'b1;
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b0;
+        
+        #52160 uart_txd_in_reg = 1'b1;
+        #52160 uart_txd_in_reg = 1'b1;
+        
+        //dejo intervalo
+        #52160 uart_txd_in_reg = 1'b1;
+
+   
+        //bit de inicio
+        #52160 uart_txd_in_reg = 1'b0;
+
+         // PART1
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b1;
+        #52160 uart_txd_in_reg = 1'b0;
+        
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b0;
+        
+        #52160 uart_txd_in_reg = 1'b1;
+        #52160 uart_txd_in_reg = 1'b1;
+        
+        //dejo intervalo
+        #52160 uart_txd_in_reg = 1'b1;
 
 
 
@@ -1129,8 +552,7 @@ module test_bench_top_arquitectura();
         //bit de inicio
         #52160 uart_txd_in_reg = 1'b0;
 
-        
-        //PC-H //0000 1000
+         // PART3
         #52160 uart_txd_in_reg = 1'b0;
         #52160 uart_txd_in_reg = 1'b0;
         #52160 uart_txd_in_reg = 1'b0;
@@ -1141,428 +563,850 @@ module test_bench_top_arquitectura();
         #52160 uart_txd_in_reg = 1'b0;
         #52160 uart_txd_in_reg = 1'b0;
         
-        //bits de stop
         #52160 uart_txd_in_reg = 1'b1;
         #52160 uart_txd_in_reg = 1'b1;
         
-        
-        // Dejo un intervalo de tiempo.
-        #520080 uart_txd_in_reg = 1'b1;
-    
+        //dejo intervalo
+        #52160 uart_txd_in_reg = 1'b1;
+
+
+
         //bit de inicio
         #52160 uart_txd_in_reg = 1'b0;
+
+         // PART2
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b1;
         
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b0;
+        
+        #52160 uart_txd_in_reg = 1'b1;
+        #52160 uart_txd_in_reg = 1'b1;
+        
+        //dejo intervalo
+        #52160 uart_txd_in_reg = 1'b1;
+
+
+
+
+        //bit de inicio
+        #52160 uart_txd_in_reg = 1'b0;
+
+         // PART1
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b1;
+        
+        #52160 uart_txd_in_reg = 1'b1;
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b0;
+        
+        #52160 uart_txd_in_reg = 1'b1;
+        #52160 uart_txd_in_reg = 1'b1;
+        
+        //dejo intervalo
+        #52160 uart_txd_in_reg = 1'b1;
+
+   
+        //bit de inicio
+        #52160 uart_txd_in_reg = 1'b0;
+
+         // PART1
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b1;
+        #52160 uart_txd_in_reg = 1'b0;
+        
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b0;
+        
+        #52160 uart_txd_in_reg = 1'b1;
+        #52160 uart_txd_in_reg = 1'b1;
+        
+        //dejo intervalo
+        #52160 uart_txd_in_reg = 1'b1;
+
+
+
+
+
+
+        // Dejo un intervalo de tiempo.
+		#520080 uart_txd_in_reg = 1'b1;
+
+
+        ///////////////////////////
+        // Obtener valores del MIPS
+        ///////////////////////////
+
+        //bit de inicio
+        #52160 uart_txd_in_reg = 1'b0;
+
+         // PART3
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b0;
+        
+        #52160 uart_txd_in_reg = 1'b1;
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b0;
+        
+        #52160 uart_txd_in_reg = 1'b1;
+        #52160 uart_txd_in_reg = 1'b1;
+        
+        //dejo intervalo
+        #52160 uart_txd_in_reg = 1'b1;
+
+
+
+        //bit de inicio
+        #52160 uart_txd_in_reg = 1'b0;
+
+         // PART2
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b1;
+        
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b0;
+        
+        #52160 uart_txd_in_reg = 1'b1;
+        #52160 uart_txd_in_reg = 1'b1;
+        
+        //dejo intervalo
+        #52160 uart_txd_in_reg = 1'b1;
+
+
+
+
+        //bit de inicio
+        #52160 uart_txd_in_reg = 1'b0;
+
+         // PART1
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b1;
+        
+        #52160 uart_txd_in_reg = 1'b1;
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b0;
+        
+        #52160 uart_txd_in_reg = 1'b1;
+        #52160 uart_txd_in_reg = 1'b1;
+        
+        //dejo intervalo
+        #52160 uart_txd_in_reg = 1'b1;
+
+   
+        //bit de inicio
+        #52160 uart_txd_in_reg = 1'b0;
+
+         // PART1
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b1;
+        #52160 uart_txd_in_reg = 1'b0;
+        
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b0;
+        
+        #52160 uart_txd_in_reg = 1'b1;
+        #52160 uart_txd_in_reg = 1'b1;
+        
+        //dejo intervalo
+        #52160 uart_txd_in_reg = 1'b1;
+
+
+
+
+
+
+        // Dejo un intervalo de tiempo.
+		#520080 uart_txd_in_reg = 1'b1;
+
+
+        ///////////////////////////
+        // Obtener valores del MIPS
+        ///////////////////////////
+
+        //bit de inicio
+        #52160 uart_txd_in_reg = 1'b0;
+
+         // PART3
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b0;
+        
+        #52160 uart_txd_in_reg = 1'b1;
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b0;
+        
+        #52160 uart_txd_in_reg = 1'b1;
+        #52160 uart_txd_in_reg = 1'b1;
+        
+        //dejo intervalo
+        #52160 uart_txd_in_reg = 1'b1;
+
+
+
+        //bit de inicio
+        #52160 uart_txd_in_reg = 1'b0;
+
+         // PART2
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b1;
+        
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b0;
+        
+        #52160 uart_txd_in_reg = 1'b1;
+        #52160 uart_txd_in_reg = 1'b1;
+        
+        //dejo intervalo
+        #52160 uart_txd_in_reg = 1'b1;
+
+
+
+
+        //bit de inicio
+        #52160 uart_txd_in_reg = 1'b0;
+
+         // PART1
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b1;
+        
+        #52160 uart_txd_in_reg = 1'b1;
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b0;
+        
+        #52160 uart_txd_in_reg = 1'b1;
+        #52160 uart_txd_in_reg = 1'b1;
+        
+        //dejo intervalo
+        #52160 uart_txd_in_reg = 1'b1;
+
+   
+        //bit de inicio
+        #52160 uart_txd_in_reg = 1'b0;
+
+         // PART1
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b1;
+        #52160 uart_txd_in_reg = 1'b0;
+        
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b0;
+        
+        #52160 uart_txd_in_reg = 1'b1;
+        #52160 uart_txd_in_reg = 1'b1;
+        
+        //dejo intervalo
+        #52160 uart_txd_in_reg = 1'b1;
+
+
+
+
+
+
+        // Dejo un intervalo de tiempo.
+		#520080 uart_txd_in_reg = 1'b1;
+
+
+        ///////////////////////////
+        // Obtener valores del MIPS
+        ///////////////////////////
+
+        //bit de inicio
+        #52160 uart_txd_in_reg = 1'b0;
+
+         // PART3
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b0;
+        
+        #52160 uart_txd_in_reg = 1'b1;
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b0;
+        
+        #52160 uart_txd_in_reg = 1'b1;
+        #52160 uart_txd_in_reg = 1'b1;
+        
+        //dejo intervalo
+        #52160 uart_txd_in_reg = 1'b1;
+
+
+
+        //bit de inicio
+        #52160 uart_txd_in_reg = 1'b0;
+
+         // PART2
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b1;
+        
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b0;
+        
+        #52160 uart_txd_in_reg = 1'b1;
+        #52160 uart_txd_in_reg = 1'b1;
+        
+        //dejo intervalo
+        #52160 uart_txd_in_reg = 1'b1;
+
+
+
+
+        //bit de inicio
+        #52160 uart_txd_in_reg = 1'b0;
+
+         // PART1
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b1;
+        
+        #52160 uart_txd_in_reg = 1'b1;
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b0;
+        
+        #52160 uart_txd_in_reg = 1'b1;
+        #52160 uart_txd_in_reg = 1'b1;
+        
+        //dejo intervalo
+        #52160 uart_txd_in_reg = 1'b1;
+
+   
+        //bit de inicio
+        #52160 uart_txd_in_reg = 1'b0;
+
+         // PART1
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b1;
+        #52160 uart_txd_in_reg = 1'b0;
+        
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b0;
+        
+        #52160 uart_txd_in_reg = 1'b1;
+        #52160 uart_txd_in_reg = 1'b1;
+        
+        //dejo intervalo
+        #52160 uart_txd_in_reg = 1'b1;
+
+
+
+        // Dejo un intervalo de tiempo.
+		#520080 uart_txd_in_reg = 1'b1;
+
+
+        ///////////////////////////
+        // Obtener valores del MIPS
+        ///////////////////////////
+
+        //bit de inicio
+        #52160 uart_txd_in_reg = 1'b0;
+
+         // PART3
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b0;
+        
+        #52160 uart_txd_in_reg = 1'b1;
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b0;
+        
+        #52160 uart_txd_in_reg = 1'b1;
+        #52160 uart_txd_in_reg = 1'b1;
+        
+        //dejo intervalo
+        #52160 uart_txd_in_reg = 1'b1;
+
+
+
+        //bit de inicio
+        #52160 uart_txd_in_reg = 1'b0;
+
+         // PART2
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b1;
+        
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b0;
+        
+        #52160 uart_txd_in_reg = 1'b1;
+        #52160 uart_txd_in_reg = 1'b1;
+        
+        //dejo intervalo
+        #52160 uart_txd_in_reg = 1'b1;
+
+
+
+
+        //bit de inicio
+        #52160 uart_txd_in_reg = 1'b0;
+
+         // PART1
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b1;
+        
+        #52160 uart_txd_in_reg = 1'b1;
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b0;
+        
+        #52160 uart_txd_in_reg = 1'b1;
+        #52160 uart_txd_in_reg = 1'b1;
+        
+        //dejo intervalo
+        #52160 uart_txd_in_reg = 1'b1;
+
+   
+        //bit de inicio
+        #52160 uart_txd_in_reg = 1'b0;
+
+         // PART1
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b1;
+        #52160 uart_txd_in_reg = 1'b0;
+        
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b0;
+        
+        #52160 uart_txd_in_reg = 1'b1;
+        #52160 uart_txd_in_reg = 1'b1;
+        
+        //dejo intervalo
+        #52160 uart_txd_in_reg = 1'b1;
+
+
+
+// Dejo un intervalo de tiempo.
+		#520080 uart_txd_in_reg = 1'b1;
+
+
+        ///////////////////////////
+        // Obtener valores del MIPS
+        ///////////////////////////
+
+        //bit de inicio
+        #52160 uart_txd_in_reg = 1'b0;
+
+         // PART3
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b0;
+        
+        #52160 uart_txd_in_reg = 1'b1;
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b0;
+        
+        #52160 uart_txd_in_reg = 1'b1;
+        #52160 uart_txd_in_reg = 1'b1;
+        
+        //dejo intervalo
+        #52160 uart_txd_in_reg = 1'b1;
+
+
+
+        //bit de inicio
+        #52160 uart_txd_in_reg = 1'b0;
+
+         // PART2
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b1;
+        
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b0;
+        
+        #52160 uart_txd_in_reg = 1'b1;
+        #52160 uart_txd_in_reg = 1'b1;
+        
+        //dejo intervalo
+        #52160 uart_txd_in_reg = 1'b1;
+
+
+
+
+        //bit de inicio
+        #52160 uart_txd_in_reg = 1'b0;
+
+         // PART1
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b1;
+        
+        #52160 uart_txd_in_reg = 1'b1;
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b0;
+        
+        #52160 uart_txd_in_reg = 1'b1;
+        #52160 uart_txd_in_reg = 1'b1;
+        
+        //dejo intervalo
+        #52160 uart_txd_in_reg = 1'b1;
+
+   
+        //bit de inicio
+        #52160 uart_txd_in_reg = 1'b0;
+
+         // PART1
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b1;
+        #52160 uart_txd_in_reg = 1'b0;
+        
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b0;
+        
+        #52160 uart_txd_in_reg = 1'b1;
+        #52160 uart_txd_in_reg = 1'b1;
+        
+        //dejo intervalo
+        #52160 uart_txd_in_reg = 1'b1;
+        
+        
+        
+        
+        
+// Dejo un intervalo de tiempo.
+                #520080 uart_txd_in_reg = 1'b1;
+        
+        
+                ///////////////////////////
+                // Obtener valores del MIPS
+                ///////////////////////////
+        
+                //bit de inicio
+                #52160 uart_txd_in_reg = 1'b0;
+        
+                 // PART3
+                #52160 uart_txd_in_reg = 1'b0;
+                #52160 uart_txd_in_reg = 1'b0;
+                #52160 uart_txd_in_reg = 1'b0;
+                #52160 uart_txd_in_reg = 1'b0;
                 
-        //PC-L //0001 0000
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b1;
-        
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b0;
-        
-        //bits de stop
-        #52160 uart_txd_in_reg = 1'b1;
-        #52160 uart_txd_in_reg = 1'b1;
-
-
-
-        // Dejo un intervalo de tiempo.
-        #520080 uart_txd_in_reg = 1'b1;
-    
-        //bit de inicio
-        #52160 uart_txd_in_reg = 1'b0;
-        
+                #52160 uart_txd_in_reg = 1'b1;
+                #52160 uart_txd_in_reg = 1'b0;
+                #52160 uart_txd_in_reg = 1'b0;
+                #52160 uart_txd_in_reg = 1'b0;
                 
-        //CC-H //0001 1000
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b1;
-        
-        #52160 uart_txd_in_reg = 1'b1;
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b0;
-        
-        //bits de stop
-        #52160 uart_txd_in_reg = 1'b1;
-        #52160 uart_txd_in_reg = 1'b1;
-
-
-        // Dejo un intervalo de tiempo.
-        #520080 uart_txd_in_reg = 1'b1;
-    
-        //bit de inicio
-        #52160 uart_txd_in_reg = 1'b0;
-        
+                #52160 uart_txd_in_reg = 1'b1;
+                #52160 uart_txd_in_reg = 1'b1;
                 
-        //CC-L //0010 0000
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b1;
-        #52160 uart_txd_in_reg = 1'b0;
+                //dejo intervalo
+                #52160 uart_txd_in_reg = 1'b1;
         
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b0;
         
-        //bits de stop
-        #52160 uart_txd_in_reg = 1'b1;
-        #52160 uart_txd_in_reg = 1'b1;
-
-
-
-        // Dejo un intervalo de tiempo.
-        #520080 uart_txd_in_reg = 1'b1;
-    
-        //bit de inicio
-        #52160 uart_txd_in_reg = 1'b0;
         
+                //bit de inicio
+                #52160 uart_txd_in_reg = 1'b0;
+        
+                 // PART2
+                #52160 uart_txd_in_reg = 1'b0;
+                #52160 uart_txd_in_reg = 1'b0;
+                #52160 uart_txd_in_reg = 1'b0;
+                #52160 uart_txd_in_reg = 1'b1;
                 
-        //PC4-H //0010 1000
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b1;
-        #52160 uart_txd_in_reg = 1'b0;
-        
-        #52160 uart_txd_in_reg = 1'b1;
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b0;
-        
-        //bits de stop
-        #52160 uart_txd_in_reg = 1'b1;
-        #52160 uart_txd_in_reg = 1'b1;
-
-
-        // Dejo un intervalo de tiempo.
-        #520080 uart_txd_in_reg = 1'b1;
-    
-        //bit de inicio
-        #52160 uart_txd_in_reg = 1'b0;
-        
+                #52160 uart_txd_in_reg = 1'b0;
+                #52160 uart_txd_in_reg = 1'b0;
+                #52160 uart_txd_in_reg = 1'b0;
+                #52160 uart_txd_in_reg = 1'b0;
                 
-        //PC4-L //0011 0000
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b1;
-        #52160 uart_txd_in_reg = 1'b1;
-        
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b0;
-        
-        //bits de stop
-        #52160 uart_txd_in_reg = 1'b1;
-        #52160 uart_txd_in_reg = 1'b1;
-
-
-
-
-
-        // Dejo un intervalo de tiempo.
-        #520080 uart_txd_in_reg = 1'b1;
-    
-        //bit de inicio
-        #52160 uart_txd_in_reg = 1'b0;
-        
+                #52160 uart_txd_in_reg = 1'b1;
+                #52160 uart_txd_in_reg = 1'b1;
                 
-        //Instruction-3 //0011 1000
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b1;
-        #52160 uart_txd_in_reg = 1'b1;
+                //dejo intervalo
+                #52160 uart_txd_in_reg = 1'b1;
         
-        #52160 uart_txd_in_reg = 1'b1;
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b0;
         
-        //bits de stop
-        #52160 uart_txd_in_reg = 1'b1;
-        #52160 uart_txd_in_reg = 1'b1;
-
-
-
-
-        // Dejo un intervalo de tiempo.
-        #520080 uart_txd_in_reg = 1'b1;
-    
-        //bit de inicio
-        #52160 uart_txd_in_reg = 1'b0;
         
+        
+                //bit de inicio
+                #52160 uart_txd_in_reg = 1'b0;
+        
+                 // PART1
+                #52160 uart_txd_in_reg = 1'b0;
+                #52160 uart_txd_in_reg = 1'b0;
+                #52160 uart_txd_in_reg = 1'b0;
+                #52160 uart_txd_in_reg = 1'b1;
                 
-        //Instruction-2 //0100 0000
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b1;
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b0;
-        
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b0;
-        
-        //bits de stop
-        #52160 uart_txd_in_reg = 1'b1;
-        #52160 uart_txd_in_reg = 1'b1;
-
-
-
-
-
-        // Dejo un intervalo de tiempo.
-        #520080 uart_txd_in_reg = 1'b1;
-    
-        //bit de inicio
-        #52160 uart_txd_in_reg = 1'b0;
-        
+                #52160 uart_txd_in_reg = 1'b1;
+                #52160 uart_txd_in_reg = 1'b0;
+                #52160 uart_txd_in_reg = 1'b0;
+                #52160 uart_txd_in_reg = 1'b0;
                 
-        //Instruction-1 //0100 1000
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b1;
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b0;
-        
-        #52160 uart_txd_in_reg = 1'b1;
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b0;
-        
-        //bits de stop
-        #52160 uart_txd_in_reg = 1'b1;
-        #52160 uart_txd_in_reg = 1'b1;
-
-
-        // Dejo un intervalo de tiempo.
-        #520080 uart_txd_in_reg = 1'b1;
-    
-        //bit de inicio
-        #52160 uart_txd_in_reg = 1'b0;
-        
+                #52160 uart_txd_in_reg = 1'b1;
+                #52160 uart_txd_in_reg = 1'b1;
                 
-        //Instruction-0 //0101 0000
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b1;
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b1;
+                //dejo intervalo
+                #52160 uart_txd_in_reg = 1'b1;
         
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b0;
+           
+                //bit de inicio
+                #52160 uart_txd_in_reg = 1'b0;
         
-        //bits de stop
-        #52160 uart_txd_in_reg = 1'b1;
-        #52160 uart_txd_in_reg = 1'b1;
+                 // PART1
+                #52160 uart_txd_in_reg = 1'b0;
+                #52160 uart_txd_in_reg = 1'b0;
+                #52160 uart_txd_in_reg = 1'b1;
+                #52160 uart_txd_in_reg = 1'b0;
+                
+                #52160 uart_txd_in_reg = 1'b0;
+                #52160 uart_txd_in_reg = 1'b0;
+                #52160 uart_txd_in_reg = 1'b0;
+                #52160 uart_txd_in_reg = 1'b0;
+                
+                #52160 uart_txd_in_reg = 1'b1;
+                #52160 uart_txd_in_reg = 1'b1;
+                
+                //dejo intervalo
+                #52160 uart_txd_in_reg = 1'b1;
+                
+                
+                
+                
+                
+                
+// Dejo un intervalo de tiempo.
+                        #520080 uart_txd_in_reg = 1'b1;
+                
+                
+                        ///////////////////////////
+                        // Obtener valores del MIPS
+                        ///////////////////////////
+                
+                        //bit de inicio
+                        #52160 uart_txd_in_reg = 1'b0;
+                
+                         // PART3
+                        #52160 uart_txd_in_reg = 1'b0;
+                        #52160 uart_txd_in_reg = 1'b0;
+                        #52160 uart_txd_in_reg = 1'b0;
+                        #52160 uart_txd_in_reg = 1'b0;
+                        
+                        #52160 uart_txd_in_reg = 1'b1;
+                        #52160 uart_txd_in_reg = 1'b0;
+                        #52160 uart_txd_in_reg = 1'b0;
+                        #52160 uart_txd_in_reg = 1'b0;
+                        
+                        #52160 uart_txd_in_reg = 1'b1;
+                        #52160 uart_txd_in_reg = 1'b1;
+                        
+                        //dejo intervalo
+                        #52160 uart_txd_in_reg = 1'b1;
+                
+                
+                
+                        //bit de inicio
+                        #52160 uart_txd_in_reg = 1'b0;
+                
+                         // PART2
+                        #52160 uart_txd_in_reg = 1'b0;
+                        #52160 uart_txd_in_reg = 1'b0;
+                        #52160 uart_txd_in_reg = 1'b0;
+                        #52160 uart_txd_in_reg = 1'b1;
+                        
+                        #52160 uart_txd_in_reg = 1'b0;
+                        #52160 uart_txd_in_reg = 1'b0;
+                        #52160 uart_txd_in_reg = 1'b0;
+                        #52160 uart_txd_in_reg = 1'b0;
+                        
+                        #52160 uart_txd_in_reg = 1'b1;
+                        #52160 uart_txd_in_reg = 1'b1;
+                        
+                        //dejo intervalo
+                        #52160 uart_txd_in_reg = 1'b1;
+                
+                
+                
+                
+                        //bit de inicio
+                        #52160 uart_txd_in_reg = 1'b0;
+                
+                         // PART1
+                        #52160 uart_txd_in_reg = 1'b0;
+                        #52160 uart_txd_in_reg = 1'b0;
+                        #52160 uart_txd_in_reg = 1'b0;
+                        #52160 uart_txd_in_reg = 1'b1;
+                        
+                        #52160 uart_txd_in_reg = 1'b1;
+                        #52160 uart_txd_in_reg = 1'b0;
+                        #52160 uart_txd_in_reg = 1'b0;
+                        #52160 uart_txd_in_reg = 1'b0;
+                        
+                        #52160 uart_txd_in_reg = 1'b1;
+                        #52160 uart_txd_in_reg = 1'b1;
+                        
+                        //dejo intervalo
+                        #52160 uart_txd_in_reg = 1'b1;
+                
+                   
+                        //bit de inicio
+                        #52160 uart_txd_in_reg = 1'b0;
+                
+                         // PART1
+                        #52160 uart_txd_in_reg = 1'b0;
+                        #52160 uart_txd_in_reg = 1'b0;
+                        #52160 uart_txd_in_reg = 1'b1;
+                        #52160 uart_txd_in_reg = 1'b0;
+                        
+                        #52160 uart_txd_in_reg = 1'b0;
+                        #52160 uart_txd_in_reg = 1'b0;
+                        #52160 uart_txd_in_reg = 1'b0;
+                        #52160 uart_txd_in_reg = 1'b0;
+                        
+                        #52160 uart_txd_in_reg = 1'b1;
+                        #52160 uart_txd_in_reg = 1'b1;
+                        
+                        //dejo intervalo
+                        #52160 uart_txd_in_reg = 1'b1;
+                        
+                        
+                        
+                        
+////////////////////////////////////////////
 
 
 
+// Dejo un intervalo de tiempo.
+		#520080 uart_txd_in_reg = 1'b1;
 
-        
-        
 
-        // Dejo un intervalo de tiempo.
-        #520080 uart_txd_in_reg = 1'b1;
+        ///////////////////////////
+        // Obtener valores del MIPS
+        ///////////////////////////
+
         //bit de inicio
         #52160 uart_txd_in_reg = 1'b0;
 
-        //Branch-H //0101 1000
+         // PART3
         #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b1;
         #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b1;
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b0;
         
         #52160 uart_txd_in_reg = 1'b1;
         #52160 uart_txd_in_reg = 1'b0;
         #52160 uart_txd_in_reg = 1'b0;
         #52160 uart_txd_in_reg = 1'b0;
-        //bits de stop
-        #52160 uart_txd_in_reg = 1'b1;
-        #52160 uart_txd_in_reg = 1'b1;
-
-
-       
-       // Dejo un intervalo de tiempo.
-       #520080 uart_txd_in_reg = 1'b1;
-       //bit de inicio
-       #52160 uart_txd_in_reg = 1'b0;
-    
-       //BRANCH-L //0110 0000
-       #52160 uart_txd_in_reg = 1'b0;
-       #52160 uart_txd_in_reg = 1'b1;
-       #52160 uart_txd_in_reg = 1'b1;
-       #52160 uart_txd_in_reg = 1'b0;
-       
-       #52160 uart_txd_in_reg = 1'b0;
-       #52160 uart_txd_in_reg = 1'b0;
-       #52160 uart_txd_in_reg = 1'b0;
-       #52160 uart_txd_in_reg = 1'b0;
-       //bits de stop
-       #52160 uart_txd_in_reg = 1'b1;
-       #52160 uart_txd_in_reg = 1'b1;
-
-
-       
-       // Dejo un intervalo de tiempo.
-       #520080 uart_txd_in_reg = 1'b1;
-       //bit de inicio
-       #52160 uart_txd_in_reg = 1'b0;
-    
-       //REG-A - 3 //0110 1000
-       #52160 uart_txd_in_reg = 1'b0;
-       #52160 uart_txd_in_reg = 1'b1;
-       #52160 uart_txd_in_reg = 1'b1;
-       #52160 uart_txd_in_reg = 1'b0;
-       
-       #52160 uart_txd_in_reg = 1'b1;
-       #52160 uart_txd_in_reg = 1'b0;
-       #52160 uart_txd_in_reg = 1'b0;
-       #52160 uart_txd_in_reg = 1'b0;
-       //bits de stop
-       #52160 uart_txd_in_reg = 1'b1;
-       #52160 uart_txd_in_reg = 1'b1;
-
-
-
-
-       
-       // Dejo un intervalo de tiempo.
-        #520080 uart_txd_in_reg = 1'b1;
-        //bit de inicio
-        #52160 uart_txd_in_reg = 1'b0;
-    
-        //REG-A - 2 // 0111 0000
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b1;
+        
         #52160 uart_txd_in_reg = 1'b1;
         #52160 uart_txd_in_reg = 1'b1;
         
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b0;
-        //bits de stop
-        #52160 uart_txd_in_reg = 1'b1;
+        //dejo intervalo
         #52160 uart_txd_in_reg = 1'b1;
 
 
-       
 
-        #520080 uart_txd_in_reg = 1'b1;
-       //bit de inicio
-       #52160 uart_txd_in_reg = 1'b0;
-    
-        // REG-A - 1 // 0111 1000
-       #52160 uart_txd_in_reg = 1'b0;
-       #52160 uart_txd_in_reg = 1'b1;
-       #52160 uart_txd_in_reg = 1'b1;
-       #52160 uart_txd_in_reg = 1'b1;
-       
-       #52160 uart_txd_in_reg = 1'b1;
-       #52160 uart_txd_in_reg = 1'b0;
-       #52160 uart_txd_in_reg = 1'b0;
-       #52160 uart_txd_in_reg = 1'b0;
-       //bits de stop
-       #52160 uart_txd_in_reg = 1'b1;
-       #52160 uart_txd_in_reg = 1'b1;
-
-
-       
-
-       #520080 uart_txd_in_reg = 1'b1;
-        //bit de inicio
-        #52160 uart_txd_in_reg = 1'b0;
-        
-        // REG-A - 0 // 1000 0000
-        #52160 uart_txd_in_reg = 1'b1;
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b0;
-        
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b0;
-        //bits de stop
-        #52160 uart_txd_in_reg = 1'b1;
-        #52160 uart_txd_in_reg = 1'b1;
-
-
-        
-        #520080 uart_txd_in_reg = 1'b1;
         //bit de inicio
         #52160 uart_txd_in_reg = 1'b0;
 
-        // REG-B - 3 // 1000 1000
+         // PART2
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b0;
         #52160 uart_txd_in_reg = 1'b1;
+        
+        #52160 uart_txd_in_reg = 1'b0;
         #52160 uart_txd_in_reg = 1'b0;
         #52160 uart_txd_in_reg = 1'b0;
         #52160 uart_txd_in_reg = 1'b0;
         
         #52160 uart_txd_in_reg = 1'b1;
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b0;
-        //bits de stop
         #52160 uart_txd_in_reg = 1'b1;
+        
+        //dejo intervalo
         #52160 uart_txd_in_reg = 1'b1;
 
 
-       
-        #520080 uart_txd_in_reg = 1'b1;
+
+
         //bit de inicio
         #52160 uart_txd_in_reg = 1'b0;
 
-        // REG-B - 2 // 1001 0000
-        #52160 uart_txd_in_reg = 1'b1;
+         // PART1
+        #52160 uart_txd_in_reg = 1'b0;
         #52160 uart_txd_in_reg = 1'b0;
         #52160 uart_txd_in_reg = 1'b0;
         #52160 uart_txd_in_reg = 1'b1;
         
+        #52160 uart_txd_in_reg = 1'b1;
         #52160 uart_txd_in_reg = 1'b0;
         #52160 uart_txd_in_reg = 1'b0;
         #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b0;
-        //bits de stop
+        
         #52160 uart_txd_in_reg = 1'b1;
         #52160 uart_txd_in_reg = 1'b1;
+        
+        //dejo intervalo
+        #52160 uart_txd_in_reg = 1'b1;
 
-
-       
-
-        #520080 uart_txd_in_reg = 1'b1;
+   
         //bit de inicio
         #52160 uart_txd_in_reg = 1'b0;
-        
-        // REG-B - 1 // 1001 1000
-        #52160 uart_txd_in_reg = 1'b1;
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b1;
-        
-        #52160 uart_txd_in_reg = 1'b1;
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b0;
-        //bits de stop
-        #52160 uart_txd_in_reg = 1'b1;
-        #52160 uart_txd_in_reg = 1'b1;
 
-       
-
-        #520080 uart_txd_in_reg = 1'b1;
-        //bit de inicio
+         // PART1
         #52160 uart_txd_in_reg = 1'b0;
-        
-        // REG-B - 0 // 1010 0000
-        #52160 uart_txd_in_reg = 1'b1;
         #52160 uart_txd_in_reg = 1'b0;
         #52160 uart_txd_in_reg = 1'b1;
         #52160 uart_txd_in_reg = 1'b0;
@@ -1571,201 +1415,13 @@ module test_bench_top_arquitectura();
         #52160 uart_txd_in_reg = 1'b0;
         #52160 uart_txd_in_reg = 1'b0;
         #52160 uart_txd_in_reg = 1'b0;
-        //bits de stop
-        #52160 uart_txd_in_reg = 1'b1;
-        #52160 uart_txd_in_reg = 1'b1;
-
-
-       
-        #520080 uart_txd_in_reg = 1'b1;
-        //bit de inicio
-        #52160 uart_txd_in_reg = 1'b0;
         
-        // EXTENSION SIGNO - 3 // 1010 1000
-        #52160 uart_txd_in_reg = 1'b1;
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b1;
-        #52160 uart_txd_in_reg = 1'b0;
-        
-        #52160 uart_txd_in_reg = 1'b1;
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b0;
-        //bits de stop
-        #52160 uart_txd_in_reg = 1'b1;
-        #52160 uart_txd_in_reg = 1'b1;
-
-
-       
-        #520080 uart_txd_in_reg = 1'b1;
-        //bit de inicio
-        #52160 uart_txd_in_reg = 1'b0;
-        
-        // EXTENSION SIGNO - 2 // 1011 0000
-        #52160 uart_txd_in_reg = 1'b1;
-        #52160 uart_txd_in_reg = 1'b0;
         #52160 uart_txd_in_reg = 1'b1;
         #52160 uart_txd_in_reg = 1'b1;
         
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b0;
-        //bits de stop
-        #52160 uart_txd_in_reg = 1'b1;
-        #52160 uart_txd_in_reg = 1'b1;
-
-
-       
-        #520080 uart_txd_in_reg = 1'b1;
-        //bit de inicio
-        #52160 uart_txd_in_reg = 1'b0;
-        
-        // EXTENSION SIGNO - 1 // 1011 1000
-        #52160 uart_txd_in_reg = 1'b1;
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b1;
+        //dejo intervalo
         #52160 uart_txd_in_reg = 1'b1;
         
-        #52160 uart_txd_in_reg = 1'b1;
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b0;
-        //bits de stop
-        #52160 uart_txd_in_reg = 1'b1;
-        #52160 uart_txd_in_reg = 1'b1;
-
-       
-
-        #520080 uart_txd_in_reg = 1'b1;
-        //bit de inicio
-        #52160 uart_txd_in_reg = 1'b0;
-        
-        // EXTENSION SIGNO - 0 // 1100 0000
-        #52160 uart_txd_in_reg = 1'b1;
-        #52160 uart_txd_in_reg = 1'b1;
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b0;
-        
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b0;
-        //bits de stop
-        #52160 uart_txd_in_reg = 1'b1;
-        #52160 uart_txd_in_reg = 1'b1;
-
-
-       
-        #520080 uart_txd_in_reg = 1'b1;
-        //bit de inicio
-        #52160 uart_txd_in_reg = 1'b0;
-        
-        // REG ADDRESS - H // 1100 1000
-        #52160 uart_txd_in_reg = 1'b1;
-        #52160 uart_txd_in_reg = 1'b1;
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b0;
-        
-        #52160 uart_txd_in_reg = 1'b1;
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b0;
-        //bits de stop
-        #52160 uart_txd_in_reg = 1'b1;
-        #52160 uart_txd_in_reg = 1'b1;
-
-
-       
-        #520080 uart_txd_in_reg = 1'b1;
-        //bit de inicio
-        #52160 uart_txd_in_reg = 1'b0;
-        
-        // REG-ADDRESS // 1101 0000
-        #52160 uart_txd_in_reg = 1'b1;
-        #52160 uart_txd_in_reg = 1'b1;
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b1;
-        
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b0;
-        //bits de stop
-        #52160 uart_txd_in_reg = 1'b1;
-        #52160 uart_txd_in_reg = 1'b1;
-
-
-       
-        #520080 uart_txd_in_reg = 1'b1;
-        //bit de inicio
-        #52160 uart_txd_in_reg = 1'b0;
-        // SEÑALES CONTROL ID/EX - H // 1101 1000
-        #52160 uart_txd_in_reg = 1'b1;
-        #52160 uart_txd_in_reg = 1'b1;
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b1;
-        
-        #52160 uart_txd_in_reg = 1'b1;
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b0;
-        //bits de stop
-        #52160 uart_txd_in_reg = 1'b1;
-        #52160 uart_txd_in_reg = 1'b1;
-
-
-    
-
-
-       
-        #520080 uart_txd_in_reg = 1'b1;
-        //bit de inicio
-        #52160 uart_txd_in_reg = 1'b0;
-        // SEÑALES CONTROL ID/EX - L // 1110 0000
-        #52160 uart_txd_in_reg = 1'b1;
-        #52160 uart_txd_in_reg = 1'b1;
-        #52160 uart_txd_in_reg = 1'b1;
-        #52160 uart_txd_in_reg = 1'b0;
-        
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b0;
-        //bits de stop
-        #52160 uart_txd_in_reg = 1'b1;
-        #52160 uart_txd_in_reg = 1'b1;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -1797,11 +1453,7 @@ module test_bench_top_arquitectura();
 
 
 
-
-
-
-
-        // Dejo un intervalo de tiempo.
+// Dejo un intervalo de tiempo.
 		#520080 uart_txd_in_reg = 1'b1;
 
 
@@ -1812,8 +1464,7 @@ module test_bench_top_arquitectura();
         //bit de inicio
         #52160 uart_txd_in_reg = 1'b0;
 
-        
-        //PC-H //0000 1000
+         // PART3
         #52160 uart_txd_in_reg = 1'b0;
         #52160 uart_txd_in_reg = 1'b0;
         #52160 uart_txd_in_reg = 1'b0;
@@ -1824,664 +1475,77 @@ module test_bench_top_arquitectura();
         #52160 uart_txd_in_reg = 1'b0;
         #52160 uart_txd_in_reg = 1'b0;
         
-        //bits de stop
         #52160 uart_txd_in_reg = 1'b1;
         #52160 uart_txd_in_reg = 1'b1;
         
-        
-        // Dejo un intervalo de tiempo.
-        #520080 uart_txd_in_reg = 1'b1;
-    
-        //bit de inicio
-        #52160 uart_txd_in_reg = 1'b0;
-        
-                
-        //PC-L //0001 0000
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b0;
+        //dejo intervalo
         #52160 uart_txd_in_reg = 1'b1;
-        
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b0;
-        
-        //bits de stop
-        #52160 uart_txd_in_reg = 1'b1;
-        #52160 uart_txd_in_reg = 1'b1;
-
-
-
-        // Dejo un intervalo de tiempo.
-        #520080 uart_txd_in_reg = 1'b1;
-    
-        //bit de inicio
-        #52160 uart_txd_in_reg = 1'b0;
-        
-                
-        //CC-H //0001 1000
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b1;
-        
-        #52160 uart_txd_in_reg = 1'b1;
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b0;
-        
-        //bits de stop
-        #52160 uart_txd_in_reg = 1'b1;
-        #52160 uart_txd_in_reg = 1'b1;
-
-
-        // Dejo un intervalo de tiempo.
-        #520080 uart_txd_in_reg = 1'b1;
-    
-        //bit de inicio
-        #52160 uart_txd_in_reg = 1'b0;
-        
-                
-        //CC-L //0010 0000
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b1;
-        #52160 uart_txd_in_reg = 1'b0;
-        
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b0;
-        
-        //bits de stop
-        #52160 uart_txd_in_reg = 1'b1;
-        #52160 uart_txd_in_reg = 1'b1;
-
-
-
-        // Dejo un intervalo de tiempo.
-        #520080 uart_txd_in_reg = 1'b1;
-    
-        //bit de inicio
-        #52160 uart_txd_in_reg = 1'b0;
-        
-                
-        //PC4-H //0010 1000
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b1;
-        #52160 uart_txd_in_reg = 1'b0;
-        
-        #52160 uart_txd_in_reg = 1'b1;
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b0;
-        
-        //bits de stop
-        #52160 uart_txd_in_reg = 1'b1;
-        #52160 uart_txd_in_reg = 1'b1;
-
-
-        // Dejo un intervalo de tiempo.
-        #520080 uart_txd_in_reg = 1'b1;
-    
-        //bit de inicio
-        #52160 uart_txd_in_reg = 1'b0;
-        
-                
-        //PC4-L //0011 0000
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b1;
-        #52160 uart_txd_in_reg = 1'b1;
-        
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b0;
-        
-        //bits de stop
-        #52160 uart_txd_in_reg = 1'b1;
-        #52160 uart_txd_in_reg = 1'b1;
-
-
-
-
-
-        // Dejo un intervalo de tiempo.
-        #520080 uart_txd_in_reg = 1'b1;
-    
-        //bit de inicio
-        #52160 uart_txd_in_reg = 1'b0;
-        
-                
-        //Instruction-3 //0011 1000
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b1;
-        #52160 uart_txd_in_reg = 1'b1;
-        
-        #52160 uart_txd_in_reg = 1'b1;
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b0;
-        
-        //bits de stop
-        #52160 uart_txd_in_reg = 1'b1;
-        #52160 uart_txd_in_reg = 1'b1;
-
-
-
-
-        // Dejo un intervalo de tiempo.
-        #520080 uart_txd_in_reg = 1'b1;
-    
-        //bit de inicio
-        #52160 uart_txd_in_reg = 1'b0;
-        
-                
-        //Instruction-2 //0100 0000
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b1;
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b0;
-        
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b0;
-        
-        //bits de stop
-        #52160 uart_txd_in_reg = 1'b1;
-        #52160 uart_txd_in_reg = 1'b1;
-
-
-
-
-
-        // Dejo un intervalo de tiempo.
-        #520080 uart_txd_in_reg = 1'b1;
-    
-        //bit de inicio
-        #52160 uart_txd_in_reg = 1'b0;
-        
-                
-        //Instruction-1 //0100 1000
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b1;
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b0;
-        
-        #52160 uart_txd_in_reg = 1'b1;
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b0;
-        
-        //bits de stop
-        #52160 uart_txd_in_reg = 1'b1;
-        #52160 uart_txd_in_reg = 1'b1;
-
-
-        // Dejo un intervalo de tiempo.
-        #520080 uart_txd_in_reg = 1'b1;
-    
-        //bit de inicio
-        #52160 uart_txd_in_reg = 1'b0;
-        
-                
-        //Instruction-0 //0101 0000
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b1;
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b1;
-        
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b0;
-        
-        //bits de stop
-        #52160 uart_txd_in_reg = 1'b1;
-        #52160 uart_txd_in_reg = 1'b1;
-
-
-
-
-        
-        
-
-        // Dejo un intervalo de tiempo.
-        #520080 uart_txd_in_reg = 1'b1;
-        //bit de inicio
-        #52160 uart_txd_in_reg = 1'b0;
-
-        //Branch-H //0101 1000
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b1;
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b1;
-        
-        #52160 uart_txd_in_reg = 1'b1;
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b0;
-        //bits de stop
-        #52160 uart_txd_in_reg = 1'b1;
-        #52160 uart_txd_in_reg = 1'b1;
-
-
-       
-       // Dejo un intervalo de tiempo.
-       #520080 uart_txd_in_reg = 1'b1;
-       //bit de inicio
-       #52160 uart_txd_in_reg = 1'b0;
-    
-       //BRANCH-L //0110 0000
-       #52160 uart_txd_in_reg = 1'b0;
-       #52160 uart_txd_in_reg = 1'b1;
-       #52160 uart_txd_in_reg = 1'b1;
-       #52160 uart_txd_in_reg = 1'b0;
-       
-       #52160 uart_txd_in_reg = 1'b0;
-       #52160 uart_txd_in_reg = 1'b0;
-       #52160 uart_txd_in_reg = 1'b0;
-       #52160 uart_txd_in_reg = 1'b0;
-       //bits de stop
-       #52160 uart_txd_in_reg = 1'b1;
-       #52160 uart_txd_in_reg = 1'b1;
-
-
-       
-       // Dejo un intervalo de tiempo.
-       #520080 uart_txd_in_reg = 1'b1;
-       //bit de inicio
-       #52160 uart_txd_in_reg = 1'b0;
-    
-       //REG-A - 3 //0110 1000
-       #52160 uart_txd_in_reg = 1'b0;
-       #52160 uart_txd_in_reg = 1'b1;
-       #52160 uart_txd_in_reg = 1'b1;
-       #52160 uart_txd_in_reg = 1'b0;
-       
-       #52160 uart_txd_in_reg = 1'b1;
-       #52160 uart_txd_in_reg = 1'b0;
-       #52160 uart_txd_in_reg = 1'b0;
-       #52160 uart_txd_in_reg = 1'b0;
-       //bits de stop
-       #52160 uart_txd_in_reg = 1'b1;
-       #52160 uart_txd_in_reg = 1'b1;
-
-
-
-
-       
-       // Dejo un intervalo de tiempo.
-        #520080 uart_txd_in_reg = 1'b1;
-        //bit de inicio
-        #52160 uart_txd_in_reg = 1'b0;
-    
-        //REG-A - 2 // 0111 0000
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b1;
-        #52160 uart_txd_in_reg = 1'b1;
-        #52160 uart_txd_in_reg = 1'b1;
-        
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b0;
-        //bits de stop
-        #52160 uart_txd_in_reg = 1'b1;
-        #52160 uart_txd_in_reg = 1'b1;
-
-
-       
-
-        #520080 uart_txd_in_reg = 1'b1;
-       //bit de inicio
-       #52160 uart_txd_in_reg = 1'b0;
-    
-        // REG-A - 1 // 0111 1000
-       #52160 uart_txd_in_reg = 1'b0;
-       #52160 uart_txd_in_reg = 1'b1;
-       #52160 uart_txd_in_reg = 1'b1;
-       #52160 uart_txd_in_reg = 1'b1;
-       
-       #52160 uart_txd_in_reg = 1'b1;
-       #52160 uart_txd_in_reg = 1'b0;
-       #52160 uart_txd_in_reg = 1'b0;
-       #52160 uart_txd_in_reg = 1'b0;
-       //bits de stop
-       #52160 uart_txd_in_reg = 1'b1;
-       #52160 uart_txd_in_reg = 1'b1;
-
-
-       
-
-       #520080 uart_txd_in_reg = 1'b1;
-        //bit de inicio
-        #52160 uart_txd_in_reg = 1'b0;
-        
-        // REG-A - 0 // 1000 0000
-        #52160 uart_txd_in_reg = 1'b1;
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b0;
-        
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b0;
-        //bits de stop
-        #52160 uart_txd_in_reg = 1'b1;
-        #52160 uart_txd_in_reg = 1'b1;
-
-
-        
-        #520080 uart_txd_in_reg = 1'b1;
-        //bit de inicio
-        #52160 uart_txd_in_reg = 1'b0;
-
-        // REG-B - 3 // 1000 1000
-        #52160 uart_txd_in_reg = 1'b1;
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b0;
-        
-        #52160 uart_txd_in_reg = 1'b1;
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b0;
-        //bits de stop
-        #52160 uart_txd_in_reg = 1'b1;
-        #52160 uart_txd_in_reg = 1'b1;
-
-
-       
-        #520080 uart_txd_in_reg = 1'b1;
-        //bit de inicio
-        #52160 uart_txd_in_reg = 1'b0;
-
-        // REG-B - 2 // 1001 0000
-        #52160 uart_txd_in_reg = 1'b1;
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b1;
-        
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b0;
-        //bits de stop
-        #52160 uart_txd_in_reg = 1'b1;
-        #52160 uart_txd_in_reg = 1'b1;
-
-
-       
-
-        #520080 uart_txd_in_reg = 1'b1;
-        //bit de inicio
-        #52160 uart_txd_in_reg = 1'b0;
-        
-        // REG-B - 1 // 1001 1000
-        #52160 uart_txd_in_reg = 1'b1;
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b1;
-        
-        #52160 uart_txd_in_reg = 1'b1;
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b0;
-        //bits de stop
-        #52160 uart_txd_in_reg = 1'b1;
-        #52160 uart_txd_in_reg = 1'b1;
-
-       
-
-        #520080 uart_txd_in_reg = 1'b1;
-        //bit de inicio
-        #52160 uart_txd_in_reg = 1'b0;
-        
-        // REG-B - 0 // 1010 0000
-        #52160 uart_txd_in_reg = 1'b1;
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b1;
-        #52160 uart_txd_in_reg = 1'b0;
-        
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b0;
-        //bits de stop
-        #52160 uart_txd_in_reg = 1'b1;
-        #52160 uart_txd_in_reg = 1'b1;
-
-
-       
-        #520080 uart_txd_in_reg = 1'b1;
-        //bit de inicio
-        #52160 uart_txd_in_reg = 1'b0;
-        
-        // EXTENSION SIGNO - 3 // 1010 1000
-        #52160 uart_txd_in_reg = 1'b1;
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b1;
-        #52160 uart_txd_in_reg = 1'b0;
-        
-        #52160 uart_txd_in_reg = 1'b1;
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b0;
-        //bits de stop
-        #52160 uart_txd_in_reg = 1'b1;
-        #52160 uart_txd_in_reg = 1'b1;
-
-
-       
-        #520080 uart_txd_in_reg = 1'b1;
-        //bit de inicio
-        #52160 uart_txd_in_reg = 1'b0;
-        
-        // EXTENSION SIGNO - 2 // 1011 0000
-        #52160 uart_txd_in_reg = 1'b1;
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b1;
-        #52160 uart_txd_in_reg = 1'b1;
-        
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b0;
-        //bits de stop
-        #52160 uart_txd_in_reg = 1'b1;
-        #52160 uart_txd_in_reg = 1'b1;
-
-
-       
-        #520080 uart_txd_in_reg = 1'b1;
-        //bit de inicio
-        #52160 uart_txd_in_reg = 1'b0;
-        
-        // EXTENSION SIGNO - 1 // 1011 1000
-        #52160 uart_txd_in_reg = 1'b1;
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b1;
-        #52160 uart_txd_in_reg = 1'b1;
-        
-        #52160 uart_txd_in_reg = 1'b1;
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b0;
-        //bits de stop
-        #52160 uart_txd_in_reg = 1'b1;
-        #52160 uart_txd_in_reg = 1'b1;
-
-       
-
-        #520080 uart_txd_in_reg = 1'b1;
-        //bit de inicio
-        #52160 uart_txd_in_reg = 1'b0;
-        
-        // EXTENSION SIGNO - 0 // 1100 0000
-        #52160 uart_txd_in_reg = 1'b1;
-        #52160 uart_txd_in_reg = 1'b1;
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b0;
-        
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b0;
-        //bits de stop
-        #52160 uart_txd_in_reg = 1'b1;
-        #52160 uart_txd_in_reg = 1'b1;
-
-
-       
-        #520080 uart_txd_in_reg = 1'b1;
-        //bit de inicio
-        #52160 uart_txd_in_reg = 1'b0;
-        
-        // REG ADDRESS - H // 1100 1000
-        #52160 uart_txd_in_reg = 1'b1;
-        #52160 uart_txd_in_reg = 1'b1;
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b0;
-        
-        #52160 uart_txd_in_reg = 1'b1;
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b0;
-        //bits de stop
-        #52160 uart_txd_in_reg = 1'b1;
-        #52160 uart_txd_in_reg = 1'b1;
-
-
-       
-        #520080 uart_txd_in_reg = 1'b1;
-        //bit de inicio
-        #52160 uart_txd_in_reg = 1'b0;
-        
-        // REG-ADDRESS // 1101 0000
-        #52160 uart_txd_in_reg = 1'b1;
-        #52160 uart_txd_in_reg = 1'b1;
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b1;
-        
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b0;
-        //bits de stop
-        #52160 uart_txd_in_reg = 1'b1;
-        #52160 uart_txd_in_reg = 1'b1;
-
-
-       
-        #520080 uart_txd_in_reg = 1'b1;
-        //bit de inicio
-        #52160 uart_txd_in_reg = 1'b0;
-        // SEÑALES CONTROL ID/EX - H // 1101 1000
-        #52160 uart_txd_in_reg = 1'b1;
-        #52160 uart_txd_in_reg = 1'b1;
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b1;
-        
-        #52160 uart_txd_in_reg = 1'b1;
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b0;
-        //bits de stop
-        #52160 uart_txd_in_reg = 1'b1;
-        #52160 uart_txd_in_reg = 1'b1;
-
-
-    
-
-
-       
-        #520080 uart_txd_in_reg = 1'b1;
-        //bit de inicio
-        #52160 uart_txd_in_reg = 1'b0;
-        // SEÑALES CONTROL ID/EX - L // 1110 0000
-        #52160 uart_txd_in_reg = 1'b1;
-        #52160 uart_txd_in_reg = 1'b1;
-        #52160 uart_txd_in_reg = 1'b1;
-        #52160 uart_txd_in_reg = 1'b0;
-        
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b0;
-        //bits de stop
-        #52160 uart_txd_in_reg = 1'b1;
-        #52160 uart_txd_in_reg = 1'b1;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        ///// START MIPS ///////
 
 
-        // Dejo un intervalo de tiempo.
-		#520080 uart_txd_in_reg = 1'b1;
 
         //bit de inicio
         #52160 uart_txd_in_reg = 1'b0;
 
-        
-        //quinto dato - start MIPS //0000 0111
+         // PART2
         #52160 uart_txd_in_reg = 1'b0;
         #52160 uart_txd_in_reg = 1'b0;
         #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b0;
-        
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b1;
-        #52160 uart_txd_in_reg = 1'b1;
         #52160 uart_txd_in_reg = 1'b1;
         
-        //bits de stop
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b0;
+        
         #52160 uart_txd_in_reg = 1'b1;
-        #52160 uart_txd_in_reg = 1'b1; 
+        #52160 uart_txd_in_reg = 1'b1;
+        
+        //dejo intervalo
+        #52160 uart_txd_in_reg = 1'b1;
 
+
+
+
+        //bit de inicio
+        #52160 uart_txd_in_reg = 1'b0;
+
+         // PART1
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b1;
+        
+        #52160 uart_txd_in_reg = 1'b1;
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b0;
+        
+        #52160 uart_txd_in_reg = 1'b1;
+        #52160 uart_txd_in_reg = 1'b1;
+        
+        //dejo intervalo
+        #52160 uart_txd_in_reg = 1'b1;
+
+   
+        //bit de inicio
+        #52160 uart_txd_in_reg = 1'b0;
+
+         // PART1
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b1;
+        #52160 uart_txd_in_reg = 1'b0;
+        
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b0;
+        
+        #52160 uart_txd_in_reg = 1'b1;
+        #52160 uart_txd_in_reg = 1'b1;
+        
+        //dejo intervalo
+        #52160 uart_txd_in_reg = 1'b1;
 
 
 
@@ -2499,8 +1563,7 @@ module test_bench_top_arquitectura();
         //bit de inicio
         #52160 uart_txd_in_reg = 1'b0;
 
-        
-        //PC-H //0000 1000
+         // PART3
         #52160 uart_txd_in_reg = 1'b0;
         #52160 uart_txd_in_reg = 1'b0;
         #52160 uart_txd_in_reg = 1'b0;
@@ -2511,428 +1574,850 @@ module test_bench_top_arquitectura();
         #52160 uart_txd_in_reg = 1'b0;
         #52160 uart_txd_in_reg = 1'b0;
         
-        //bits de stop
         #52160 uart_txd_in_reg = 1'b1;
         #52160 uart_txd_in_reg = 1'b1;
         
-        
-        // Dejo un intervalo de tiempo.
-        #520080 uart_txd_in_reg = 1'b1;
-    
+        //dejo intervalo
+        #52160 uart_txd_in_reg = 1'b1;
+
+
+
         //bit de inicio
         #52160 uart_txd_in_reg = 1'b0;
+
+         // PART2
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b1;
         
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b0;
+        
+        #52160 uart_txd_in_reg = 1'b1;
+        #52160 uart_txd_in_reg = 1'b1;
+        
+        //dejo intervalo
+        #52160 uart_txd_in_reg = 1'b1;
+
+
+
+
+        //bit de inicio
+        #52160 uart_txd_in_reg = 1'b0;
+
+         // PART1
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b1;
+        
+        #52160 uart_txd_in_reg = 1'b1;
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b0;
+        
+        #52160 uart_txd_in_reg = 1'b1;
+        #52160 uart_txd_in_reg = 1'b1;
+        
+        //dejo intervalo
+        #52160 uart_txd_in_reg = 1'b1;
+
+   
+        //bit de inicio
+        #52160 uart_txd_in_reg = 1'b0;
+
+         // PART1
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b1;
+        #52160 uart_txd_in_reg = 1'b0;
+        
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b0;
+        
+        #52160 uart_txd_in_reg = 1'b1;
+        #52160 uart_txd_in_reg = 1'b1;
+        
+        //dejo intervalo
+        #52160 uart_txd_in_reg = 1'b1;
+
+
+
+
+
+
+        // Dejo un intervalo de tiempo.
+		#520080 uart_txd_in_reg = 1'b1;
+
+
+        ///////////////////////////
+        // Obtener valores del MIPS
+        ///////////////////////////
+
+        //bit de inicio
+        #52160 uart_txd_in_reg = 1'b0;
+
+         // PART3
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b0;
+        
+        #52160 uart_txd_in_reg = 1'b1;
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b0;
+        
+        #52160 uart_txd_in_reg = 1'b1;
+        #52160 uart_txd_in_reg = 1'b1;
+        
+        //dejo intervalo
+        #52160 uart_txd_in_reg = 1'b1;
+
+
+
+        //bit de inicio
+        #52160 uart_txd_in_reg = 1'b0;
+
+         // PART2
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b1;
+        
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b0;
+        
+        #52160 uart_txd_in_reg = 1'b1;
+        #52160 uart_txd_in_reg = 1'b1;
+        
+        //dejo intervalo
+        #52160 uart_txd_in_reg = 1'b1;
+
+
+
+
+        //bit de inicio
+        #52160 uart_txd_in_reg = 1'b0;
+
+         // PART1
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b1;
+        
+        #52160 uart_txd_in_reg = 1'b1;
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b0;
+        
+        #52160 uart_txd_in_reg = 1'b1;
+        #52160 uart_txd_in_reg = 1'b1;
+        
+        //dejo intervalo
+        #52160 uart_txd_in_reg = 1'b1;
+
+   
+        //bit de inicio
+        #52160 uart_txd_in_reg = 1'b0;
+
+         // PART1
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b1;
+        #52160 uart_txd_in_reg = 1'b0;
+        
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b0;
+        
+        #52160 uart_txd_in_reg = 1'b1;
+        #52160 uart_txd_in_reg = 1'b1;
+        
+        //dejo intervalo
+        #52160 uart_txd_in_reg = 1'b1;
+
+
+
+
+
+
+        // Dejo un intervalo de tiempo.
+		#520080 uart_txd_in_reg = 1'b1;
+
+
+        ///////////////////////////
+        // Obtener valores del MIPS
+        ///////////////////////////
+
+        //bit de inicio
+        #52160 uart_txd_in_reg = 1'b0;
+
+         // PART3
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b0;
+        
+        #52160 uart_txd_in_reg = 1'b1;
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b0;
+        
+        #52160 uart_txd_in_reg = 1'b1;
+        #52160 uart_txd_in_reg = 1'b1;
+        
+        //dejo intervalo
+        #52160 uart_txd_in_reg = 1'b1;
+
+
+
+        //bit de inicio
+        #52160 uart_txd_in_reg = 1'b0;
+
+         // PART2
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b1;
+        
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b0;
+        
+        #52160 uart_txd_in_reg = 1'b1;
+        #52160 uart_txd_in_reg = 1'b1;
+        
+        //dejo intervalo
+        #52160 uart_txd_in_reg = 1'b1;
+
+
+
+
+        //bit de inicio
+        #52160 uart_txd_in_reg = 1'b0;
+
+         // PART1
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b1;
+        
+        #52160 uart_txd_in_reg = 1'b1;
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b0;
+        
+        #52160 uart_txd_in_reg = 1'b1;
+        #52160 uart_txd_in_reg = 1'b1;
+        
+        //dejo intervalo
+        #52160 uart_txd_in_reg = 1'b1;
+
+   
+        //bit de inicio
+        #52160 uart_txd_in_reg = 1'b0;
+
+         // PART1
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b1;
+        #52160 uart_txd_in_reg = 1'b0;
+        
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b0;
+        
+        #52160 uart_txd_in_reg = 1'b1;
+        #52160 uart_txd_in_reg = 1'b1;
+        
+        //dejo intervalo
+        #52160 uart_txd_in_reg = 1'b1;
+
+
+
+
+
+
+        // Dejo un intervalo de tiempo.
+		#520080 uart_txd_in_reg = 1'b1;
+
+
+        ///////////////////////////
+        // Obtener valores del MIPS
+        ///////////////////////////
+
+        //bit de inicio
+        #52160 uart_txd_in_reg = 1'b0;
+
+         // PART3
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b0;
+        
+        #52160 uart_txd_in_reg = 1'b1;
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b0;
+        
+        #52160 uart_txd_in_reg = 1'b1;
+        #52160 uart_txd_in_reg = 1'b1;
+        
+        //dejo intervalo
+        #52160 uart_txd_in_reg = 1'b1;
+
+
+
+        //bit de inicio
+        #52160 uart_txd_in_reg = 1'b0;
+
+         // PART2
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b1;
+        
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b0;
+        
+        #52160 uart_txd_in_reg = 1'b1;
+        #52160 uart_txd_in_reg = 1'b1;
+        
+        //dejo intervalo
+        #52160 uart_txd_in_reg = 1'b1;
+
+
+
+
+        //bit de inicio
+        #52160 uart_txd_in_reg = 1'b0;
+
+         // PART1
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b1;
+        
+        #52160 uart_txd_in_reg = 1'b1;
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b0;
+        
+        #52160 uart_txd_in_reg = 1'b1;
+        #52160 uart_txd_in_reg = 1'b1;
+        
+        //dejo intervalo
+        #52160 uart_txd_in_reg = 1'b1;
+
+   
+        //bit de inicio
+        #52160 uart_txd_in_reg = 1'b0;
+
+         // PART1
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b1;
+        #52160 uart_txd_in_reg = 1'b0;
+        
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b0;
+        
+        #52160 uart_txd_in_reg = 1'b1;
+        #52160 uart_txd_in_reg = 1'b1;
+        
+        //dejo intervalo
+        #52160 uart_txd_in_reg = 1'b1;
+
+
+
+        // Dejo un intervalo de tiempo.
+		#520080 uart_txd_in_reg = 1'b1;
+
+
+        ///////////////////////////
+        // Obtener valores del MIPS
+        ///////////////////////////
+
+        //bit de inicio
+        #52160 uart_txd_in_reg = 1'b0;
+
+         // PART3
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b0;
+        
+        #52160 uart_txd_in_reg = 1'b1;
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b0;
+        
+        #52160 uart_txd_in_reg = 1'b1;
+        #52160 uart_txd_in_reg = 1'b1;
+        
+        //dejo intervalo
+        #52160 uart_txd_in_reg = 1'b1;
+
+
+
+        //bit de inicio
+        #52160 uart_txd_in_reg = 1'b0;
+
+         // PART2
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b1;
+        
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b0;
+        
+        #52160 uart_txd_in_reg = 1'b1;
+        #52160 uart_txd_in_reg = 1'b1;
+        
+        //dejo intervalo
+        #52160 uart_txd_in_reg = 1'b1;
+
+
+
+
+        //bit de inicio
+        #52160 uart_txd_in_reg = 1'b0;
+
+         // PART1
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b1;
+        
+        #52160 uart_txd_in_reg = 1'b1;
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b0;
+        
+        #52160 uart_txd_in_reg = 1'b1;
+        #52160 uart_txd_in_reg = 1'b1;
+        
+        //dejo intervalo
+        #52160 uart_txd_in_reg = 1'b1;
+
+   
+        //bit de inicio
+        #52160 uart_txd_in_reg = 1'b0;
+
+         // PART1
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b1;
+        #52160 uart_txd_in_reg = 1'b0;
+        
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b0;
+        
+        #52160 uart_txd_in_reg = 1'b1;
+        #52160 uart_txd_in_reg = 1'b1;
+        
+        //dejo intervalo
+        #52160 uart_txd_in_reg = 1'b1;
+
+
+
+// Dejo un intervalo de tiempo.
+		#520080 uart_txd_in_reg = 1'b1;
+
+
+        ///////////////////////////
+        // Obtener valores del MIPS
+        ///////////////////////////
+
+        //bit de inicio
+        #52160 uart_txd_in_reg = 1'b0;
+
+         // PART3
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b0;
+        
+        #52160 uart_txd_in_reg = 1'b1;
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b0;
+        
+        #52160 uart_txd_in_reg = 1'b1;
+        #52160 uart_txd_in_reg = 1'b1;
+        
+        //dejo intervalo
+        #52160 uart_txd_in_reg = 1'b1;
+
+
+
+        //bit de inicio
+        #52160 uart_txd_in_reg = 1'b0;
+
+         // PART2
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b1;
+        
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b0;
+        
+        #52160 uart_txd_in_reg = 1'b1;
+        #52160 uart_txd_in_reg = 1'b1;
+        
+        //dejo intervalo
+        #52160 uart_txd_in_reg = 1'b1;
+
+
+
+
+        //bit de inicio
+        #52160 uart_txd_in_reg = 1'b0;
+
+         // PART1
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b1;
+        
+        #52160 uart_txd_in_reg = 1'b1;
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b0;
+        
+        #52160 uart_txd_in_reg = 1'b1;
+        #52160 uart_txd_in_reg = 1'b1;
+        
+        //dejo intervalo
+        #52160 uart_txd_in_reg = 1'b1;
+
+   
+        //bit de inicio
+        #52160 uart_txd_in_reg = 1'b0;
+
+         // PART1
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b1;
+        #52160 uart_txd_in_reg = 1'b0;
+        
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b0;
+        
+        #52160 uart_txd_in_reg = 1'b1;
+        #52160 uart_txd_in_reg = 1'b1;
+        
+        //dejo intervalo
+        #52160 uart_txd_in_reg = 1'b1;
+        
+        
+        
+        
+        
+// Dejo un intervalo de tiempo.
+                #520080 uart_txd_in_reg = 1'b1;
+        
+        
+                ///////////////////////////
+                // Obtener valores del MIPS
+                ///////////////////////////
+        
+                //bit de inicio
+                #52160 uart_txd_in_reg = 1'b0;
+        
+                 // PART3
+                #52160 uart_txd_in_reg = 1'b0;
+                #52160 uart_txd_in_reg = 1'b0;
+                #52160 uart_txd_in_reg = 1'b0;
+                #52160 uart_txd_in_reg = 1'b0;
                 
-        //PC-L //0001 0000
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b1;
-        
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b0;
-        
-        //bits de stop
-        #52160 uart_txd_in_reg = 1'b1;
-        #52160 uart_txd_in_reg = 1'b1;
-
-
-
-        // Dejo un intervalo de tiempo.
-        #520080 uart_txd_in_reg = 1'b1;
-    
-        //bit de inicio
-        #52160 uart_txd_in_reg = 1'b0;
-        
+                #52160 uart_txd_in_reg = 1'b1;
+                #52160 uart_txd_in_reg = 1'b0;
+                #52160 uart_txd_in_reg = 1'b0;
+                #52160 uart_txd_in_reg = 1'b0;
                 
-        //CC-H //0001 1000
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b1;
-        
-        #52160 uart_txd_in_reg = 1'b1;
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b0;
-        
-        //bits de stop
-        #52160 uart_txd_in_reg = 1'b1;
-        #52160 uart_txd_in_reg = 1'b1;
-
-
-        // Dejo un intervalo de tiempo.
-        #520080 uart_txd_in_reg = 1'b1;
-    
-        //bit de inicio
-        #52160 uart_txd_in_reg = 1'b0;
-        
+                #52160 uart_txd_in_reg = 1'b1;
+                #52160 uart_txd_in_reg = 1'b1;
                 
-        //CC-L //0010 0000
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b1;
-        #52160 uart_txd_in_reg = 1'b0;
+                //dejo intervalo
+                #52160 uart_txd_in_reg = 1'b1;
         
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b0;
         
-        //bits de stop
-        #52160 uart_txd_in_reg = 1'b1;
-        #52160 uart_txd_in_reg = 1'b1;
-
-
-
-        // Dejo un intervalo de tiempo.
-        #520080 uart_txd_in_reg = 1'b1;
-    
-        //bit de inicio
-        #52160 uart_txd_in_reg = 1'b0;
         
+                //bit de inicio
+                #52160 uart_txd_in_reg = 1'b0;
+        
+                 // PART2
+                #52160 uart_txd_in_reg = 1'b0;
+                #52160 uart_txd_in_reg = 1'b0;
+                #52160 uart_txd_in_reg = 1'b0;
+                #52160 uart_txd_in_reg = 1'b1;
                 
-        //PC4-H //0010 1000
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b1;
-        #52160 uart_txd_in_reg = 1'b0;
-        
-        #52160 uart_txd_in_reg = 1'b1;
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b0;
-        
-        //bits de stop
-        #52160 uart_txd_in_reg = 1'b1;
-        #52160 uart_txd_in_reg = 1'b1;
-
-
-        // Dejo un intervalo de tiempo.
-        #520080 uart_txd_in_reg = 1'b1;
-    
-        //bit de inicio
-        #52160 uart_txd_in_reg = 1'b0;
-        
+                #52160 uart_txd_in_reg = 1'b0;
+                #52160 uart_txd_in_reg = 1'b0;
+                #52160 uart_txd_in_reg = 1'b0;
+                #52160 uart_txd_in_reg = 1'b0;
                 
-        //PC4-L //0011 0000
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b1;
-        #52160 uart_txd_in_reg = 1'b1;
-        
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b0;
-        
-        //bits de stop
-        #52160 uart_txd_in_reg = 1'b1;
-        #52160 uart_txd_in_reg = 1'b1;
-
-
-
-
-
-        // Dejo un intervalo de tiempo.
-        #520080 uart_txd_in_reg = 1'b1;
-    
-        //bit de inicio
-        #52160 uart_txd_in_reg = 1'b0;
-        
+                #52160 uart_txd_in_reg = 1'b1;
+                #52160 uart_txd_in_reg = 1'b1;
                 
-        //Instruction-3 //0011 1000
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b1;
-        #52160 uart_txd_in_reg = 1'b1;
+                //dejo intervalo
+                #52160 uart_txd_in_reg = 1'b1;
         
-        #52160 uart_txd_in_reg = 1'b1;
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b0;
         
-        //bits de stop
-        #52160 uart_txd_in_reg = 1'b1;
-        #52160 uart_txd_in_reg = 1'b1;
-
-
-
-
-        // Dejo un intervalo de tiempo.
-        #520080 uart_txd_in_reg = 1'b1;
-    
-        //bit de inicio
-        #52160 uart_txd_in_reg = 1'b0;
         
+        
+                //bit de inicio
+                #52160 uart_txd_in_reg = 1'b0;
+        
+                 // PART1
+                #52160 uart_txd_in_reg = 1'b0;
+                #52160 uart_txd_in_reg = 1'b0;
+                #52160 uart_txd_in_reg = 1'b0;
+                #52160 uart_txd_in_reg = 1'b1;
                 
-        //Instruction-2 //0100 0000
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b1;
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b0;
-        
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b0;
-        
-        //bits de stop
-        #52160 uart_txd_in_reg = 1'b1;
-        #52160 uart_txd_in_reg = 1'b1;
-
-
-
-
-
-        // Dejo un intervalo de tiempo.
-        #520080 uart_txd_in_reg = 1'b1;
-    
-        //bit de inicio
-        #52160 uart_txd_in_reg = 1'b0;
-        
+                #52160 uart_txd_in_reg = 1'b1;
+                #52160 uart_txd_in_reg = 1'b0;
+                #52160 uart_txd_in_reg = 1'b0;
+                #52160 uart_txd_in_reg = 1'b0;
                 
-        //Instruction-1 //0100 1000
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b1;
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b0;
-        
-        #52160 uart_txd_in_reg = 1'b1;
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b0;
-        
-        //bits de stop
-        #52160 uart_txd_in_reg = 1'b1;
-        #52160 uart_txd_in_reg = 1'b1;
-
-
-        // Dejo un intervalo de tiempo.
-        #520080 uart_txd_in_reg = 1'b1;
-    
-        //bit de inicio
-        #52160 uart_txd_in_reg = 1'b0;
-        
+                #52160 uart_txd_in_reg = 1'b1;
+                #52160 uart_txd_in_reg = 1'b1;
                 
-        //Instruction-0 //0101 0000
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b1;
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b1;
+                //dejo intervalo
+                #52160 uart_txd_in_reg = 1'b1;
         
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b0;
+           
+                //bit de inicio
+                #52160 uart_txd_in_reg = 1'b0;
         
-        //bits de stop
-        #52160 uart_txd_in_reg = 1'b1;
-        #52160 uart_txd_in_reg = 1'b1;
+                 // PART1
+                #52160 uart_txd_in_reg = 1'b0;
+                #52160 uart_txd_in_reg = 1'b0;
+                #52160 uart_txd_in_reg = 1'b1;
+                #52160 uart_txd_in_reg = 1'b0;
+                
+                #52160 uart_txd_in_reg = 1'b0;
+                #52160 uart_txd_in_reg = 1'b0;
+                #52160 uart_txd_in_reg = 1'b0;
+                #52160 uart_txd_in_reg = 1'b0;
+                
+                #52160 uart_txd_in_reg = 1'b1;
+                #52160 uart_txd_in_reg = 1'b1;
+                
+                //dejo intervalo
+                #52160 uart_txd_in_reg = 1'b1;
+                
+                
+                
+                
+                
+                
+// Dejo un intervalo de tiempo.
+                        #520080 uart_txd_in_reg = 1'b1;
+                
+                
+                        ///////////////////////////
+                        // Obtener valores del MIPS
+                        ///////////////////////////
+                
+                        //bit de inicio
+                        #52160 uart_txd_in_reg = 1'b0;
+                
+                         // PART3
+                        #52160 uart_txd_in_reg = 1'b0;
+                        #52160 uart_txd_in_reg = 1'b0;
+                        #52160 uart_txd_in_reg = 1'b0;
+                        #52160 uart_txd_in_reg = 1'b0;
+                        
+                        #52160 uart_txd_in_reg = 1'b1;
+                        #52160 uart_txd_in_reg = 1'b0;
+                        #52160 uart_txd_in_reg = 1'b0;
+                        #52160 uart_txd_in_reg = 1'b0;
+                        
+                        #52160 uart_txd_in_reg = 1'b1;
+                        #52160 uart_txd_in_reg = 1'b1;
+                        
+                        //dejo intervalo
+                        #52160 uart_txd_in_reg = 1'b1;
+                
+                
+                
+                        //bit de inicio
+                        #52160 uart_txd_in_reg = 1'b0;
+                
+                         // PART2
+                        #52160 uart_txd_in_reg = 1'b0;
+                        #52160 uart_txd_in_reg = 1'b0;
+                        #52160 uart_txd_in_reg = 1'b0;
+                        #52160 uart_txd_in_reg = 1'b1;
+                        
+                        #52160 uart_txd_in_reg = 1'b0;
+                        #52160 uart_txd_in_reg = 1'b0;
+                        #52160 uart_txd_in_reg = 1'b0;
+                        #52160 uart_txd_in_reg = 1'b0;
+                        
+                        #52160 uart_txd_in_reg = 1'b1;
+                        #52160 uart_txd_in_reg = 1'b1;
+                        
+                        //dejo intervalo
+                        #52160 uart_txd_in_reg = 1'b1;
+                
+                
+                
+                
+                        //bit de inicio
+                        #52160 uart_txd_in_reg = 1'b0;
+                
+                         // PART1
+                        #52160 uart_txd_in_reg = 1'b0;
+                        #52160 uart_txd_in_reg = 1'b0;
+                        #52160 uart_txd_in_reg = 1'b0;
+                        #52160 uart_txd_in_reg = 1'b1;
+                        
+                        #52160 uart_txd_in_reg = 1'b1;
+                        #52160 uart_txd_in_reg = 1'b0;
+                        #52160 uart_txd_in_reg = 1'b0;
+                        #52160 uart_txd_in_reg = 1'b0;
+                        
+                        #52160 uart_txd_in_reg = 1'b1;
+                        #52160 uart_txd_in_reg = 1'b1;
+                        
+                        //dejo intervalo
+                        #52160 uart_txd_in_reg = 1'b1;
+                
+                   
+                        //bit de inicio
+                        #52160 uart_txd_in_reg = 1'b0;
+                
+                         // PART1
+                        #52160 uart_txd_in_reg = 1'b0;
+                        #52160 uart_txd_in_reg = 1'b0;
+                        #52160 uart_txd_in_reg = 1'b1;
+                        #52160 uart_txd_in_reg = 1'b0;
+                        
+                        #52160 uart_txd_in_reg = 1'b0;
+                        #52160 uart_txd_in_reg = 1'b0;
+                        #52160 uart_txd_in_reg = 1'b0;
+                        #52160 uart_txd_in_reg = 1'b0;
+                        
+                        #52160 uart_txd_in_reg = 1'b1;
+                        #52160 uart_txd_in_reg = 1'b1;
+                        
+                        //dejo intervalo
+                        #52160 uart_txd_in_reg = 1'b1;
+                        
+                        
+                        
+                        
+////////////////////////////////////////////
 
 
 
+// Dejo un intervalo de tiempo.
+		#520080 uart_txd_in_reg = 1'b1;
 
-        
-        
 
-        // Dejo un intervalo de tiempo.
-        #520080 uart_txd_in_reg = 1'b1;
+        ///////////////////////////
+        // Obtener valores del MIPS
+        ///////////////////////////
+
         //bit de inicio
         #52160 uart_txd_in_reg = 1'b0;
 
-        //Branch-H //0101 1000
+         // PART3
         #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b1;
         #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b1;
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b0;
         
         #52160 uart_txd_in_reg = 1'b1;
         #52160 uart_txd_in_reg = 1'b0;
         #52160 uart_txd_in_reg = 1'b0;
         #52160 uart_txd_in_reg = 1'b0;
-        //bits de stop
-        #52160 uart_txd_in_reg = 1'b1;
-        #52160 uart_txd_in_reg = 1'b1;
-
-
-       
-       // Dejo un intervalo de tiempo.
-       #520080 uart_txd_in_reg = 1'b1;
-       //bit de inicio
-       #52160 uart_txd_in_reg = 1'b0;
-    
-       //BRANCH-L //0110 0000
-       #52160 uart_txd_in_reg = 1'b0;
-       #52160 uart_txd_in_reg = 1'b1;
-       #52160 uart_txd_in_reg = 1'b1;
-       #52160 uart_txd_in_reg = 1'b0;
-       
-       #52160 uart_txd_in_reg = 1'b0;
-       #52160 uart_txd_in_reg = 1'b0;
-       #52160 uart_txd_in_reg = 1'b0;
-       #52160 uart_txd_in_reg = 1'b0;
-       //bits de stop
-       #52160 uart_txd_in_reg = 1'b1;
-       #52160 uart_txd_in_reg = 1'b1;
-
-
-       
-       // Dejo un intervalo de tiempo.
-       #520080 uart_txd_in_reg = 1'b1;
-       //bit de inicio
-       #52160 uart_txd_in_reg = 1'b0;
-    
-       //REG-A - 3 //0110 1000
-       #52160 uart_txd_in_reg = 1'b0;
-       #52160 uart_txd_in_reg = 1'b1;
-       #52160 uart_txd_in_reg = 1'b1;
-       #52160 uart_txd_in_reg = 1'b0;
-       
-       #52160 uart_txd_in_reg = 1'b1;
-       #52160 uart_txd_in_reg = 1'b0;
-       #52160 uart_txd_in_reg = 1'b0;
-       #52160 uart_txd_in_reg = 1'b0;
-       //bits de stop
-       #52160 uart_txd_in_reg = 1'b1;
-       #52160 uart_txd_in_reg = 1'b1;
-
-
-
-
-       
-       // Dejo un intervalo de tiempo.
-        #520080 uart_txd_in_reg = 1'b1;
-        //bit de inicio
-        #52160 uart_txd_in_reg = 1'b0;
-    
-        //REG-A - 2 // 0111 0000
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b1;
+        
         #52160 uart_txd_in_reg = 1'b1;
         #52160 uart_txd_in_reg = 1'b1;
         
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b0;
-        //bits de stop
-        #52160 uart_txd_in_reg = 1'b1;
+        //dejo intervalo
         #52160 uart_txd_in_reg = 1'b1;
 
 
-       
 
-        #520080 uart_txd_in_reg = 1'b1;
-       //bit de inicio
-       #52160 uart_txd_in_reg = 1'b0;
-    
-        // REG-A - 1 // 0111 1000
-       #52160 uart_txd_in_reg = 1'b0;
-       #52160 uart_txd_in_reg = 1'b1;
-       #52160 uart_txd_in_reg = 1'b1;
-       #52160 uart_txd_in_reg = 1'b1;
-       
-       #52160 uart_txd_in_reg = 1'b1;
-       #52160 uart_txd_in_reg = 1'b0;
-       #52160 uart_txd_in_reg = 1'b0;
-       #52160 uart_txd_in_reg = 1'b0;
-       //bits de stop
-       #52160 uart_txd_in_reg = 1'b1;
-       #52160 uart_txd_in_reg = 1'b1;
-
-
-       
-
-       #520080 uart_txd_in_reg = 1'b1;
-        //bit de inicio
-        #52160 uart_txd_in_reg = 1'b0;
-        
-        // REG-A - 0 // 1000 0000
-        #52160 uart_txd_in_reg = 1'b1;
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b0;
-        
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b0;
-        //bits de stop
-        #52160 uart_txd_in_reg = 1'b1;
-        #52160 uart_txd_in_reg = 1'b1;
-
-
-        
-        #520080 uart_txd_in_reg = 1'b1;
         //bit de inicio
         #52160 uart_txd_in_reg = 1'b0;
 
-        // REG-B - 3 // 1000 1000
+         // PART2
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b0;
+        #52160 uart_txd_in_reg = 1'b0;
         #52160 uart_txd_in_reg = 1'b1;
+        
+        #52160 uart_txd_in_reg = 1'b0;
         #52160 uart_txd_in_reg = 1'b0;
         #52160 uart_txd_in_reg = 1'b0;
         #52160 uart_txd_in_reg = 1'b0;
         
         #52160 uart_txd_in_reg = 1'b1;
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b0;
-        //bits de stop
         #52160 uart_txd_in_reg = 1'b1;
+        
+        //dejo intervalo
         #52160 uart_txd_in_reg = 1'b1;
 
 
-       
-        #520080 uart_txd_in_reg = 1'b1;
+
+
         //bit de inicio
         #52160 uart_txd_in_reg = 1'b0;
 
-        // REG-B - 2 // 1001 0000
-        #52160 uart_txd_in_reg = 1'b1;
+         // PART1
+        #52160 uart_txd_in_reg = 1'b0;
         #52160 uart_txd_in_reg = 1'b0;
         #52160 uart_txd_in_reg = 1'b0;
         #52160 uart_txd_in_reg = 1'b1;
         
+        #52160 uart_txd_in_reg = 1'b1;
         #52160 uart_txd_in_reg = 1'b0;
         #52160 uart_txd_in_reg = 1'b0;
         #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b0;
-        //bits de stop
+        
         #52160 uart_txd_in_reg = 1'b1;
         #52160 uart_txd_in_reg = 1'b1;
+        
+        //dejo intervalo
+        #52160 uart_txd_in_reg = 1'b1;
 
-
-       
-
-        #520080 uart_txd_in_reg = 1'b1;
+   
         //bit de inicio
         #52160 uart_txd_in_reg = 1'b0;
-        
-        // REG-B - 1 // 1001 1000
-        #52160 uart_txd_in_reg = 1'b1;
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b1;
-        
-        #52160 uart_txd_in_reg = 1'b1;
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b0;
-        //bits de stop
-        #52160 uart_txd_in_reg = 1'b1;
-        #52160 uart_txd_in_reg = 1'b1;
 
-       
-
-        #520080 uart_txd_in_reg = 1'b1;
-        //bit de inicio
+         // PART1
         #52160 uart_txd_in_reg = 1'b0;
-        
-        // REG-B - 0 // 1010 0000
-        #52160 uart_txd_in_reg = 1'b1;
         #52160 uart_txd_in_reg = 1'b0;
         #52160 uart_txd_in_reg = 1'b1;
         #52160 uart_txd_in_reg = 1'b0;
@@ -2941,849 +2426,3040 @@ module test_bench_top_arquitectura();
         #52160 uart_txd_in_reg = 1'b0;
         #52160 uart_txd_in_reg = 1'b0;
         #52160 uart_txd_in_reg = 1'b0;
-        //bits de stop
-        #52160 uart_txd_in_reg = 1'b1;
-        #52160 uart_txd_in_reg = 1'b1;
-
-
-       
-        #520080 uart_txd_in_reg = 1'b1;
-        //bit de inicio
-        #52160 uart_txd_in_reg = 1'b0;
         
-        // EXTENSION SIGNO - 3 // 1010 1000
-        #52160 uart_txd_in_reg = 1'b1;
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b1;
-        #52160 uart_txd_in_reg = 1'b0;
-        
-        #52160 uart_txd_in_reg = 1'b1;
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b0;
-        //bits de stop
-        #52160 uart_txd_in_reg = 1'b1;
-        #52160 uart_txd_in_reg = 1'b1;
-
-
-       
-        #520080 uart_txd_in_reg = 1'b1;
-        //bit de inicio
-        #52160 uart_txd_in_reg = 1'b0;
-        
-        // EXTENSION SIGNO - 2 // 1011 0000
-        #52160 uart_txd_in_reg = 1'b1;
-        #52160 uart_txd_in_reg = 1'b0;
         #52160 uart_txd_in_reg = 1'b1;
         #52160 uart_txd_in_reg = 1'b1;
         
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b0;
-        //bits de stop
-        #52160 uart_txd_in_reg = 1'b1;
-        #52160 uart_txd_in_reg = 1'b1;
-
-
-       
-        #520080 uart_txd_in_reg = 1'b1;
-        //bit de inicio
-        #52160 uart_txd_in_reg = 1'b0;
-        
-        // EXTENSION SIGNO - 1 // 1011 1000
-        #52160 uart_txd_in_reg = 1'b1;
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b1;
+        //dejo intervalo
         #52160 uart_txd_in_reg = 1'b1;
         
-        #52160 uart_txd_in_reg = 1'b1;
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b0;
-        //bits de stop
-        #52160 uart_txd_in_reg = 1'b1;
-        #52160 uart_txd_in_reg = 1'b1;
-
-       
-
-        #520080 uart_txd_in_reg = 1'b1;
-        //bit de inicio
-        #52160 uart_txd_in_reg = 1'b0;
         
-        // EXTENSION SIGNO - 0 // 1100 0000
-        #52160 uart_txd_in_reg = 1'b1;
-        #52160 uart_txd_in_reg = 1'b1;
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b0;
-        
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b0;
-        //bits de stop
-        #52160 uart_txd_in_reg = 1'b1;
-        #52160 uart_txd_in_reg = 1'b1;
-
-
-       
-        #520080 uart_txd_in_reg = 1'b1;
-        //bit de inicio
-        #52160 uart_txd_in_reg = 1'b0;
-        
-        // REG ADDRESS - H // 1100 1000
-        #52160 uart_txd_in_reg = 1'b1;
-        #52160 uart_txd_in_reg = 1'b1;
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b0;
-        
-        #52160 uart_txd_in_reg = 1'b1;
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b0;
-        //bits de stop
-        #52160 uart_txd_in_reg = 1'b1;
-        #52160 uart_txd_in_reg = 1'b1;
-
-
-       
-        #520080 uart_txd_in_reg = 1'b1;
-        //bit de inicio
-        #52160 uart_txd_in_reg = 1'b0;
-        
-        // REG-ADDRESS // 1101 0000
-        #52160 uart_txd_in_reg = 1'b1;
-        #52160 uart_txd_in_reg = 1'b1;
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b1;
-        
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b0;
-        //bits de stop
-        #52160 uart_txd_in_reg = 1'b1;
-        #52160 uart_txd_in_reg = 1'b1;
-
-
-       
-        #520080 uart_txd_in_reg = 1'b1;
-        //bit de inicio
-        #52160 uart_txd_in_reg = 1'b0;
-        // SEÑALES CONTROL ID/EX - H // 1101 1000
-        #52160 uart_txd_in_reg = 1'b1;
-        #52160 uart_txd_in_reg = 1'b1;
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b1;
-        
-        #52160 uart_txd_in_reg = 1'b1;
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b0;
-        //bits de stop
-        #52160 uart_txd_in_reg = 1'b1;
-        #52160 uart_txd_in_reg = 1'b1;
-
-
-    
-
-
-       
-        #520080 uart_txd_in_reg = 1'b1;
-        //bit de inicio
-        #52160 uart_txd_in_reg = 1'b0;
-        // SEÑALES CONTROL ID/EX - L // 1110 0000
-        #52160 uart_txd_in_reg = 1'b1;
-        #52160 uart_txd_in_reg = 1'b1;
-        #52160 uart_txd_in_reg = 1'b1;
-        #52160 uart_txd_in_reg = 1'b0;
-        
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b0;
-        //bits de stop
-        #52160 uart_txd_in_reg = 1'b1;
-        #52160 uart_txd_in_reg = 1'b1;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+  
+  
 ///// START MIPS ///////
-
-
-        // Dejo un intervalo de tiempo.
-		#520080 uart_txd_in_reg = 1'b1;
-
-        //bit de inicio
-        #52160 uart_txd_in_reg = 1'b0;
-
-        
-        //quinto dato - start MIPS //0000 0111
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b0;
-        
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b1;
-        #52160 uart_txd_in_reg = 1'b1;
-        #52160 uart_txd_in_reg = 1'b1;
-        
-        //bits de stop
-        #52160 uart_txd_in_reg = 1'b1;
-        #52160 uart_txd_in_reg = 1'b1; 
-
-
-
-
-
-
-
-        // Dejo un intervalo de tiempo.
-		#520080 uart_txd_in_reg = 1'b1;
-
-
-        ///////////////////////////
-        // Obtener valores del MIPS
-        ///////////////////////////
-
-        //bit de inicio
-        #52160 uart_txd_in_reg = 1'b0;
-
-        
-        //PC-H //0000 1000
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b0;
-        
-        #52160 uart_txd_in_reg = 1'b1;
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b0;
-        
-        //bits de stop
-        #52160 uart_txd_in_reg = 1'b1;
-        #52160 uart_txd_in_reg = 1'b1;
         
         
-        // Dejo un intervalo de tiempo.
-        #520080 uart_txd_in_reg = 1'b1;
-    
-        //bit de inicio
-        #52160 uart_txd_in_reg = 1'b0;
+                // Dejo un intervalo de tiempo.
+                #520080 uart_txd_in_reg = 1'b1;
+        
+                //bit de inicio
+                #52160 uart_txd_in_reg = 1'b0;
         
                 
-        //PC-L //0001 0000
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b1;
-        
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b0;
-        
-        //bits de stop
-        #52160 uart_txd_in_reg = 1'b1;
-        #52160 uart_txd_in_reg = 1'b1;
-
-
-
-        // Dejo un intervalo de tiempo.
-        #520080 uart_txd_in_reg = 1'b1;
-    
-        //bit de inicio
-        #52160 uart_txd_in_reg = 1'b0;
-        
+                //quinto dato - start MIPS //0000 0111
+                #52160 uart_txd_in_reg = 1'b0;
+                #52160 uart_txd_in_reg = 1'b0;
+                #52160 uart_txd_in_reg = 1'b0;
+                #52160 uart_txd_in_reg = 1'b0;
                 
-        //CC-H //0001 1000
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b1;
-        
-        #52160 uart_txd_in_reg = 1'b1;
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b0;
-        
-        //bits de stop
-        #52160 uart_txd_in_reg = 1'b1;
-        #52160 uart_txd_in_reg = 1'b1;
-
-
-        // Dejo un intervalo de tiempo.
-        #520080 uart_txd_in_reg = 1'b1;
-    
-        //bit de inicio
-        #52160 uart_txd_in_reg = 1'b0;
-        
+                #52160 uart_txd_in_reg = 1'b0;
+                #52160 uart_txd_in_reg = 1'b1;
+                #52160 uart_txd_in_reg = 1'b1;
+                #52160 uart_txd_in_reg = 1'b1;
                 
-        //CC-L //0010 0000
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b1;
-        #52160 uart_txd_in_reg = 1'b0;
+                //bits de stop
+                #52160 uart_txd_in_reg = 1'b1;
+                #52160 uart_txd_in_reg = 1'b1; 
         
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b0;
         
-        //bits de stop
-        #52160 uart_txd_in_reg = 1'b1;
-        #52160 uart_txd_in_reg = 1'b1;
-
-
-
+        
         // Dejo un intervalo de tiempo.
-        #520080 uart_txd_in_reg = 1'b1;
-    
-        //bit de inicio
-        #52160 uart_txd_in_reg = 1'b0;
+                #520080 uart_txd_in_reg = 1'b1;
         
+        
+                ///////////////////////////
+                // Obtener valores del MIPS
+                ///////////////////////////
+        
+                //bit de inicio
+                #52160 uart_txd_in_reg = 1'b0;
+        
+                 // PART3
+                #52160 uart_txd_in_reg = 1'b0;
+                #52160 uart_txd_in_reg = 1'b0;
+                #52160 uart_txd_in_reg = 1'b0;
+                #52160 uart_txd_in_reg = 1'b0;
                 
-        //PC4-H //0010 1000
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b1;
-        #52160 uart_txd_in_reg = 1'b0;
-        
-        #52160 uart_txd_in_reg = 1'b1;
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b0;
-        
-        //bits de stop
-        #52160 uart_txd_in_reg = 1'b1;
-        #52160 uart_txd_in_reg = 1'b1;
-
-
-        // Dejo un intervalo de tiempo.
-        #520080 uart_txd_in_reg = 1'b1;
-    
-        //bit de inicio
-        #52160 uart_txd_in_reg = 1'b0;
-        
+                #52160 uart_txd_in_reg = 1'b1;
+                #52160 uart_txd_in_reg = 1'b0;
+                #52160 uart_txd_in_reg = 1'b0;
+                #52160 uart_txd_in_reg = 1'b0;
                 
-        //PC4-L //0011 0000
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b1;
-        #52160 uart_txd_in_reg = 1'b1;
-        
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b0;
-        
-        //bits de stop
-        #52160 uart_txd_in_reg = 1'b1;
-        #52160 uart_txd_in_reg = 1'b1;
-
-
-
-
-
-        // Dejo un intervalo de tiempo.
-        #520080 uart_txd_in_reg = 1'b1;
-    
-        //bit de inicio
-        #52160 uart_txd_in_reg = 1'b0;
-        
+                #52160 uart_txd_in_reg = 1'b1;
+                #52160 uart_txd_in_reg = 1'b1;
                 
-        //Instruction-3 //0011 1000
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b1;
-        #52160 uart_txd_in_reg = 1'b1;
+                //dejo intervalo
+                #52160 uart_txd_in_reg = 1'b1;
         
-        #52160 uart_txd_in_reg = 1'b1;
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b0;
         
-        //bits de stop
-        #52160 uart_txd_in_reg = 1'b1;
-        #52160 uart_txd_in_reg = 1'b1;
-
-
-
-
-        // Dejo un intervalo de tiempo.
-        #520080 uart_txd_in_reg = 1'b1;
-    
-        //bit de inicio
-        #52160 uart_txd_in_reg = 1'b0;
         
+                //bit de inicio
+                #52160 uart_txd_in_reg = 1'b0;
+        
+                 // PART2
+                #52160 uart_txd_in_reg = 1'b0;
+                #52160 uart_txd_in_reg = 1'b0;
+                #52160 uart_txd_in_reg = 1'b0;
+                #52160 uart_txd_in_reg = 1'b1;
                 
-        //Instruction-2 //0100 0000
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b1;
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b0;
-        
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b0;
-        
-        //bits de stop
-        #52160 uart_txd_in_reg = 1'b1;
-        #52160 uart_txd_in_reg = 1'b1;
-
-
-
-
-
-        // Dejo un intervalo de tiempo.
-        #520080 uart_txd_in_reg = 1'b1;
-    
-        //bit de inicio
-        #52160 uart_txd_in_reg = 1'b0;
-        
+                #52160 uart_txd_in_reg = 1'b0;
+                #52160 uart_txd_in_reg = 1'b0;
+                #52160 uart_txd_in_reg = 1'b0;
+                #52160 uart_txd_in_reg = 1'b0;
                 
-        //Instruction-1 //0100 1000
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b1;
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b0;
-        
-        #52160 uart_txd_in_reg = 1'b1;
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b0;
-        
-        //bits de stop
-        #52160 uart_txd_in_reg = 1'b1;
-        #52160 uart_txd_in_reg = 1'b1;
-
-
-        // Dejo un intervalo de tiempo.
-        #520080 uart_txd_in_reg = 1'b1;
-    
-        //bit de inicio
-        #52160 uart_txd_in_reg = 1'b0;
-        
+                #52160 uart_txd_in_reg = 1'b1;
+                #52160 uart_txd_in_reg = 1'b1;
                 
-        //Instruction-0 //0101 0000
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b1;
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b1;
-        
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b0;
-        
-        //bits de stop
-        #52160 uart_txd_in_reg = 1'b1;
-        #52160 uart_txd_in_reg = 1'b1;
-
-
-
-
+                //dejo intervalo
+                #52160 uart_txd_in_reg = 1'b1;
         
         
-
+        
+        
+                //bit de inicio
+                #52160 uart_txd_in_reg = 1'b0;
+        
+                 // PART1
+                #52160 uart_txd_in_reg = 1'b0;
+                #52160 uart_txd_in_reg = 1'b0;
+                #52160 uart_txd_in_reg = 1'b0;
+                #52160 uart_txd_in_reg = 1'b1;
+                
+                #52160 uart_txd_in_reg = 1'b1;
+                #52160 uart_txd_in_reg = 1'b0;
+                #52160 uart_txd_in_reg = 1'b0;
+                #52160 uart_txd_in_reg = 1'b0;
+                
+                #52160 uart_txd_in_reg = 1'b1;
+                #52160 uart_txd_in_reg = 1'b1;
+                
+                //dejo intervalo
+                #52160 uart_txd_in_reg = 1'b1;
+        
+           
+                //bit de inicio
+                #52160 uart_txd_in_reg = 1'b0;
+        
+                 // PART1
+                #52160 uart_txd_in_reg = 1'b0;
+                #52160 uart_txd_in_reg = 1'b0;
+                #52160 uart_txd_in_reg = 1'b1;
+                #52160 uart_txd_in_reg = 1'b0;
+                
+                #52160 uart_txd_in_reg = 1'b0;
+                #52160 uart_txd_in_reg = 1'b0;
+                #52160 uart_txd_in_reg = 1'b0;
+                #52160 uart_txd_in_reg = 1'b0;
+                
+                #52160 uart_txd_in_reg = 1'b1;
+                #52160 uart_txd_in_reg = 1'b1;
+                
+                //dejo intervalo
+                #52160 uart_txd_in_reg = 1'b1;
+        
+        
+        
+        
+        
+        
+                // Dejo un intervalo de tiempo.
+                #520080 uart_txd_in_reg = 1'b1;
+        
+        
+                ///////////////////////////
+                // Obtener valores del MIPS
+                ///////////////////////////
+        
+                //bit de inicio
+                #52160 uart_txd_in_reg = 1'b0;
+        
+                 // PART3
+                #52160 uart_txd_in_reg = 1'b0;
+                #52160 uart_txd_in_reg = 1'b0;
+                #52160 uart_txd_in_reg = 1'b0;
+                #52160 uart_txd_in_reg = 1'b0;
+                
+                #52160 uart_txd_in_reg = 1'b1;
+                #52160 uart_txd_in_reg = 1'b0;
+                #52160 uart_txd_in_reg = 1'b0;
+                #52160 uart_txd_in_reg = 1'b0;
+                
+                #52160 uart_txd_in_reg = 1'b1;
+                #52160 uart_txd_in_reg = 1'b1;
+                
+                //dejo intervalo
+                #52160 uart_txd_in_reg = 1'b1;
+        
+        
+        
+                //bit de inicio
+                #52160 uart_txd_in_reg = 1'b0;
+        
+                 // PART2
+                #52160 uart_txd_in_reg = 1'b0;
+                #52160 uart_txd_in_reg = 1'b0;
+                #52160 uart_txd_in_reg = 1'b0;
+                #52160 uart_txd_in_reg = 1'b1;
+                
+                #52160 uart_txd_in_reg = 1'b0;
+                #52160 uart_txd_in_reg = 1'b0;
+                #52160 uart_txd_in_reg = 1'b0;
+                #52160 uart_txd_in_reg = 1'b0;
+                
+                #52160 uart_txd_in_reg = 1'b1;
+                #52160 uart_txd_in_reg = 1'b1;
+                
+                //dejo intervalo
+                #52160 uart_txd_in_reg = 1'b1;
+        
+        
+        
+        
+                //bit de inicio
+                #52160 uart_txd_in_reg = 1'b0;
+        
+                 // PART1
+                #52160 uart_txd_in_reg = 1'b0;
+                #52160 uart_txd_in_reg = 1'b0;
+                #52160 uart_txd_in_reg = 1'b0;
+                #52160 uart_txd_in_reg = 1'b1;
+                
+                #52160 uart_txd_in_reg = 1'b1;
+                #52160 uart_txd_in_reg = 1'b0;
+                #52160 uart_txd_in_reg = 1'b0;
+                #52160 uart_txd_in_reg = 1'b0;
+                
+                #52160 uart_txd_in_reg = 1'b1;
+                #52160 uart_txd_in_reg = 1'b1;
+                
+                //dejo intervalo
+                #52160 uart_txd_in_reg = 1'b1;
+        
+           
+                //bit de inicio
+                #52160 uart_txd_in_reg = 1'b0;
+        
+                 // PART1
+                #52160 uart_txd_in_reg = 1'b0;
+                #52160 uart_txd_in_reg = 1'b0;
+                #52160 uart_txd_in_reg = 1'b1;
+                #52160 uart_txd_in_reg = 1'b0;
+                
+                #52160 uart_txd_in_reg = 1'b0;
+                #52160 uart_txd_in_reg = 1'b0;
+                #52160 uart_txd_in_reg = 1'b0;
+                #52160 uart_txd_in_reg = 1'b0;
+                
+                #52160 uart_txd_in_reg = 1'b1;
+                #52160 uart_txd_in_reg = 1'b1;
+                
+                //dejo intervalo
+                #52160 uart_txd_in_reg = 1'b1;
+        
+        
+        
+        
+        
+        
+                // Dejo un intervalo de tiempo.
+                #520080 uart_txd_in_reg = 1'b1;
+        
+        
+                ///////////////////////////
+                // Obtener valores del MIPS
+                ///////////////////////////
+        
+                //bit de inicio
+                #52160 uart_txd_in_reg = 1'b0;
+        
+                 // PART3
+                #52160 uart_txd_in_reg = 1'b0;
+                #52160 uart_txd_in_reg = 1'b0;
+                #52160 uart_txd_in_reg = 1'b0;
+                #52160 uart_txd_in_reg = 1'b0;
+                
+                #52160 uart_txd_in_reg = 1'b1;
+                #52160 uart_txd_in_reg = 1'b0;
+                #52160 uart_txd_in_reg = 1'b0;
+                #52160 uart_txd_in_reg = 1'b0;
+                
+                #52160 uart_txd_in_reg = 1'b1;
+                #52160 uart_txd_in_reg = 1'b1;
+                
+                //dejo intervalo
+                #52160 uart_txd_in_reg = 1'b1;
+        
+        
+        
+                //bit de inicio
+                #52160 uart_txd_in_reg = 1'b0;
+        
+                 // PART2
+                #52160 uart_txd_in_reg = 1'b0;
+                #52160 uart_txd_in_reg = 1'b0;
+                #52160 uart_txd_in_reg = 1'b0;
+                #52160 uart_txd_in_reg = 1'b1;
+                
+                #52160 uart_txd_in_reg = 1'b0;
+                #52160 uart_txd_in_reg = 1'b0;
+                #52160 uart_txd_in_reg = 1'b0;
+                #52160 uart_txd_in_reg = 1'b0;
+                
+                #52160 uart_txd_in_reg = 1'b1;
+                #52160 uart_txd_in_reg = 1'b1;
+                
+                //dejo intervalo
+                #52160 uart_txd_in_reg = 1'b1;
+        
+        
+        
+        
+                //bit de inicio
+                #52160 uart_txd_in_reg = 1'b0;
+        
+                 // PART1
+                #52160 uart_txd_in_reg = 1'b0;
+                #52160 uart_txd_in_reg = 1'b0;
+                #52160 uart_txd_in_reg = 1'b0;
+                #52160 uart_txd_in_reg = 1'b1;
+                
+                #52160 uart_txd_in_reg = 1'b1;
+                #52160 uart_txd_in_reg = 1'b0;
+                #52160 uart_txd_in_reg = 1'b0;
+                #52160 uart_txd_in_reg = 1'b0;
+                
+                #52160 uart_txd_in_reg = 1'b1;
+                #52160 uart_txd_in_reg = 1'b1;
+                
+                //dejo intervalo
+                #52160 uart_txd_in_reg = 1'b1;
+        
+           
+                //bit de inicio
+                #52160 uart_txd_in_reg = 1'b0;
+        
+                 // PART1
+                #52160 uart_txd_in_reg = 1'b0;
+                #52160 uart_txd_in_reg = 1'b0;
+                #52160 uart_txd_in_reg = 1'b1;
+                #52160 uart_txd_in_reg = 1'b0;
+                
+                #52160 uart_txd_in_reg = 1'b0;
+                #52160 uart_txd_in_reg = 1'b0;
+                #52160 uart_txd_in_reg = 1'b0;
+                #52160 uart_txd_in_reg = 1'b0;
+                
+                #52160 uart_txd_in_reg = 1'b1;
+                #52160 uart_txd_in_reg = 1'b1;
+                
+                //dejo intervalo
+                #52160 uart_txd_in_reg = 1'b1;
+        
+        
+        
+        
+        
+        
+                // Dejo un intervalo de tiempo.
+                #520080 uart_txd_in_reg = 1'b1;
+        
+        
+                ///////////////////////////
+                // Obtener valores del MIPS
+                ///////////////////////////
+        
+                //bit de inicio
+                #52160 uart_txd_in_reg = 1'b0;
+        
+                 // PART3
+                #52160 uart_txd_in_reg = 1'b0;
+                #52160 uart_txd_in_reg = 1'b0;
+                #52160 uart_txd_in_reg = 1'b0;
+                #52160 uart_txd_in_reg = 1'b0;
+                
+                #52160 uart_txd_in_reg = 1'b1;
+                #52160 uart_txd_in_reg = 1'b0;
+                #52160 uart_txd_in_reg = 1'b0;
+                #52160 uart_txd_in_reg = 1'b0;
+                
+                #52160 uart_txd_in_reg = 1'b1;
+                #52160 uart_txd_in_reg = 1'b1;
+                
+                //dejo intervalo
+                #52160 uart_txd_in_reg = 1'b1;
+        
+        
+        
+                //bit de inicio
+                #52160 uart_txd_in_reg = 1'b0;
+        
+                 // PART2
+                #52160 uart_txd_in_reg = 1'b0;
+                #52160 uart_txd_in_reg = 1'b0;
+                #52160 uart_txd_in_reg = 1'b0;
+                #52160 uart_txd_in_reg = 1'b1;
+                
+                #52160 uart_txd_in_reg = 1'b0;
+                #52160 uart_txd_in_reg = 1'b0;
+                #52160 uart_txd_in_reg = 1'b0;
+                #52160 uart_txd_in_reg = 1'b0;
+                
+                #52160 uart_txd_in_reg = 1'b1;
+                #52160 uart_txd_in_reg = 1'b1;
+                
+                //dejo intervalo
+                #52160 uart_txd_in_reg = 1'b1;
+        
+        
+        
+        
+                //bit de inicio
+                #52160 uart_txd_in_reg = 1'b0;
+        
+                 // PART1
+                #52160 uart_txd_in_reg = 1'b0;
+                #52160 uart_txd_in_reg = 1'b0;
+                #52160 uart_txd_in_reg = 1'b0;
+                #52160 uart_txd_in_reg = 1'b1;
+                
+                #52160 uart_txd_in_reg = 1'b1;
+                #52160 uart_txd_in_reg = 1'b0;
+                #52160 uart_txd_in_reg = 1'b0;
+                #52160 uart_txd_in_reg = 1'b0;
+                
+                #52160 uart_txd_in_reg = 1'b1;
+                #52160 uart_txd_in_reg = 1'b1;
+                
+                //dejo intervalo
+                #52160 uart_txd_in_reg = 1'b1;
+        
+           
+                //bit de inicio
+                #52160 uart_txd_in_reg = 1'b0;
+        
+                 // PART1
+                #52160 uart_txd_in_reg = 1'b0;
+                #52160 uart_txd_in_reg = 1'b0;
+                #52160 uart_txd_in_reg = 1'b1;
+                #52160 uart_txd_in_reg = 1'b0;
+                
+                #52160 uart_txd_in_reg = 1'b0;
+                #52160 uart_txd_in_reg = 1'b0;
+                #52160 uart_txd_in_reg = 1'b0;
+                #52160 uart_txd_in_reg = 1'b0;
+                
+                #52160 uart_txd_in_reg = 1'b1;
+                #52160 uart_txd_in_reg = 1'b1;
+                
+                //dejo intervalo
+                #52160 uart_txd_in_reg = 1'b1;
+        
+        
+        
+        
+        
+        
+                // Dejo un intervalo de tiempo.
+                #520080 uart_txd_in_reg = 1'b1;
+        
+        
+                ///////////////////////////
+                // Obtener valores del MIPS
+                ///////////////////////////
+        
+                //bit de inicio
+                #52160 uart_txd_in_reg = 1'b0;
+        
+                 // PART3
+                #52160 uart_txd_in_reg = 1'b0;
+                #52160 uart_txd_in_reg = 1'b0;
+                #52160 uart_txd_in_reg = 1'b0;
+                #52160 uart_txd_in_reg = 1'b0;
+                
+                #52160 uart_txd_in_reg = 1'b1;
+                #52160 uart_txd_in_reg = 1'b0;
+                #52160 uart_txd_in_reg = 1'b0;
+                #52160 uart_txd_in_reg = 1'b0;
+                
+                #52160 uart_txd_in_reg = 1'b1;
+                #52160 uart_txd_in_reg = 1'b1;
+                
+                //dejo intervalo
+                #52160 uart_txd_in_reg = 1'b1;
+        
+        
+        
+                //bit de inicio
+                #52160 uart_txd_in_reg = 1'b0;
+        
+                 // PART2
+                #52160 uart_txd_in_reg = 1'b0;
+                #52160 uart_txd_in_reg = 1'b0;
+                #52160 uart_txd_in_reg = 1'b0;
+                #52160 uart_txd_in_reg = 1'b1;
+                
+                #52160 uart_txd_in_reg = 1'b0;
+                #52160 uart_txd_in_reg = 1'b0;
+                #52160 uart_txd_in_reg = 1'b0;
+                #52160 uart_txd_in_reg = 1'b0;
+                
+                #52160 uart_txd_in_reg = 1'b1;
+                #52160 uart_txd_in_reg = 1'b1;
+                
+                //dejo intervalo
+                #52160 uart_txd_in_reg = 1'b1;
+        
+        
+        
+        
+                //bit de inicio
+                #52160 uart_txd_in_reg = 1'b0;
+        
+                 // PART1
+                #52160 uart_txd_in_reg = 1'b0;
+                #52160 uart_txd_in_reg = 1'b0;
+                #52160 uart_txd_in_reg = 1'b0;
+                #52160 uart_txd_in_reg = 1'b1;
+                
+                #52160 uart_txd_in_reg = 1'b1;
+                #52160 uart_txd_in_reg = 1'b0;
+                #52160 uart_txd_in_reg = 1'b0;
+                #52160 uart_txd_in_reg = 1'b0;
+                
+                #52160 uart_txd_in_reg = 1'b1;
+                #52160 uart_txd_in_reg = 1'b1;
+                
+                //dejo intervalo
+                #52160 uart_txd_in_reg = 1'b1;
+        
+           
+                //bit de inicio
+                #52160 uart_txd_in_reg = 1'b0;
+        
+                 // PART1
+                #52160 uart_txd_in_reg = 1'b0;
+                #52160 uart_txd_in_reg = 1'b0;
+                #52160 uart_txd_in_reg = 1'b1;
+                #52160 uart_txd_in_reg = 1'b0;
+                
+                #52160 uart_txd_in_reg = 1'b0;
+                #52160 uart_txd_in_reg = 1'b0;
+                #52160 uart_txd_in_reg = 1'b0;
+                #52160 uart_txd_in_reg = 1'b0;
+                
+                #52160 uart_txd_in_reg = 1'b1;
+                #52160 uart_txd_in_reg = 1'b1;
+                
+                //dejo intervalo
+                #52160 uart_txd_in_reg = 1'b1;
+        
+        
+        
+                // Dejo un intervalo de tiempo.
+                #520080 uart_txd_in_reg = 1'b1;
+        
+        
+                ///////////////////////////
+                // Obtener valores del MIPS
+                ///////////////////////////
+        
+                //bit de inicio
+                #52160 uart_txd_in_reg = 1'b0;
+        
+                 // PART3
+                #52160 uart_txd_in_reg = 1'b0;
+                #52160 uart_txd_in_reg = 1'b0;
+                #52160 uart_txd_in_reg = 1'b0;
+                #52160 uart_txd_in_reg = 1'b0;
+                
+                #52160 uart_txd_in_reg = 1'b1;
+                #52160 uart_txd_in_reg = 1'b0;
+                #52160 uart_txd_in_reg = 1'b0;
+                #52160 uart_txd_in_reg = 1'b0;
+                
+                #52160 uart_txd_in_reg = 1'b1;
+                #52160 uart_txd_in_reg = 1'b1;
+                
+                //dejo intervalo
+                #52160 uart_txd_in_reg = 1'b1;
+        
+        
+        
+                //bit de inicio
+                #52160 uart_txd_in_reg = 1'b0;
+        
+                 // PART2
+                #52160 uart_txd_in_reg = 1'b0;
+                #52160 uart_txd_in_reg = 1'b0;
+                #52160 uart_txd_in_reg = 1'b0;
+                #52160 uart_txd_in_reg = 1'b1;
+                
+                #52160 uart_txd_in_reg = 1'b0;
+                #52160 uart_txd_in_reg = 1'b0;
+                #52160 uart_txd_in_reg = 1'b0;
+                #52160 uart_txd_in_reg = 1'b0;
+                
+                #52160 uart_txd_in_reg = 1'b1;
+                #52160 uart_txd_in_reg = 1'b1;
+                
+                //dejo intervalo
+                #52160 uart_txd_in_reg = 1'b1;
+        
+        
+        
+        
+                //bit de inicio
+                #52160 uart_txd_in_reg = 1'b0;
+        
+                 // PART1
+                #52160 uart_txd_in_reg = 1'b0;
+                #52160 uart_txd_in_reg = 1'b0;
+                #52160 uart_txd_in_reg = 1'b0;
+                #52160 uart_txd_in_reg = 1'b1;
+                
+                #52160 uart_txd_in_reg = 1'b1;
+                #52160 uart_txd_in_reg = 1'b0;
+                #52160 uart_txd_in_reg = 1'b0;
+                #52160 uart_txd_in_reg = 1'b0;
+                
+                #52160 uart_txd_in_reg = 1'b1;
+                #52160 uart_txd_in_reg = 1'b1;
+                
+                //dejo intervalo
+                #52160 uart_txd_in_reg = 1'b1;
+        
+           
+                //bit de inicio
+                #52160 uart_txd_in_reg = 1'b0;
+        
+                 // PART1
+                #52160 uart_txd_in_reg = 1'b0;
+                #52160 uart_txd_in_reg = 1'b0;
+                #52160 uart_txd_in_reg = 1'b1;
+                #52160 uart_txd_in_reg = 1'b0;
+                
+                #52160 uart_txd_in_reg = 1'b0;
+                #52160 uart_txd_in_reg = 1'b0;
+                #52160 uart_txd_in_reg = 1'b0;
+                #52160 uart_txd_in_reg = 1'b0;
+                
+                #52160 uart_txd_in_reg = 1'b1;
+                #52160 uart_txd_in_reg = 1'b1;
+                
+                //dejo intervalo
+                #52160 uart_txd_in_reg = 1'b1;
+        
+        
+        
         // Dejo un intervalo de tiempo.
-        #520080 uart_txd_in_reg = 1'b1;
-        //bit de inicio
-        #52160 uart_txd_in_reg = 1'b0;
-
-        //Branch-H //0101 1000
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b1;
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b1;
+                #520080 uart_txd_in_reg = 1'b1;
         
-        #52160 uart_txd_in_reg = 1'b1;
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b0;
-        //bits de stop
-        #52160 uart_txd_in_reg = 1'b1;
-        #52160 uart_txd_in_reg = 1'b1;
-
-
-       
-       // Dejo un intervalo de tiempo.
-       #520080 uart_txd_in_reg = 1'b1;
-       //bit de inicio
-       #52160 uart_txd_in_reg = 1'b0;
-    
-       //BRANCH-L //0110 0000
-       #52160 uart_txd_in_reg = 1'b0;
-       #52160 uart_txd_in_reg = 1'b1;
-       #52160 uart_txd_in_reg = 1'b1;
-       #52160 uart_txd_in_reg = 1'b0;
-       
-       #52160 uart_txd_in_reg = 1'b0;
-       #52160 uart_txd_in_reg = 1'b0;
-       #52160 uart_txd_in_reg = 1'b0;
-       #52160 uart_txd_in_reg = 1'b0;
-       //bits de stop
-       #52160 uart_txd_in_reg = 1'b1;
-       #52160 uart_txd_in_reg = 1'b1;
-
-
-       
-       // Dejo un intervalo de tiempo.
-       #520080 uart_txd_in_reg = 1'b1;
-       //bit de inicio
-       #52160 uart_txd_in_reg = 1'b0;
-    
-       //REG-A - 3 //0110 1000
-       #52160 uart_txd_in_reg = 1'b0;
-       #52160 uart_txd_in_reg = 1'b1;
-       #52160 uart_txd_in_reg = 1'b1;
-       #52160 uart_txd_in_reg = 1'b0;
-       
-       #52160 uart_txd_in_reg = 1'b1;
-       #52160 uart_txd_in_reg = 1'b0;
-       #52160 uart_txd_in_reg = 1'b0;
-       #52160 uart_txd_in_reg = 1'b0;
-       //bits de stop
-       #52160 uart_txd_in_reg = 1'b1;
-       #52160 uart_txd_in_reg = 1'b1;
-
-
-
-
-       
-       // Dejo un intervalo de tiempo.
-        #520080 uart_txd_in_reg = 1'b1;
-        //bit de inicio
-        #52160 uart_txd_in_reg = 1'b0;
-    
-        //REG-A - 2 // 0111 0000
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b1;
-        #52160 uart_txd_in_reg = 1'b1;
-        #52160 uart_txd_in_reg = 1'b1;
         
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b0;
-        //bits de stop
-        #52160 uart_txd_in_reg = 1'b1;
-        #52160 uart_txd_in_reg = 1'b1;
-
-
-       
-
-        #520080 uart_txd_in_reg = 1'b1;
-       //bit de inicio
-       #52160 uart_txd_in_reg = 1'b0;
-    
-        // REG-A - 1 // 0111 1000
-       #52160 uart_txd_in_reg = 1'b0;
-       #52160 uart_txd_in_reg = 1'b1;
-       #52160 uart_txd_in_reg = 1'b1;
-       #52160 uart_txd_in_reg = 1'b1;
-       
-       #52160 uart_txd_in_reg = 1'b1;
-       #52160 uart_txd_in_reg = 1'b0;
-       #52160 uart_txd_in_reg = 1'b0;
-       #52160 uart_txd_in_reg = 1'b0;
-       //bits de stop
-       #52160 uart_txd_in_reg = 1'b1;
-       #52160 uart_txd_in_reg = 1'b1;
-
-
-       
-
-       #520080 uart_txd_in_reg = 1'b1;
-        //bit de inicio
-        #52160 uart_txd_in_reg = 1'b0;
+                ///////////////////////////
+                // Obtener valores del MIPS
+                ///////////////////////////
         
-        // REG-A - 0 // 1000 0000
-        #52160 uart_txd_in_reg = 1'b1;
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b0;
+                //bit de inicio
+                #52160 uart_txd_in_reg = 1'b0;
         
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b0;
-        //bits de stop
-        #52160 uart_txd_in_reg = 1'b1;
-        #52160 uart_txd_in_reg = 1'b1;
-
-
+                 // PART3
+                #52160 uart_txd_in_reg = 1'b0;
+                #52160 uart_txd_in_reg = 1'b0;
+                #52160 uart_txd_in_reg = 1'b0;
+                #52160 uart_txd_in_reg = 1'b0;
+                
+                #52160 uart_txd_in_reg = 1'b1;
+                #52160 uart_txd_in_reg = 1'b0;
+                #52160 uart_txd_in_reg = 1'b0;
+                #52160 uart_txd_in_reg = 1'b0;
+                
+                #52160 uart_txd_in_reg = 1'b1;
+                #52160 uart_txd_in_reg = 1'b1;
+                
+                //dejo intervalo
+                #52160 uart_txd_in_reg = 1'b1;
         
-        #520080 uart_txd_in_reg = 1'b1;
-        //bit de inicio
-        #52160 uart_txd_in_reg = 1'b0;
-
-        // REG-B - 3 // 1000 1000
-        #52160 uart_txd_in_reg = 1'b1;
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b0;
         
-        #52160 uart_txd_in_reg = 1'b1;
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b0;
-        //bits de stop
-        #52160 uart_txd_in_reg = 1'b1;
-        #52160 uart_txd_in_reg = 1'b1;
-
-
-       
-        #520080 uart_txd_in_reg = 1'b1;
-        //bit de inicio
-        #52160 uart_txd_in_reg = 1'b0;
-
-        // REG-B - 2 // 1001 0000
-        #52160 uart_txd_in_reg = 1'b1;
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b1;
         
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b0;
-        //bits de stop
-        #52160 uart_txd_in_reg = 1'b1;
-        #52160 uart_txd_in_reg = 1'b1;
-
-
-       
-
-        #520080 uart_txd_in_reg = 1'b1;
-        //bit de inicio
-        #52160 uart_txd_in_reg = 1'b0;
+                //bit de inicio
+                #52160 uart_txd_in_reg = 1'b0;
         
-        // REG-B - 1 // 1001 1000
-        #52160 uart_txd_in_reg = 1'b1;
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b1;
+                 // PART2
+                #52160 uart_txd_in_reg = 1'b0;
+                #52160 uart_txd_in_reg = 1'b0;
+                #52160 uart_txd_in_reg = 1'b0;
+                #52160 uart_txd_in_reg = 1'b1;
+                
+                #52160 uart_txd_in_reg = 1'b0;
+                #52160 uart_txd_in_reg = 1'b0;
+                #52160 uart_txd_in_reg = 1'b0;
+                #52160 uart_txd_in_reg = 1'b0;
+                
+                #52160 uart_txd_in_reg = 1'b1;
+                #52160 uart_txd_in_reg = 1'b1;
+                
+                //dejo intervalo
+                #52160 uart_txd_in_reg = 1'b1;
         
-        #52160 uart_txd_in_reg = 1'b1;
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b0;
-        //bits de stop
-        #52160 uart_txd_in_reg = 1'b1;
-        #52160 uart_txd_in_reg = 1'b1;
-
-       
-
-        #520080 uart_txd_in_reg = 1'b1;
-        //bit de inicio
-        #52160 uart_txd_in_reg = 1'b0;
         
-        // REG-B - 0 // 1010 0000
-        #52160 uart_txd_in_reg = 1'b1;
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b1;
-        #52160 uart_txd_in_reg = 1'b0;
         
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b0;
-        //bits de stop
-        #52160 uart_txd_in_reg = 1'b1;
-        #52160 uart_txd_in_reg = 1'b1;
-
-
-       
-        #520080 uart_txd_in_reg = 1'b1;
-        //bit de inicio
-        #52160 uart_txd_in_reg = 1'b0;
         
-        // EXTENSION SIGNO - 3 // 1010 1000
-        #52160 uart_txd_in_reg = 1'b1;
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b1;
-        #52160 uart_txd_in_reg = 1'b0;
+                //bit de inicio
+                #52160 uart_txd_in_reg = 1'b0;
         
-        #52160 uart_txd_in_reg = 1'b1;
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b0;
-        //bits de stop
-        #52160 uart_txd_in_reg = 1'b1;
-        #52160 uart_txd_in_reg = 1'b1;
-
-
-       
-        #520080 uart_txd_in_reg = 1'b1;
-        //bit de inicio
-        #52160 uart_txd_in_reg = 1'b0;
+                 // PART1
+                #52160 uart_txd_in_reg = 1'b0;
+                #52160 uart_txd_in_reg = 1'b0;
+                #52160 uart_txd_in_reg = 1'b0;
+                #52160 uart_txd_in_reg = 1'b1;
+                
+                #52160 uart_txd_in_reg = 1'b1;
+                #52160 uart_txd_in_reg = 1'b0;
+                #52160 uart_txd_in_reg = 1'b0;
+                #52160 uart_txd_in_reg = 1'b0;
+                
+                #52160 uart_txd_in_reg = 1'b1;
+                #52160 uart_txd_in_reg = 1'b1;
+                
+                //dejo intervalo
+                #52160 uart_txd_in_reg = 1'b1;
         
-        // EXTENSION SIGNO - 2 // 1011 0000
-        #52160 uart_txd_in_reg = 1'b1;
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b1;
-        #52160 uart_txd_in_reg = 1'b1;
+           
+                //bit de inicio
+                #52160 uart_txd_in_reg = 1'b0;
         
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b0;
-        //bits de stop
-        #52160 uart_txd_in_reg = 1'b1;
-        #52160 uart_txd_in_reg = 1'b1;
-
-
-       
-        #520080 uart_txd_in_reg = 1'b1;
-        //bit de inicio
-        #52160 uart_txd_in_reg = 1'b0;
+                 // PART1
+                #52160 uart_txd_in_reg = 1'b0;
+                #52160 uart_txd_in_reg = 1'b0;
+                #52160 uart_txd_in_reg = 1'b1;
+                #52160 uart_txd_in_reg = 1'b0;
+                
+                #52160 uart_txd_in_reg = 1'b0;
+                #52160 uart_txd_in_reg = 1'b0;
+                #52160 uart_txd_in_reg = 1'b0;
+                #52160 uart_txd_in_reg = 1'b0;
+                
+                #52160 uart_txd_in_reg = 1'b1;
+                #52160 uart_txd_in_reg = 1'b1;
+                
+                //dejo intervalo
+                #52160 uart_txd_in_reg = 1'b1;
+                
+                
+                
+                
+                
+        // Dejo un intervalo de tiempo.
+                        #520080 uart_txd_in_reg = 1'b1;
+                
+                
+                        ///////////////////////////
+                        // Obtener valores del MIPS
+                        ///////////////////////////
+                
+                        //bit de inicio
+                        #52160 uart_txd_in_reg = 1'b0;
+                
+                         // PART3
+                        #52160 uart_txd_in_reg = 1'b0;
+                        #52160 uart_txd_in_reg = 1'b0;
+                        #52160 uart_txd_in_reg = 1'b0;
+                        #52160 uart_txd_in_reg = 1'b0;
+                        
+                        #52160 uart_txd_in_reg = 1'b1;
+                        #52160 uart_txd_in_reg = 1'b0;
+                        #52160 uart_txd_in_reg = 1'b0;
+                        #52160 uart_txd_in_reg = 1'b0;
+                        
+                        #52160 uart_txd_in_reg = 1'b1;
+                        #52160 uart_txd_in_reg = 1'b1;
+                        
+                        //dejo intervalo
+                        #52160 uart_txd_in_reg = 1'b1;
+                
+                
+                
+                        //bit de inicio
+                        #52160 uart_txd_in_reg = 1'b0;
+                
+                         // PART2
+                        #52160 uart_txd_in_reg = 1'b0;
+                        #52160 uart_txd_in_reg = 1'b0;
+                        #52160 uart_txd_in_reg = 1'b0;
+                        #52160 uart_txd_in_reg = 1'b1;
+                        
+                        #52160 uart_txd_in_reg = 1'b0;
+                        #52160 uart_txd_in_reg = 1'b0;
+                        #52160 uart_txd_in_reg = 1'b0;
+                        #52160 uart_txd_in_reg = 1'b0;
+                        
+                        #52160 uart_txd_in_reg = 1'b1;
+                        #52160 uart_txd_in_reg = 1'b1;
+                        
+                        //dejo intervalo
+                        #52160 uart_txd_in_reg = 1'b1;
+                
+                
+                
+                
+                        //bit de inicio
+                        #52160 uart_txd_in_reg = 1'b0;
+                
+                         // PART1
+                        #52160 uart_txd_in_reg = 1'b0;
+                        #52160 uart_txd_in_reg = 1'b0;
+                        #52160 uart_txd_in_reg = 1'b0;
+                        #52160 uart_txd_in_reg = 1'b1;
+                        
+                        #52160 uart_txd_in_reg = 1'b1;
+                        #52160 uart_txd_in_reg = 1'b0;
+                        #52160 uart_txd_in_reg = 1'b0;
+                        #52160 uart_txd_in_reg = 1'b0;
+                        
+                        #52160 uart_txd_in_reg = 1'b1;
+                        #52160 uart_txd_in_reg = 1'b1;
+                        
+                        //dejo intervalo
+                        #52160 uart_txd_in_reg = 1'b1;
+                
+                   
+                        //bit de inicio
+                        #52160 uart_txd_in_reg = 1'b0;
+                
+                         // PART1
+                        #52160 uart_txd_in_reg = 1'b0;
+                        #52160 uart_txd_in_reg = 1'b0;
+                        #52160 uart_txd_in_reg = 1'b1;
+                        #52160 uart_txd_in_reg = 1'b0;
+                        
+                        #52160 uart_txd_in_reg = 1'b0;
+                        #52160 uart_txd_in_reg = 1'b0;
+                        #52160 uart_txd_in_reg = 1'b0;
+                        #52160 uart_txd_in_reg = 1'b0;
+                        
+                        #52160 uart_txd_in_reg = 1'b1;
+                        #52160 uart_txd_in_reg = 1'b1;
+                        
+                        //dejo intervalo
+                        #52160 uart_txd_in_reg = 1'b1;
+                        
+                        
+                        
+                        
+                        
+                        
+        // Dejo un intervalo de tiempo.
+                                #520080 uart_txd_in_reg = 1'b1;
+                        
+                        
+                                ///////////////////////////
+                                // Obtener valores del MIPS
+                                ///////////////////////////
+                        
+                                //bit de inicio
+                                #52160 uart_txd_in_reg = 1'b0;
+                        
+                                 // PART3
+                                #52160 uart_txd_in_reg = 1'b0;
+                                #52160 uart_txd_in_reg = 1'b0;
+                                #52160 uart_txd_in_reg = 1'b0;
+                                #52160 uart_txd_in_reg = 1'b0;
+                                
+                                #52160 uart_txd_in_reg = 1'b1;
+                                #52160 uart_txd_in_reg = 1'b0;
+                                #52160 uart_txd_in_reg = 1'b0;
+                                #52160 uart_txd_in_reg = 1'b0;
+                                
+                                #52160 uart_txd_in_reg = 1'b1;
+                                #52160 uart_txd_in_reg = 1'b1;
+                                
+                                //dejo intervalo
+                                #52160 uart_txd_in_reg = 1'b1;
+                        
+                        
+                        
+                                //bit de inicio
+                                #52160 uart_txd_in_reg = 1'b0;
+                        
+                                 // PART2
+                                #52160 uart_txd_in_reg = 1'b0;
+                                #52160 uart_txd_in_reg = 1'b0;
+                                #52160 uart_txd_in_reg = 1'b0;
+                                #52160 uart_txd_in_reg = 1'b1;
+                                
+                                #52160 uart_txd_in_reg = 1'b0;
+                                #52160 uart_txd_in_reg = 1'b0;
+                                #52160 uart_txd_in_reg = 1'b0;
+                                #52160 uart_txd_in_reg = 1'b0;
+                                
+                                #52160 uart_txd_in_reg = 1'b1;
+                                #52160 uart_txd_in_reg = 1'b1;
+                                
+                                //dejo intervalo
+                                #52160 uart_txd_in_reg = 1'b1;
+                        
+                        
+                        
+                        
+                                //bit de inicio
+                                #52160 uart_txd_in_reg = 1'b0;
+                        
+                                 // PART1
+                                #52160 uart_txd_in_reg = 1'b0;
+                                #52160 uart_txd_in_reg = 1'b0;
+                                #52160 uart_txd_in_reg = 1'b0;
+                                #52160 uart_txd_in_reg = 1'b1;
+                                
+                                #52160 uart_txd_in_reg = 1'b1;
+                                #52160 uart_txd_in_reg = 1'b0;
+                                #52160 uart_txd_in_reg = 1'b0;
+                                #52160 uart_txd_in_reg = 1'b0;
+                                
+                                #52160 uart_txd_in_reg = 1'b1;
+                                #52160 uart_txd_in_reg = 1'b1;
+                                
+                                //dejo intervalo
+                                #52160 uart_txd_in_reg = 1'b1;
+                        
+                           
+                                //bit de inicio
+                                #52160 uart_txd_in_reg = 1'b0;
+                        
+                                 // PART1
+                                #52160 uart_txd_in_reg = 1'b0;
+                                #52160 uart_txd_in_reg = 1'b0;
+                                #52160 uart_txd_in_reg = 1'b1;
+                                #52160 uart_txd_in_reg = 1'b0;
+                                
+                                #52160 uart_txd_in_reg = 1'b0;
+                                #52160 uart_txd_in_reg = 1'b0;
+                                #52160 uart_txd_in_reg = 1'b0;
+                                #52160 uart_txd_in_reg = 1'b0;
+                                
+                                #52160 uart_txd_in_reg = 1'b1;
+                                #52160 uart_txd_in_reg = 1'b1;
+                                
+                                //dejo intervalo
+                                #52160 uart_txd_in_reg = 1'b1;
+                                
+                                
+                                
+                                
+        ////////////////////////////////////////////
         
-        // EXTENSION SIGNO - 1 // 1011 1000
-        #52160 uart_txd_in_reg = 1'b1;
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b1;
-        #52160 uart_txd_in_reg = 1'b1;
         
-        #52160 uart_txd_in_reg = 1'b1;
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b0;
-        //bits de stop
-        #52160 uart_txd_in_reg = 1'b1;
-        #52160 uart_txd_in_reg = 1'b1;
-
-       
-
-        #520080 uart_txd_in_reg = 1'b1;
-        //bit de inicio
-        #52160 uart_txd_in_reg = 1'b0;
         
-        // EXTENSION SIGNO - 0 // 1100 0000
-        #52160 uart_txd_in_reg = 1'b1;
-        #52160 uart_txd_in_reg = 1'b1;
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b0;
+        // Dejo un intervalo de tiempo.
+                #520080 uart_txd_in_reg = 1'b1;
         
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b0;
-        //bits de stop
-        #52160 uart_txd_in_reg = 1'b1;
-        #52160 uart_txd_in_reg = 1'b1;
-
-
-       
-        #520080 uart_txd_in_reg = 1'b1;
-        //bit de inicio
-        #52160 uart_txd_in_reg = 1'b0;
         
-        // REG ADDRESS - H // 1100 1000
-        #52160 uart_txd_in_reg = 1'b1;
-        #52160 uart_txd_in_reg = 1'b1;
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b0;
+                ///////////////////////////
+                // Obtener valores del MIPS
+                ///////////////////////////
         
-        #52160 uart_txd_in_reg = 1'b1;
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b0;
-        //bits de stop
-        #52160 uart_txd_in_reg = 1'b1;
-        #52160 uart_txd_in_reg = 1'b1;
-
-
-       
-        #520080 uart_txd_in_reg = 1'b1;
-        //bit de inicio
-        #52160 uart_txd_in_reg = 1'b0;
+                //bit de inicio
+                #52160 uart_txd_in_reg = 1'b0;
         
-        // REG-ADDRESS // 1101 0000
-        #52160 uart_txd_in_reg = 1'b1;
-        #52160 uart_txd_in_reg = 1'b1;
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b1;
+                 // PART3
+                #52160 uart_txd_in_reg = 1'b0;
+                #52160 uart_txd_in_reg = 1'b0;
+                #52160 uart_txd_in_reg = 1'b0;
+                #52160 uart_txd_in_reg = 1'b0;
+                
+                #52160 uart_txd_in_reg = 1'b1;
+                #52160 uart_txd_in_reg = 1'b0;
+                #52160 uart_txd_in_reg = 1'b0;
+                #52160 uart_txd_in_reg = 1'b0;
+                
+                #52160 uart_txd_in_reg = 1'b1;
+                #52160 uart_txd_in_reg = 1'b1;
+                
+                //dejo intervalo
+                #52160 uart_txd_in_reg = 1'b1;
         
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b0;
-        //bits de stop
-        #52160 uart_txd_in_reg = 1'b1;
-        #52160 uart_txd_in_reg = 1'b1;
-
-
-       
-        #520080 uart_txd_in_reg = 1'b1;
-        //bit de inicio
-        #52160 uart_txd_in_reg = 1'b0;
-        // SEÑALES CONTROL ID/EX - H // 1101 1000
-        #52160 uart_txd_in_reg = 1'b1;
-        #52160 uart_txd_in_reg = 1'b1;
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b1;
         
-        #52160 uart_txd_in_reg = 1'b1;
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b0;
-        //bits de stop
-        #52160 uart_txd_in_reg = 1'b1;
-        #52160 uart_txd_in_reg = 1'b1;
-
-
-    
-
-
-       
-        #520080 uart_txd_in_reg = 1'b1;
-        //bit de inicio
-        #52160 uart_txd_in_reg = 1'b0;
-        // SEÑALES CONTROL ID/EX - L // 1110 0000
-        #52160 uart_txd_in_reg = 1'b1;
-        #52160 uart_txd_in_reg = 1'b1;
-        #52160 uart_txd_in_reg = 1'b1;
-        #52160 uart_txd_in_reg = 1'b0;
         
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b0;
-        #52160 uart_txd_in_reg = 1'b0;
-        //bits de stop
-        #52160 uart_txd_in_reg = 1'b1;
-        #52160 uart_txd_in_reg = 1'b1;
-
-
-
-
-
+                //bit de inicio
+                #52160 uart_txd_in_reg = 1'b0;
+        
+                 // PART2
+                #52160 uart_txd_in_reg = 1'b0;
+                #52160 uart_txd_in_reg = 1'b0;
+                #52160 uart_txd_in_reg = 1'b0;
+                #52160 uart_txd_in_reg = 1'b1;
+                
+                #52160 uart_txd_in_reg = 1'b0;
+                #52160 uart_txd_in_reg = 1'b0;
+                #52160 uart_txd_in_reg = 1'b0;
+                #52160 uart_txd_in_reg = 1'b0;
+                
+                #52160 uart_txd_in_reg = 1'b1;
+                #52160 uart_txd_in_reg = 1'b1;
+                
+                //dejo intervalo
+                #52160 uart_txd_in_reg = 1'b1;
+        
+        
+        
+        
+                //bit de inicio
+                #52160 uart_txd_in_reg = 1'b0;
+        
+                 // PART1
+                #52160 uart_txd_in_reg = 1'b0;
+                #52160 uart_txd_in_reg = 1'b0;
+                #52160 uart_txd_in_reg = 1'b0;
+                #52160 uart_txd_in_reg = 1'b1;
+                
+                #52160 uart_txd_in_reg = 1'b1;
+                #52160 uart_txd_in_reg = 1'b0;
+                #52160 uart_txd_in_reg = 1'b0;
+                #52160 uart_txd_in_reg = 1'b0;
+                
+                #52160 uart_txd_in_reg = 1'b1;
+                #52160 uart_txd_in_reg = 1'b1;
+                
+                //dejo intervalo
+                #52160 uart_txd_in_reg = 1'b1;
+        
+           
+                //bit de inicio
+                #52160 uart_txd_in_reg = 1'b0;
+        
+                 // PART1
+                #52160 uart_txd_in_reg = 1'b0;
+                #52160 uart_txd_in_reg = 1'b0;
+                #52160 uart_txd_in_reg = 1'b1;
+                #52160 uart_txd_in_reg = 1'b0;
+                
+                #52160 uart_txd_in_reg = 1'b0;
+                #52160 uart_txd_in_reg = 1'b0;
+                #52160 uart_txd_in_reg = 1'b0;
+                #52160 uart_txd_in_reg = 1'b0;
+                
+                #52160 uart_txd_in_reg = 1'b1;
+                #52160 uart_txd_in_reg = 1'b1;
+                
+                //dejo intervalo
+                #52160 uart_txd_in_reg = 1'b1;
+                
+                
+                
+                
+///// START MIPS ///////
+                
+                
+                        // Dejo un intervalo de tiempo.
+                        #520080 uart_txd_in_reg = 1'b1;
+                
+                        //bit de inicio
+                        #52160 uart_txd_in_reg = 1'b0;
+                
+                        
+                        //quinto dato - start MIPS //0000 0111
+                        #52160 uart_txd_in_reg = 1'b0;
+                        #52160 uart_txd_in_reg = 1'b0;
+                        #52160 uart_txd_in_reg = 1'b0;
+                        #52160 uart_txd_in_reg = 1'b0;
+                        
+                        #52160 uart_txd_in_reg = 1'b0;
+                        #52160 uart_txd_in_reg = 1'b1;
+                        #52160 uart_txd_in_reg = 1'b1;
+                        #52160 uart_txd_in_reg = 1'b1;
+                        
+                        //bits de stop
+                        #52160 uart_txd_in_reg = 1'b1;
+                        #52160 uart_txd_in_reg = 1'b1; 
+                
+                
+                
+                // Dejo un intervalo de tiempo.
+                        #520080 uart_txd_in_reg = 1'b1;
+                
+                
+                        ///////////////////////////
+                        // Obtener valores del MIPS
+                        ///////////////////////////
+                
+                        //bit de inicio
+                        #52160 uart_txd_in_reg = 1'b0;
+                
+                         // PART3
+                        #52160 uart_txd_in_reg = 1'b0;
+                        #52160 uart_txd_in_reg = 1'b0;
+                        #52160 uart_txd_in_reg = 1'b0;
+                        #52160 uart_txd_in_reg = 1'b0;
+                        
+                        #52160 uart_txd_in_reg = 1'b1;
+                        #52160 uart_txd_in_reg = 1'b0;
+                        #52160 uart_txd_in_reg = 1'b0;
+                        #52160 uart_txd_in_reg = 1'b0;
+                        
+                        #52160 uart_txd_in_reg = 1'b1;
+                        #52160 uart_txd_in_reg = 1'b1;
+                        
+                        //dejo intervalo
+                        #52160 uart_txd_in_reg = 1'b1;
+                
+                
+                
+                        //bit de inicio
+                        #52160 uart_txd_in_reg = 1'b0;
+                
+                         // PART2
+                        #52160 uart_txd_in_reg = 1'b0;
+                        #52160 uart_txd_in_reg = 1'b0;
+                        #52160 uart_txd_in_reg = 1'b0;
+                        #52160 uart_txd_in_reg = 1'b1;
+                        
+                        #52160 uart_txd_in_reg = 1'b0;
+                        #52160 uart_txd_in_reg = 1'b0;
+                        #52160 uart_txd_in_reg = 1'b0;
+                        #52160 uart_txd_in_reg = 1'b0;
+                        
+                        #52160 uart_txd_in_reg = 1'b1;
+                        #52160 uart_txd_in_reg = 1'b1;
+                        
+                        //dejo intervalo
+                        #52160 uart_txd_in_reg = 1'b1;
+                
+                
+                
+                
+                        //bit de inicio
+                        #52160 uart_txd_in_reg = 1'b0;
+                
+                         // PART1
+                        #52160 uart_txd_in_reg = 1'b0;
+                        #52160 uart_txd_in_reg = 1'b0;
+                        #52160 uart_txd_in_reg = 1'b0;
+                        #52160 uart_txd_in_reg = 1'b1;
+                        
+                        #52160 uart_txd_in_reg = 1'b1;
+                        #52160 uart_txd_in_reg = 1'b0;
+                        #52160 uart_txd_in_reg = 1'b0;
+                        #52160 uart_txd_in_reg = 1'b0;
+                        
+                        #52160 uart_txd_in_reg = 1'b1;
+                        #52160 uart_txd_in_reg = 1'b1;
+                        
+                        //dejo intervalo
+                        #52160 uart_txd_in_reg = 1'b1;
+                
+                   
+                        //bit de inicio
+                        #52160 uart_txd_in_reg = 1'b0;
+                
+                         // PART1
+                        #52160 uart_txd_in_reg = 1'b0;
+                        #52160 uart_txd_in_reg = 1'b0;
+                        #52160 uart_txd_in_reg = 1'b1;
+                        #52160 uart_txd_in_reg = 1'b0;
+                        
+                        #52160 uart_txd_in_reg = 1'b0;
+                        #52160 uart_txd_in_reg = 1'b0;
+                        #52160 uart_txd_in_reg = 1'b0;
+                        #52160 uart_txd_in_reg = 1'b0;
+                        
+                        #52160 uart_txd_in_reg = 1'b1;
+                        #52160 uart_txd_in_reg = 1'b1;
+                        
+                        //dejo intervalo
+                        #52160 uart_txd_in_reg = 1'b1;
+                
+                
+                
+                
+                
+                
+                        // Dejo un intervalo de tiempo.
+                        #520080 uart_txd_in_reg = 1'b1;
+                
+                
+                        ///////////////////////////
+                        // Obtener valores del MIPS
+                        ///////////////////////////
+                
+                        //bit de inicio
+                        #52160 uart_txd_in_reg = 1'b0;
+                
+                         // PART3
+                        #52160 uart_txd_in_reg = 1'b0;
+                        #52160 uart_txd_in_reg = 1'b0;
+                        #52160 uart_txd_in_reg = 1'b0;
+                        #52160 uart_txd_in_reg = 1'b0;
+                        
+                        #52160 uart_txd_in_reg = 1'b1;
+                        #52160 uart_txd_in_reg = 1'b0;
+                        #52160 uart_txd_in_reg = 1'b0;
+                        #52160 uart_txd_in_reg = 1'b0;
+                        
+                        #52160 uart_txd_in_reg = 1'b1;
+                        #52160 uart_txd_in_reg = 1'b1;
+                        
+                        //dejo intervalo
+                        #52160 uart_txd_in_reg = 1'b1;
+                
+                
+                
+                        //bit de inicio
+                        #52160 uart_txd_in_reg = 1'b0;
+                
+                         // PART2
+                        #52160 uart_txd_in_reg = 1'b0;
+                        #52160 uart_txd_in_reg = 1'b0;
+                        #52160 uart_txd_in_reg = 1'b0;
+                        #52160 uart_txd_in_reg = 1'b1;
+                        
+                        #52160 uart_txd_in_reg = 1'b0;
+                        #52160 uart_txd_in_reg = 1'b0;
+                        #52160 uart_txd_in_reg = 1'b0;
+                        #52160 uart_txd_in_reg = 1'b0;
+                        
+                        #52160 uart_txd_in_reg = 1'b1;
+                        #52160 uart_txd_in_reg = 1'b1;
+                        
+                        //dejo intervalo
+                        #52160 uart_txd_in_reg = 1'b1;
+                
+                
+                
+                
+                        //bit de inicio
+                        #52160 uart_txd_in_reg = 1'b0;
+                
+                         // PART1
+                        #52160 uart_txd_in_reg = 1'b0;
+                        #52160 uart_txd_in_reg = 1'b0;
+                        #52160 uart_txd_in_reg = 1'b0;
+                        #52160 uart_txd_in_reg = 1'b1;
+                        
+                        #52160 uart_txd_in_reg = 1'b1;
+                        #52160 uart_txd_in_reg = 1'b0;
+                        #52160 uart_txd_in_reg = 1'b0;
+                        #52160 uart_txd_in_reg = 1'b0;
+                        
+                        #52160 uart_txd_in_reg = 1'b1;
+                        #52160 uart_txd_in_reg = 1'b1;
+                        
+                        //dejo intervalo
+                        #52160 uart_txd_in_reg = 1'b1;
+                
+                   
+                        //bit de inicio
+                        #52160 uart_txd_in_reg = 1'b0;
+                
+                         // PART1
+                        #52160 uart_txd_in_reg = 1'b0;
+                        #52160 uart_txd_in_reg = 1'b0;
+                        #52160 uart_txd_in_reg = 1'b1;
+                        #52160 uart_txd_in_reg = 1'b0;
+                        
+                        #52160 uart_txd_in_reg = 1'b0;
+                        #52160 uart_txd_in_reg = 1'b0;
+                        #52160 uart_txd_in_reg = 1'b0;
+                        #52160 uart_txd_in_reg = 1'b0;
+                        
+                        #52160 uart_txd_in_reg = 1'b1;
+                        #52160 uart_txd_in_reg = 1'b1;
+                        
+                        //dejo intervalo
+                        #52160 uart_txd_in_reg = 1'b1;
+                
+                
+                
+                
+                
+                
+                        // Dejo un intervalo de tiempo.
+                        #520080 uart_txd_in_reg = 1'b1;
+                
+                
+                        ///////////////////////////
+                        // Obtener valores del MIPS
+                        ///////////////////////////
+                
+                        //bit de inicio
+                        #52160 uart_txd_in_reg = 1'b0;
+                
+                         // PART3
+                        #52160 uart_txd_in_reg = 1'b0;
+                        #52160 uart_txd_in_reg = 1'b0;
+                        #52160 uart_txd_in_reg = 1'b0;
+                        #52160 uart_txd_in_reg = 1'b0;
+                        
+                        #52160 uart_txd_in_reg = 1'b1;
+                        #52160 uart_txd_in_reg = 1'b0;
+                        #52160 uart_txd_in_reg = 1'b0;
+                        #52160 uart_txd_in_reg = 1'b0;
+                        
+                        #52160 uart_txd_in_reg = 1'b1;
+                        #52160 uart_txd_in_reg = 1'b1;
+                        
+                        //dejo intervalo
+                        #52160 uart_txd_in_reg = 1'b1;
+                
+                
+                
+                        //bit de inicio
+                        #52160 uart_txd_in_reg = 1'b0;
+                
+                         // PART2
+                        #52160 uart_txd_in_reg = 1'b0;
+                        #52160 uart_txd_in_reg = 1'b0;
+                        #52160 uart_txd_in_reg = 1'b0;
+                        #52160 uart_txd_in_reg = 1'b1;
+                        
+                        #52160 uart_txd_in_reg = 1'b0;
+                        #52160 uart_txd_in_reg = 1'b0;
+                        #52160 uart_txd_in_reg = 1'b0;
+                        #52160 uart_txd_in_reg = 1'b0;
+                        
+                        #52160 uart_txd_in_reg = 1'b1;
+                        #52160 uart_txd_in_reg = 1'b1;
+                        
+                        //dejo intervalo
+                        #52160 uart_txd_in_reg = 1'b1;
+                
+                
+                
+                
+                        //bit de inicio
+                        #52160 uart_txd_in_reg = 1'b0;
+                
+                         // PART1
+                        #52160 uart_txd_in_reg = 1'b0;
+                        #52160 uart_txd_in_reg = 1'b0;
+                        #52160 uart_txd_in_reg = 1'b0;
+                        #52160 uart_txd_in_reg = 1'b1;
+                        
+                        #52160 uart_txd_in_reg = 1'b1;
+                        #52160 uart_txd_in_reg = 1'b0;
+                        #52160 uart_txd_in_reg = 1'b0;
+                        #52160 uart_txd_in_reg = 1'b0;
+                        
+                        #52160 uart_txd_in_reg = 1'b1;
+                        #52160 uart_txd_in_reg = 1'b1;
+                        
+                        //dejo intervalo
+                        #52160 uart_txd_in_reg = 1'b1;
+                
+                   
+                        //bit de inicio
+                        #52160 uart_txd_in_reg = 1'b0;
+                
+                         // PART1
+                        #52160 uart_txd_in_reg = 1'b0;
+                        #52160 uart_txd_in_reg = 1'b0;
+                        #52160 uart_txd_in_reg = 1'b1;
+                        #52160 uart_txd_in_reg = 1'b0;
+                        
+                        #52160 uart_txd_in_reg = 1'b0;
+                        #52160 uart_txd_in_reg = 1'b0;
+                        #52160 uart_txd_in_reg = 1'b0;
+                        #52160 uart_txd_in_reg = 1'b0;
+                        
+                        #52160 uart_txd_in_reg = 1'b1;
+                        #52160 uart_txd_in_reg = 1'b1;
+                        
+                        //dejo intervalo
+                        #52160 uart_txd_in_reg = 1'b1;
+                
+                
+                
+                
+                
+                
+                        // Dejo un intervalo de tiempo.
+                        #520080 uart_txd_in_reg = 1'b1;
+                
+                
+                        ///////////////////////////
+                        // Obtener valores del MIPS
+                        ///////////////////////////
+                
+                        //bit de inicio
+                        #52160 uart_txd_in_reg = 1'b0;
+                
+                         // PART3
+                        #52160 uart_txd_in_reg = 1'b0;
+                        #52160 uart_txd_in_reg = 1'b0;
+                        #52160 uart_txd_in_reg = 1'b0;
+                        #52160 uart_txd_in_reg = 1'b0;
+                        
+                        #52160 uart_txd_in_reg = 1'b1;
+                        #52160 uart_txd_in_reg = 1'b0;
+                        #52160 uart_txd_in_reg = 1'b0;
+                        #52160 uart_txd_in_reg = 1'b0;
+                        
+                        #52160 uart_txd_in_reg = 1'b1;
+                        #52160 uart_txd_in_reg = 1'b1;
+                        
+                        //dejo intervalo
+                        #52160 uart_txd_in_reg = 1'b1;
+                
+                
+                
+                        //bit de inicio
+                        #52160 uart_txd_in_reg = 1'b0;
+                
+                         // PART2
+                        #52160 uart_txd_in_reg = 1'b0;
+                        #52160 uart_txd_in_reg = 1'b0;
+                        #52160 uart_txd_in_reg = 1'b0;
+                        #52160 uart_txd_in_reg = 1'b1;
+                        
+                        #52160 uart_txd_in_reg = 1'b0;
+                        #52160 uart_txd_in_reg = 1'b0;
+                        #52160 uart_txd_in_reg = 1'b0;
+                        #52160 uart_txd_in_reg = 1'b0;
+                        
+                        #52160 uart_txd_in_reg = 1'b1;
+                        #52160 uart_txd_in_reg = 1'b1;
+                        
+                        //dejo intervalo
+                        #52160 uart_txd_in_reg = 1'b1;
+                
+                
+                
+                
+                        //bit de inicio
+                        #52160 uart_txd_in_reg = 1'b0;
+                
+                         // PART1
+                        #52160 uart_txd_in_reg = 1'b0;
+                        #52160 uart_txd_in_reg = 1'b0;
+                        #52160 uart_txd_in_reg = 1'b0;
+                        #52160 uart_txd_in_reg = 1'b1;
+                        
+                        #52160 uart_txd_in_reg = 1'b1;
+                        #52160 uart_txd_in_reg = 1'b0;
+                        #52160 uart_txd_in_reg = 1'b0;
+                        #52160 uart_txd_in_reg = 1'b0;
+                        
+                        #52160 uart_txd_in_reg = 1'b1;
+                        #52160 uart_txd_in_reg = 1'b1;
+                        
+                        //dejo intervalo
+                        #52160 uart_txd_in_reg = 1'b1;
+                
+                   
+                        //bit de inicio
+                        #52160 uart_txd_in_reg = 1'b0;
+                
+                         // PART1
+                        #52160 uart_txd_in_reg = 1'b0;
+                        #52160 uart_txd_in_reg = 1'b0;
+                        #52160 uart_txd_in_reg = 1'b1;
+                        #52160 uart_txd_in_reg = 1'b0;
+                        
+                        #52160 uart_txd_in_reg = 1'b0;
+                        #52160 uart_txd_in_reg = 1'b0;
+                        #52160 uart_txd_in_reg = 1'b0;
+                        #52160 uart_txd_in_reg = 1'b0;
+                        
+                        #52160 uart_txd_in_reg = 1'b1;
+                        #52160 uart_txd_in_reg = 1'b1;
+                        
+                        //dejo intervalo
+                        #52160 uart_txd_in_reg = 1'b1;
+                
+                
+                
+                
+                
+                
+                        // Dejo un intervalo de tiempo.
+                        #520080 uart_txd_in_reg = 1'b1;
+                
+                
+                        ///////////////////////////
+                        // Obtener valores del MIPS
+                        ///////////////////////////
+                
+                        //bit de inicio
+                        #52160 uart_txd_in_reg = 1'b0;
+                
+                         // PART3
+                        #52160 uart_txd_in_reg = 1'b0;
+                        #52160 uart_txd_in_reg = 1'b0;
+                        #52160 uart_txd_in_reg = 1'b0;
+                        #52160 uart_txd_in_reg = 1'b0;
+                        
+                        #52160 uart_txd_in_reg = 1'b1;
+                        #52160 uart_txd_in_reg = 1'b0;
+                        #52160 uart_txd_in_reg = 1'b0;
+                        #52160 uart_txd_in_reg = 1'b0;
+                        
+                        #52160 uart_txd_in_reg = 1'b1;
+                        #52160 uart_txd_in_reg = 1'b1;
+                        
+                        //dejo intervalo
+                        #52160 uart_txd_in_reg = 1'b1;
+                
+                
+                
+                        //bit de inicio
+                        #52160 uart_txd_in_reg = 1'b0;
+                
+                         // PART2
+                        #52160 uart_txd_in_reg = 1'b0;
+                        #52160 uart_txd_in_reg = 1'b0;
+                        #52160 uart_txd_in_reg = 1'b0;
+                        #52160 uart_txd_in_reg = 1'b1;
+                        
+                        #52160 uart_txd_in_reg = 1'b0;
+                        #52160 uart_txd_in_reg = 1'b0;
+                        #52160 uart_txd_in_reg = 1'b0;
+                        #52160 uart_txd_in_reg = 1'b0;
+                        
+                        #52160 uart_txd_in_reg = 1'b1;
+                        #52160 uart_txd_in_reg = 1'b1;
+                        
+                        //dejo intervalo
+                        #52160 uart_txd_in_reg = 1'b1;
+                
+                
+                
+                
+                        //bit de inicio
+                        #52160 uart_txd_in_reg = 1'b0;
+                
+                         // PART1
+                        #52160 uart_txd_in_reg = 1'b0;
+                        #52160 uart_txd_in_reg = 1'b0;
+                        #52160 uart_txd_in_reg = 1'b0;
+                        #52160 uart_txd_in_reg = 1'b1;
+                        
+                        #52160 uart_txd_in_reg = 1'b1;
+                        #52160 uart_txd_in_reg = 1'b0;
+                        #52160 uart_txd_in_reg = 1'b0;
+                        #52160 uart_txd_in_reg = 1'b0;
+                        
+                        #52160 uart_txd_in_reg = 1'b1;
+                        #52160 uart_txd_in_reg = 1'b1;
+                        
+                        //dejo intervalo
+                        #52160 uart_txd_in_reg = 1'b1;
+                
+                   
+                        //bit de inicio
+                        #52160 uart_txd_in_reg = 1'b0;
+                
+                         // PART1
+                        #52160 uart_txd_in_reg = 1'b0;
+                        #52160 uart_txd_in_reg = 1'b0;
+                        #52160 uart_txd_in_reg = 1'b1;
+                        #52160 uart_txd_in_reg = 1'b0;
+                        
+                        #52160 uart_txd_in_reg = 1'b0;
+                        #52160 uart_txd_in_reg = 1'b0;
+                        #52160 uart_txd_in_reg = 1'b0;
+                        #52160 uart_txd_in_reg = 1'b0;
+                        
+                        #52160 uart_txd_in_reg = 1'b1;
+                        #52160 uart_txd_in_reg = 1'b1;
+                        
+                        //dejo intervalo
+                        #52160 uart_txd_in_reg = 1'b1;
+                
+                
+                
+                        // Dejo un intervalo de tiempo.
+                        #520080 uart_txd_in_reg = 1'b1;
+                
+                
+                        ///////////////////////////
+                        // Obtener valores del MIPS
+                        ///////////////////////////
+                
+                        //bit de inicio
+                        #52160 uart_txd_in_reg = 1'b0;
+                
+                         // PART3
+                        #52160 uart_txd_in_reg = 1'b0;
+                        #52160 uart_txd_in_reg = 1'b0;
+                        #52160 uart_txd_in_reg = 1'b0;
+                        #52160 uart_txd_in_reg = 1'b0;
+                        
+                        #52160 uart_txd_in_reg = 1'b1;
+                        #52160 uart_txd_in_reg = 1'b0;
+                        #52160 uart_txd_in_reg = 1'b0;
+                        #52160 uart_txd_in_reg = 1'b0;
+                        
+                        #52160 uart_txd_in_reg = 1'b1;
+                        #52160 uart_txd_in_reg = 1'b1;
+                        
+                        //dejo intervalo
+                        #52160 uart_txd_in_reg = 1'b1;
+                
+                
+                
+                        //bit de inicio
+                        #52160 uart_txd_in_reg = 1'b0;
+                
+                         // PART2
+                        #52160 uart_txd_in_reg = 1'b0;
+                        #52160 uart_txd_in_reg = 1'b0;
+                        #52160 uart_txd_in_reg = 1'b0;
+                        #52160 uart_txd_in_reg = 1'b1;
+                        
+                        #52160 uart_txd_in_reg = 1'b0;
+                        #52160 uart_txd_in_reg = 1'b0;
+                        #52160 uart_txd_in_reg = 1'b0;
+                        #52160 uart_txd_in_reg = 1'b0;
+                        
+                        #52160 uart_txd_in_reg = 1'b1;
+                        #52160 uart_txd_in_reg = 1'b1;
+                        
+                        //dejo intervalo
+                        #52160 uart_txd_in_reg = 1'b1;
+                
+                
+                
+                
+                        //bit de inicio
+                        #52160 uart_txd_in_reg = 1'b0;
+                
+                         // PART1
+                        #52160 uart_txd_in_reg = 1'b0;
+                        #52160 uart_txd_in_reg = 1'b0;
+                        #52160 uart_txd_in_reg = 1'b0;
+                        #52160 uart_txd_in_reg = 1'b1;
+                        
+                        #52160 uart_txd_in_reg = 1'b1;
+                        #52160 uart_txd_in_reg = 1'b0;
+                        #52160 uart_txd_in_reg = 1'b0;
+                        #52160 uart_txd_in_reg = 1'b0;
+                        
+                        #52160 uart_txd_in_reg = 1'b1;
+                        #52160 uart_txd_in_reg = 1'b1;
+                        
+                        //dejo intervalo
+                        #52160 uart_txd_in_reg = 1'b1;
+                
+                   
+                        //bit de inicio
+                        #52160 uart_txd_in_reg = 1'b0;
+                
+                         // PART1
+                        #52160 uart_txd_in_reg = 1'b0;
+                        #52160 uart_txd_in_reg = 1'b0;
+                        #52160 uart_txd_in_reg = 1'b1;
+                        #52160 uart_txd_in_reg = 1'b0;
+                        
+                        #52160 uart_txd_in_reg = 1'b0;
+                        #52160 uart_txd_in_reg = 1'b0;
+                        #52160 uart_txd_in_reg = 1'b0;
+                        #52160 uart_txd_in_reg = 1'b0;
+                        
+                        #52160 uart_txd_in_reg = 1'b1;
+                        #52160 uart_txd_in_reg = 1'b1;
+                        
+                        //dejo intervalo
+                        #52160 uart_txd_in_reg = 1'b1;
+                
+                
+                
+                // Dejo un intervalo de tiempo.
+                        #520080 uart_txd_in_reg = 1'b1;
+                
+                
+                        ///////////////////////////
+                        // Obtener valores del MIPS
+                        ///////////////////////////
+                
+                        //bit de inicio
+                        #52160 uart_txd_in_reg = 1'b0;
+                
+                         // PART3
+                        #52160 uart_txd_in_reg = 1'b0;
+                        #52160 uart_txd_in_reg = 1'b0;
+                        #52160 uart_txd_in_reg = 1'b0;
+                        #52160 uart_txd_in_reg = 1'b0;
+                        
+                        #52160 uart_txd_in_reg = 1'b1;
+                        #52160 uart_txd_in_reg = 1'b0;
+                        #52160 uart_txd_in_reg = 1'b0;
+                        #52160 uart_txd_in_reg = 1'b0;
+                        
+                        #52160 uart_txd_in_reg = 1'b1;
+                        #52160 uart_txd_in_reg = 1'b1;
+                        
+                        //dejo intervalo
+                        #52160 uart_txd_in_reg = 1'b1;
+                
+                
+                
+                        //bit de inicio
+                        #52160 uart_txd_in_reg = 1'b0;
+                
+                         // PART2
+                        #52160 uart_txd_in_reg = 1'b0;
+                        #52160 uart_txd_in_reg = 1'b0;
+                        #52160 uart_txd_in_reg = 1'b0;
+                        #52160 uart_txd_in_reg = 1'b1;
+                        
+                        #52160 uart_txd_in_reg = 1'b0;
+                        #52160 uart_txd_in_reg = 1'b0;
+                        #52160 uart_txd_in_reg = 1'b0;
+                        #52160 uart_txd_in_reg = 1'b0;
+                        
+                        #52160 uart_txd_in_reg = 1'b1;
+                        #52160 uart_txd_in_reg = 1'b1;
+                        
+                        //dejo intervalo
+                        #52160 uart_txd_in_reg = 1'b1;
+                
+                
+                
+                
+                        //bit de inicio
+                        #52160 uart_txd_in_reg = 1'b0;
+                
+                         // PART1
+                        #52160 uart_txd_in_reg = 1'b0;
+                        #52160 uart_txd_in_reg = 1'b0;
+                        #52160 uart_txd_in_reg = 1'b0;
+                        #52160 uart_txd_in_reg = 1'b1;
+                        
+                        #52160 uart_txd_in_reg = 1'b1;
+                        #52160 uart_txd_in_reg = 1'b0;
+                        #52160 uart_txd_in_reg = 1'b0;
+                        #52160 uart_txd_in_reg = 1'b0;
+                        
+                        #52160 uart_txd_in_reg = 1'b1;
+                        #52160 uart_txd_in_reg = 1'b1;
+                        
+                        //dejo intervalo
+                        #52160 uart_txd_in_reg = 1'b1;
+                
+                   
+                        //bit de inicio
+                        #52160 uart_txd_in_reg = 1'b0;
+                
+                         // PART1
+                        #52160 uart_txd_in_reg = 1'b0;
+                        #52160 uart_txd_in_reg = 1'b0;
+                        #52160 uart_txd_in_reg = 1'b1;
+                        #52160 uart_txd_in_reg = 1'b0;
+                        
+                        #52160 uart_txd_in_reg = 1'b0;
+                        #52160 uart_txd_in_reg = 1'b0;
+                        #52160 uart_txd_in_reg = 1'b0;
+                        #52160 uart_txd_in_reg = 1'b0;
+                        
+                        #52160 uart_txd_in_reg = 1'b1;
+                        #52160 uart_txd_in_reg = 1'b1;
+                        
+                        //dejo intervalo
+                        #52160 uart_txd_in_reg = 1'b1;
+                        
+                        
+                        
+                        
+                        
+                // Dejo un intervalo de tiempo.
+                                #520080 uart_txd_in_reg = 1'b1;
+                        
+                        
+                                ///////////////////////////
+                                // Obtener valores del MIPS
+                                ///////////////////////////
+                        
+                                //bit de inicio
+                                #52160 uart_txd_in_reg = 1'b0;
+                        
+                                 // PART3
+                                #52160 uart_txd_in_reg = 1'b0;
+                                #52160 uart_txd_in_reg = 1'b0;
+                                #52160 uart_txd_in_reg = 1'b0;
+                                #52160 uart_txd_in_reg = 1'b0;
+                                
+                                #52160 uart_txd_in_reg = 1'b1;
+                                #52160 uart_txd_in_reg = 1'b0;
+                                #52160 uart_txd_in_reg = 1'b0;
+                                #52160 uart_txd_in_reg = 1'b0;
+                                
+                                #52160 uart_txd_in_reg = 1'b1;
+                                #52160 uart_txd_in_reg = 1'b1;
+                                
+                                //dejo intervalo
+                                #52160 uart_txd_in_reg = 1'b1;
+                        
+                        
+                        
+                                //bit de inicio
+                                #52160 uart_txd_in_reg = 1'b0;
+                        
+                                 // PART2
+                                #52160 uart_txd_in_reg = 1'b0;
+                                #52160 uart_txd_in_reg = 1'b0;
+                                #52160 uart_txd_in_reg = 1'b0;
+                                #52160 uart_txd_in_reg = 1'b1;
+                                
+                                #52160 uart_txd_in_reg = 1'b0;
+                                #52160 uart_txd_in_reg = 1'b0;
+                                #52160 uart_txd_in_reg = 1'b0;
+                                #52160 uart_txd_in_reg = 1'b0;
+                                
+                                #52160 uart_txd_in_reg = 1'b1;
+                                #52160 uart_txd_in_reg = 1'b1;
+                                
+                                //dejo intervalo
+                                #52160 uart_txd_in_reg = 1'b1;
+                        
+                        
+                        
+                        
+                                //bit de inicio
+                                #52160 uart_txd_in_reg = 1'b0;
+                        
+                                 // PART1
+                                #52160 uart_txd_in_reg = 1'b0;
+                                #52160 uart_txd_in_reg = 1'b0;
+                                #52160 uart_txd_in_reg = 1'b0;
+                                #52160 uart_txd_in_reg = 1'b1;
+                                
+                                #52160 uart_txd_in_reg = 1'b1;
+                                #52160 uart_txd_in_reg = 1'b0;
+                                #52160 uart_txd_in_reg = 1'b0;
+                                #52160 uart_txd_in_reg = 1'b0;
+                                
+                                #52160 uart_txd_in_reg = 1'b1;
+                                #52160 uart_txd_in_reg = 1'b1;
+                                
+                                //dejo intervalo
+                                #52160 uart_txd_in_reg = 1'b1;
+                        
+                           
+                                //bit de inicio
+                                #52160 uart_txd_in_reg = 1'b0;
+                        
+                                 // PART1
+                                #52160 uart_txd_in_reg = 1'b0;
+                                #52160 uart_txd_in_reg = 1'b0;
+                                #52160 uart_txd_in_reg = 1'b1;
+                                #52160 uart_txd_in_reg = 1'b0;
+                                
+                                #52160 uart_txd_in_reg = 1'b0;
+                                #52160 uart_txd_in_reg = 1'b0;
+                                #52160 uart_txd_in_reg = 1'b0;
+                                #52160 uart_txd_in_reg = 1'b0;
+                                
+                                #52160 uart_txd_in_reg = 1'b1;
+                                #52160 uart_txd_in_reg = 1'b1;
+                                
+                                //dejo intervalo
+                                #52160 uart_txd_in_reg = 1'b1;
+                                
+                                
+                                
+                                
+                                
+                                
+                // Dejo un intervalo de tiempo.
+                                        #520080 uart_txd_in_reg = 1'b1;
+                                
+                                
+                                        ///////////////////////////
+                                        // Obtener valores del MIPS
+                                        ///////////////////////////
+                                
+                                        //bit de inicio
+                                        #52160 uart_txd_in_reg = 1'b0;
+                                
+                                         // PART3
+                                        #52160 uart_txd_in_reg = 1'b0;
+                                        #52160 uart_txd_in_reg = 1'b0;
+                                        #52160 uart_txd_in_reg = 1'b0;
+                                        #52160 uart_txd_in_reg = 1'b0;
+                                        
+                                        #52160 uart_txd_in_reg = 1'b1;
+                                        #52160 uart_txd_in_reg = 1'b0;
+                                        #52160 uart_txd_in_reg = 1'b0;
+                                        #52160 uart_txd_in_reg = 1'b0;
+                                        
+                                        #52160 uart_txd_in_reg = 1'b1;
+                                        #52160 uart_txd_in_reg = 1'b1;
+                                        
+                                        //dejo intervalo
+                                        #52160 uart_txd_in_reg = 1'b1;
+                                
+                                
+                                
+                                        //bit de inicio
+                                        #52160 uart_txd_in_reg = 1'b0;
+                                
+                                         // PART2
+                                        #52160 uart_txd_in_reg = 1'b0;
+                                        #52160 uart_txd_in_reg = 1'b0;
+                                        #52160 uart_txd_in_reg = 1'b0;
+                                        #52160 uart_txd_in_reg = 1'b1;
+                                        
+                                        #52160 uart_txd_in_reg = 1'b0;
+                                        #52160 uart_txd_in_reg = 1'b0;
+                                        #52160 uart_txd_in_reg = 1'b0;
+                                        #52160 uart_txd_in_reg = 1'b0;
+                                        
+                                        #52160 uart_txd_in_reg = 1'b1;
+                                        #52160 uart_txd_in_reg = 1'b1;
+                                        
+                                        //dejo intervalo
+                                        #52160 uart_txd_in_reg = 1'b1;
+                                
+                                
+                                
+                                
+                                        //bit de inicio
+                                        #52160 uart_txd_in_reg = 1'b0;
+                                
+                                         // PART1
+                                        #52160 uart_txd_in_reg = 1'b0;
+                                        #52160 uart_txd_in_reg = 1'b0;
+                                        #52160 uart_txd_in_reg = 1'b0;
+                                        #52160 uart_txd_in_reg = 1'b1;
+                                        
+                                        #52160 uart_txd_in_reg = 1'b1;
+                                        #52160 uart_txd_in_reg = 1'b0;
+                                        #52160 uart_txd_in_reg = 1'b0;
+                                        #52160 uart_txd_in_reg = 1'b0;
+                                        
+                                        #52160 uart_txd_in_reg = 1'b1;
+                                        #52160 uart_txd_in_reg = 1'b1;
+                                        
+                                        //dejo intervalo
+                                        #52160 uart_txd_in_reg = 1'b1;
+                                
+                                   
+                                        //bit de inicio
+                                        #52160 uart_txd_in_reg = 1'b0;
+                                
+                                         // PART1
+                                        #52160 uart_txd_in_reg = 1'b0;
+                                        #52160 uart_txd_in_reg = 1'b0;
+                                        #52160 uart_txd_in_reg = 1'b1;
+                                        #52160 uart_txd_in_reg = 1'b0;
+                                        
+                                        #52160 uart_txd_in_reg = 1'b0;
+                                        #52160 uart_txd_in_reg = 1'b0;
+                                        #52160 uart_txd_in_reg = 1'b0;
+                                        #52160 uart_txd_in_reg = 1'b0;
+                                        
+                                        #52160 uart_txd_in_reg = 1'b1;
+                                        #52160 uart_txd_in_reg = 1'b1;
+                                        
+                                        //dejo intervalo
+                                        #52160 uart_txd_in_reg = 1'b1;
+                                        
+                                        
+                                        
+                                        
+                ////////////////////////////////////////////
+                
+                
+                
+                // Dejo un intervalo de tiempo.
+                        #520080 uart_txd_in_reg = 1'b1;
+                
+                
+                        ///////////////////////////
+                        // Obtener valores del MIPS
+                        ///////////////////////////
+                
+                        //bit de inicio
+                        #52160 uart_txd_in_reg = 1'b0;
+                
+                         // PART3
+                        #52160 uart_txd_in_reg = 1'b0;
+                        #52160 uart_txd_in_reg = 1'b0;
+                        #52160 uart_txd_in_reg = 1'b0;
+                        #52160 uart_txd_in_reg = 1'b0;
+                        
+                        #52160 uart_txd_in_reg = 1'b1;
+                        #52160 uart_txd_in_reg = 1'b0;
+                        #52160 uart_txd_in_reg = 1'b0;
+                        #52160 uart_txd_in_reg = 1'b0;
+                        
+                        #52160 uart_txd_in_reg = 1'b1;
+                        #52160 uart_txd_in_reg = 1'b1;
+                        
+                        //dejo intervalo
+                        #52160 uart_txd_in_reg = 1'b1;
+                
+                
+                
+                        //bit de inicio
+                        #52160 uart_txd_in_reg = 1'b0;
+                
+                         // PART2
+                        #52160 uart_txd_in_reg = 1'b0;
+                        #52160 uart_txd_in_reg = 1'b0;
+                        #52160 uart_txd_in_reg = 1'b0;
+                        #52160 uart_txd_in_reg = 1'b1;
+                        
+                        #52160 uart_txd_in_reg = 1'b0;
+                        #52160 uart_txd_in_reg = 1'b0;
+                        #52160 uart_txd_in_reg = 1'b0;
+                        #52160 uart_txd_in_reg = 1'b0;
+                        
+                        #52160 uart_txd_in_reg = 1'b1;
+                        #52160 uart_txd_in_reg = 1'b1;
+                        
+                        //dejo intervalo
+                        #52160 uart_txd_in_reg = 1'b1;
+                
+                
+                
+                
+                        //bit de inicio
+                        #52160 uart_txd_in_reg = 1'b0;
+                
+                         // PART1
+                        #52160 uart_txd_in_reg = 1'b0;
+                        #52160 uart_txd_in_reg = 1'b0;
+                        #52160 uart_txd_in_reg = 1'b0;
+                        #52160 uart_txd_in_reg = 1'b1;
+                        
+                        #52160 uart_txd_in_reg = 1'b1;
+                        #52160 uart_txd_in_reg = 1'b0;
+                        #52160 uart_txd_in_reg = 1'b0;
+                        #52160 uart_txd_in_reg = 1'b0;
+                        
+                        #52160 uart_txd_in_reg = 1'b1;
+                        #52160 uart_txd_in_reg = 1'b1;
+                        
+                        //dejo intervalo
+                        #52160 uart_txd_in_reg = 1'b1;
+                
+                   
+                        //bit de inicio
+                        #52160 uart_txd_in_reg = 1'b0;
+                
+                         // PART1
+                        #52160 uart_txd_in_reg = 1'b0;
+                        #52160 uart_txd_in_reg = 1'b0;
+                        #52160 uart_txd_in_reg = 1'b1;
+                        #52160 uart_txd_in_reg = 1'b0;
+                        
+                        #52160 uart_txd_in_reg = 1'b0;
+                        #52160 uart_txd_in_reg = 1'b0;
+                        #52160 uart_txd_in_reg = 1'b0;
+                        #52160 uart_txd_in_reg = 1'b0;
+                        
+                        #52160 uart_txd_in_reg = 1'b1;
+                        #52160 uart_txd_in_reg = 1'b1;
+                        
+                        //dejo intervalo
+                        #52160 uart_txd_in_reg = 1'b1;
+                        
+                        
+///// START MIPS ///////
+                        
+                        
+                                // Dejo un intervalo de tiempo.
+                                #520080 uart_txd_in_reg = 1'b1;
+                        
+                                //bit de inicio
+                                #52160 uart_txd_in_reg = 1'b0;
+                        
+                                
+                                //quinto dato - start MIPS //0000 0111
+                                #52160 uart_txd_in_reg = 1'b0;
+                                #52160 uart_txd_in_reg = 1'b0;
+                                #52160 uart_txd_in_reg = 1'b0;
+                                #52160 uart_txd_in_reg = 1'b0;
+                                
+                                #52160 uart_txd_in_reg = 1'b0;
+                                #52160 uart_txd_in_reg = 1'b1;
+                                #52160 uart_txd_in_reg = 1'b1;
+                                #52160 uart_txd_in_reg = 1'b1;
+                                
+                                //bits de stop
+                                #52160 uart_txd_in_reg = 1'b1;
+                                #52160 uart_txd_in_reg = 1'b1; 
+                        
+                        
+                        
+                        // Dejo un intervalo de tiempo.
+                                #520080 uart_txd_in_reg = 1'b1;
+                        
+                        
+                                ///////////////////////////
+                                // Obtener valores del MIPS
+                                ///////////////////////////
+                        
+                                //bit de inicio
+                                #52160 uart_txd_in_reg = 1'b0;
+                        
+                                 // PART3
+                                #52160 uart_txd_in_reg = 1'b0;
+                                #52160 uart_txd_in_reg = 1'b0;
+                                #52160 uart_txd_in_reg = 1'b0;
+                                #52160 uart_txd_in_reg = 1'b0;
+                                
+                                #52160 uart_txd_in_reg = 1'b1;
+                                #52160 uart_txd_in_reg = 1'b0;
+                                #52160 uart_txd_in_reg = 1'b0;
+                                #52160 uart_txd_in_reg = 1'b0;
+                                
+                                #52160 uart_txd_in_reg = 1'b1;
+                                #52160 uart_txd_in_reg = 1'b1;
+                                
+                                //dejo intervalo
+                                #52160 uart_txd_in_reg = 1'b1;
+                        
+                        
+                        
+                                //bit de inicio
+                                #52160 uart_txd_in_reg = 1'b0;
+                        
+                                 // PART2
+                                #52160 uart_txd_in_reg = 1'b0;
+                                #52160 uart_txd_in_reg = 1'b0;
+                                #52160 uart_txd_in_reg = 1'b0;
+                                #52160 uart_txd_in_reg = 1'b1;
+                                
+                                #52160 uart_txd_in_reg = 1'b0;
+                                #52160 uart_txd_in_reg = 1'b0;
+                                #52160 uart_txd_in_reg = 1'b0;
+                                #52160 uart_txd_in_reg = 1'b0;
+                                
+                                #52160 uart_txd_in_reg = 1'b1;
+                                #52160 uart_txd_in_reg = 1'b1;
+                                
+                                //dejo intervalo
+                                #52160 uart_txd_in_reg = 1'b1;
+                        
+                        
+                        
+                        
+                                //bit de inicio
+                                #52160 uart_txd_in_reg = 1'b0;
+                        
+                                 // PART1
+                                #52160 uart_txd_in_reg = 1'b0;
+                                #52160 uart_txd_in_reg = 1'b0;
+                                #52160 uart_txd_in_reg = 1'b0;
+                                #52160 uart_txd_in_reg = 1'b1;
+                                
+                                #52160 uart_txd_in_reg = 1'b1;
+                                #52160 uart_txd_in_reg = 1'b0;
+                                #52160 uart_txd_in_reg = 1'b0;
+                                #52160 uart_txd_in_reg = 1'b0;
+                                
+                                #52160 uart_txd_in_reg = 1'b1;
+                                #52160 uart_txd_in_reg = 1'b1;
+                                
+                                //dejo intervalo
+                                #52160 uart_txd_in_reg = 1'b1;
+                        
+                           
+                                //bit de inicio
+                                #52160 uart_txd_in_reg = 1'b0;
+                        
+                                 // PART1
+                                #52160 uart_txd_in_reg = 1'b0;
+                                #52160 uart_txd_in_reg = 1'b0;
+                                #52160 uart_txd_in_reg = 1'b1;
+                                #52160 uart_txd_in_reg = 1'b0;
+                                
+                                #52160 uart_txd_in_reg = 1'b0;
+                                #52160 uart_txd_in_reg = 1'b0;
+                                #52160 uart_txd_in_reg = 1'b0;
+                                #52160 uart_txd_in_reg = 1'b0;
+                                
+                                #52160 uart_txd_in_reg = 1'b1;
+                                #52160 uart_txd_in_reg = 1'b1;
+                                
+                                //dejo intervalo
+                                #52160 uart_txd_in_reg = 1'b1;
+                        
+                        
+                        
+                        
+                        
+                        
+                                // Dejo un intervalo de tiempo.
+                                #520080 uart_txd_in_reg = 1'b1;
+                        
+                        
+                                ///////////////////////////
+                                // Obtener valores del MIPS
+                                ///////////////////////////
+                        
+                                //bit de inicio
+                                #52160 uart_txd_in_reg = 1'b0;
+                        
+                                 // PART3
+                                #52160 uart_txd_in_reg = 1'b0;
+                                #52160 uart_txd_in_reg = 1'b0;
+                                #52160 uart_txd_in_reg = 1'b0;
+                                #52160 uart_txd_in_reg = 1'b0;
+                                
+                                #52160 uart_txd_in_reg = 1'b1;
+                                #52160 uart_txd_in_reg = 1'b0;
+                                #52160 uart_txd_in_reg = 1'b0;
+                                #52160 uart_txd_in_reg = 1'b0;
+                                
+                                #52160 uart_txd_in_reg = 1'b1;
+                                #52160 uart_txd_in_reg = 1'b1;
+                                
+                                //dejo intervalo
+                                #52160 uart_txd_in_reg = 1'b1;
+                        
+                        
+                        
+                                //bit de inicio
+                                #52160 uart_txd_in_reg = 1'b0;
+                        
+                                 // PART2
+                                #52160 uart_txd_in_reg = 1'b0;
+                                #52160 uart_txd_in_reg = 1'b0;
+                                #52160 uart_txd_in_reg = 1'b0;
+                                #52160 uart_txd_in_reg = 1'b1;
+                                
+                                #52160 uart_txd_in_reg = 1'b0;
+                                #52160 uart_txd_in_reg = 1'b0;
+                                #52160 uart_txd_in_reg = 1'b0;
+                                #52160 uart_txd_in_reg = 1'b0;
+                                
+                                #52160 uart_txd_in_reg = 1'b1;
+                                #52160 uart_txd_in_reg = 1'b1;
+                                
+                                //dejo intervalo
+                                #52160 uart_txd_in_reg = 1'b1;
+                        
+                        
+                        
+                        
+                                //bit de inicio
+                                #52160 uart_txd_in_reg = 1'b0;
+                        
+                                 // PART1
+                                #52160 uart_txd_in_reg = 1'b0;
+                                #52160 uart_txd_in_reg = 1'b0;
+                                #52160 uart_txd_in_reg = 1'b0;
+                                #52160 uart_txd_in_reg = 1'b1;
+                                
+                                #52160 uart_txd_in_reg = 1'b1;
+                                #52160 uart_txd_in_reg = 1'b0;
+                                #52160 uart_txd_in_reg = 1'b0;
+                                #52160 uart_txd_in_reg = 1'b0;
+                                
+                                #52160 uart_txd_in_reg = 1'b1;
+                                #52160 uart_txd_in_reg = 1'b1;
+                                
+                                //dejo intervalo
+                                #52160 uart_txd_in_reg = 1'b1;
+                        
+                           
+                                //bit de inicio
+                                #52160 uart_txd_in_reg = 1'b0;
+                        
+                                 // PART1
+                                #52160 uart_txd_in_reg = 1'b0;
+                                #52160 uart_txd_in_reg = 1'b0;
+                                #52160 uart_txd_in_reg = 1'b1;
+                                #52160 uart_txd_in_reg = 1'b0;
+                                
+                                #52160 uart_txd_in_reg = 1'b0;
+                                #52160 uart_txd_in_reg = 1'b0;
+                                #52160 uart_txd_in_reg = 1'b0;
+                                #52160 uart_txd_in_reg = 1'b0;
+                                
+                                #52160 uart_txd_in_reg = 1'b1;
+                                #52160 uart_txd_in_reg = 1'b1;
+                                
+                                //dejo intervalo
+                                #52160 uart_txd_in_reg = 1'b1;
+                        
+                        
+                        
+                        
+                        
+                        
+                                // Dejo un intervalo de tiempo.
+                                #520080 uart_txd_in_reg = 1'b1;
+                        
+                        
+                                ///////////////////////////
+                                // Obtener valores del MIPS
+                                ///////////////////////////
+                        
+                                //bit de inicio
+                                #52160 uart_txd_in_reg = 1'b0;
+                        
+                                 // PART3
+                                #52160 uart_txd_in_reg = 1'b0;
+                                #52160 uart_txd_in_reg = 1'b0;
+                                #52160 uart_txd_in_reg = 1'b0;
+                                #52160 uart_txd_in_reg = 1'b0;
+                                
+                                #52160 uart_txd_in_reg = 1'b1;
+                                #52160 uart_txd_in_reg = 1'b0;
+                                #52160 uart_txd_in_reg = 1'b0;
+                                #52160 uart_txd_in_reg = 1'b0;
+                                
+                                #52160 uart_txd_in_reg = 1'b1;
+                                #52160 uart_txd_in_reg = 1'b1;
+                                
+                                //dejo intervalo
+                                #52160 uart_txd_in_reg = 1'b1;
+                        
+                        
+                        
+                                //bit de inicio
+                                #52160 uart_txd_in_reg = 1'b0;
+                        
+                                 // PART2
+                                #52160 uart_txd_in_reg = 1'b0;
+                                #52160 uart_txd_in_reg = 1'b0;
+                                #52160 uart_txd_in_reg = 1'b0;
+                                #52160 uart_txd_in_reg = 1'b1;
+                                
+                                #52160 uart_txd_in_reg = 1'b0;
+                                #52160 uart_txd_in_reg = 1'b0;
+                                #52160 uart_txd_in_reg = 1'b0;
+                                #52160 uart_txd_in_reg = 1'b0;
+                                
+                                #52160 uart_txd_in_reg = 1'b1;
+                                #52160 uart_txd_in_reg = 1'b1;
+                                
+                                //dejo intervalo
+                                #52160 uart_txd_in_reg = 1'b1;
+                        
+                        
+                        
+                        
+                                //bit de inicio
+                                #52160 uart_txd_in_reg = 1'b0;
+                        
+                                 // PART1
+                                #52160 uart_txd_in_reg = 1'b0;
+                                #52160 uart_txd_in_reg = 1'b0;
+                                #52160 uart_txd_in_reg = 1'b0;
+                                #52160 uart_txd_in_reg = 1'b1;
+                                
+                                #52160 uart_txd_in_reg = 1'b1;
+                                #52160 uart_txd_in_reg = 1'b0;
+                                #52160 uart_txd_in_reg = 1'b0;
+                                #52160 uart_txd_in_reg = 1'b0;
+                                
+                                #52160 uart_txd_in_reg = 1'b1;
+                                #52160 uart_txd_in_reg = 1'b1;
+                                
+                                //dejo intervalo
+                                #52160 uart_txd_in_reg = 1'b1;
+                        
+                           
+                                //bit de inicio
+                                #52160 uart_txd_in_reg = 1'b0;
+                        
+                                 // PART1
+                                #52160 uart_txd_in_reg = 1'b0;
+                                #52160 uart_txd_in_reg = 1'b0;
+                                #52160 uart_txd_in_reg = 1'b1;
+                                #52160 uart_txd_in_reg = 1'b0;
+                                
+                                #52160 uart_txd_in_reg = 1'b0;
+                                #52160 uart_txd_in_reg = 1'b0;
+                                #52160 uart_txd_in_reg = 1'b0;
+                                #52160 uart_txd_in_reg = 1'b0;
+                                
+                                #52160 uart_txd_in_reg = 1'b1;
+                                #52160 uart_txd_in_reg = 1'b1;
+                                
+                                //dejo intervalo
+                                #52160 uart_txd_in_reg = 1'b1;
+                        
+                        
+                        
+                        
+                        
+                        
+                                // Dejo un intervalo de tiempo.
+                                #520080 uart_txd_in_reg = 1'b1;
+                        
+                        
+                                ///////////////////////////
+                                // Obtener valores del MIPS
+                                ///////////////////////////
+                        
+                                //bit de inicio
+                                #52160 uart_txd_in_reg = 1'b0;
+                        
+                                 // PART3
+                                #52160 uart_txd_in_reg = 1'b0;
+                                #52160 uart_txd_in_reg = 1'b0;
+                                #52160 uart_txd_in_reg = 1'b0;
+                                #52160 uart_txd_in_reg = 1'b0;
+                                
+                                #52160 uart_txd_in_reg = 1'b1;
+                                #52160 uart_txd_in_reg = 1'b0;
+                                #52160 uart_txd_in_reg = 1'b0;
+                                #52160 uart_txd_in_reg = 1'b0;
+                                
+                                #52160 uart_txd_in_reg = 1'b1;
+                                #52160 uart_txd_in_reg = 1'b1;
+                                
+                                //dejo intervalo
+                                #52160 uart_txd_in_reg = 1'b1;
+                        
+                        
+                        
+                                //bit de inicio
+                                #52160 uart_txd_in_reg = 1'b0;
+                        
+                                 // PART2
+                                #52160 uart_txd_in_reg = 1'b0;
+                                #52160 uart_txd_in_reg = 1'b0;
+                                #52160 uart_txd_in_reg = 1'b0;
+                                #52160 uart_txd_in_reg = 1'b1;
+                                
+                                #52160 uart_txd_in_reg = 1'b0;
+                                #52160 uart_txd_in_reg = 1'b0;
+                                #52160 uart_txd_in_reg = 1'b0;
+                                #52160 uart_txd_in_reg = 1'b0;
+                                
+                                #52160 uart_txd_in_reg = 1'b1;
+                                #52160 uart_txd_in_reg = 1'b1;
+                                
+                                //dejo intervalo
+                                #52160 uart_txd_in_reg = 1'b1;
+                        
+                        
+                        
+                        
+                                //bit de inicio
+                                #52160 uart_txd_in_reg = 1'b0;
+                        
+                                 // PART1
+                                #52160 uart_txd_in_reg = 1'b0;
+                                #52160 uart_txd_in_reg = 1'b0;
+                                #52160 uart_txd_in_reg = 1'b0;
+                                #52160 uart_txd_in_reg = 1'b1;
+                                
+                                #52160 uart_txd_in_reg = 1'b1;
+                                #52160 uart_txd_in_reg = 1'b0;
+                                #52160 uart_txd_in_reg = 1'b0;
+                                #52160 uart_txd_in_reg = 1'b0;
+                                
+                                #52160 uart_txd_in_reg = 1'b1;
+                                #52160 uart_txd_in_reg = 1'b1;
+                                
+                                //dejo intervalo
+                                #52160 uart_txd_in_reg = 1'b1;
+                        
+                           
+                                //bit de inicio
+                                #52160 uart_txd_in_reg = 1'b0;
+                        
+                                 // PART1
+                                #52160 uart_txd_in_reg = 1'b0;
+                                #52160 uart_txd_in_reg = 1'b0;
+                                #52160 uart_txd_in_reg = 1'b1;
+                                #52160 uart_txd_in_reg = 1'b0;
+                                
+                                #52160 uart_txd_in_reg = 1'b0;
+                                #52160 uart_txd_in_reg = 1'b0;
+                                #52160 uart_txd_in_reg = 1'b0;
+                                #52160 uart_txd_in_reg = 1'b0;
+                                
+                                #52160 uart_txd_in_reg = 1'b1;
+                                #52160 uart_txd_in_reg = 1'b1;
+                                
+                                //dejo intervalo
+                                #52160 uart_txd_in_reg = 1'b1;
+                        
+                        
+                        
+                        
+                        
+                        
+                                // Dejo un intervalo de tiempo.
+                                #520080 uart_txd_in_reg = 1'b1;
+                        
+                        
+                                ///////////////////////////
+                                // Obtener valores del MIPS
+                                ///////////////////////////
+                        
+                                //bit de inicio
+                                #52160 uart_txd_in_reg = 1'b0;
+                        
+                                 // PART3
+                                #52160 uart_txd_in_reg = 1'b0;
+                                #52160 uart_txd_in_reg = 1'b0;
+                                #52160 uart_txd_in_reg = 1'b0;
+                                #52160 uart_txd_in_reg = 1'b0;
+                                
+                                #52160 uart_txd_in_reg = 1'b1;
+                                #52160 uart_txd_in_reg = 1'b0;
+                                #52160 uart_txd_in_reg = 1'b0;
+                                #52160 uart_txd_in_reg = 1'b0;
+                                
+                                #52160 uart_txd_in_reg = 1'b1;
+                                #52160 uart_txd_in_reg = 1'b1;
+                                
+                                //dejo intervalo
+                                #52160 uart_txd_in_reg = 1'b1;
+                        
+                        
+                        
+                                //bit de inicio
+                                #52160 uart_txd_in_reg = 1'b0;
+                        
+                                 // PART2
+                                #52160 uart_txd_in_reg = 1'b0;
+                                #52160 uart_txd_in_reg = 1'b0;
+                                #52160 uart_txd_in_reg = 1'b0;
+                                #52160 uart_txd_in_reg = 1'b1;
+                                
+                                #52160 uart_txd_in_reg = 1'b0;
+                                #52160 uart_txd_in_reg = 1'b0;
+                                #52160 uart_txd_in_reg = 1'b0;
+                                #52160 uart_txd_in_reg = 1'b0;
+                                
+                                #52160 uart_txd_in_reg = 1'b1;
+                                #52160 uart_txd_in_reg = 1'b1;
+                                
+                                //dejo intervalo
+                                #52160 uart_txd_in_reg = 1'b1;
+                        
+                        
+                        
+                        
+                                //bit de inicio
+                                #52160 uart_txd_in_reg = 1'b0;
+                        
+                                 // PART1
+                                #52160 uart_txd_in_reg = 1'b0;
+                                #52160 uart_txd_in_reg = 1'b0;
+                                #52160 uart_txd_in_reg = 1'b0;
+                                #52160 uart_txd_in_reg = 1'b1;
+                                
+                                #52160 uart_txd_in_reg = 1'b1;
+                                #52160 uart_txd_in_reg = 1'b0;
+                                #52160 uart_txd_in_reg = 1'b0;
+                                #52160 uart_txd_in_reg = 1'b0;
+                                
+                                #52160 uart_txd_in_reg = 1'b1;
+                                #52160 uart_txd_in_reg = 1'b1;
+                                
+                                //dejo intervalo
+                                #52160 uart_txd_in_reg = 1'b1;
+                        
+                           
+                                //bit de inicio
+                                #52160 uart_txd_in_reg = 1'b0;
+                        
+                                 // PART1
+                                #52160 uart_txd_in_reg = 1'b0;
+                                #52160 uart_txd_in_reg = 1'b0;
+                                #52160 uart_txd_in_reg = 1'b1;
+                                #52160 uart_txd_in_reg = 1'b0;
+                                
+                                #52160 uart_txd_in_reg = 1'b0;
+                                #52160 uart_txd_in_reg = 1'b0;
+                                #52160 uart_txd_in_reg = 1'b0;
+                                #52160 uart_txd_in_reg = 1'b0;
+                                
+                                #52160 uart_txd_in_reg = 1'b1;
+                                #52160 uart_txd_in_reg = 1'b1;
+                                
+                                //dejo intervalo
+                                #52160 uart_txd_in_reg = 1'b1;
+                        
+                        
+                        
+                                // Dejo un intervalo de tiempo.
+                                #520080 uart_txd_in_reg = 1'b1;
+                        
+                        
+                                ///////////////////////////
+                                // Obtener valores del MIPS
+                                ///////////////////////////
+                        
+                                //bit de inicio
+                                #52160 uart_txd_in_reg = 1'b0;
+                        
+                                 // PART3
+                                #52160 uart_txd_in_reg = 1'b0;
+                                #52160 uart_txd_in_reg = 1'b0;
+                                #52160 uart_txd_in_reg = 1'b0;
+                                #52160 uart_txd_in_reg = 1'b0;
+                                
+                                #52160 uart_txd_in_reg = 1'b1;
+                                #52160 uart_txd_in_reg = 1'b0;
+                                #52160 uart_txd_in_reg = 1'b0;
+                                #52160 uart_txd_in_reg = 1'b0;
+                                
+                                #52160 uart_txd_in_reg = 1'b1;
+                                #52160 uart_txd_in_reg = 1'b1;
+                                
+                                //dejo intervalo
+                                #52160 uart_txd_in_reg = 1'b1;
+                        
+                        
+                        
+                                //bit de inicio
+                                #52160 uart_txd_in_reg = 1'b0;
+                        
+                                 // PART2
+                                #52160 uart_txd_in_reg = 1'b0;
+                                #52160 uart_txd_in_reg = 1'b0;
+                                #52160 uart_txd_in_reg = 1'b0;
+                                #52160 uart_txd_in_reg = 1'b1;
+                                
+                                #52160 uart_txd_in_reg = 1'b0;
+                                #52160 uart_txd_in_reg = 1'b0;
+                                #52160 uart_txd_in_reg = 1'b0;
+                                #52160 uart_txd_in_reg = 1'b0;
+                                
+                                #52160 uart_txd_in_reg = 1'b1;
+                                #52160 uart_txd_in_reg = 1'b1;
+                                
+                                //dejo intervalo
+                                #52160 uart_txd_in_reg = 1'b1;
+                        
+                        
+                        
+                        
+                                //bit de inicio
+                                #52160 uart_txd_in_reg = 1'b0;
+                        
+                                 // PART1
+                                #52160 uart_txd_in_reg = 1'b0;
+                                #52160 uart_txd_in_reg = 1'b0;
+                                #52160 uart_txd_in_reg = 1'b0;
+                                #52160 uart_txd_in_reg = 1'b1;
+                                
+                                #52160 uart_txd_in_reg = 1'b1;
+                                #52160 uart_txd_in_reg = 1'b0;
+                                #52160 uart_txd_in_reg = 1'b0;
+                                #52160 uart_txd_in_reg = 1'b0;
+                                
+                                #52160 uart_txd_in_reg = 1'b1;
+                                #52160 uart_txd_in_reg = 1'b1;
+                                
+                                //dejo intervalo
+                                #52160 uart_txd_in_reg = 1'b1;
+                        
+                           
+                                //bit de inicio
+                                #52160 uart_txd_in_reg = 1'b0;
+                        
+                                 // PART1
+                                #52160 uart_txd_in_reg = 1'b0;
+                                #52160 uart_txd_in_reg = 1'b0;
+                                #52160 uart_txd_in_reg = 1'b1;
+                                #52160 uart_txd_in_reg = 1'b0;
+                                
+                                #52160 uart_txd_in_reg = 1'b0;
+                                #52160 uart_txd_in_reg = 1'b0;
+                                #52160 uart_txd_in_reg = 1'b0;
+                                #52160 uart_txd_in_reg = 1'b0;
+                                
+                                #52160 uart_txd_in_reg = 1'b1;
+                                #52160 uart_txd_in_reg = 1'b1;
+                                
+                                //dejo intervalo
+                                #52160 uart_txd_in_reg = 1'b1;
+                        
+                        
+                        
+                        // Dejo un intervalo de tiempo.
+                                #520080 uart_txd_in_reg = 1'b1;
+                        
+                        
+                                ///////////////////////////
+                                // Obtener valores del MIPS
+                                ///////////////////////////
+                        
+                                //bit de inicio
+                                #52160 uart_txd_in_reg = 1'b0;
+                        
+                                 // PART3
+                                #52160 uart_txd_in_reg = 1'b0;
+                                #52160 uart_txd_in_reg = 1'b0;
+                                #52160 uart_txd_in_reg = 1'b0;
+                                #52160 uart_txd_in_reg = 1'b0;
+                                
+                                #52160 uart_txd_in_reg = 1'b1;
+                                #52160 uart_txd_in_reg = 1'b0;
+                                #52160 uart_txd_in_reg = 1'b0;
+                                #52160 uart_txd_in_reg = 1'b0;
+                                
+                                #52160 uart_txd_in_reg = 1'b1;
+                                #52160 uart_txd_in_reg = 1'b1;
+                                
+                                //dejo intervalo
+                                #52160 uart_txd_in_reg = 1'b1;
+                        
+                        
+                        
+                                //bit de inicio
+                                #52160 uart_txd_in_reg = 1'b0;
+                        
+                                 // PART2
+                                #52160 uart_txd_in_reg = 1'b0;
+                                #52160 uart_txd_in_reg = 1'b0;
+                                #52160 uart_txd_in_reg = 1'b0;
+                                #52160 uart_txd_in_reg = 1'b1;
+                                
+                                #52160 uart_txd_in_reg = 1'b0;
+                                #52160 uart_txd_in_reg = 1'b0;
+                                #52160 uart_txd_in_reg = 1'b0;
+                                #52160 uart_txd_in_reg = 1'b0;
+                                
+                                #52160 uart_txd_in_reg = 1'b1;
+                                #52160 uart_txd_in_reg = 1'b1;
+                                
+                                //dejo intervalo
+                                #52160 uart_txd_in_reg = 1'b1;
+                        
+                        
+                        
+                        
+                                //bit de inicio
+                                #52160 uart_txd_in_reg = 1'b0;
+                        
+                                 // PART1
+                                #52160 uart_txd_in_reg = 1'b0;
+                                #52160 uart_txd_in_reg = 1'b0;
+                                #52160 uart_txd_in_reg = 1'b0;
+                                #52160 uart_txd_in_reg = 1'b1;
+                                
+                                #52160 uart_txd_in_reg = 1'b1;
+                                #52160 uart_txd_in_reg = 1'b0;
+                                #52160 uart_txd_in_reg = 1'b0;
+                                #52160 uart_txd_in_reg = 1'b0;
+                                
+                                #52160 uart_txd_in_reg = 1'b1;
+                                #52160 uart_txd_in_reg = 1'b1;
+                                
+                                //dejo intervalo
+                                #52160 uart_txd_in_reg = 1'b1;
+                        
+                           
+                                //bit de inicio
+                                #52160 uart_txd_in_reg = 1'b0;
+                        
+                                 // PART1
+                                #52160 uart_txd_in_reg = 1'b0;
+                                #52160 uart_txd_in_reg = 1'b0;
+                                #52160 uart_txd_in_reg = 1'b1;
+                                #52160 uart_txd_in_reg = 1'b0;
+                                
+                                #52160 uart_txd_in_reg = 1'b0;
+                                #52160 uart_txd_in_reg = 1'b0;
+                                #52160 uart_txd_in_reg = 1'b0;
+                                #52160 uart_txd_in_reg = 1'b0;
+                                
+                                #52160 uart_txd_in_reg = 1'b1;
+                                #52160 uart_txd_in_reg = 1'b1;
+                                
+                                //dejo intervalo
+                                #52160 uart_txd_in_reg = 1'b1;
+                                
+                                
+                                
+                                
+                                
+                        // Dejo un intervalo de tiempo.
+                                        #520080 uart_txd_in_reg = 1'b1;
+                                
+                                
+                                        ///////////////////////////
+                                        // Obtener valores del MIPS
+                                        ///////////////////////////
+                                
+                                        //bit de inicio
+                                        #52160 uart_txd_in_reg = 1'b0;
+                                
+                                         // PART3
+                                        #52160 uart_txd_in_reg = 1'b0;
+                                        #52160 uart_txd_in_reg = 1'b0;
+                                        #52160 uart_txd_in_reg = 1'b0;
+                                        #52160 uart_txd_in_reg = 1'b0;
+                                        
+                                        #52160 uart_txd_in_reg = 1'b1;
+                                        #52160 uart_txd_in_reg = 1'b0;
+                                        #52160 uart_txd_in_reg = 1'b0;
+                                        #52160 uart_txd_in_reg = 1'b0;
+                                        
+                                        #52160 uart_txd_in_reg = 1'b1;
+                                        #52160 uart_txd_in_reg = 1'b1;
+                                        
+                                        //dejo intervalo
+                                        #52160 uart_txd_in_reg = 1'b1;
+                                
+                                
+                                
+                                        //bit de inicio
+                                        #52160 uart_txd_in_reg = 1'b0;
+                                
+                                         // PART2
+                                        #52160 uart_txd_in_reg = 1'b0;
+                                        #52160 uart_txd_in_reg = 1'b0;
+                                        #52160 uart_txd_in_reg = 1'b0;
+                                        #52160 uart_txd_in_reg = 1'b1;
+                                        
+                                        #52160 uart_txd_in_reg = 1'b0;
+                                        #52160 uart_txd_in_reg = 1'b0;
+                                        #52160 uart_txd_in_reg = 1'b0;
+                                        #52160 uart_txd_in_reg = 1'b0;
+                                        
+                                        #52160 uart_txd_in_reg = 1'b1;
+                                        #52160 uart_txd_in_reg = 1'b1;
+                                        
+                                        //dejo intervalo
+                                        #52160 uart_txd_in_reg = 1'b1;
+                                
+                                
+                                
+                                
+                                        //bit de inicio
+                                        #52160 uart_txd_in_reg = 1'b0;
+                                
+                                         // PART1
+                                        #52160 uart_txd_in_reg = 1'b0;
+                                        #52160 uart_txd_in_reg = 1'b0;
+                                        #52160 uart_txd_in_reg = 1'b0;
+                                        #52160 uart_txd_in_reg = 1'b1;
+                                        
+                                        #52160 uart_txd_in_reg = 1'b1;
+                                        #52160 uart_txd_in_reg = 1'b0;
+                                        #52160 uart_txd_in_reg = 1'b0;
+                                        #52160 uart_txd_in_reg = 1'b0;
+                                        
+                                        #52160 uart_txd_in_reg = 1'b1;
+                                        #52160 uart_txd_in_reg = 1'b1;
+                                        
+                                        //dejo intervalo
+                                        #52160 uart_txd_in_reg = 1'b1;
+                                
+                                   
+                                        //bit de inicio
+                                        #52160 uart_txd_in_reg = 1'b0;
+                                
+                                         // PART1
+                                        #52160 uart_txd_in_reg = 1'b0;
+                                        #52160 uart_txd_in_reg = 1'b0;
+                                        #52160 uart_txd_in_reg = 1'b1;
+                                        #52160 uart_txd_in_reg = 1'b0;
+                                        
+                                        #52160 uart_txd_in_reg = 1'b0;
+                                        #52160 uart_txd_in_reg = 1'b0;
+                                        #52160 uart_txd_in_reg = 1'b0;
+                                        #52160 uart_txd_in_reg = 1'b0;
+                                        
+                                        #52160 uart_txd_in_reg = 1'b1;
+                                        #52160 uart_txd_in_reg = 1'b1;
+                                        
+                                        //dejo intervalo
+                                        #52160 uart_txd_in_reg = 1'b1;
+                                        
+                                        
+                                        
+                                        
+                                        
+                                        
+                        // Dejo un intervalo de tiempo.
+                                                #520080 uart_txd_in_reg = 1'b1;
+                                        
+                                        
+                                                ///////////////////////////
+                                                // Obtener valores del MIPS
+                                                ///////////////////////////
+                                        
+                                                //bit de inicio
+                                                #52160 uart_txd_in_reg = 1'b0;
+                                        
+                                                 // PART3
+                                                #52160 uart_txd_in_reg = 1'b0;
+                                                #52160 uart_txd_in_reg = 1'b0;
+                                                #52160 uart_txd_in_reg = 1'b0;
+                                                #52160 uart_txd_in_reg = 1'b0;
+                                                
+                                                #52160 uart_txd_in_reg = 1'b1;
+                                                #52160 uart_txd_in_reg = 1'b0;
+                                                #52160 uart_txd_in_reg = 1'b0;
+                                                #52160 uart_txd_in_reg = 1'b0;
+                                                
+                                                #52160 uart_txd_in_reg = 1'b1;
+                                                #52160 uart_txd_in_reg = 1'b1;
+                                                
+                                                //dejo intervalo
+                                                #52160 uart_txd_in_reg = 1'b1;
+                                        
+                                        
+                                        
+                                                //bit de inicio
+                                                #52160 uart_txd_in_reg = 1'b0;
+                                        
+                                                 // PART2
+                                                #52160 uart_txd_in_reg = 1'b0;
+                                                #52160 uart_txd_in_reg = 1'b0;
+                                                #52160 uart_txd_in_reg = 1'b0;
+                                                #52160 uart_txd_in_reg = 1'b1;
+                                                
+                                                #52160 uart_txd_in_reg = 1'b0;
+                                                #52160 uart_txd_in_reg = 1'b0;
+                                                #52160 uart_txd_in_reg = 1'b0;
+                                                #52160 uart_txd_in_reg = 1'b0;
+                                                
+                                                #52160 uart_txd_in_reg = 1'b1;
+                                                #52160 uart_txd_in_reg = 1'b1;
+                                                
+                                                //dejo intervalo
+                                                #52160 uart_txd_in_reg = 1'b1;
+                                        
+                                        
+                                        
+                                        
+                                                //bit de inicio
+                                                #52160 uart_txd_in_reg = 1'b0;
+                                        
+                                                 // PART1
+                                                #52160 uart_txd_in_reg = 1'b0;
+                                                #52160 uart_txd_in_reg = 1'b0;
+                                                #52160 uart_txd_in_reg = 1'b0;
+                                                #52160 uart_txd_in_reg = 1'b1;
+                                                
+                                                #52160 uart_txd_in_reg = 1'b1;
+                                                #52160 uart_txd_in_reg = 1'b0;
+                                                #52160 uart_txd_in_reg = 1'b0;
+                                                #52160 uart_txd_in_reg = 1'b0;
+                                                
+                                                #52160 uart_txd_in_reg = 1'b1;
+                                                #52160 uart_txd_in_reg = 1'b1;
+                                                
+                                                //dejo intervalo
+                                                #52160 uart_txd_in_reg = 1'b1;
+                                        
+                                           
+                                                //bit de inicio
+                                                #52160 uart_txd_in_reg = 1'b0;
+                                        
+                                                 // PART1
+                                                #52160 uart_txd_in_reg = 1'b0;
+                                                #52160 uart_txd_in_reg = 1'b0;
+                                                #52160 uart_txd_in_reg = 1'b1;
+                                                #52160 uart_txd_in_reg = 1'b0;
+                                                
+                                                #52160 uart_txd_in_reg = 1'b0;
+                                                #52160 uart_txd_in_reg = 1'b0;
+                                                #52160 uart_txd_in_reg = 1'b0;
+                                                #52160 uart_txd_in_reg = 1'b0;
+                                                
+                                                #52160 uart_txd_in_reg = 1'b1;
+                                                #52160 uart_txd_in_reg = 1'b1;
+                                                
+                                                //dejo intervalo
+                                                #52160 uart_txd_in_reg = 1'b1;
+                                                
+                                                
+                                                
+                                                
+                        ////////////////////////////////////////////
+                        
+                        
+                        
+                        // Dejo un intervalo de tiempo.
+                                #520080 uart_txd_in_reg = 1'b1;
+                        
+                        
+                                ///////////////////////////
+                                // Obtener valores del MIPS
+                                ///////////////////////////
+                        
+                                //bit de inicio
+                                #52160 uart_txd_in_reg = 1'b0;
+                        
+                                 // PART3
+                                #52160 uart_txd_in_reg = 1'b0;
+                                #52160 uart_txd_in_reg = 1'b0;
+                                #52160 uart_txd_in_reg = 1'b0;
+                                #52160 uart_txd_in_reg = 1'b0;
+                                
+                                #52160 uart_txd_in_reg = 1'b1;
+                                #52160 uart_txd_in_reg = 1'b0;
+                                #52160 uart_txd_in_reg = 1'b0;
+                                #52160 uart_txd_in_reg = 1'b0;
+                                
+                                #52160 uart_txd_in_reg = 1'b1;
+                                #52160 uart_txd_in_reg = 1'b1;
+                                
+                                //dejo intervalo
+                                #52160 uart_txd_in_reg = 1'b1;
+                        
+                        
+                        
+                                //bit de inicio
+                                #52160 uart_txd_in_reg = 1'b0;
+                        
+                                 // PART2
+                                #52160 uart_txd_in_reg = 1'b0;
+                                #52160 uart_txd_in_reg = 1'b0;
+                                #52160 uart_txd_in_reg = 1'b0;
+                                #52160 uart_txd_in_reg = 1'b1;
+                                
+                                #52160 uart_txd_in_reg = 1'b0;
+                                #52160 uart_txd_in_reg = 1'b0;
+                                #52160 uart_txd_in_reg = 1'b0;
+                                #52160 uart_txd_in_reg = 1'b0;
+                                
+                                #52160 uart_txd_in_reg = 1'b1;
+                                #52160 uart_txd_in_reg = 1'b1;
+                                
+                                //dejo intervalo
+                                #52160 uart_txd_in_reg = 1'b1;
+                        
+                        
+                        
+                        
+                                //bit de inicio
+                                #52160 uart_txd_in_reg = 1'b0;
+                        
+                                 // PART1
+                                #52160 uart_txd_in_reg = 1'b0;
+                                #52160 uart_txd_in_reg = 1'b0;
+                                #52160 uart_txd_in_reg = 1'b0;
+                                #52160 uart_txd_in_reg = 1'b1;
+                                
+                                #52160 uart_txd_in_reg = 1'b1;
+                                #52160 uart_txd_in_reg = 1'b0;
+                                #52160 uart_txd_in_reg = 1'b0;
+                                #52160 uart_txd_in_reg = 1'b0;
+                                
+                                #52160 uart_txd_in_reg = 1'b1;
+                                #52160 uart_txd_in_reg = 1'b1;
+                                
+                                //dejo intervalo
+                                #52160 uart_txd_in_reg = 1'b1;
+                        
+                           
+                                //bit de inicio
+                                #52160 uart_txd_in_reg = 1'b0;
+                        
+                                 // PART1
+                                #52160 uart_txd_in_reg = 1'b0;
+                                #52160 uart_txd_in_reg = 1'b0;
+                                #52160 uart_txd_in_reg = 1'b1;
+                                #52160 uart_txd_in_reg = 1'b0;
+                                
+                                #52160 uart_txd_in_reg = 1'b0;
+                                #52160 uart_txd_in_reg = 1'b0;
+                                #52160 uart_txd_in_reg = 1'b0;
+                                #52160 uart_txd_in_reg = 1'b0;
+                                
+                                #52160 uart_txd_in_reg = 1'b1;
+                                #52160 uart_txd_in_reg = 1'b1;
+                                
+                                //dejo intervalo
+                                #52160 uart_txd_in_reg = 1'b1;
 
 
 

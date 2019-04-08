@@ -233,7 +233,7 @@ module database
             reg_data_write_to_mem <= i_data_write_to_mem;            
         end
         else if (i_control == 2) begin // Se devuelve el contador de programa y el contador de ciclos a la salida.
-            o_dato <= {reg_pc, reg_contador_ciclos};
+            o_dato <= {reg_pc, {((CANT_BITS_REGISTROS/2) - ADDR_LENGTH){1'b0}}, reg_contador_ciclos};
         end
         else if (i_control == 3) begin // Se devuelve la salida del adder del instruction fetch en la salida de este modulo. Tambien la direccion y el control del salto.
             o_dato <= {reg_adder_pc, {((CANT_BITS_REGISTROS/2) - ADDR_LENGTH - 1){1'b0}} , reg_branch_control, reg_branch_dir};

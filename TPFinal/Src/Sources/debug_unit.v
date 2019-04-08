@@ -155,9 +155,13 @@ always @ ( posedge i_clock ) begin //Memory
      else begin
           flag_enable_pc <= 1'b0;
      end
-
+     
+     
      if (reg_state == SEND_PART0 && reg_next_state == SEND_PART3) begin
        reg_contador_datos_database <= reg_contador_datos_database + 1;
+     end
+     else if (reg_state == EJECUCION) begin
+        reg_contador_datos_database <= 0;
      end
      else begin
        reg_contador_datos_database <= reg_contador_datos_database;

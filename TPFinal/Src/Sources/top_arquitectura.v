@@ -177,7 +177,7 @@ wire wire_EX_to_MEM_MemRead;
 wire wire_EX_to_MEM_MemWrite;
 wire wire_EX_to_MEM_MemtoReg;
 wire [CANT_BITS_REGISTROS_TOP - 1 : 0] wire_resultado_ALU;
-wire [ADDR_MEM_DATOS_LENGTH - 1 : 0] wire_EX_to_MEM_data_write_mem;
+wire [CANT_BITS_REGISTROS_TOP - 1 : 0] wire_EX_to_MEM_data_write_mem;
 wire [CANT_BITS_ADDR_REGISTROS - 1 : 0] wire_EX_to_MEM_registro_destino;
 wire [CANT_BITS_SELECT_BYTES_MEM_DATA_TOP - 1 : 0] wire_select_bytes_mem_datos_EX_to_MEM;
 wire wire_halt_detected_EX_to_MEM;
