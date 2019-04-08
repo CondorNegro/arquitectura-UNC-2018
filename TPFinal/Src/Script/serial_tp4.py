@@ -25,11 +25,13 @@ FILE_NAME = "init_ram_file.txt"
 FLAG_TEST = False
 CANT_BITS_ADDRESS_MEM_PROGRAMA = 10
 CANT_REGSITROS = 32
+CANT_BITS_REGISTROS = 32
 CANT_BITS_ADDR_REGISTROS = int (math.log(CANT_REGSITROS, 2))
 CANT_BITS_ALU_CTRL = 4
 CANT_BITS_ALU_OP = 2
 HALT_INSTRUCTION = '1' * CANT_BITS_INSTRUCCION
 CANT_BITS_SELECT_BYTES_MEM_DATA = 2
+CANT_DATOS_DB = 10
 
 # Variables globales
 
@@ -61,6 +63,16 @@ etiqueta_mem_write_ID_to_EX = ""
 etiqueta_reg_write_ID_to_EX = ""
 etiqueta_falg_halt_ID_to_EX = ""
 etiqueta_select_bytes_mem_data_ID_to_EX = ""
+etiqueta_data_write_mem = ""
+etiqueta_resultado_ALU = ""
+etiqueta_reg_write_EX_to_MEM = ""
+etiqueta_mem_read_EX_to_MEM = ""
+etiqueta_mem_write_EX_to_MEM = ""
+etiqueta_mem_to_reg_EX_to_MEM = ""
+etiqueta_select_bytes_mem_datos_EX_to_MEM = "" 
+etiqueta_halt_detected_EX_to_MEM = "" 
+etiqueta_registro_destino_EX_to_MEM = ""
+
 lock = threading.Lock()
 modo_ejecucion = 0 #0: continuo - 1: debug
 
@@ -86,34 +98,10 @@ def getCode (x):
 		'Soft reset ack': '00000001',
         'Send instructions': '10000000',
 		'Start MIPS': '11000000',
-		'PC-H' : '00010000',
-		'PC-L' : '00001000',
-		'CC-H' : '00011000',
-		'CC-L' : '00000100',
-		'PCAdd-H': '00010100',
-		'PCAdd-L': '00001100',
-		'IF-3' : '00011100',
-		'IF-2' : '00000010',
-		'IF-1' : '00010010',
-		'IF-0' : '00001010',
-		'BR-H' : '00011010', #Branch
-		'BR-L' : '00000110',
-		'DA-3' : '00010110', #Dato A
-		'DA-2' : '00001110',
-		'DA-1' : '00011110',
-		'DA-0' : '00000001',
-		'DB-3' : '00010001', #Dato B
-		'DB-2' : '00001001',
-		'DB-1' : '00011001',
-		'DB-0' : '00000101',
-		'IM-3' : '00010101', #Valor inmediato con extension de signo
-		'IM-2' : '00001101',
-		'IM-1' : '00011101',
-		'IM-0' : '00000011',
-		'AR-H' : '00010011', #Address registers
-		'AR-L' : '00001011',
-		'SC-H' : '00011011', #Signals controls
-		'SC-L' : '00000111'
+		'Send-Part-3' : '00010000',
+		'Send-Part-2' : '00001000',
+		'Send-Part-1' : '00011000',
+		'Send-Part-0' : '00000100'
     }.get (x, '11111111')  #11111111 es el por defecto
 
 
@@ -382,531 +370,259 @@ def recibirDatosFromFPGA ():
 	global etiqueta_mem_read_ID_to_EX
 	global etiqueta_mem_write_ID_to_EX
 	global etiqueta_reg_write_ID_to_EX
-		
+	global etiqueta_falg_halt_ID_to_EX
+	global etiqueta_select_bytes_mem_data_ID_to_EX
+	global etiqueta_resultado_ALU
+	global etiqueta_data_write_mem
+	global etiqueta_reg_write_EX_to_MEM
+	global etiqueta_mem_read_EX_to_MEM
+	global etiqueta_mem_write_EX_to_MEM
+	global etiqueta_mem_to_reg_EX_to_MEM
+	global etiqueta_select_bytes_mem_datos_EX_to_MEM 
+	global etiqueta_halt_detected_EX_to_MEM 
+	global etiqueta_registro_destino_EX_to_MEM
 	
 	flag_receive = True
-	contador_de_programa = ""
-	contador_de_programa_aux = ""
-	contador_de_ciclos = ""
-	contador_de_ciclos_aux = ""
-	adder_contador_de_programa = ""
-	adder_contador_de_programa_aux = ""
-	instruction_fetch = ""
-	instruction_fetch_aux = ""
-	branch_dir = ""
-	branch_dir_aux = ""
-	control_salto = ""
-	control_salto_aux = ""
-	dato_reg_A = ""
-	dato_reg_A_aux = ""
-	dato_reg_B = ""
-	dato_reg_B_aux = ""
-	valor_inmediato = ""
-	valor_inmediato_aux = ""
-	rs = ""
-	rs_aux = ""
-	rd = ""
-	rd_aux = ""
-	rt = ""
-	rt_aux = ""
-	reg_dst = ""
-	reg_dst_aux = ""
-	mem_to_reg = ""
-	mem_to_reg_aux = ""
-	alu_op = ""
-	alu_op_aux = ""
-	alu_ctrl = ""
-	alu_ctrl_aux = ""
-	alu_src = ""
-	alu_src_aux = ""
-	mem_read = ""
-	mem_read_aux = ""
-	mem_write = ""
-	mem_write_aux = ""
-	reg_write = ""
-	reg_write_aux = ""
+	bytes_recibidos = ""
+	bytes_recibidos_aux = ""
+	
 	
 
-	contador_etapas = 0
-	contador_subetapas = 0
+	contador_etapas = -1
+	contador_etapas_send = 0
 	cantidad_bytes_control = 0
 
 
 	while (flag_receive):
 
-		if (contador_etapas == 0): #PC
-
-			if (contador_subetapas == 0): #Parte H
-				contador_de_programa, cantidad_bytes_control = readResultadoEjecucion (1)
+		if (contador_etapas_send == 0): # Parte 3
+				bytes_recibidos, cantidad_bytes_control = readResultadoEjecucion (1)
 				if (cantidad_bytes_control == 1):
-					code_error = writeSerial (getCode('PC-H'))
+					code_error = writeSerial (getCode('Send-Part-3'))
 					if (code_error < 0):
 						activarBotones (1)
 						flag_receive = False
 					else:
 						ser.flushInput()
-						contador_subetapas = contador_subetapas + 1
+						contador_etapas_send = contador_etapas_send + 1
 
-			else: #Parte L
-				contador_de_programa_aux, cantidad_bytes_control = readResultadoEjecucion (1)
-				if (cantidad_bytes_control == 1):
-					code_error = writeSerial (getCode('PC-L'))
-					if (code_error < 0):
-						activarBotones (1)
-						flag_receive = False
-					else:
-						ser.flushInput()
-						contador_de_programa = contador_de_programa + contador_de_programa_aux
-						etiqueta_resultado_pc = contador_de_programa
-						etiquetaPCValorMIPS.config (text = etiqueta_resultado_pc)
-						contador_etapas = contador_etapas + 1
-						contador_subetapas = 0 
-				
+		if (contador_etapas_send == 1):# Parte 2
+			bytes_recibidos_aux, cantidad_bytes_control = readResultadoEjecucion (1)
+			if (cantidad_bytes_control == 1):
+				code_error = writeSerial (getCode('Send-Part-2'))
+				if (code_error < 0):
+					activarBotones (1)
+					flag_receive = False
+				else:
+					ser.flushInput()
+					contador_etapas_send = contador_etapas_send + 1
+					bytes_recibidos = bytes_recibidos + bytes_recibidos_aux
 
-		elif (contador_etapas == 1): #Contador de ciclos
+		if (contador_etapas_send == 2): #Parte 1
+			bytes_recibidos_aux, cantidad_bytes_control = readResultadoEjecucion (1)
+			if (cantidad_bytes_control == 1):
+				code_error = writeSerial (getCode('Send-Part-1'))
+				if (code_error < 0):
+					activarBotones (1)
+					flag_receive = False
+				else:
+					ser.flushInput()
+					contador_etapas_send = contador_etapas_send + 1
+					bytes_recibidos = bytes_recibidos + bytes_recibidos_aux
 
-			if (contador_subetapas == 0): # Parte H
-				contador_de_ciclos, cantidad_bytes_control = readResultadoEjecucion (1)
-				if (cantidad_bytes_control == 1):
-					code_error = writeSerial (getCode('CC-H'))
-					if (code_error < 0):
-						activarBotones (1)
-						flag_receive = False
-					else:
-						ser.flushInput()
-						contador_subetapas = contador_subetapas + 1
-
-			else: # Parte L
-				contador_de_ciclos_aux, cantidad_bytes_control = readResultadoEjecucion (1)
-				if (cantidad_bytes_control == 1):
-					code_error = writeSerial (getCode('CC-L'))
-					if (code_error < 0):
-						activarBotones (1)
-						flag_receive = False
-					else:
-						ser.flushInput()
-						contador_de_ciclos = contador_de_ciclos + contador_de_ciclos_aux
-						etiqueta_contador_ciclos = contador_de_ciclos
-						etiquetaContadorCiclosValorMIPS.config (text = etiqueta_contador_ciclos)
-						contador_etapas = contador_etapas + 1
-						contador_subetapas = 0 
-
-
-		elif (contador_etapas == 2): #Adder IF 
-
-			if (contador_subetapas == 0): #Parte H
-				adder_contador_de_programa, cantidad_bytes_control = readResultadoEjecucion (1)
-				if (cantidad_bytes_control == 1):
-					code_error = writeSerial (getCode('PCAdd-H'))
-					if (code_error < 0):
-						activarBotones (1)
-						flag_receive = False
-					else:
-						ser.flushInput()
-						contador_subetapas = contador_subetapas + 1
-
-			else: #Parte L
-				adder_contador_de_programa_aux, cantidad_bytes_control = readResultadoEjecucion (1)
-				if (cantidad_bytes_control == 1):
-					code_error = writeSerial (getCode('PCAdd-L'))
-					if (code_error < 0):
-						activarBotones (1)
-						flag_receive = False
-					else:
-						ser.flushInput()
-						adder_contador_de_programa = adder_contador_de_programa + adder_contador_de_programa_aux
-						etiqueta_resultado_adder_pc = adder_contador_de_programa
-						etiquetaPCAddValorMIPS.config (text = etiqueta_resultado_adder_pc)
-						contador_etapas = contador_etapas + 1
-						contador_subetapas = 0 
-		
-		elif (contador_etapas == 3): #Instruction (output IF)
-
-			if (contador_subetapas == 0): # Parte 3
-				instruction_fetch, cantidad_bytes_control = readResultadoEjecucion (1)
-				if (cantidad_bytes_control == 1):
-					code_error = writeSerial (getCode('IF-3'))
-					if (code_error < 0):
-						activarBotones (1)
-						flag_receive = False
-					else:
-						ser.flushInput()
-						contador_subetapas = contador_subetapas + 1
-
-			if (contador_subetapas == 1): # Parte 2
-				instruction_fetch_aux, cantidad_bytes_control = readResultadoEjecucion (1)
-				if (cantidad_bytes_control == 1):
-					code_error = writeSerial (getCode('IF-2'))
-					if (code_error < 0):
-						activarBotones (1)
-						flag_receive = False
-					else:
-						ser.flushInput()
-						contador_subetapas = contador_subetapas + 1
-						instruction_fetch = instruction_fetch + instruction_fetch_aux
-
-			if (contador_subetapas == 2): #Parte 1
-				instruction_fetch_aux, cantidad_bytes_control = readResultadoEjecucion (1)
-				if (cantidad_bytes_control == 1):
-					code_error = writeSerial (getCode('IF-1'))
-					if (code_error < 0):
-						activarBotones (1)
-						flag_receive = False
-					else:
-						ser.flushInput()
-						contador_subetapas = contador_subetapas + 1
-						instruction_fetch = instruction_fetch + instruction_fetch_aux
-
-			else: # Parte 0
-				instruction_fetch_aux, cantidad_bytes_control = readResultadoEjecucion (1)
-				if (cantidad_bytes_control == 1):
-					code_error = writeSerial (getCode('IF-0'))
-					if (code_error < 0):
-						activarBotones (1)
-						flag_receive = False
-					else:
-						ser.flushInput()
-						instruction_fetch = instruction_fetch + instruction_fetch_aux
-						etiqueta_instruction_fetch = getHexadecimal (instruction_fetch)
-						etiquetaInstructionFetchValorMIPS.config (text = etiqueta_instruction_fetch)
-						contador_etapas = contador_etapas + 1
-						contador_subetapas = 0
-						#flag_receive = False
-						#if ((modo_ejecucion == '0') or (instruction_fetch == ('0' * 32))): #Continuo
-						#	activarBotones (1)
-						#else: #Debug
-						#	activarBotones (4)
-		
-		
-		
-		elif (contador_etapas == 4): # Branch
-			if (contador_subetapas == 0): # Parte H
-				branch_dir, cantidad_bytes_control = readResultadoEjecucion (1)
-				if (cantidad_bytes_control == 1):
-					code_error = writeSerial (getCode('BR-H'))
-					if (code_error < 0):
-						activarBotones (1)
-						flag_receive = False
-					else:
-						ser.flushInput()
-						contador_subetapas = contador_subetapas + 1
-
-			else: # Parte L
-				branch_dir_aux, cantidad_bytes_control = readResultadoEjecucion (1)
-				if (cantidad_bytes_control == 1):
-					code_error = writeSerial (getCode('BR-L'))
-					if (code_error < 0):
-						activarBotones (1)
-						flag_receive = False
-					else:
-						ser.flushInput()
-						branch_dir = branch_dir + branch_dir_aux
-						etiqueta_branch_dir = branch_dir [CANT_BITS_INSTRUCCION / 2 - CANT_BITS_ADDRESS_MEM_PROGRAMA ::]
-						etiqueta_control_salto = branch_dir [CANT_BITS_INSTRUCCION / 2 - CANT_BITS_ADDRESS_MEM_PROGRAMA - 1]
-						etiquetaBranchDirValorMIPS.config (text = etiqueta_branch_dir)
-						etiquetaBranchControlValorMIPS .config (text = etiqueta_control_salto)
-						contador_etapas = contador_etapas + 1
-						contador_subetapas = 0 
-
-		elif (contador_etapas == 5): # Reg_dato_A
-			if (contador_subetapas == 0): # Parte 3
-				dato_reg_A, cantidad_bytes_control = readResultadoEjecucion (1)
-				if (cantidad_bytes_control == 1):
-					code_error = writeSerial (getCode('DA-3'))
-					if (code_error < 0):
-						activarBotones (1)
-						flag_receive = False
-					else:
-						ser.flushInput()
-						contador_subetapas = contador_subetapas + 1
-
-			if (contador_subetapas == 1): # Parte 2
-				dato_reg_A_aux, cantidad_bytes_control = readResultadoEjecucion (1)
-				if (cantidad_bytes_control == 1):
-					code_error = writeSerial (getCode('DA-2'))
-					if (code_error < 0):
-						activarBotones (1)
-						flag_receive = False
-					else:
-						ser.flushInput()
-						contador_subetapas = contador_subetapas + 1
-						dato_reg_A = dato_reg_A + dato_reg_A_aux
-
-			if (contador_subetapas == 2): #Parte 1
-				dato_reg_A_aux, cantidad_bytes_control = readResultadoEjecucion (1)
-				if (cantidad_bytes_control == 1):
-					code_error = writeSerial (getCode('DA-1'))
-					if (code_error < 0):
-						activarBotones (1)
-						flag_receive = False
-					else:
-						ser.flushInput()
-						contador_subetapas = contador_subetapas + 1
-						dato_reg_A = dato_reg_A + dato_reg_A_aux
-
-			else: # Parte 0
-				dato_reg_A_aux, cantidad_bytes_control = readResultadoEjecucion (1)
-				if (cantidad_bytes_control == 1):
-					code_error = writeSerial (getCode('DA-0'))
-					if (code_error < 0):
-						activarBotones (1)
-						flag_receive = False
-					else:
-						ser.flushInput()
-						dato_reg_A = dato_reg_A + dato_reg_A_aux
-						etiqueta_dato_reg_A = getHexadecimal (dato_reg_A)
-						etiquetaDatoRegAValorMIPS.config (text = etiqueta_dato_reg_A)
-						contador_etapas = contador_etapas + 1
-						contador_subetapas = 0
-						#flag_receive = False
-						#if ((modo_ejecucion == '0') or (dato_reg_A == ('0' * 32))): #Continuo
-						#	activarBotones (1)
-						#else: #Debug
-						#	activarBotones (4)
-
-		elif (contador_etapas == 6): # Reg_dato_B
-			if (contador_subetapas == 0): # Parte 3
-				dato_reg_B, cantidad_bytes_control = readResultadoEjecucion (1)
-				if (cantidad_bytes_control == 1):
-					code_error = writeSerial (getCode('DB-3'))
-					if (code_error < 0):
-						activarBotones (1)
-						flag_receive = False
-					else:
-						ser.flushInput()
-						contador_subetapas = contador_subetapas + 1
-
-			if (contador_subetapas == 1): # Parte 2
-				dato_reg_B_aux, cantidad_bytes_control = readResultadoEjecucion (1)
-				if (cantidad_bytes_control == 1):
-					code_error = writeSerial (getCode('DB-2'))
-					if (code_error < 0):
-						activarBotones (1)
-						flag_receive = False
-					else:
-						ser.flushInput()
-						contador_subetapas = contador_subetapas + 1
-						dato_reg_B = dato_reg_B + dato_reg_B_aux
-
-			if (contador_subetapas == 2): #Parte 1
-				dato_reg_B_aux, cantidad_bytes_control = readResultadoEjecucion (1)
-				if (cantidad_bytes_control == 1):
-					code_error = writeSerial (getCode('DB-1'))
-					if (code_error < 0):
-						activarBotones (1)
-						flag_receive = False
-					else:
-						ser.flushInput()
-						contador_subetapas = contador_subetapas + 1
-						dato_reg_B = dato_reg_B + dato_reg_B_aux
-
-			else: # Parte 0
-				dato_reg_B_aux, cantidad_bytes_control = readResultadoEjecucion (1)
-				if (cantidad_bytes_control == 1):
-					code_error = writeSerial (getCode('DB-0'))
-					if (code_error < 0):
-						activarBotones (1)
-						flag_receive = False
-					else:
-						ser.flushInput()
-						dato_reg_B = dato_reg_B + dato_reg_B_aux
-						etiqueta_dato_reg_B = getHexadecimal (dato_reg_B)
-						etiquetaDatoRegBValorMIPS.config (text = etiqueta_dato_reg_B)
-						contador_etapas = contador_etapas + 1
-						contador_subetapas = 0
-						#flag_receive = False
-						#if ((modo_ejecucion == '0') or (dato_reg_B == ('0' * 32))): #Continuo
-						#	activarBotones (1)
-						#else: #Debug
-						#	activarBotones (4)
-
-		elif (contador_etapas == 7): # Valor inmediato con extension de signo
-			if (contador_subetapas == 0): # Parte 3
-				valor_inmediato, cantidad_bytes_control = readResultadoEjecucion (1)
-				if (cantidad_bytes_control == 1):
-					code_error = writeSerial (getCode('IM-3'))
-					if (code_error < 0):
-						activarBotones (1)
-						flag_receive = False
-					else:
-						ser.flushInput()
-						contador_subetapas = contador_subetapas + 1
-
-			if (contador_subetapas == 1): # Parte 2
-				valor_inmediato_aux, cantidad_bytes_control = readResultadoEjecucion (1)
-				if (cantidad_bytes_control == 1):
-					code_error = writeSerial (getCode('IM-2'))
-					if (code_error < 0):
-						activarBotones (1)
-						flag_receive = False
-					else:
-						ser.flushInput()
-						contador_subetapas = contador_subetapas + 1
-						valor_inmediato = valor_inmediato + valor_inmediato_aux
-
-			if (contador_subetapas == 2): #Parte 1
-				valor_inmediato_aux, cantidad_bytes_control = readResultadoEjecucion (1)
-				if (cantidad_bytes_control == 1):
-					code_error = writeSerial (getCode('IM-1'))
-					if (code_error < 0):
-						activarBotones (1)
-						flag_receive = False
-					else:
-						ser.flushInput()
-						contador_subetapas = contador_subetapas + 1
-						valor_inmediato = valor_inmediato + valor_inmediato_aux
-
-			else: # Parte 0
-				valor_inmediato_aux, cantidad_bytes_control = readResultadoEjecucion (1)
-				if (cantidad_bytes_control == 1):
-					code_error = writeSerial (getCode('IM-0'))
-					if (code_error < 0):
-						activarBotones (1)
-						flag_receive = False
-					else:
-						ser.flushInput()
-						valor_inmediato = valor_inmediato + valor_inmediato_aux
-						etiqueta_valor_inmediato = getHexadecimal (valor_inmediato)
-						etiquetaValorInmediatoValorMIPS.config (text = etiqueta_valor_inmediato)
-						contador_etapas = contador_etapas + 1
-						contador_subetapas = 0
-						#flag_receive = False
-						#if ((modo_ejecucion == '0') or (valor_inmediato == ('0' * 32))): #Continuo
-						#	activarBotones (1)
-						#else: #Debug
-						#	activarBotones (4)
-		
-		elif (contador_etapas == 8): # Direcciones de registros rs, rt y rd
-			if (contador_subetapas == 0): # Parte H
-				rs, cantidad_bytes_control = readResultadoEjecucion (1)
-				if (cantidad_bytes_control == 1):
-					code_error = writeSerial (getCode('AR-H'))
-					if (code_error < 0):
-						activarBotones (1)
-						flag_receive = False
-					else:
-						ser.flushInput()
-						contador_subetapas = contador_subetapas + 1
-
-			else: # Parte L
-				rs_aux, cantidad_bytes_control = readResultadoEjecucion (1)
-				if (cantidad_bytes_control == 1):
-					code_error = writeSerial (getCode('AR-L'))
-					if (code_error < 0):
-						activarBotones (1)
-						flag_receive = False
-					else:
-						ser.flushInput()
-						rs = rs + rs_aux
-
-						etiqueta_rs = 'R' + str (int (rs [-CANT_BITS_ADDR_REGISTROS * 3 : -CANT_BITS_ADDR_REGISTROS * 2 ], 2))
-						etiqueta_rt = 'R' + str (int (rs [-CANT_BITS_ADDR_REGISTROS * 2 : -CANT_BITS_ADDR_REGISTROS], 2 ))
-						etiqueta_rd = 'R' + str (int (rs [-CANT_BITS_ADDR_REGISTROS : ], 2))
-						
-						etiquetaRSValorMIPS.config (text = etiqueta_rs)
-						etiquetaRTValorMIPS.config (text = etiqueta_rt)
-						etiquetaRDValorMIPS.config (text = etiqueta_rd)
-						contador_etapas = contador_etapas + 1
-						contador_subetapas = 0 
-
-		
-		elif (contador_etapas == 9): # Seniales de control ID/EX
-			if (contador_subetapas == 0): # Parte H
-				reg_dst, cantidad_bytes_control = readResultadoEjecucion (1)
-				if (cantidad_bytes_control == 1):
-					code_error = writeSerial (getCode('SC-H'))
-					if (code_error < 0):
-						activarBotones (1)
-						flag_receive = False
-					else:
-						ser.flushInput()
-						contador_subetapas = contador_subetapas + 1
-
-			else: # Parte L
-				reg_dst_aux, cantidad_bytes_control = readResultadoEjecucion (1)
-				if (cantidad_bytes_control == 1):
-					code_error = writeSerial (getCode('SC-L'))
-					if (code_error < 0):
-						activarBotones (1)
-						flag_receive = False
-					else:
-						ser.flushInput()
-						reg_dst = reg_dst + reg_dst_aux
-						
-						etiqueta_falg_halt_ID_to_EX = reg_dst [- CANT_BITS_ALU_CTRL - CANT_BITS_ALU_OP - 7 ]
-
-						select_bytes_condicion = int (reg_dst [ - CANT_BITS_ALU_CTRL - CANT_BITS_ALU_OP - 7 - \
-							CANT_BITS_SELECT_BYTES_MEM_DATA : - CANT_BITS_ALU_CTRL - CANT_BITS_ALU_OP - 7 ], 2)
-						if (select_bytes_condicion == 0):
-							etiqueta_select_bytes_mem_data_ID_to_EX = 'Ninguno'
-						elif (select_bytes_condicion == 1):
-							etiqueta_select_bytes_mem_data_ID_to_EX = 'Byte'
-						elif (select_bytes_condicion == 2):
-							etiqueta_select_bytes_mem_data_ID_to_EX = 'Halfword'			
-						elif (select_bytes_condicion == 3):
-							etiqueta_select_bytes_mem_data_ID_to_EX = 'Word'
-						else:
-							etiqueta_select_bytes_mem_data_ID_to_EX = 'Ninguno'
-
-
-						if (str (reg_dst [- CANT_BITS_ALU_CTRL - CANT_BITS_ALU_OP - 6 ]) == '1'):
-							etiqueta_reg_dst_ID_to_EX = 'Rd'
-						else:
-							etiqueta_reg_dst_ID_to_EX = 'Rt'
-						
-						if (str (reg_dst [- CANT_BITS_ALU_CTRL - CANT_BITS_ALU_OP - 1 ]) == '1'):
-							etiqueta_mem_to_reg_ID_to_EX = 'Si'
-						else:
-							etiqueta_mem_to_reg_ID_to_EX = 'No'
-
-						
-						etiqueta_alu_op = reg_dst [- CANT_BITS_ALU_CTRL - CANT_BITS_ALU_OP  : - CANT_BITS_ALU_CTRL ]
-						etiqueta_alu_ctrl = reg_dst [ - CANT_BITS_ALU_CTRL  : ]
-						
-						
-						if (str (reg_dst [- CANT_BITS_ALU_CTRL - CANT_BITS_ALU_OP - 4 ]) == '1'):
-							etiqueta_alu_src = 'Valor inmediato'
-						else:
-							etiqueta_alu_src = 'Registro B'
-
-						
-						
-						if (str (reg_dst [- CANT_BITS_ALU_CTRL - CANT_BITS_ALU_OP - 3 ]) == '1'):
-							etiqueta_mem_read_ID_to_EX = 'Si'
-						else:
-							etiqueta_mem_read_ID_to_EX = 'No'
-						 
-						if (str (reg_dst [- CANT_BITS_ALU_CTRL - CANT_BITS_ALU_OP - 2 ]) == '1'):
-							etiqueta_mem_write_ID_to_EX = 'Si'
-						else:
-							etiqueta_mem_write_ID_to_EX = 'No'
-						
-						if (str (reg_dst [- CANT_BITS_ALU_CTRL - CANT_BITS_ALU_OP - 5 ]) == '1'):
-							etiqueta_reg_write_ID_to_EX = 'Si'
-						else:
-							etiqueta_reg_write_ID_to_EX = 'No' 
-						
-						etiquetaFlagHaltIDtoEXValorMIPS.config (text = etiqueta_falg_halt_ID_to_EX)
-						etiquetaSelectBytesMemDataIDtoEXValorMIPS.config (text = etiqueta_select_bytes_mem_data_ID_to_EX)
-						etiquetaRegDestinoIDtoEXValorMIPS.config (text = etiqueta_reg_dst_ID_to_EX)
-						etiquetaMemToRegIDtoEXValorMIPS.config (text = etiqueta_mem_to_reg_ID_to_EX)
-						etiquetaALUOpValorMIPS.config (text = etiqueta_alu_op)
-						etiquetaALUControlValorMIPS.config (text = etiqueta_alu_ctrl)
-						etiquetaALUSrcValorMIPS.config (text = etiqueta_alu_src)
-						etiquetaMemReadIDtoEXValorMIPS.config (text = etiqueta_mem_read_ID_to_EX)
-						etiquetaMemWriteIDtoEXValorMIPS.config (text = etiqueta_mem_write_ID_to_EX)
-						etiquetaRegWriteIDtoEXValorMIPS.config (text = etiqueta_reg_write_ID_to_EX)
-						
-						contador_etapas = contador_etapas + 1
-						contador_subetapas = 0
+		else: # Parte 0
+			bytes_recibidos_aux, cantidad_bytes_control = readResultadoEjecucion (1)
+			if (cantidad_bytes_control == 1):
+				code_error = writeSerial (getCode('Send-Part-0'))
+				if (code_error < 0):
+					activarBotones (1)
+					flag_receive = False
+				else:
+					ser.flushInput()
+					bytes_recibidos = bytes_recibidos + bytes_recibidos_aux
+					
+					contador_etapas = contador_etapas + 1
+					contador_etapas_send = 0
+					
+					if (contador_etapas == (CANT_DATOS_DB - 1)):
 						flag_receive = False
 						if ((modo_ejecucion == '0') or (etiqueta_falg_halt_ID_to_EX == ('1'))): #Continuo o Debug con halt
 							activarBotones (1)
 						else: #Debug
-							activarBotones (4) 
+							activarBotones (4)
+								
+		
 
+		if (contador_etapas == 0): #PC y CC
+			etiqueta_resultado_pc = bytes_recibidos [0 : WIDTH_WORD * 2] #PC
+			etiquetaPCValorMIPS.config (text = etiqueta_resultado_pc)
 						
+				
+			etiqueta_contador_ciclos = bytes_recibidos [WIDTH_WORD * 2 : ] #CC
+			etiquetaContadorCiclosValorMIPS.config (text = etiqueta_contador_ciclos)
 
+		elif (contador_etapas == 1): # Adder PC, branch dir y branch control 
+			etiqueta_resultado_adder_pc = bytes_recibidos [0 : WIDTH_WORD * 2] #Adder PC
+			etiquetaPCAddValorMIPS.config (text = etiqueta_resultado_adder_pc)	
+			
+			etiqueta_branch_dir = bytes_recibidos [- CANT_BITS_ADDRESS_MEM_PROGRAMA : ]
+			etiqueta_control_salto = bytes_recibidos [- CANT_BITS_ADDRESS_MEM_PROGRAMA - 1]
+			etiquetaBranchDirValorMIPS.config (text = etiqueta_branch_dir)
+			etiquetaBranchControlValorMIPS .config (text = etiqueta_control_salto)		
+
+		elif (contador_etapas == 2): #Instruction
+			etiqueta_instruction_fetch = getHexadecimal (bytes_recibidos)
+			etiquetaInstructionFetchValorMIPS.config (text = etiqueta_instruction_fetch)
+
+		elif (contador_etapas == 3):
+			etiqueta_dato_reg_A = getHexadecimal (bytes_recibidos)
+			etiquetaDatoRegAValorMIPS.config (text = etiqueta_dato_reg_A)
+
+		elif (contador_etapas == 4):
+			etiqueta_dato_reg_B = getHexadecimal (bytes_recibidos)
+			etiquetaDatoRegBValorMIPS.config (text = etiqueta_dato_reg_B)
+		
+		elif (contador_etapas == 5):
+			etiqueta_valor_inmediato = getHexadecimal (bytes_recibidos)
+			etiquetaValorInmediatoValorMIPS.config (text = etiqueta_valor_inmediato)
+		
+		
+		elif (contador_etapas == 6): # Direcciones de registros rs, rt y rd. Seniales de control de etapa ID.
+			etiqueta_rs = 'R' + str (int (bytes_recibidos [-CANT_BITS_ADDR_REGISTROS * 3 : -CANT_BITS_ADDR_REGISTROS * 2 ], 2))
+			etiqueta_rt = 'R' + str (int (bytes_recibidos [-CANT_BITS_ADDR_REGISTROS * 2 : -CANT_BITS_ADDR_REGISTROS], 2 ))
+			etiqueta_rd = 'R' + str (int (bytes_recibidos [-CANT_BITS_ADDR_REGISTROS : ], 2))
+			
+			etiquetaRSValorMIPS.config (text = etiqueta_rs)
+			etiquetaRTValorMIPS.config (text = etiqueta_rt)
+			etiquetaRDValorMIPS.config (text = etiqueta_rd)
+
+			bytes_recibidos_auxiliar = bytes_recibidos [0 : WIDTH_WORD * 2]			
+			etiqueta_falg_halt_ID_to_EX = bytes_recibidos_auxiliar [- CANT_BITS_ALU_CTRL - CANT_BITS_ALU_OP - 7 ]
+
+			select_bytes_condicion = int (bytes_recibidos_auxiliar [ - CANT_BITS_ALU_CTRL - CANT_BITS_ALU_OP - 7 - \
+				CANT_BITS_SELECT_BYTES_MEM_DATA : - CANT_BITS_ALU_CTRL - CANT_BITS_ALU_OP - 7 ], 2)
+			if (select_bytes_condicion == 0):
+				etiqueta_select_bytes_mem_data_ID_to_EX = 'Ninguno'
+			elif (select_bytes_condicion == 1):
+				etiqueta_select_bytes_mem_data_ID_to_EX = 'Byte'
+			elif (select_bytes_condicion == 2):
+				etiqueta_select_bytes_mem_data_ID_to_EX = 'Halfword'			
+			elif (select_bytes_condicion == 3):
+				etiqueta_select_bytes_mem_data_ID_to_EX = 'Word'
+			else:
+				etiqueta_select_bytes_mem_data_ID_to_EX = 'Ninguno'
+
+
+			if (str (bytes_recibidos_auxiliar [- CANT_BITS_ALU_CTRL - CANT_BITS_ALU_OP - 6 ]) == '1'):
+				etiqueta_reg_dst_ID_to_EX = 'Rd'
+			else:
+				etiqueta_reg_dst_ID_to_EX = 'Rt'
+			
+			if (str (bytes_recibidos_auxiliar [- CANT_BITS_ALU_CTRL - CANT_BITS_ALU_OP - 1 ]) == '1'):
+				etiqueta_mem_to_reg_ID_to_EX = 'Si'
+			else:
+				etiqueta_mem_to_reg_ID_to_EX = 'No'
+
+			
+			etiqueta_alu_op = bytes_recibidos_auxiliar [- CANT_BITS_ALU_CTRL - CANT_BITS_ALU_OP  : - CANT_BITS_ALU_CTRL ]
+			etiqueta_alu_ctrl = bytes_recibidos_auxiliar [ - CANT_BITS_ALU_CTRL  : ]
+			
+			
+			if (str (bytes_recibidos_auxiliar [- CANT_BITS_ALU_CTRL - CANT_BITS_ALU_OP - 4 ]) == '1'):
+				etiqueta_alu_src = 'Valor inmediato'
+			else:
+				etiqueta_alu_src = 'Registro B'
+
+			
+			
+			if (str (bytes_recibidos_auxiliar [- CANT_BITS_ALU_CTRL - CANT_BITS_ALU_OP - 3 ]) == '1'):
+				etiqueta_mem_read_ID_to_EX = 'Si'
+			else:
+				etiqueta_mem_read_ID_to_EX = 'No'
+				
+			if (str (bytes_recibidos_auxiliar [- CANT_BITS_ALU_CTRL - CANT_BITS_ALU_OP - 2 ]) == '1'):
+				etiqueta_mem_write_ID_to_EX = 'Si'
+			else:
+				etiqueta_mem_write_ID_to_EX = 'No'
+			
+			if (str (bytes_recibidos_auxiliar [- CANT_BITS_ALU_CTRL - CANT_BITS_ALU_OP - 5 ]) == '1'):
+				etiqueta_reg_write_ID_to_EX = 'Si'
+			else:
+				etiqueta_reg_write_ID_to_EX = 'No' 
+			
+			etiquetaFlagHaltIDtoEXValorMIPS.config (text = etiqueta_falg_halt_ID_to_EX)
+			etiquetaSelectBytesMemDataIDtoEXValorMIPS.config (text = etiqueta_select_bytes_mem_data_ID_to_EX)
+			etiquetaRegDestinoIDtoEXValorMIPS.config (text = etiqueta_reg_dst_ID_to_EX)
+			etiquetaMemToRegIDtoEXValorMIPS.config (text = etiqueta_mem_to_reg_ID_to_EX)
+			etiquetaALUOpValorMIPS.config (text = etiqueta_alu_op)
+			etiquetaALUControlValorMIPS.config (text = etiqueta_alu_ctrl)
+			etiquetaALUSrcValorMIPS.config (text = etiqueta_alu_src)
+			etiquetaMemReadIDtoEXValorMIPS.config (text = etiqueta_mem_read_ID_to_EX)
+			etiquetaMemWriteIDtoEXValorMIPS.config (text = etiqueta_mem_write_ID_to_EX)
+			etiquetaRegWriteIDtoEXValorMIPS.config (text = etiqueta_reg_write_ID_to_EX)
+						
+		elif (contador_etapas == 7): #Resultado ALU
+			etiqueta_resultado_ALU = getHexadecimal (bytes_recibidos)
+			etiquetaResultadoALUValorMIPS.config (text = etiqueta_resultado_ALU)
+			
+		elif (contador_etapas == 8): #Dato de ALU a MEM
+			etiqueta_data_write_mem = getHexadecimal (bytes_recibidos)
+			etiquetaDataWriteMemValorMIPS.config (text = etiqueta_data_write_mem)
+
+		elif (contador_etapas == 9): # Seniales de control etapa EX
+
+			if (str (bytes_recibidos [-CANT_BITS_SELECT_BYTES_MEM_DATA - CANT_BITS_ADDR_REGISTROS - 3]) == '1'):
+				etiqueta_mem_read_EX_to_MEM = 'Si'
+			else:
+				etiqueta_mem_read_EX_to_MEM = 'No'
+				
+			if (str (bytes_recibidos [-CANT_BITS_SELECT_BYTES_MEM_DATA - CANT_BITS_ADDR_REGISTROS - 2]) == '1'):
+				etiqueta_mem_write_EX_to_MEM = 'Si'
+			else:
+				etiqueta_mem_write_EX_to_MEM = 'No'
+			
+			if (str (bytes_recibidos [-CANT_BITS_SELECT_BYTES_MEM_DATA - CANT_BITS_ADDR_REGISTROS - 4]) == '1'):
+				etiqueta_reg_write_EX_to_MEM = 'Si'
+			else:
+				etiqueta_reg_write_EX_to_MEM = 'No' 
+
+			if (str (bytes_recibidos [-CANT_BITS_SELECT_BYTES_MEM_DATA - CANT_BITS_ADDR_REGISTROS - 1]) == '1'):
+				etiqueta_mem_to_reg_EX_to_MEM = 'Si'
+			else:
+				etiqueta_mem_to_reg_EX_to_MEM = 'No'
+			
+			etiquetaRegWriteEXtoMEMValorMIPS.config (text = etiqueta_reg_write_EX_to_MEM)
+			
+			etiquetaMemReadEXtoMEMValorMIPS.config (text = etiqueta_mem_read_EX_to_MEM)
+			
+			etiquetaMemWriteEXtoMEMValorMIPS.config (text = etiqueta_mem_write_EX_to_MEM)
+			
+			etiquetaMemtoRegEXtoMEMValorMIPS.config (text = etiqueta_mem_to_reg_EX_to_MEM)
+			
+			
+			etiqueta_select_bytes_mem_datos_EX_to_MEM = bytes_recibidos [-CANT_BITS_SELECT_BYTES_MEM_DATA - CANT_BITS_ADDR_REGISTROS : -CANT_BITS_ADDR_REGISTROS - 1]
+			
+			select_bytes_condicion = int (bytes_recibidos [-CANT_BITS_SELECT_BYTES_MEM_DATA - \
+				CANT_BITS_ADDR_REGISTROS : -CANT_BITS_ADDR_REGISTROS - 1], 2)
+			if (select_bytes_condicion == 0):
+				etiqueta_select_bytes_mem_datos_EX_to_MEM = 'Ninguno'
+			elif (select_bytes_condicion == 1):
+				etiqueta_select_bytes_mem_datos_EX_to_MEM = 'Byte'
+			elif (select_bytes_condicion == 2):
+				etiqueta_select_bytes_mem_datos_EX_to_MEM = 'Halfword'			
+			elif (select_bytes_condicion == 3):
+				etiqueta_select_bytes_mem_datos_EX_to_MEM = 'Word'
+			else:
+				etiqueta_select_bytes_mem_datos_EX_to_MEM = 'Ninguno'
+			
+			etiquetaSelectBytesMemDatosEXtoMEMValorMIPS.config (text = etiqueta_select_bytes_mem_datos_EX_to_MEM)
+			
+			etiqueta_halt_detected_EX_to_MEM = bytes_recibidos [-CANT_BITS_ADDR_REGISTROS - 1]
+			etiquetaHaltDetectedEXtoMEMValorMIPS.config (text = etiqueta_halt_detected_EX_to_MEM)
+
+			
+			etiqueta_registro_destino_EX_to_MEM = 'R' + str (int (bytes_recibidos [-CANT_BITS_ADDR_REGISTROS : ], 2))
+			etiquetaRegistroDestinoEXtoMEMValorMIPS.config (text = etiqueta_registro_destino_EX_to_MEM)
 		
 
 
@@ -1088,9 +804,9 @@ def salir():
 #Ventana principal - Configuracion
 
 root = Tk() 
-root.geometry ("560x1430+0+0") #Tamanio
-root.minsize (height=560, width=1430)
-root.maxsize (height=560, width=1430)
+root.geometry ("560x1830+0+0") #Tamanio
+root.minsize (height=560, width=1830)
+root.maxsize (height=560, width=1830)
 
 # Rectangulos divisorios
 
@@ -1115,8 +831,8 @@ canvasResultado.place (x=1, y=420)
 
 
 canvasValoresMIPS = Canvas (root)
-canvasValoresMIPS.config (width = 1040, height = 530)
-canvasValoresMIPS.create_rectangle (5, 5, 1040, 530, outline='gray60')
+canvasValoresMIPS.config (width = 1440, height = 530)
+canvasValoresMIPS.create_rectangle (5, 5, 1440, 530, outline='gray60')
 canvasValoresMIPS.place (x=380, y=2)
 
 
@@ -1219,8 +935,8 @@ etiquetaInstructionFetchValorMIPS.place (x = 620,  y = 250)
 
 # ID
 
-etiquetaLatchIFID = Label (root, text = "LATCH ID/EX: ", fg = "dark green", font = "TkDefaultFont 12")
-etiquetaLatchIFID.place (x = 400,  y = 290)
+etiquetaLatchIDEX = Label (root, text = "LATCH ID/EX: ", fg = "dark green", font = "TkDefaultFont 12")
+etiquetaLatchIDEX.place (x = 400,  y = 290)
 
 etiquetaBranchDir = Label (root, text = "Direccion de salto: ", fg = "brown", font = "TkDefaultFont 12")
 etiquetaBranchDir.place (x = 400,  y = 320)
@@ -1264,8 +980,8 @@ etiquetaRTValorMIPS = Label (root, text = etiqueta_rt,\
 	 fg = "black", font = "TkDefaultFont 12")
 etiquetaRTValorMIPS.place (x = 620,  y = 500)
 
-etiquetaLatchIFID = Label (root, text = "LATCH ID/EX: ", fg = "dark green", font = "TkDefaultFont 12")
-etiquetaLatchIFID.place (x = 900,  y = 20)
+etiquetaLatchIDEX2 = Label (root, text = "LATCH ID/EX: ", fg = "dark green", font = "TkDefaultFont 12")
+etiquetaLatchIDEX2.place (x = 900,  y = 20)
 
 etiquetaRD = Label (root, text = "Direccion rd: ", fg = "brown", font = "TkDefaultFont 12")
 etiquetaRD.place (x = 900,  y = 70)
@@ -1340,6 +1056,82 @@ etiquetaALUControl.place (x = 900,  y = 370)
 etiquetaALUControlValorMIPS = Label (root, text = etiqueta_alu_ctrl,\
 	 fg = "black", font = "TkDefaultFont 12")
 etiquetaALUControlValorMIPS.place (x = 1200,  y = 370)
+
+
+
+
+
+
+
+# Ejecucion
+etiquetaLatchEXMEM = Label (root, text = "LATCH EX/MEM: ", fg = "dark green", font = "TkDefaultFont 12")
+etiquetaLatchEXMEM.place (x = 1400,  y = 20)
+
+etiquetaResultadoALU = Label (root, text = "Resultado ALU: ", fg = "brown", font = "TkDefaultFont 12")
+etiquetaResultadoALU.place (x = 1400,  y = 70)
+etiquetaResultadoALUValorMIPS = Label (root, text = etiqueta_resultado_ALU,\
+	 fg = "black", font = "TkDefaultFont 12")
+etiquetaResultadoALUValorMIPS.place (x = 1700,  y = 70)
+
+
+etiquetaDataWriteMemData = Label (root, text = "Dato a escribir en memoria: ", fg = "brown", font = "TkDefaultFont 12")
+etiquetaDataWriteMemData.place (x = 1400,  y = 100)
+etiquetaDataWriteMemValorMIPS = Label (root, text = etiqueta_data_write_mem,\
+	 fg = "black", font = "TkDefaultFont 12")
+etiquetaDataWriteMemValorMIPS.place (x = 1700,  y = 100)
+
+
+etiquetaRegWriteEXtoMEM = Label (root, text = "Escribir registro: ", fg = "brown", font = "TkDefaultFont 12")
+etiquetaRegWriteEXtoMEM.place (x = 1400,  y = 130)
+etiquetaRegWriteEXtoMEMValorMIPS = Label (root, text = etiqueta_reg_write_EX_to_MEM,\
+	 fg = "black", font = "TkDefaultFont 12")
+etiquetaRegWriteEXtoMEMValorMIPS.place (x = 1700,  y = 130)
+
+
+etiquetaMemReadEXtoMEM = Label (root, text = "Lectura de memoria de datos: ", fg = "brown", font = "TkDefaultFont 12")
+etiquetaMemReadEXtoMEM.place (x = 1400,  y = 160)
+etiquetaMemReadEXtoMEMValorMIPS = Label (root, text = etiqueta_mem_read_EX_to_MEM,\
+	 fg = "black", font = "TkDefaultFont 12")
+etiquetaMemReadEXtoMEMValorMIPS.place (x = 1700,  y = 160)
+
+
+etiquetaMemWriteEXtoMEM = Label (root, text = "Escritura de memoria de datos: ", fg = "brown", font = "TkDefaultFont 12")
+etiquetaMemWriteEXtoMEM.place (x = 1400,  y = 190)
+etiquetaMemWriteEXtoMEMValorMIPS = Label (root, text = etiqueta_mem_write_EX_to_MEM,\
+	 fg = "black", font = "TkDefaultFont 12")
+etiquetaMemWriteEXtoMEMValorMIPS.place (x = 1700,  y = 190)
+
+
+etiquetaMemtoRegEXtoMEM = Label (root, text = "Datos de memoria a registros: ", fg = "brown", font = "TkDefaultFont 12")
+etiquetaMemtoRegEXtoMEM.place (x = 1400,  y = 220)
+etiquetaMemtoRegEXtoMEMValorMIPS = Label (root, text = etiqueta_mem_to_reg_EX_to_MEM,\
+	 fg = "black", font = "TkDefaultFont 12")
+etiquetaMemtoRegEXtoMEMValorMIPS.place (x = 1700,  y = 220)
+
+
+
+etiquetaSelectBytesMemDatosEXtoMEM = Label (root, text = "Seleccion en memoria de datos: ", fg = "brown", font = "TkDefaultFont 12")
+etiquetaSelectBytesMemDatosEXtoMEM.place (x = 1400,  y = 250)
+etiquetaSelectBytesMemDatosEXtoMEMValorMIPS= Label (root, text = etiqueta_select_bytes_mem_datos_EX_to_MEM,\
+	 fg = "black", font = "TkDefaultFont 12")
+etiquetaSelectBytesMemDatosEXtoMEMValorMIPS.place (x = 1700,  y = 250)
+
+
+etiquetaHaltDetectedEXtoMEM = Label (root, text = "Flag HALT: ", fg = "brown", font = "TkDefaultFont 12")
+etiquetaHaltDetectedEXtoMEM.place (x = 1400,  y = 280)
+etiquetaHaltDetectedEXtoMEMValorMIPS= Label (root, text = etiqueta_halt_detected_EX_to_MEM,\
+	 fg = "black", font = "TkDefaultFont 12")
+etiquetaHaltDetectedEXtoMEMValorMIPS.place (x = 1700,  y = 280)
+
+
+etiquetaRegistroDestinoEXtoMEM = Label (root, text = "Registro destino: ", fg = "brown", font = "TkDefaultFont 12")
+etiquetaRegistroDestinoEXtoMEM.place (x = 1400,  y = 310)
+etiquetaRegistroDestinoEXtoMEMValorMIPS= Label (root, text = etiqueta_registro_destino_EX_to_MEM,\
+	 fg = "black", font = "TkDefaultFont 12")
+etiquetaRegistroDestinoEXtoMEMValorMIPS.place (x = 1700,  y = 310)
+
+
+
 
 
 # Titulo de la GUI 
