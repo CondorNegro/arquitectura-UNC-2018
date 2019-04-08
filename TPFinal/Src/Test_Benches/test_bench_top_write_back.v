@@ -34,12 +34,14 @@ module test_bench_top_write_back();
     reg [clogb2 (CANT_REGISTROS - 1) - 1 : 0] reg_registro_destino;
     reg [CANT_BITS_REGISTROS - 1 : 0] reg_data_mem;  
     reg [CANT_BITS_REGISTROS - 1 : 0] reg_data_alu;          
-    
+    reg reg_i_halt_detected;
+
     //SALIDAS.
     wire wire_RegWrite;
     wire [clogb2 (CANT_REGISTROS - 1) - 1 : 0] wire_registro_destino;
     wire [CANT_BITS_REGISTROS - 1 : 0] wire_data_write;
     wire wire_o_led;
+    wire wire_o_halt_detected;
     
 	
 	
@@ -50,6 +52,7 @@ module test_bench_top_write_back();
         reg_registro_destino = 0;
         reg_data_mem = 0;
 		reg_data_alu = 0;
+        reg_i_halt_detected = 1'b1;
 
 
         #20 reg_registro_destino = 1;
@@ -57,6 +60,7 @@ module test_bench_top_write_back();
         #20 reg_data_mem = 2;
         #20 reg_data_alu = 1;
         #20 reg_MemtoReg = 1;
+        #20 reg_i_halt_detected = 1'b0;
         
 		
 		#500000 $finish;
@@ -77,9 +81,11 @@ top_write_back
         .i_data_alu (reg_data_alu),
         .i_RegWrite (reg_RegWrite),
         .i_MemtoReg (reg_MemtoReg),
+        .i_halt_detected (reg_i_halt_detected),
         .o_registro_destino (wire_registro_destino),
         .o_RegWrite (wire_RegWrite),
         .o_data_write (wire_data_write),
+        .o_halt_detected (wire_o_halt_detected),
         .o_led ()
     );
    
