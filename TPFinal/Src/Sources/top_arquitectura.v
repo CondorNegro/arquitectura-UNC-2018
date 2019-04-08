@@ -23,7 +23,7 @@
 `define INIT_FILE_PROGRAMA                      ""
 `define RAM_DEPTH_DATOS                         1024
 `define RAM_DEPTH_PROGRAMA                      1024
-`define CANT_ESTADOS_DEBUG_UNIT                 34
+`define CANT_ESTADOS_DEBUG_UNIT                 10
 `define ADDR_MEM_PROGRAMA_LENGTH                10
 `define ADDR_MEM_DATOS_LENGTH                   10
 `define LONG_INSTRUCCION                        32
@@ -42,6 +42,7 @@
 `define CANT_BITS_ADDR_REGISTROS                5
 `define HALT_INSTRUCTION_TOP                    32'hFFFFFFFF
 `define CANT_BITS_SELECT_BYTES_MEM_DATA_TOP     2
+`define CANT_DATOS_DATABASE_TOP                 10
 
 module top_arquitectura(
   i_clock_top, 
@@ -87,6 +88,7 @@ parameter CANT_BITS_INSTRUCTION_INDEX_BRANCH_TOP = `CANT_BITS_INSTRUCTION_INDEX_
 parameter CANT_BITS_FLAG_BRANCH_TOP = `CANT_BITS_FLAG_BRANCH_TOP;
 parameter CANT_BITS_ADDR_REGISTROS  = `CANT_BITS_ADDR_REGISTROS;
 parameter CANT_BITS_SELECT_BYTES_MEM_DATA_TOP    = `CANT_BITS_SELECT_BYTES_MEM_DATA_TOP; 
+parameter CANT_DATOS_DATABASE_TOP   = `CANT_DATOS_DATABASE_TOP;
 
 // Entradas - Salidas
 input i_clock_top;                              // Clock.
@@ -232,7 +234,7 @@ debug_unit
         .LONGITUD_INSTRUCCION (LONG_INSTRUCCION),              
         .OUTPUT_WORD_LENGTH (WIDTH_WORD_TOP),   
         .HALT_INSTRUCTION   (HALT_INSTRUCTION_TOP),
-        .CANT_BITS_CONTROL_DATABASE (CANT_BITS_CONTROL_DATABASE_TOP)          
+        .CANT_DATOS_DATABASE (CANT_DATOS_DATABASE_TOP)          
      ) 
    u_debug_unit1    // Una sola instancia de este modulo
    (
