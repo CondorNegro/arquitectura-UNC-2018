@@ -430,7 +430,7 @@ def recibirDatosFromFPGA ():
 					contador_etapas_send = contador_etapas_send + 1
 					bytes_recibidos = bytes_recibidos + bytes_recibidos_aux
 
-		else: # Parte 0
+		if (contador_etapas_send == 3): # Parte 0
 			bytes_recibidos_aux, cantidad_bytes_control = readResultadoEjecucion (1)
 			if (cantidad_bytes_control == 1):
 				code_error = writeSerial (getCode('Send-Part-0'))
@@ -446,7 +446,7 @@ def recibirDatosFromFPGA ():
 					
 					if (contador_etapas == (CANT_DATOS_DB - 1)):
 						flag_receive = False
-						if ((modo_ejecucion == '0') or (etiqueta_falg_halt_ID_to_EX == ('1'))): #Continuo o Debug con halt
+						if ((modo_ejecucion == '0') or (etiqueta_halt_detected_EX_to_MEM == ('1'))): #Continuo o Debug con halt
 							activarBotones (1)
 						else: #Debug
 							activarBotones (4)
