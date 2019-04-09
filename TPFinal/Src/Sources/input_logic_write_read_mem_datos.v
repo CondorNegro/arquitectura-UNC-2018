@@ -67,6 +67,9 @@ module input_logic_write_read_mem_datos
                     end
             endcase
         end
+        else begin
+            o_write_read_mem = 0;
+        end
     end
 
   
