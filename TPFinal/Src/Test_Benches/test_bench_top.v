@@ -39,7 +39,7 @@
 `define CANT_BITS_INSTRUCTION_INDEX_BRANCH_TOP  26
 `define CANT_BITS_FLAG_BRANCH_TOP               3 
 `define CANT_BITS_ADDR_REGISTROS                5
-`define CANT_BITS_SELECT_BYTES_TOP              2
+`define CANT_BITS_SELECT_BYTES_TOP              3
 
 
 module test_bench_top_arquitectura();
@@ -5521,7 +5521,7 @@ top_arquitectura
        .LONG_INSTRUCCION           (LONG_INSTRUCCION),
        .CANT_BITS_CONTROL_DATABASE_TOP (CANT_BITS_CONTROL_DATABASE_TOP),
        .CANT_SWITCHES               (CANT_SWITCHES),
-       .CANT_BITS_SELECT_BYTES_TOP  (CANT_BITS_SELECT_BYTES_TOP) 
+       .CANT_BITS_SELECT_BYTES_MEM_DATA_TOP  (CANT_BITS_SELECT_BYTES_TOP) 
     ) 
    u_top_arquitectura_1
    (

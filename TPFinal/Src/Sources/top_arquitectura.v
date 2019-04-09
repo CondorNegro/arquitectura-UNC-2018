@@ -41,7 +41,7 @@
 `define CANT_BITS_FLAG_BRANCH_TOP               3 
 `define CANT_BITS_ADDR_REGISTROS                5
 `define HALT_INSTRUCTION_TOP                    32'hFFFFFFFF
-`define CANT_BITS_SELECT_BYTES_MEM_DATA_TOP     2
+`define CANT_BITS_SELECT_BYTES_MEM_DATA_TOP     3
 `define CANT_DATOS_DATABASE_TOP                 10
 
 module top_arquitectura(

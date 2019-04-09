@@ -35,7 +35,7 @@ module test_bench_top_id();
     parameter CANT_BITS_ALU_OP = 2;
     parameter CANT_BITS_ALU_CONTROL = 4;
     parameter HALT_INSTRUCTION = 32'hFFFFFFFF;
-    parameter CANT_BITS_SELECT_BYTES_MEM_DATA = 2;   
+    parameter CANT_BITS_SELECT_BYTES_MEM_DATA = 3;   
 
 	//Todo puerto de salida del modulo es un cable.
 	//Todo puerto de estimulo o generacion de entrada es un registro.

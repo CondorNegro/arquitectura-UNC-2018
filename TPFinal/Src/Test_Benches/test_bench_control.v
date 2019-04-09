@@ -19,7 +19,7 @@ module test_bench_control();
     parameter CANT_BITS_ALU_CONTROL = 4;
     parameter CANT_BITS_ESPECIAL = 6;
     parameter CANT_BITS_ID_LSB = 6;
-    parameter CANT_BITS_SELECT_BYTES_MEM_DATA = 2;
+    parameter CANT_BITS_SELECT_BYTES_MEM_DATA = 3;
 
 
     //Todo puerto de salida del modulo es un cable.

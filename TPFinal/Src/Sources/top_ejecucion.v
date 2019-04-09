@@ -18,7 +18,7 @@ module top_ejecucion
        parameter CANT_BITS_ADDR = 11,
        parameter CANT_BITS_REGISTROS = 32,
        parameter CANT_BITS_ALU_CONTROL = 4,
-       parameter CANT_BITS_SELECT_BYTES_MEM_DATA = 2  
+       parameter CANT_BITS_SELECT_BYTES_MEM_DATA = 3  
    )
    (
        input i_clock,

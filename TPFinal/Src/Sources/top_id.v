@@ -25,7 +25,7 @@ module top_id
        parameter CANT_BITS_ALU_OP = 2,
        parameter CANT_BITS_ALU_CONTROL = 4,
        parameter HALT_INSTRUCTION_TOP_ID = 32'hFFFFFFFF,
-       parameter CANT_BITS_SELECT_BYTES_MEM_DATA = 2  
+       parameter CANT_BITS_SELECT_BYTES_MEM_DATA = 3  
    )
    (
        input i_clock,

@@ -19,7 +19,7 @@ module database
         parameter CANT_BITS_ALU_OP = 2,
         parameter CANT_BITS_ALU_CONTROL = 4,
         parameter CANT_REGISTROS = 32,
-        parameter CANT_BITS_SELECT_BYTES_MEM_DATA = 2,
+        parameter CANT_BITS_SELECT_BYTES_MEM_DATA = 3,
         parameter WIDTH_DATA_MEM = 32
    )
    (

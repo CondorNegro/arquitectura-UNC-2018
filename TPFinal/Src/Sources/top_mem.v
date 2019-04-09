@@ -20,7 +20,7 @@ module top_mem
        parameter CANT_REGISTROS= 32,
        parameter CANT_BITS_ADDR = 10,
        parameter CANT_BITS_REGISTROS = 32,
-       parameter CANT_BITS_SELECT_BYTES_MEM_DATA = 2
+       parameter CANT_BITS_SELECT_BYTES_MEM_DATA = 3
  
    )
    (

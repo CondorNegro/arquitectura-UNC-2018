@@ -19,7 +19,7 @@ module control
        parameter CANT_BITS_ALU_CONTROL = 4,
        parameter CANT_BITS_ESPECIAL = 6,
        parameter CANT_BITS_ID_LSB = 6,
-       parameter CANT_BITS_SELECT_BYTES_MEM_DATA = 2
+       parameter CANT_BITS_SELECT_BYTES_MEM_DATA = 3
     
     )
    (
@@ -217,7 +217,7 @@ module control
                                 o_MemRead = 1;
                                 o_MemWrite = 0;
                                 o_MemtoReg = 1;
-                                o_select_bytes_mem_datos = 1;
+                                o_select_bytes_mem_datos = 5; // El bit MSB indica si la operacion es signada (1) o no (0).
                             end
                         33://LH
                             begin
@@ -227,7 +227,7 @@ module control
                                 o_MemRead = 1;
                                 o_MemWrite = 0;
                                 o_MemtoReg = 1;
-                                o_select_bytes_mem_datos = 2;
+                                o_select_bytes_mem_datos = 6; // Los dos bits LSB indican el tamaño del dato (byte, word, halfword).
                             end
                         35://LW
                             begin
@@ -237,7 +237,7 @@ module control
                                 o_MemRead = 1;
                                 o_MemWrite = 0;
                                 o_MemtoReg = 1;
-                                o_select_bytes_mem_datos = 3;
+                                o_select_bytes_mem_datos = 7;
                             end
                         39://LWU
                             begin
