@@ -91,7 +91,7 @@ module memoria_programa
         if (i_wea)begin
           BRAM [i_addr] <= i_data;
           ram_data <= ram_data;
-          if ( BRAM [i_addr] != 0) begin
+          if (BRAM [i_addr] != 32'hFFFFFFFF) begin
             o_led <= 1;
           end
           else begin
