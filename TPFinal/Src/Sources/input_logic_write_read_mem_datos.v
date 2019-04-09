@@ -14,7 +14,7 @@ module input_logic_write_read_mem_datos
    #(
        
        parameter CANT_BITS_SELECT_BYTES_MEM_DATA = 3,
-       parameter CANT_COLUMNAS_MEM_DATOS = 4,
+       parameter CANT_COLUMNAS_MEM_DATOS = 4
         
  
    )
@@ -23,7 +23,7 @@ module input_logic_write_read_mem_datos
         input i_write_mem,
         input i_read_mem,
         input [clogb2 (CANT_COLUMNAS_MEM_DATOS - 1) - 1 : 0] i_address_mem_LSB,
-        output [CANT_COLUMNAS_MEM_DATOS - 1 : 0] o_write_read_mem
+        output reg [CANT_COLUMNAS_MEM_DATOS - 1 : 0] o_write_read_mem
    );
 
   

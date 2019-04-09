@@ -21,7 +21,7 @@ module output_logic_mem_datos
    (
         input [INPUT_OUTPUT_LENGTH - 1 : 0] i_dato_mem,
         input [CANT_BITS_SELECT_BYTES_MEM_DATA - 1 : 0] i_select_op,
-        output [INPUT_OUTPUT_LENGTH - 1 : 0] o_resultado
+        output reg [INPUT_OUTPUT_LENGTH - 1 : 0] o_resultado
    );
 
   
@@ -34,7 +34,7 @@ module output_logic_mem_datos
            case (i_select_op [CANT_BITS_SELECT_BYTES_MEM_DATA - 2 : 0]) 
                 1://Byte
                     begin
-                      o_resultado = { { ((WIDTH_WORD / 4) * 3) {i_dato_mem[WIDTH_WORD / 4 - 1]} }, i_dato_mem [WIDTH_WORD / 4 - 1 : 0]}
+                      o_resultado = { { ((WIDTH_WORD / 4) * 3) {i_dato_mem[WIDTH_WORD / 4 - 1]} }, i_dato_mem [WIDTH_WORD / 4 - 1 : 0]};
                     end
                 2: //Halfword
                     begin
