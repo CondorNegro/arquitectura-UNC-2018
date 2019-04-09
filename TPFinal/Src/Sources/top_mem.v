@@ -122,7 +122,7 @@ mux
    #(
        .INPUT_OUTPUT_LENGTH (CANT_BITS_ADDR)
    )
-   u_mux_PC_1
+   u_mux_address_mem_1
    (
        .i_data_A (i_address_ALU [CANT_BITS_ADDR - 1 : 0]),
        .i_data_B (i_address_debug_unit),
