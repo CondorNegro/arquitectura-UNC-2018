@@ -149,12 +149,14 @@ mux
 output_logic_mem_datos
     #(
         .INPUT_OUTPUT_LENGTH (CANT_BITS_REGISTROS),
-        .CANT_BITS_SELECT_BYTES_MEM_DATA (CANT_BITS_SELECT_BYTES_MEM_DATA)
+        .CANT_BITS_SELECT_BYTES_MEM_DATA (CANT_BITS_SELECT_BYTES_MEM_DATA),
+        .CANT_COLUMNAS_MEM_DATOS (CANT_COLUMNAS_MEM_DATOS)
     )
     u_output_logic_mem_datos_1
     (
         .i_dato_mem (wire_dato_mem_output),
         .i_select_op (i_select_bytes_mem_datos),
+        .i_address_mem_LSB (wire_address_mem [clogb2 (CANT_COLUMNAS_MEM_DATOS - 1) - 1 : 0]),
         .o_resultado (wire_dato_mem_acondicionado)
     );
 
