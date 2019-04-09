@@ -4,8 +4,7 @@
 
 //////////////////////////////////////////////////////////////////////////////////
 // Trabajo Practico Nro. 4. MIPS.
-// Test bench del modulo de la logica de entrada del write y el read de la memoria
-// de datos.
+// Test bench del modulo de la logica de entrada de la memoria de datos.
 // Integrantes: Kleiner Matias, Lopez Gaston.
 // Materia: Arquitectura de Computadoras.
 // FCEFyN. UNC.
@@ -13,17 +12,20 @@
 //////////////////////////////////////////////////////////////////////////////////
 
 
-module test_bench_input_logic_write_read_mem_datos();
+module test_bench_input_logic_mem_datos();
        
    // Parametros
     parameter CANT_BITS_SELECT_BYTES_MEM_DATA = 3;
     parameter CANT_COLUMNAS_MEM_DATOS = 4;
+    parameter CANT_BITS_DATO_MEM = 32;
    
    // Entradas.
     reg [CANT_BITS_SELECT_BYTES_MEM_DATA - 1 : 0] reg_select_bytes_mem_datos;
     reg reg_write_mem;
     reg reg_read_mem;
     reg [clogb2 (CANT_COLUMNAS_MEM_DATOS - 1) - 1 : 0] reg_address_mem_LSB;
+    reg [CANT_BITS_DATO_MEM - 1 : 0] reg_dato_mem;
+    wire [CANT_BITS_DATO_MEM - 1 : 0] wire_dato_mem;
     wire [CANT_COLUMNAS_MEM_DATOS - 1 : 0] wire_wea;
    
    //  The following function calculates the address width based on specified RAM depth
@@ -39,6 +41,7 @@ module test_bench_input_logic_write_read_mem_datos();
        reg_write_mem = 0;
        reg_read_mem = 0;
        reg_address_mem_LSB = 00;
+       reg_dato_mem = 32'hFFAACDBE;
 
         // Pruebo read.
        #20 reg_read_mem = 1;
@@ -73,17 +76,20 @@ module test_bench_input_logic_write_read_mem_datos();
 
 
 // Modulo para pasarle los estimulos del banco de pruebas.
-input_logic_write_read_mem_datos
+input_logic_mem_datos
     #(
         .CANT_BITS_SELECT_BYTES_MEM_DATA (CANT_BITS_SELECT_BYTES_MEM_DATA),
-        .CANT_COLUMNAS_MEM_DATOS (CANT_COLUMNAS_MEM_DATOS)
+        .CANT_COLUMNAS_MEM_DATOS (CANT_COLUMNAS_MEM_DATOS),
+        .CANT_BITS_DATO_MEM (CANT_BITS_DATO_MEM)
     )
-    u_input_logic_write_read_mem_datos_1
+    u_input_logic_mem_datos_1
     (
         .i_select_bytes_mem_datos (reg_select_bytes_mem_datos),
         .i_write_mem (reg_write_mem),
         .i_read_mem (reg_read_mem),
+        .i_dato_mem (reg_dato_mem),
         .i_address_mem_LSB (reg_address_mem_LSB),
+        .o_dato_mem (wire_dato_mem),
         .o_write_read_mem (wire_wea)
 
     );
