@@ -339,7 +339,7 @@ def readResultadoEjecucion (cantBytes):
 		
 	else:
 		contador_bytes = cantBytes
-		resultado = "00000000"
+		resultado = "11010010"
 	
 	return [resultado, contador_bytes]
 
@@ -443,13 +443,6 @@ def recibirDatosFromFPGA ():
 					
 					contador_etapas = contador_etapas + 1
 					contador_etapas_send = 0
-					
-					if (contador_etapas == (CANT_DATOS_DB - 1)):
-						flag_receive = False
-						if ((modo_ejecucion == '0') or (etiqueta_halt_detected_EX_to_MEM == ('1'))): #Continuo o Debug con halt
-							activarBotones (1)
-						else: #Debug
-							activarBotones (4)
 								
 		
 
@@ -498,7 +491,7 @@ def recibirDatosFromFPGA ():
 
 			bytes_recibidos_auxiliar = bytes_recibidos [0 : WIDTH_WORD * 2]			
 			etiqueta_falg_halt_ID_to_EX = bytes_recibidos_auxiliar [- CANT_BITS_ALU_CTRL - CANT_BITS_ALU_OP - 7 ]
-
+			
 			select_bytes_condicion = int (bytes_recibidos_auxiliar [ - CANT_BITS_ALU_CTRL - CANT_BITS_ALU_OP - 7 - \
 				CANT_BITS_SELECT_BYTES_MEM_DATA : - CANT_BITS_ALU_CTRL - CANT_BITS_ALU_OP - 7 ], 2)
 			if (select_bytes_condicion == 0):
@@ -570,23 +563,23 @@ def recibirDatosFromFPGA ():
 			etiquetaDataWriteMemValorMIPS.config (text = etiqueta_data_write_mem)
 
 		elif (contador_etapas == 9): # Seniales de control etapa EX
-
-			if (str (bytes_recibidos [-CANT_BITS_SELECT_BYTES_MEM_DATA - CANT_BITS_ADDR_REGISTROS - 3]) == '1'):
+			base = 2
+			if (str (bytes_recibidos [-CANT_BITS_SELECT_BYTES_MEM_DATA - CANT_BITS_ADDR_REGISTROS - base - 2]) == '1'):
 				etiqueta_mem_read_EX_to_MEM = 'Si'
 			else:
 				etiqueta_mem_read_EX_to_MEM = 'No'
 				
-			if (str (bytes_recibidos [-CANT_BITS_SELECT_BYTES_MEM_DATA - CANT_BITS_ADDR_REGISTROS - 2]) == '1'):
+			if (str (bytes_recibidos [-CANT_BITS_SELECT_BYTES_MEM_DATA - CANT_BITS_ADDR_REGISTROS - base - 1]) == '1'):
 				etiqueta_mem_write_EX_to_MEM = 'Si'
 			else:
 				etiqueta_mem_write_EX_to_MEM = 'No'
 			
-			if (str (bytes_recibidos [-CANT_BITS_SELECT_BYTES_MEM_DATA - CANT_BITS_ADDR_REGISTROS - 4]) == '1'):
+			if (str (bytes_recibidos [-CANT_BITS_SELECT_BYTES_MEM_DATA - CANT_BITS_ADDR_REGISTROS - base - 3]) == '1'):
 				etiqueta_reg_write_EX_to_MEM = 'Si'
 			else:
 				etiqueta_reg_write_EX_to_MEM = 'No' 
 
-			if (str (bytes_recibidos [-CANT_BITS_SELECT_BYTES_MEM_DATA - CANT_BITS_ADDR_REGISTROS - 1]) == '1'):
+			if (str (bytes_recibidos [-CANT_BITS_SELECT_BYTES_MEM_DATA - CANT_BITS_ADDR_REGISTROS - base]) == '1'):
 				etiqueta_mem_to_reg_EX_to_MEM = 'Si'
 			else:
 				etiqueta_mem_to_reg_EX_to_MEM = 'No'
@@ -599,11 +592,9 @@ def recibirDatosFromFPGA ():
 			
 			etiquetaMemtoRegEXtoMEMValorMIPS.config (text = etiqueta_mem_to_reg_EX_to_MEM)
 			
-			
-			etiqueta_select_bytes_mem_datos_EX_to_MEM = bytes_recibidos [-CANT_BITS_SELECT_BYTES_MEM_DATA - CANT_BITS_ADDR_REGISTROS : -CANT_BITS_ADDR_REGISTROS - 1]
-			
+						
 			select_bytes_condicion = int (bytes_recibidos [-CANT_BITS_SELECT_BYTES_MEM_DATA - \
-				CANT_BITS_ADDR_REGISTROS : -CANT_BITS_ADDR_REGISTROS - 1], 2)
+				CANT_BITS_ADDR_REGISTROS - 1 : -CANT_BITS_ADDR_REGISTROS - 1], 2)
 			if (select_bytes_condicion == 0):
 				etiqueta_select_bytes_mem_datos_EX_to_MEM = 'Ninguno'
 			elif (select_bytes_condicion == 1):
@@ -624,6 +615,13 @@ def recibirDatosFromFPGA ():
 			etiqueta_registro_destino_EX_to_MEM = 'R' + str (int (bytes_recibidos [-CANT_BITS_ADDR_REGISTROS : ], 2))
 			etiquetaRegistroDestinoEXtoMEMValorMIPS.config (text = etiqueta_registro_destino_EX_to_MEM)
 		
+
+		if (contador_etapas == (CANT_DATOS_DB - 1)):
+			flag_receive = False
+			if ((modo_ejecucion == '0') or (etiqueta_halt_detected_EX_to_MEM == ('1'))): #Continuo o Debug con halt
+				activarBotones (1)
+			else: #Debug
+				activarBotones (4)
 
 
 
