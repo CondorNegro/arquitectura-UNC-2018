@@ -149,8 +149,7 @@ mux
 output_logic_mem_datos
     #(
         .INPUT_OUTPUT_LENGTH (CANT_BITS_REGISTROS),
-        .CANT_BITS_SELECT_BYTES_MEM_DATA (CANT_BITS_SELECT_BYTES_MEM_DATA),
-        .WIDTH_WORD (CANT_BITS_REGISTROS)
+        .CANT_BITS_SELECT_BYTES_MEM_DATA (CANT_BITS_SELECT_BYTES_MEM_DATA)
     )
     u_output_logic_mem_datos_1
     (

@@ -14,8 +14,7 @@ module output_logic_mem_datos
    #(
        
        parameter INPUT_OUTPUT_LENGTH = 32,
-       parameter CANT_BITS_SELECT_BYTES_MEM_DATA = 3,
-       parameter WIDTH_WORD = 32
+       parameter CANT_BITS_SELECT_BYTES_MEM_DATA = 3
  
    )
    (
@@ -34,11 +33,11 @@ module output_logic_mem_datos
            case (i_select_op [CANT_BITS_SELECT_BYTES_MEM_DATA - 2 : 0]) 
                 1://Byte
                     begin
-                      o_resultado = { { ((WIDTH_WORD / 4) * 3) {i_dato_mem[WIDTH_WORD / 4 - 1]} }, i_dato_mem [WIDTH_WORD / 4 - 1 : 0]};
+                      o_resultado = { { ((INPUT_OUTPUT_LENGTH / 4) * 3) {i_dato_mem[INPUT_OUTPUT_LENGTH / 4 - 1]} }, i_dato_mem [INPUT_OUTPUT_LENGTH / 4 - 1 : 0]};
                     end
                 2: //Halfword
                     begin
-                      o_resultado = { { (WIDTH_WORD / 2) {i_dato_mem[WIDTH_WORD / 2 - 1]} }, i_dato_mem [WIDTH_WORD / 2 - 1 : 0]};
+                      o_resultado = { { (INPUT_OUTPUT_LENGTH / 2) {i_dato_mem[INPUT_OUTPUT_LENGTH / 2 - 1]} }, i_dato_mem [INPUT_OUTPUT_LENGTH / 2 - 1 : 0]};
                     end
                 3: //Word
                     begin
