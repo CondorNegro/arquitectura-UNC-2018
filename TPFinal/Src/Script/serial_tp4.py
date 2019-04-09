@@ -30,7 +30,7 @@ CANT_BITS_ADDR_REGISTROS = int (math.log(CANT_REGSITROS, 2))
 CANT_BITS_ALU_CTRL = 4
 CANT_BITS_ALU_OP = 2
 HALT_INSTRUCTION = '1' * CANT_BITS_INSTRUCCION
-CANT_BITS_SELECT_BYTES_MEM_DATA = 2
+CANT_BITS_SELECT_BYTES_MEM_DATA = 3
 CANT_DATOS_DB = 10
 
 # Variables globales
@@ -497,11 +497,17 @@ def recibirDatosFromFPGA ():
 			if (select_bytes_condicion == 0):
 				etiqueta_select_bytes_mem_data_ID_to_EX = 'Ninguno'
 			elif (select_bytes_condicion == 1):
-				etiqueta_select_bytes_mem_data_ID_to_EX = 'Byte'
+				etiqueta_select_bytes_mem_data_ID_to_EX = 'Byte unsigned'
 			elif (select_bytes_condicion == 2):
-				etiqueta_select_bytes_mem_data_ID_to_EX = 'Halfword'			
+				etiqueta_select_bytes_mem_data_ID_to_EX = 'Halfword unsigned'			
 			elif (select_bytes_condicion == 3):
-				etiqueta_select_bytes_mem_data_ID_to_EX = 'Word'
+				etiqueta_select_bytes_mem_data_ID_to_EX = 'Word unsigned'
+			elif (select_bytes_condicion == 5):
+				etiqueta_select_bytes_mem_data_ID_to_EX = 'Byte signed'
+			elif (select_bytes_condicion == 6):
+				etiqueta_select_bytes_mem_data_ID_to_EX = 'Halfword signed'
+			elif (select_bytes_condicion == 7):
+				etiqueta_select_bytes_mem_data_ID_to_EX = 'Word signed'
 			else:
 				etiqueta_select_bytes_mem_data_ID_to_EX = 'Ninguno'
 
@@ -598,11 +604,17 @@ def recibirDatosFromFPGA ():
 			if (select_bytes_condicion == 0):
 				etiqueta_select_bytes_mem_datos_EX_to_MEM = 'Ninguno'
 			elif (select_bytes_condicion == 1):
-				etiqueta_select_bytes_mem_datos_EX_to_MEM = 'Byte'
+				etiqueta_select_bytes_mem_datos_EX_to_MEM = 'Byte unsigned'
 			elif (select_bytes_condicion == 2):
-				etiqueta_select_bytes_mem_datos_EX_to_MEM = 'Halfword'			
+				etiqueta_select_bytes_mem_datos_EX_to_MEM = 'Halfword unsigned'			
 			elif (select_bytes_condicion == 3):
-				etiqueta_select_bytes_mem_datos_EX_to_MEM = 'Word'
+				etiqueta_select_bytes_mem_datos_EX_to_MEM = 'Word unsigned'
+			elif (select_bytes_condicion == 5):
+				etiqueta_select_bytes_mem_datos_EX_to_MEM = 'Byte signed'
+			elif (select_bytes_condicion == 6):
+				etiqueta_select_bytes_mem_datos_EX_to_MEM = 'Halfword signed'
+			elif (select_bytes_condicion == 7):
+				etiqueta_select_bytes_mem_datos_EX_to_MEM = 'Word signed'
 			else:
 				etiqueta_select_bytes_mem_datos_EX_to_MEM = 'Ninguno'
 			
