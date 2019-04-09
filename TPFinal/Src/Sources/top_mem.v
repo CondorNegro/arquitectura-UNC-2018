@@ -80,7 +80,7 @@ module top_mem
     wire [CANT_BITS_ADDR - 1 : 0] wire_address_mem;
     wire [CANT_BITS_REGISTROS - 1 : 0] wire_dato_mem_acondicionado;
     wire [CANT_BITS_REGISTROS - 1 : 0] wire_dato_mem_output;
-    wire [clogb2 (CANT_COLUMNAS_MEM_DATOS - 1) - 1 : 0] wire_wea_mem;
+    wire [CANT_COLUMNAS_MEM_DATOS - 1 : 0] wire_wea_mem;
     wire wire_soft_reset_ack_mem_datos;
     wire wire_bit_sucio;
 
@@ -144,16 +144,17 @@ output_logic_mem_datos
     );
 
 
-input_logic_write_mem_datos
+input_logic_write_read_mem_datos
     #(
         .CANT_BITS_SELECT_BYTES_MEM_DATA (CANT_BITS_SELECT_BYTES_MEM_DATA),
         .CANT_COLUMNAS_MEM_DATOS (CANT_COLUMNAS_MEM_DATOS)
     )
-    u_input_logic_write_mem_datos_1
+    u_input_logic_write_read_mem_datos_1
     (
         .i_select_bytes_mem_datos (i_select_bytes_mem_datos),
         .i_write_mem (i_MemWrite),
         .i_read_mem (i_MemRead),
+        .i_address_mem_LSB (wire_address_mem [clogb2 (CANT_COLUMNAS_MEM_DATOS - 1) - 1 : 0]),
         .o_write_read_mem (wire_wea_mem)
 
     );
