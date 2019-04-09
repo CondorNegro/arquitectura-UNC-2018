@@ -31,9 +31,11 @@ module top_mem
        input i_enable_pipeline,
        
        input i_halt_detected,
-
+       input i_control_write_read_mem,
        input i_control_address_mem,
        input i_enable_mem_datos,
+       input i_rsta,
+       input i_regcea,
 
        input [CANT_BITS_REGISTROS - 1 : 0] i_address_ALU,
        input [CANT_BITS_ADDR - 1 : 0] i_address_debug_unit,
@@ -83,6 +85,7 @@ module top_mem
     wire [CANT_COLUMNAS_MEM_DATOS - 1 : 0] wire_wea_mem;
     wire wire_soft_reset_ack_mem_datos;
     wire wire_bit_sucio;
+    wire [CANT_COLUMNAS_MEM_DATOS - 1 : 0] wire_wea_input_logic_to_mux;
 
     assign o_bit_sucio_to_debug_unit = wire_bit_sucio;
     assign o_soft_reset_ack = wire_soft_reset_ack_mem_datos;
@@ -130,6 +133,19 @@ mux
        .o_result (wire_address_mem)
  );
 
+
+mux
+   #(
+       .INPUT_OUTPUT_LENGTH (CANT_COLUMNAS_MEM_DATOS)
+   )
+   u_mux_write_read_mem_1
+   (
+       .i_data_A (wire_wea_input_logic_to_mux),
+       .i_data_B (0), // Read para debug unit
+       .i_selector (i_control_write_read_mem),
+       .o_result (wire_wea_mem)
+ );
+
 output_logic_mem_datos
     #(
         .INPUT_OUTPUT_LENGTH (CANT_BITS_REGISTROS),
@@ -155,39 +171,38 @@ input_logic_write_read_mem_datos
         .i_write_mem (i_MemWrite),
         .i_read_mem (i_MemRead),
         .i_address_mem_LSB (wire_address_mem [clogb2 (CANT_COLUMNAS_MEM_DATOS - 1) - 1 : 0]),
-        .o_write_read_mem (wire_wea_mem)
+        .o_write_read_mem (wire_wea_input_logic_to_mux)
 
     );
 
-/**memoria_datos
+memoria_datos
    #(
-        .RAM_WIDTH (RAM_WIDTH_DATOS),
-        .RAM_PERFORMANCE (RAM_PERFORMANCE_DATOS),
-        .INIT_FILE (INIT_FILE_DATOS),
-        .RAM_DEPTH (RAM_DEPTH_DATOS)
+        .NB_COL (CANT_COLUMNAS_MEM_DATOS),                           
+        .COL_WIDTH (RAM_WIDTH / CANT_COLUMNAS_MEM_DATOS),                        
+        .RAM_DEPTH (RAM_DEPTH),                     
+        .RAM_PERFORMANCE (RAM_PERFORMANCE),       
+        .INIT_FILE (INIT_FILE)
     ) 
    u_memoria_datos_1    
    (
-     .i_clk (i_clock),
-     .i_addr (wire_addr_mem_datos),
-     .i_data (wire_datos_in_mem_data),           
-     .i_wea (wire_wr_rd_mem_datos),             
-     .i_ena (wire_enable_mem),              
-     .i_rsta (wire_rsta_mem),             
-     .i_regcea (wire_regcea_mem),           
-     .i_soft_reset (wire_soft_reset),
-     .i_bit_sucio (wire_bit_sucio),      
-     .o_data (wire_datos_out_mem_data),           
-     .o_reset_ack (wire_soft_reset_ack_datos),
-     .o_addr_bit_sucio (wire_addr_control_bit_sucio)    
-   );**/
+        .i_clk (i_clock),     
+        .i_soft_reset (i_soft_reset),
+        .i_addr (wire_address_mem),  
+        .i_data (i_data_write_mem),                                   
+        .i_wea (wire_wea_mem),                  
+        .i_ena (i_enable_mem_datos),                                      
+        .i_rsta (i_rsta),                                     
+        .i_regcea (i_regcea),                                   
+        .o_soft_reset_ack (wire_soft_reset_ack_mem_datos),
+        .o_data (wire_dato_mem_output)            
+   );
 
 
 // Control de bit de sucio en memoria de datos.
 
 control_bit_sucio_mem_data
     #(
-        .RAM_DEPTH (RAM_DEPTH_DATOS)
+        .RAM_DEPTH (RAM_DEPTH)
     )
     u_control_bit_sucio_mem_data_1
     (
