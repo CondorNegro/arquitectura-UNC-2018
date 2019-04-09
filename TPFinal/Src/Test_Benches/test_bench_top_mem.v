@@ -13,11 +13,15 @@
 module test_bench_top_mem();
 		
 	// Parametros
-    parameter WIDTH_DATA_MEM = 32;
+    parameter RAM_WIDTH = 32;
+    parameter RAM_PERFORMANCE = "LOW_LATENCY";
+    parameter INIT_FILE = "";
+    parameter RAM_DEPTH = 1024;
+    parameter CANT_COLUMNAS_MEM_DATOS = 4;
     parameter CANT_REGISTROS= 32;
-    parameter CANT_BITS_ADDR = 11;
+    parameter CANT_BITS_ADDR = 12; // Los dos bits LSB direccionan a nivel de byte.
     parameter CANT_BITS_REGISTROS = 32;
-    parameter CANT_BITS_ALU_CONTROL = 4;
+    parameter CANT_BITS_SELECT_BYTES_MEM_DATA = 3;
 	
 	//Todo puerto de salida del modulo es un cable.
 	//Todo puerto de estimulo o generacion de entrada es un registro.
@@ -29,133 +33,125 @@ module test_bench_top_mem();
     endfunction
     
 	// ENTRADAS.
-    reg reg_i_clock;
-    reg reg_i_soft_reset;
-    reg reg_i_enable_pipeline;
-    reg [CANT_BITS_ADDR - 1 : 0]  reg_i_adder_pc;
-    reg [CANT_BITS_REGISTROS - 1 : 0] reg_i_data_A;
-    reg [CANT_BITS_REGISTROS - 1 : 0] reg_i_data_B;
-    reg [CANT_BITS_REGISTROS - 1 : 0] reg_i_extension_signo_constante;
-    reg [clogb2 (CANT_REGISTROS - 1) - 1 : 0] reg_i_reg_rs;
-    reg [clogb2 (CANT_REGISTROS - 1) - 1 : 0] reg_i_reg_rt;
-    reg [clogb2 (CANT_REGISTROS - 1) - 1 : 0] reg_i_reg_rd;
+    reg reg_clock;
+    reg reg_soft_reset;
+    
+    reg reg_enable_pipeline;
+    
+    reg reg_halt_detected;
+    reg reg_control_write_read_mem;
+    reg reg_control_address_mem;
+    reg reg_enable_mem_datos;
+    reg reg_rsta;
+    reg reg_regcea;
+
+    reg [CANT_BITS_REGISTROS - 1 : 0] reg_address_ALU;
+    reg [CANT_BITS_ADDR - 1 : 0] reg_address_debug_unit;
+    reg [CANT_BITS_REGISTROS - 1 : 0] reg_data_write_mem;
+    
+    
     // Control
-    reg reg_i_RegDst;
-    reg reg_i_RegWrite;
-    reg reg_i_ALUSrc;
-    reg reg_i_MemRead;
-    reg reg_i_MemWrite;
-    reg reg_i_MemtoReg;
-    reg [CANT_BITS_ALU_CONTROL - 1 : 0] reg_i_ALUCtrl;                               
+
     
-    //SALIDAS.
-    wire wire_o_RegWrite;
-    wire wire_o_MemRead;
-    wire wire_o_MemWrite;
-    wire wire_o_MemtoReg;
+    reg reg_RegWrite;
+    reg reg_MemRead;
+    reg reg_MemWrite;
+    reg reg_MemtoReg;
+    reg [CANT_BITS_SELECT_BYTES_MEM_DATA - 1 : 0] reg_select_bytes_mem_datos;
+    reg [clogb2 (CANT_REGISTROS - 1) - 1 : 0] reg_registro_destino;
 
-
-    wire [WIDTH_DATA_MEM - 1 : 0] wire_o_result;
-    wire [WIDTH_DATA_MEM - 1 : 0] wire_o_data_write_to_mem;
-    wire [clogb2 (CANT_REGISTROS - 1) - 1 : 0] wire_o_registro_destino;
-
-    wire wire_o_led;
     
+    
+    wire wire_RegWrite;
+    wire wire_MemtoReg;
+    wire [clogb2 (CANT_REGISTROS - 1) - 1 : 0] wire_registro_destino;
+    wire wire_halt_detected;
+    wire [CANT_BITS_REGISTROS - 1 : 0] wire_data_alu;
+    wire [CANT_BITS_REGISTROS - 1 : 0] wire_data_mem;
+    
+    wire wire_soft_reset_ack;
+    
+    wire [CANT_BITS_REGISTROS - 1 : 0] wire_dato_mem_to_debug_unit;
+    wire wire_bit_sucio_to_debug_unit;
+
+    wire wire_led;
+
 	
 	
 	initial	begin
-        reg_i_soft_reset = 1'b1;
-        reg_i_clock = 0;
+        reg_clock = 1'b0;
+        reg_soft_reset = 1'b1;
+        reg_enable_pipeline = 1'b1;
+        reg_halt_detected = 1'b0;
+        reg_control_write_read_mem = 1'b0;
+        reg_control_address_mem //Completar
 
-        reg_i_enable_pipeline = 1'b1;
-
-        reg_i_adder_pc = 5;
-        reg_i_data_A = 0;
-        reg_i_data_B = 0;
-        reg_i_extension_signo_constante = 20;
-        reg_i_reg_rs = 1;
-        reg_i_reg_rt = 2;
-        reg_i_reg_rd = 3;
-        reg_i_RegDst = 0;
-        reg_i_RegWrite = 0;
-        reg_i_ALUSrc = 0;
-        reg_i_MemRead = 0;
-        reg_i_MemWrite = 0;
-        reg_i_MemtoReg = 0;
-        reg_i_ALUCtrl = 4'b0010;
-
-        #20 reg_i_soft_reset = 1'b0;
-        #20 reg_i_soft_reset = 1'b1;
-        #20 reg_i_enable_pipeline = 1'b0;
-        #20 reg_i_data_A = 1;
-        #20 reg_i_enable_pipeline = 1'b1;
-        #20 reg_i_data_B = 2;
-
-        #20 reg_i_RegDst = 1; // Modifico selector de mux
-        #20 reg_i_ALUSrc = 1; // Modifico selector de mux
-
-        #20 reg_i_ALUCtrl = 4'b1000; // LUI
-        #20 reg_i_ALUCtrl = 4'b1110; // SALTO
-        #20 reg_i_ALUCtrl = 4'b0010; // ADDU
-        #20 reg_i_ALUCtrl = 4'b0111; // SLTI
-        
-        #20 reg_i_ALUSrc = 0; // Modifico selector de mux
-        #20 reg_i_data_B = -1; 
-        #20 reg_i_data_A = -5; // Aca valor de ALU se debe invertir.
-
-
-		#10000 reg_i_soft_reset = 1'b0; // Reset.
-		#10000 reg_i_soft_reset = 1'b1; // Desactivo el reset.
+		#10 reg_soft_reset = 1'b0; // Reset.
+		#30000 reg_soft_reset = 1'b1; // Desactivo el reset.
 		
-		
+        #10 reg_control_write_read_mem = 1'b1;
+        #50 reg_control_write_read_mem = 1'b0;
+
+
+
+		#10 reg_soft_reset = 1'b0; // Reset.
+		#30000 reg_soft_reset = 1'b1; // Desactivo el reset.
+
 		#500000 $finish;
 	end
 	
-	always #2.5 reg_i_clock=~reg_i_clock;  // Simulacion de clock.
+	always #2.5 reg_clock=~reg_clock;  // Simulacion de clock.
     
 
 
 // Modulo para pasarle los estimulos del banco de pruebas.
-top_ejecucion
+top_mem
     #(
-        .WIDTH_DATA_MEM (WIDTH_DATA_MEM),
+        .RAM_WIDTH (RAM_WIDTH),
+        .RAM_PERFORMANCE (RAM_PERFORMANCE),
+        .INIT_FILE (INIT_FILE),
+        .RAM_DEPTH (RAM_DEPTH),
+        .CANT_COLUMNAS_MEM_DATOS (CANT_COLUMNAS_MEM_DATOS),
         .CANT_REGISTROS (CANT_REGISTROS),
-        .CANT_BITS_ADDR (CANT_BITS_ADDR),
+        .CANT_BITS_ADDR (CANT_BITS_ADDR), // Los dos bits LSB direccionan a nivel de byte.
         .CANT_BITS_REGISTROS (CANT_BITS_REGISTROS),
-        .CANT_BITS_ALU_CONTROL (CANT_BITS_ALU_CONTROL)
+        .CANT_BITS_SELECT_BYTES_MEM_DATA (CANT_BITS_SELECT_BYTES_MEM_DATA)
      ) 
-    u_top_ejecucion_1    
+    u_top_mem_1    
     (
-        .i_clock (reg_i_clock),
-        .i_soft_reset (reg_i_soft_reset),
-        .i_enable_pipeline (reg_i_enable_pipeline),
-        .i_adder_pc (reg_i_adder_pc),
-        .i_data_A (reg_i_data_A),
-        .i_data_B (reg_i_data_B),
-        .i_extension_signo_constante (reg_i_extension_signo_constante),
-        .i_reg_rs (reg_i_reg_rs),
-        .i_reg_rt (reg_i_reg_rt),
-        .i_reg_rd (reg_i_reg_rd),
-        // Control
-        .i_RegDst (reg_i_RegDst),
-        .i_RegWrite (reg_i_RegWrite),
-        .i_ALUSrc (reg_i_ALUSrc),
-        .i_MemRead (reg_i_MemRead),
-        .i_MemWrite (reg_i_MemWrite),
-        .i_MemtoReg (reg_i_MemtoReg),
-        .i_ALUCtrl (reg_i_ALUCtrl), 
+        .i_clock (reg_clock),
+        .i_soft_reset (reg_soft_reset),
+        
+        .i_enable_pipeline (reg_enable_pipeline),
+        
+        .i_halt_detected (reg_halt_detected),
+        .i_control_write_read_mem (reg_control_write_read_mem),
+        .i_control_address_mem (reg_control_address_mem),
+        .i_enable_mem_datos (reg_enable_mem_datos),
+        .i_rsta (reg_rsta),
+        .i_regcea (reg_regcea),
 
+        .i_address_ALU (reg_address_ALU),
+        .i_address_debug_unit (reg_address_debug_unit),
+        .i_data_write_mem (reg_data_write_mem),
+        
+        .i_RegWrite (reg_RegWrite),
+        .i_MemRead (reg_MemRead),
+        .i_MemWrite (reg_MemWrite),
+        .i_MemtoReg (reg_MemtoReg),
+        .i_select_bytes_mem_datos (reg_select_bytes_mem_datos),
+        .i_registro_destino (reg_registro_destino),
+        .o_RegWrite (wire_RegWrite),
+        .o_MemtoReg (wire_MemtoReg),
+        .o_registro_destino (wire_registro_destino),
+        .o_halt_detected (wire_halt_detected),
+        .o_data_alu (wire_data_alu),
+        .o_data_mem (wire_data_mem),
+        .o_soft_reset_ack (wire_soft_reset_ack),
+        .o_dato_mem_to_debug_unit (wire_dato_mem_to_debug_unit),
+        .o_bit_sucio_to_debug_unit (wire_bit_sucio_to_debug_unit),
 
-        .o_RegWrite (wire_o_RegWrite),
-        .o_MemRead (wire_o_MemRead),
-        .o_MemWrite (wire_o_MemWrite),
-        .o_MemtoReg (wire_o_MemtoReg),
-
-
-        .o_result (wire_o_result),
-        .o_data_write_to_mem (wire_o_data_write_to_mem),
-        .o_registro_destino (wire_o_registro_destino),
-        .o_led (wire_o_led)
+        .o_led (wire_led)
     );
    
 endmodule
