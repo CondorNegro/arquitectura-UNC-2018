@@ -213,9 +213,9 @@ control_bit_sucio_mem_data
     )
     u_control_bit_sucio_mem_data_1
     (
-        .i_addr (wire_address_mem),                         
+        .i_addr (wire_address_mem [CANT_BITS_ADDR - 1 : clogb2 (CANT_COLUMNAS_MEM_DATOS - 1)]),                         
         .i_clk (i_clock),                         
-        .i_wea (wire_wea_mem),                            
+        .i_wea (|wire_wea_mem),                            
         .i_ena (i_enable_mem_datos), 
         .i_soft_reset (i_soft_reset),                           
         .i_soft_reset_ack_mem_datos (wire_soft_reset_ack_mem_datos),      

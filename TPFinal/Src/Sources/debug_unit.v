@@ -19,6 +19,7 @@ module debug_unit
   parameter CANTIDAD_ESTADOS = 10,      //  Cantidad de estados
   parameter LONGITUD_INSTRUCCION = 32,  //  Cantidad de bits de la instruccion
   parameter CANT_BITS_REGISTRO = 32,
+  parameter CANT_COLUMNAS_MEM_DATOS = 4,
   parameter CANT_DATOS_DATABASE = 12 // Cantidad de datos a traer del database
 
 )
@@ -51,7 +52,7 @@ module debug_unit
     output reg o_control_write_read_mem_datos,
     output reg o_control_address_mem_datos,
     output reg o_enable_mem_datos,
-    output reg [ADDR_MEM_DATOS_LENGTH - 1 : 0] o_address_debug_unit,
+    output reg [ADDR_MEM_DATOS_LENGTH + clogb2 (CANT_COLUMNAS_MEM_DATOS - 1) - 1 : 0] o_address_debug_unit,
     
     output reg o_led
  );
@@ -109,6 +110,7 @@ reg flag_enable_pipeline; //Flag para habilitar o no el enable_pipeline.
 
 always @ ( posedge i_clock ) begin //Memory
   // Se resetean los registros.
+  o_address_debug_unit <= 0;
  if (~ i_reset) begin
      reg_state <= 1;
      registro_rx_done <= 0;

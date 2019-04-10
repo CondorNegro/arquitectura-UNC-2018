@@ -44,6 +44,7 @@
 `define CANT_BITS_SELECT_BYTES_MEM_DATA_TOP     3
 `define CANT_DATOS_DATABASE_TOP                 12
 `define CANT_COLUMNAS_MEM_DATOS_TOP             4
+`define CANT_BITS_SELECCION_COLUMNAS_MEM_DATOS  2
 
 module top_arquitectura(
   i_clock_top, 
@@ -91,6 +92,7 @@ parameter CANT_BITS_ADDR_REGISTROS  = `CANT_BITS_ADDR_REGISTROS;
 parameter CANT_BITS_SELECT_BYTES_MEM_DATA_TOP    = `CANT_BITS_SELECT_BYTES_MEM_DATA_TOP; 
 parameter CANT_DATOS_DATABASE_TOP   = `CANT_DATOS_DATABASE_TOP;
 parameter CANT_COLUMNAS_MEM_DATOS_TOP = `CANT_COLUMNAS_MEM_DATOS_TOP;
+parameter CANT_BITS_SELECCION_COLUMNAS_MEM_DATOS = `CANT_BITS_SELECCION_COLUMNAS_MEM_DATOS;
 
 // Entradas - Salidas
 input i_clock_top;                              // Clock.
@@ -101,12 +103,7 @@ output uart_rxd_out;                            // Receptor de PC.
 output [3 : 0] o_leds;                          // Leds.
 //output [7:0] jc;
 
-//  The following function calculates the address width based on specified RAM depth
-function integer clogb2;
-    input integer depth;
-        for (clogb2=0; depth>0; clogb2=clogb2+1)
-            depth = depth >> 1;
-endfunction
+
 
 // Wires.
 wire i_clock;
@@ -210,7 +207,7 @@ wire wire_halt_detected_WB_to_DEBUG_UNIT;
 wire wire_enable_mem_datos;
 wire wire_control_address_mem_datos_from_debug_unit;
 wire wire_control_write_read_mem_datos_from_debug_unit;
-wire [ADDR_MEM_DATOS_LENGTH_TOP + clogb2 (CANT_COLUMNAS_MEM_DATOS_TOP - 1) - 1 : 0] wire_address_mem_data_from_debug_unit;
+wire [ADDR_MEM_DATOS_LENGTH_TOP + CANT_BITS_SELECCION_COLUMNAS_MEM_DATOS - 1 : 0] wire_address_mem_data_from_debug_unit;
 
 wire [CANT_BITS_REGISTROS_TOP - 1 : 0] wire_output_mem_datos;
 wire wire_bit_sucio;
@@ -255,6 +252,7 @@ debug_unit
         .HALT_INSTRUCTION   (HALT_INSTRUCTION_TOP),
         .CANT_DATOS_DATABASE (CANT_DATOS_DATABASE_TOP),
         .CANT_BITS_REGISTRO (CANT_BITS_REGISTROS_TOP),
+        .CANT_COLUMNAS_MEM_DATOS (CANT_COLUMNAS_MEM_DATOS_TOP),
         .ADDR_MEM_DATOS_LENGTH (ADDR_MEM_DATOS_LENGTH_TOP)          
      ) 
    u_debug_unit1    // Una sola instancia de este modulo
@@ -484,7 +482,7 @@ top_mem
         .RAM_DEPTH (RAM_DEPTH_DATOS),
         .CANT_COLUMNAS_MEM_DATOS (CANT_COLUMNAS_MEM_DATOS_TOP),
         .CANT_REGISTROS (CANT_REGISTROS_TOP),
-        .CANT_BITS_ADDR (ADDR_MEM_DATOS_LENGTH_TOP + clogb2 (CANT_COLUMNAS_MEM_DATOS_TOP - 1)), // Los dos bits LSB direccionan a nivel de byte.
+        .CANT_BITS_ADDR (ADDR_MEM_DATOS_LENGTH_TOP + CANT_BITS_SELECCION_COLUMNAS_MEM_DATOS), // Los dos bits LSB direccionan a nivel de byte.
         .CANT_BITS_REGISTROS (CANT_BITS_REGISTROS_TOP),
         .CANT_BITS_SELECT_BYTES_MEM_DATA (CANT_BITS_SELECT_BYTES_MEM_DATA_TOP)
      ) 
@@ -500,7 +498,7 @@ top_mem
         .i_rsta (wire_rsta_mem),
         .i_regcea (wire_regcea_mem),
         .i_address_ALU (wire_resultado_ALU),
-        .i_address_debug_unit (wire_address_mem_data_from_debug_unit),
+        .i_address_debug_unit (0), //(wire_address_mem_data_from_debug_unit),
         .i_data_write_mem (wire_EX_to_MEM_data_write_mem),
         .i_RegWrite (wire_EX_to_MEM_RegWrite),
         .i_MemRead (wire_EX_to_MEM_MemRead),

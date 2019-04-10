@@ -22,6 +22,7 @@ module test_bench_debug_unit();
   parameter LONGITUD_INSTRUCCION = 32;  //  Cantidad de bits de la instruccion
   parameter CANT_BITS_REGISTRO = 32;
   parameter CANT_DATOS_DATABASE = 12; // Cantidad de datos a traer del database
+  parameter CANT_COLUMNAS_MEM_DATOS = 4;
    
    //Todo puerto de salida del modulo es un cable.
    //Todo puerto de estimulo o generacion de entrada es un registro.
@@ -57,7 +58,7 @@ module test_bench_debug_unit();
    wire wire_control_write_read_mem_datos;
    wire wire_control_address_mem_datos;
    wire wire_enable_mem_datos;
-   wire [ADDR_MEM_DATOS_LENGTH - 1 : 0] wire_address_debug_unit;
+   wire [ADDR_MEM_DATOS_LENGTH + clogb2 (CANT_COLUMNAS_MEM_DATOS - 1) - 1 : 0] wire_address_debug_unit;
                           
    
    
@@ -462,6 +463,7 @@ debug_unit
         .CANTIDAD_ESTADOS (CANTIDAD_ESTADOS),
         .LONGITUD_INSTRUCCION (LONGITUD_INSTRUCCION),
         .CANT_DATOS_DATABASE (CANT_DATOS_DATABASE),
+        .CANT_COLUMNAS_MEM_DATOS (CANT_COLUMNAS_MEM_DATOS),
         .CANT_BITS_REGISTRO (CANT_BITS_REGISTRO)
     ) 
    u_debug_unit_1    // Una sola instancia de este modulo.
