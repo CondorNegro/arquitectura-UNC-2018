@@ -16,7 +16,7 @@ module debug_unit
   parameter HALT_INSTRUCTION = 32'hFFFFFFFF, //  Opcode de la instruccion HALT.
   parameter ADDR_MEM_PROG_LENGTH = 10,      //  Cantidad de bits del bus de direcciones de la memoria de programa.
   parameter ADDR_MEM_DATOS_LENGTH = 10,     //  Cantidad de bits del bus de direcciones de la memoria de datos.
-  parameter CANTIDAD_ESTADOS = 10,      //  Cantidad de estados
+  parameter CANTIDAD_ESTADOS = 11,      //  Cantidad de estados
   parameter LONGITUD_INSTRUCCION = 32,  //  Cantidad de bits de la instruccion
   parameter CANT_BITS_REGISTRO = 32,
   parameter CANT_COLUMNAS_MEM_DATOS = 4,
@@ -52,7 +52,7 @@ module debug_unit
     output reg o_control_write_read_mem_datos,
     output reg o_control_address_mem_datos,
     output reg o_enable_mem_datos,
-    output reg [ADDR_MEM_DATOS_LENGTH + clogb2 (CANT_COLUMNAS_MEM_DATOS - 1) - 1 : 0] o_address_debug_unit,
+    output [ADDR_MEM_DATOS_LENGTH + clogb2 (CANT_COLUMNAS_MEM_DATOS - 1) - 1 : 0] o_address_debug_unit,
     
     output reg o_led
  );
@@ -73,16 +73,17 @@ localparam CANT_BITS_CONTROL_DATABASE = clogb2 (CANT_DATOS_DATABASE - 1);
 localparam CANT_BITS_CONTADOR_DATOS = clogb2 (LONGITUD_INSTRUCCION / OUTPUT_WORD_LENGTH);
 
 // Estados
-localparam ESPERA                 = 10'b0000000001;
-localparam SOFT_RESET             = 10'b0000000010;    
-localparam ESPERA_PC_ACK          = 10'b0000000100;
-localparam READ_PROGRAMA          = 10'b0000001000;
-localparam ESPERA_START           = 10'b0000010000;
-localparam EJECUCION              = 10'b0000100000;
-localparam SEND_PART3             = 10'b0001000000;
-localparam SEND_PART2             = 10'b0010000000;
-localparam SEND_PART1             = 10'b0100000000;
-localparam SEND_PART0             = 10'b1000000000;
+localparam ESPERA                 = 11'b00000000001;
+localparam SOFT_RESET             = 11'b00000000010;    
+localparam ESPERA_PC_ACK          = 11'b00000000100;
+localparam READ_PROGRAMA          = 11'b00000001000;
+localparam ESPERA_START           = 11'b00000010000;
+localparam EJECUCION              = 11'b00000100000;
+localparam SEND_PART3             = 11'b00001000000;
+localparam SEND_PART2             = 11'b00010000000;
+localparam SEND_PART1             = 11'b00100000000;
+localparam SEND_PART0             = 11'b01000000000;
+localparam MEM_DATOS_CHECK        = 11'b10000000000;
 
 
 
@@ -107,6 +108,12 @@ reg flag_send_mem; //Sirve para que el primer dato que se envia sea la instrucci
 
 reg flag_enable_pc; //Flag para habilitar o no el enable_pc.
 reg flag_enable_pipeline; //Flag para habilitar o no el enable_pipeline.
+
+
+reg [ADDR_MEM_DATOS_LENGTH - 1 : 0] reg_contador_address_mem_datos;
+reg [1 : 0] reg_contador_send_datos_mem_datos;
+assign o_address_debug_unit = reg_contador_address_mem_datos;
+
 
 always @ ( posedge i_clock ) begin //Memory
   // Se resetean los registros.
@@ -302,19 +309,33 @@ always@( * ) begin //NEXT - STATE logic
               if (reg_contador_datos_database != (CANT_DATOS_DATABASE - 1)) begin
                   reg_next_state = SEND_PART3;
               end
-              else if (reg_next_modo_ejecucion == 1'b0) begin // Modo continuo.
-                reg_next_state = ESPERA;
-              end
-              else if (i_flag_halt) begin
-                reg_next_state = ESPERA; // Modo debug, ultima instruccion.
-              end
-              else begin // Modo debug instrucciones anteriores.
-                  reg_next_state = ESPERA_START;
+              else begin // Se enviaron todos los datos de los latches.
+                  reg_next_state = MEM_DATOS_CHECK;
               end
           end
           else begin
                reg_next_state = SEND_PART0;
           end     
+       end
+
+       MEM_DATOS_CHECK : begin
+            if (reg_next_modo_ejecucion == 1'b0 && reg_contador_send_datos_mem_datos > 2) begin // Modo continuo.
+                reg_next_state = ESPERA;
+            end
+            else if (reg_next_modo_ejecucion == 1'b0) begin
+                reg_next_state = SEND_PART3; // Modo continuo.
+            end
+            else begin // Modo debug
+                if (reg_contador_send_datos_mem_datos > 2 && i_flag_halt) begin
+                    reg_next_state = ESPERA;
+                end
+                else if (reg_contador_send_datos_mem_datos > 2) begin
+                    reg_next_state = ESPERA_START;
+                end
+                else begin
+                    reg_next_state =  SEND_PART3;                
+                end
+            end
        end
       
 
@@ -485,7 +506,27 @@ always @ ( * ) begin //Output logic
 
       SEND_PART3 : begin 
          o_tx_start = 1;
-         o_data_tx = (i_dato_database >> 24);
+         if (reg_contador_send_datos_mem_datos == 0) begin
+            o_data_tx = (i_dato_database >> 24);
+            o_control_database = reg_contador_datos_database + 2;
+            o_control_write_read_mem_datos = 0;
+            o_control_address_mem_datos = 0;
+            o_enable_mem_datos = 0;
+         end
+         else if (reg_contador_send_datos_mem_datos == 1) begin 
+            o_data_tx = i_dato_mem_datos >> 24;
+            o_control_database = 0;
+            o_control_write_read_mem_datos = 1;
+            o_control_address_mem_datos = 1;
+            o_enable_mem_datos = 0;
+         end
+         else begin
+            o_data_tx = reg_contador_address_mem_datos >> 24;
+            o_control_database = 0;
+            o_control_write_read_mem_datos = 0;
+            o_control_address_mem_datos = 0;
+            o_enable_mem_datos = 0;
+         end
          o_soft_reset = 1; //Logica por nivel bajo.
          o_write_mem_programa = 0; //Write es en 1.
          o_addr_mem_programa = 0;
@@ -498,17 +539,35 @@ always @ ( * ) begin //Output logic
          o_enable_PC = 0;
          o_enable_pipeline = 0;
          o_control_mux_addr_mem_top_if = 0;
-         o_control_database = reg_contador_datos_database + 2;
-         o_control_write_read_mem_datos = 0;
-         o_control_address_mem_datos = 0;
-         o_enable_mem_datos = 0;
+         
+         
        end
 
 
 
       SEND_PART2 : begin 
          o_tx_start = 1;
-         o_data_tx = (i_dato_database >> 16);
+         if (reg_contador_send_datos_mem_datos == 0) begin
+            o_data_tx = (i_dato_database >> 16);
+            o_control_database = reg_contador_datos_database + 2;
+            o_control_write_read_mem_datos = 0;
+            o_control_address_mem_datos = 0;
+            o_enable_mem_datos = 0;
+         end
+         else if (reg_contador_send_datos_mem_datos == 1) begin 
+            o_data_tx = i_dato_mem_datos >> 16;
+            o_control_database = 0;
+            o_control_write_read_mem_datos = 1;
+            o_control_address_mem_datos = 1;
+            o_enable_mem_datos = 0;
+         end
+         else begin
+            o_data_tx = reg_contador_address_mem_datos >> 16;
+            o_control_database = 0;
+            o_control_write_read_mem_datos = 0;
+            o_control_address_mem_datos = 0;
+            o_enable_mem_datos = 0;
+         end
          o_soft_reset = 1; //Logica por nivel bajo.
          o_write_mem_programa = 0; //Write es en 1.
          o_addr_mem_programa = 0;
@@ -521,16 +580,34 @@ always @ ( * ) begin //Output logic
          o_enable_PC = 0;
          o_enable_pipeline = 0;
          o_control_mux_addr_mem_top_if = 0;
-         o_control_database = reg_contador_datos_database + 2;
-         o_control_write_read_mem_datos = 0;
-         o_control_address_mem_datos = 0;
-         o_enable_mem_datos = 0;
+         
+        
        end
 
 
       SEND_PART1 : begin 
          o_tx_start = 1;
-         o_data_tx = (i_dato_database >> 8);
+         if (reg_contador_send_datos_mem_datos == 0) begin
+            o_data_tx = (i_dato_database >> 8);
+            o_control_database = reg_contador_datos_database + 2;
+            o_control_write_read_mem_datos = 0;
+            o_control_address_mem_datos = 0;
+            o_enable_mem_datos = 0;
+         end
+         else if (reg_contador_send_datos_mem_datos == 1) begin 
+            o_data_tx = i_dato_mem_datos >> 8;
+            o_control_database = 0;
+            o_control_write_read_mem_datos = 1;
+            o_control_address_mem_datos = 1;
+            o_enable_mem_datos = 0;
+         end
+         else begin
+            o_data_tx = reg_contador_address_mem_datos >> 8;
+            o_control_database = 0;
+            o_control_write_read_mem_datos = 0;
+            o_control_address_mem_datos = 0;
+            o_enable_mem_datos = 0;
+         end
          o_soft_reset = 1; //Logica por nivel bajo.
          o_write_mem_programa = 0; //Write es en 1.
          o_addr_mem_programa = 0;
@@ -543,15 +620,32 @@ always @ ( * ) begin //Output logic
          o_enable_PC = 0;
          o_enable_pipeline = 0;
          o_control_mux_addr_mem_top_if = 0;
-         o_control_database = reg_contador_datos_database + 2;
-         o_control_write_read_mem_datos = 0;
-         o_control_address_mem_datos = 0;
-         o_enable_mem_datos = 0;
+         
        end
 
       SEND_PART0 : begin 
          o_tx_start = 1;
-         o_data_tx = (i_dato_database);
+         if (reg_contador_send_datos_mem_datos == 0) begin
+            o_data_tx = (i_dato_database);
+            o_control_database = reg_contador_datos_database + 2;
+            o_control_write_read_mem_datos = 0;
+            o_control_address_mem_datos = 0;
+            o_enable_mem_datos = 0;
+         end
+         else if (reg_contador_send_datos_mem_datos == 1) begin 
+            o_data_tx = i_dato_mem_datos;
+            o_control_database = 0;
+            o_control_write_read_mem_datos = 1;
+            o_control_address_mem_datos = 1;
+            o_enable_mem_datos = 0;
+         end
+         else begin
+            o_data_tx = reg_contador_address_mem_datos;
+            o_control_database = 0;
+            o_control_write_read_mem_datos = 0;
+            o_control_address_mem_datos = 0;
+            o_enable_mem_datos = 0;
+         end
          o_soft_reset = 1; //Logica por nivel bajo.
          o_write_mem_programa = 0; //Write es en 1.
          o_addr_mem_programa = 0;
@@ -564,10 +658,31 @@ always @ ( * ) begin //Output logic
          o_enable_PC = 0;
          o_enable_pipeline = 0;
          o_control_mux_addr_mem_top_if = 0;
-         o_control_database = reg_contador_datos_database + 2;
-         o_control_write_read_mem_datos = 0;
-         o_control_address_mem_datos = 0;
-         o_enable_mem_datos = 0;
+         
+         
+       end
+
+
+       MEM_DATOS_CHECK : begin
+         o_tx_start = 0;
+         o_control_database = 0;
+         o_data_tx = i_dato_mem_datos;
+         o_soft_reset = 1; //Logica por nivel bajo.
+         o_write_mem_programa = 0; //Write es en 1.
+         o_addr_mem_programa = 0;
+         o_next_dato_mem_programa = 0;
+         reg_next_modo_ejecucion = o_modo_ejecucion;// Continuo en cero, paso a paso en 1.
+         o_enable_mem_programa = 0;
+         o_rsta_mem = 0;
+         o_regcea_mem = 0;
+         o_led = 0;
+         o_enable_PC = 0;
+         o_enable_pipeline = 0;
+         o_control_mux_addr_mem_top_if = 0;
+         
+         o_control_write_read_mem_datos = 1;
+         o_control_address_mem_datos = 1;
+         o_enable_mem_datos = 1;
        end
 
 
