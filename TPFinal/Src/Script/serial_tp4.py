@@ -679,7 +679,7 @@ def recibirDatosFromFPGA ():
 
 		if (contador_etapas == (CANT_DATOS_DB - 1)):
 			flag_receive = False
-			if ((modo_ejecucion == '0') or (etiqueta_halt_detected_EX_to_MEM == ('1'))): #Continuo o Debug con halt
+			if ((modo_ejecucion == '0') or (etiqueta_halt_detected_MEM_to_WB == ('1'))): #Continuo o Debug con halt
 				activarBotones (1)
 			else: #Debug
 				activarBotones (4)
