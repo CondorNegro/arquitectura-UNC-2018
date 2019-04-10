@@ -226,7 +226,7 @@ assign wire_soft_reset_ack = wire_soft_reset_ack_prog | wire_soft_reset_ack_dato
 //assign uart_rxd_out = prueba;
 //assign o_leds[1] = 1'b0;
 //assign o_leds[2] = 1'b0;
-//assign o_leds[3] = 1'b0;
+assign o_leds[3] = 1'b0;
 
 
 // Modulo clock_wizard.
