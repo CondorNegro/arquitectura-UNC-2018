@@ -25,7 +25,7 @@
 `define RAM_DEPTH_PROGRAMA                      1024
 `define CANT_ESTADOS_DEBUG_UNIT                 10
 `define ADDR_MEM_PROGRAMA_LENGTH                10
-`define ADDR_MEM_DATOS_LENGTH                   10
+`define ADDR_MEM_DATOS_LENGTH_TOP               10
 `define LONG_INSTRUCCION                        32
 `define CANT_BITS_CONTROL_DATABASE_TOP          4
 `define CANT_SWITCHES                           4
@@ -42,7 +42,7 @@
 `define CANT_BITS_ADDR_REGISTROS                5
 `define HALT_INSTRUCTION_TOP                    32'hFFFFFFFF
 `define CANT_BITS_SELECT_BYTES_MEM_DATA_TOP     3
-`define CANT_DATOS_DATABASE_TOP                 10
+`define CANT_DATOS_DATABASE_TOP                 12
 `define CANT_COLUMNAS_MEM_DATOS_TOP             4
 
 module top_arquitectura(
@@ -73,7 +73,7 @@ parameter RAM_DEPTH_DATOS           =  `RAM_DEPTH_DATOS;
 parameter RAM_DEPTH_PROGRAMA        =  `RAM_DEPTH_PROGRAMA;
 parameter CANT_ESTADOS_DEBUG_UNIT   =  `CANT_ESTADOS_DEBUG_UNIT;
 parameter ADDR_MEM_PROGRAMA_LENGTH  =  `ADDR_MEM_PROGRAMA_LENGTH;
-parameter ADDR_MEM_DATOS_LENGTH     =  `ADDR_MEM_DATOS_LENGTH;
+parameter ADDR_MEM_DATOS_LENGTH_TOP =  `ADDR_MEM_DATOS_LENGTH_TOP;
 parameter LONG_INSTRUCCION          =  `LONG_INSTRUCCION;
 parameter CANT_BITS_CONTROL_DATABASE_TOP = `CANT_BITS_CONTROL_DATABASE_TOP;
 parameter CANT_SWITCHES             =   `CANT_SWITCHES;
@@ -127,14 +127,14 @@ wire wire_wr_rd_mem_prog;
 wire wire_wr_rd_mem_datos;
 wire [RAM_WIDTH_DATOS - 1 : 0] wire_datos_in_mem_data;
 wire [RAM_WIDTH_DATOS - 1 : 0] wire_datos_out_mem_data;
-wire [ADDR_MEM_DATOS_LENGTH - 1 : 0] wire_addr_mem_datos;
+wire [ADDR_MEM_DATOS_LENGTH_TOP - 1 : 0] wire_addr_mem_datos;
 wire wire_soft_reset_ack;
 wire wire_soft_reset_ack_prog;
 wire wire_soft_reset_ack_datos;
 wire wire_modo_ejecucion;
-wire [ADDR_MEM_DATOS_LENGTH - 1 : 0] wire_addr_control_bit_sucio;
-wire wire_bit_sucio;
-wire wire_enable_mem;
+wire [ADDR_MEM_DATOS_LENGTH_TOP - 1 : 0] wire_addr_control_bit_sucio;
+
+wire wire_enable_mem_programa;
 wire wire_rsta_mem;
 wire wire_regcea_mem;
 wire [LONG_INSTRUCCION - 1 : 0] wire_instruction_fetch;
@@ -205,6 +205,16 @@ wire [CANT_BITS_REGISTROS_TOP - 1 : 0] wire_MEM_to_WB_data_mem;
 wire wire_halt_detected_WB_to_DEBUG_UNIT;
 
 
+// Debug unit
+
+wire wire_enable_mem_datos;
+wire wire_control_address_mem_datos_from_debug_unit;
+wire wire_control_write_read_mem_datos_from_debug_unit;
+wire [ADDR_MEM_DATOS_LENGTH_TOP + clogb2 (CANT_COLUMNAS_MEM_DATOS_TOP - 1) - 1 : 0] wire_address_mem_data_from_debug_unit;
+
+wire [CANT_BITS_REGISTROS_TOP - 1 : 0] wire_output_mem_datos;
+wire wire_bit_sucio;
+
 // Asignaciones de wires.
 
 //Borrar y dejar el segundo 
@@ -239,11 +249,13 @@ u_clk_wiz_0_1
 debug_unit
     #(
         .CANTIDAD_ESTADOS (CANT_ESTADOS_DEBUG_UNIT),      
-        .ADDR_MEM_LENGTH (ADDR_MEM_PROGRAMA_LENGTH),                 
+        .ADDR_MEM_PROG_LENGTH (ADDR_MEM_PROGRAMA_LENGTH),                 
         .LONGITUD_INSTRUCCION (LONG_INSTRUCCION),              
         .OUTPUT_WORD_LENGTH (WIDTH_WORD_TOP),   
         .HALT_INSTRUCTION   (HALT_INSTRUCTION_TOP),
-        .CANT_DATOS_DATABASE (CANT_DATOS_DATABASE_TOP)          
+        .CANT_DATOS_DATABASE (CANT_DATOS_DATABASE_TOP),
+        .CANT_BITS_REGISTRO (CANT_BITS_REGISTROS_TOP),
+        .ADDR_MEM_DATOS_LENGTH (ADDR_MEM_DATOS_LENGTH_TOP)          
      ) 
    u_debug_unit1    // Una sola instancia de este modulo
    (
@@ -255,6 +267,8 @@ debug_unit
     .i_soft_reset_ack (wire_soft_reset_ack),
     .i_flag_halt (wire_halt_detected_WB_to_DEBUG_UNIT), //wire_halt_detected_WB_to_DEBUG_UNIT
     .i_dato_database (wire_dato_database),
+    .i_dato_mem_datos (wire_output_mem_datos),
+    .i_bit_sucio (wire_bit_sucio),
     .o_tx_start (wire_tx_start),
     .o_data_tx (wire_data_tx),
     .o_soft_reset (wire_soft_reset),
@@ -262,13 +276,17 @@ debug_unit
     .o_addr_mem_programa (wire_addr_mem_programa),
     .o_dato_mem_programa (wire_data_mem_programa_input),
     .o_modo_ejecucion (wire_modo_ejecucion),
-    .o_enable_mem (wire_enable_mem),
+    .o_enable_mem_programa (wire_enable_mem_programa),
     .o_rsta_mem (wire_rsta_mem),
     .o_regcea_mem (wire_regcea_mem),
     .o_enable_PC (wire_enable_PC),
     .o_control_mux_addr_mem_top_if (wire_control_mux_addr_mem_IF),
     .o_control_database (wire_control_database),
     .o_enable_pipeline (wire_enable_pipeline),
+    .o_control_write_read_mem_datos (wire_control_write_read_mem_datos_from_debug_unit),
+    .o_control_address_mem_datos (wire_control_address_mem_datos_from_debug_unit),
+    .o_enable_mem_datos (wire_enable_mem_datos),
+    .o_address_debug_unit (wire_address_mem_data_from_debug_unit),
     .o_led (o_leds[0])
    );
 
@@ -335,7 +353,7 @@ top_if
     .i_clock (i_clock),
     .i_soft_reset (wire_soft_reset),
     .i_enable_contador_PC (wire_enable_PC),
-    .i_enable_mem (wire_enable_mem),
+    .i_enable_mem (wire_enable_mem_programa),
     .i_write_read_mem (wire_wr_rd_mem_prog),
     .i_rsta_mem (wire_rsta_mem),
     .i_regcea_mem (wire_regcea_mem),
@@ -466,7 +484,7 @@ top_mem
         .RAM_DEPTH (RAM_DEPTH_DATOS),
         .CANT_COLUMNAS_MEM_DATOS (CANT_COLUMNAS_MEM_DATOS_TOP),
         .CANT_REGISTROS (CANT_REGISTROS_TOP),
-        .CANT_BITS_ADDR (ADDR_MEM_DATOS_LENGTH + clogb2 (CANT_COLUMNAS_MEM_DATOS_TOP - 1)), // Los dos bits LSB direccionan a nivel de byte.
+        .CANT_BITS_ADDR (ADDR_MEM_DATOS_LENGTH_TOP + clogb2 (CANT_COLUMNAS_MEM_DATOS_TOP - 1)), // Los dos bits LSB direccionan a nivel de byte.
         .CANT_BITS_REGISTROS (CANT_BITS_REGISTROS_TOP),
         .CANT_BITS_SELECT_BYTES_MEM_DATA (CANT_BITS_SELECT_BYTES_MEM_DATA_TOP)
      ) 
@@ -476,13 +494,13 @@ top_mem
         .i_soft_reset (wire_soft_reset),
         .i_enable_pipeline (wire_enable_pipeline),
         .i_halt_detected (wire_halt_detected_EX_to_MEM),
-        .i_control_write_read_mem (),
-        .i_control_address_mem (),
-        .i_enable_mem_datos (),
+        .i_control_write_read_mem (wire_control_write_read_mem_datos_from_debug_unit),
+        .i_control_address_mem (wire_control_address_mem_datos_from_debug_unit),
+        .i_enable_mem_datos (wire_enable_mem_datos),
         .i_rsta (wire_rsta_mem),
         .i_regcea (wire_regcea_mem),
         .i_address_ALU (wire_resultado_ALU),
-        .i_address_debug_unit (),
+        .i_address_debug_unit (wire_address_mem_data_from_debug_unit),
         .i_data_write_mem (wire_EX_to_MEM_data_write_mem),
         .i_RegWrite (wire_EX_to_MEM_RegWrite),
         .i_MemRead (wire_EX_to_MEM_MemRead),
@@ -497,8 +515,8 @@ top_mem
         .o_data_alu (wire_MEM_to_WB_data_alu),
         .o_data_mem (wire_MEM_to_WB_data_mem),
         .o_soft_reset_ack (wire_soft_reset_ack_datos),
-        .o_dato_mem_to_debug_unit (),
-        .o_bit_sucio_to_debug_unit (),
+        .o_dato_mem_to_debug_unit (wire_output_mem_datos),
+        .o_bit_sucio_to_debug_unit (wire_bit_sucio),
         .o_led ()
     );
 

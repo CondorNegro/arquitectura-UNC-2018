@@ -14,13 +14,14 @@
 module test_bench_debug_unit();
        
    // Parametros
-   parameter OUTPUT_WORD_LENGTH = 8;    //  Cantidad de bits de la palabra a transmitir.
-   parameter HALT_OPCODE = 32'hFFFFFFFF;           //  Opcode de la instruccion HALT.            
-   parameter ADDR_MEM_LENGTH = 11;            
-   parameter CANTIDAD_ESTADOS = 10;
-   parameter LONGITUD_INSTRUCCION = 32;
-   parameter CANT_DATOS_DATABASE = 10;
-   parameter CANT_BITS_CONTROL_DATABASE = 4;
+  parameter OUTPUT_WORD_LENGTH = 8;    //  Cantidad de bits de la palabra a transmitir.
+  parameter HALT_INSTRUCTION = 32'hFFFFFFFF; //  Opcode de la instruccion HALT.
+  parameter ADDR_MEM_PROG_LENGTH = 10;      //  Cantidad de bits del bus de direcciones de la memoria de programa.
+  parameter ADDR_MEM_DATOS_LENGTH = 10;     //  Cantidad de bits del bus de direcciones de la memoria de datos.
+  parameter CANTIDAD_ESTADOS = 10;      //  Cantidad de estados
+  parameter LONGITUD_INSTRUCCION = 32;  //  Cantidad de bits de la instruccion
+  parameter CANT_BITS_REGISTRO = 32;
+  parameter CANT_DATOS_DATABASE = 12; // Cantidad de datos a traer del database
    
    //Todo puerto de salida del modulo es un cable.
    //Todo puerto de estimulo o generacion de entrada es un registro.
@@ -33,14 +34,16 @@ module test_bench_debug_unit();
    reg  [OUTPUT_WORD_LENGTH - 1 : 0]  reg_i_data_rx;
    reg  reg_i_soft_reset_ack;
    reg reg_flag_halt;
-   reg [LONGITUD_INSTRUCCION - 1 : 0] reg_dato_database; 
+   reg [LONGITUD_INSTRUCCION - 1 : 0] reg_dato_database;
+   reg [CANT_BITS_REGISTRO - 1 : 0] reg_dato_mem_datos;
+   reg reg_bit_sucio; 
 
    // Salidas.
    wire wire_o_tx_start;
    wire [OUTPUT_WORD_LENGTH - 1 : 0]  wire_o_data_tx;
    wire wire_o_soft_reset;
    wire wire_o_write_mem_programa;
-   wire [ADDR_MEM_LENGTH - 1 : 0]  wire_o_addr_mem_programa;
+   wire [ADDR_MEM_PROG_LENGTH - 1 : 0]  wire_o_addr_mem_programa;
    wire [LONGITUD_INSTRUCCION - 1 : 0]  wire_o_dato_mem_programa;
    wire wire_modo_ejecucion;
    wire wire_enable_mem;
@@ -49,12 +52,21 @@ module test_bench_debug_unit();
    wire wire_led;
    wire wire_enable_pc;
    wire wire_control_mux_addr_mem_top_if;
-   wire [CANT_BITS_CONTROL_DATABASE - 1 : 0] wire_control_database;
+   wire [clogb2 (CANT_DATOS_DATABASE - 1) - 1 : 0] wire_control_database;
    wire wire_enable_pipeline;
+   wire wire_control_write_read_mem_datos;
+   wire wire_control_address_mem_datos;
+   wire wire_enable_mem_datos;
+   wire [ADDR_MEM_DATOS_LENGTH - 1 : 0] wire_address_debug_unit;
                           
    
    
- 
+  //  The following function calculates the address width based on specified RAM depth
+  function integer clogb2;
+      input integer depth;
+          for (clogb2=0; depth>0; clogb2=clogb2+1)
+              depth = depth >> 1;
+  endfunction
    
    initial    begin
        reg_i_clock = 1'b0;
@@ -65,6 +77,8 @@ module test_bench_debug_unit();
        reg_i_soft_reset_ack = 1'b1; //despues tiene que valer 0.
        reg_flag_halt = 0;
        reg_dato_database = 32'b10101010111111110000000011110000;
+       reg_dato_mem_datos = 0;
+       reg_bit_sucio = 0; 
 
         
          #10 reg_i_reset = 1'b0;
@@ -134,21 +148,21 @@ module test_bench_debug_unit();
        
        
        //MANDO HALT PARA SALIR DE READ PROGRAMA
-      #10 reg_i_data_rx = 8'b11111111;
-      #10 reg_i_rx_done = 1'b1;
-      #10 reg_i_rx_done = 1'b0;
+        #10 reg_i_data_rx = 8'b11111111;
+        #10 reg_i_rx_done = 1'b1;
+        #10 reg_i_rx_done = 1'b0;
      
              
-      #10 reg_i_data_rx = 8'b11111111;
+        #10 reg_i_data_rx = 8'b11111111;
         #10 reg_i_rx_done = 1'b1;
         #10 reg_i_rx_done = 1'b0;
       
-      #10 reg_i_data_rx = 8'b11111111;
+        #10 reg_i_data_rx = 8'b11111111;
         #10 reg_i_rx_done = 1'b1;
         #10 reg_i_rx_done = 1'b0;
       
       
-      #10 reg_i_data_rx = 8'b11111111;
+        #10 reg_i_data_rx = 8'b11111111;
         #10 reg_i_rx_done = 1'b1;
         #10 reg_i_rx_done = 1'b0;
 
@@ -167,260 +181,260 @@ module test_bench_debug_unit();
        
        
        
-       //ahora paso a estado 5 (ESPERA_START).
-       #10 reg_i_data_rx = 8'b00000111;
-       #10 reg_i_rx_done = 1'b1;
-       #10 reg_i_rx_done = 1'b0;
+        //ahora paso a estado 5 (ESPERA_START).
+        #10 reg_i_data_rx = 8'b00000111;
+        #10 reg_i_rx_done = 1'b1;
+        #10 reg_i_rx_done = 1'b0;
 
-       
-       #10 reg_flag_halt = 0;
+        
+        #10 reg_flag_halt = 0;
 
-       // Transmision de datos desde placa a PC
-       
-       #10 reg_i_data_rx = 8'b00001000; // PART3
-       #10 reg_i_rx_done = 1'b1;
-       #10 reg_i_rx_done = 1'b0;
+        // Transmision de datos desde placa a PC
+        
+        #10 reg_i_data_rx = 8'b00001000; // PART3
+        #10 reg_i_rx_done = 1'b1;
+        #10 reg_i_rx_done = 1'b0;
 
-      
-       #10 reg_i_data_rx = 8'b00010000; // PART2
-       #10 reg_i_rx_done = 1'b1;
-       #10 reg_i_rx_done = 1'b0;
+        
+        #10 reg_i_data_rx = 8'b00010000; // PART2
+        #10 reg_i_rx_done = 1'b1;
+        #10 reg_i_rx_done = 1'b0;
 
-       
-       #10 reg_i_data_rx = 8'b00011000; // PART1
-       #10 reg_i_rx_done = 1'b1;
-       #10 reg_i_rx_done = 1'b0;
-
-
-
-       #10 reg_i_data_rx = 8'b00100000; // PART0
-       #10 reg_i_rx_done = 1'b1;
-       #10 reg_i_rx_done = 1'b0;
-
-
-        //ahora paso a estado de ESPERA.
-       #10 reg_flag_halt = 1;
-
-       #10 reg_i_data_rx = 8'b10100000; //NO HAGO NADA
-       #10 reg_i_rx_done = 1'b1;
-       #10 reg_i_rx_done = 1'b0;
+        
+        #10 reg_i_data_rx = 8'b00011000; // PART1
+        #10 reg_i_rx_done = 1'b1;
+        #10 reg_i_rx_done = 1'b0;
 
 
 
-       #10 reg_i_data_rx = 8'b00001000; // PART3
-       #10 reg_i_rx_done = 1'b1;
-       #10 reg_i_rx_done = 1'b0;
+        #10 reg_i_data_rx = 8'b00100000; // PART0
+        #10 reg_i_rx_done = 1'b1;
+        #10 reg_i_rx_done = 1'b0;
+
+
+          //ahora paso a estado de ESPERA.
+        #10 reg_flag_halt = 1;
+
+        #10 reg_i_data_rx = 8'b10100000; //NO HAGO NADA
+        #10 reg_i_rx_done = 1'b1;
+        #10 reg_i_rx_done = 1'b0;
 
 
 
-       #10 reg_i_data_rx = 8'b00010000; // PART2
-       #10 reg_i_rx_done = 1'b1;
-       #10 reg_i_rx_done = 1'b0;
+        #10 reg_i_data_rx = 8'b00001000; // PART3
+        #10 reg_i_rx_done = 1'b1;
+        #10 reg_i_rx_done = 1'b0;
 
 
 
-       #10 reg_i_data_rx = 8'b00011000; //PART1
-       #10 reg_i_rx_done = 1'b1;
-       #10 reg_i_rx_done = 1'b0;
+        #10 reg_i_data_rx = 8'b00010000; // PART2
+        #10 reg_i_rx_done = 1'b1;
+        #10 reg_i_rx_done = 1'b0;
 
 
 
-       #10 reg_i_data_rx = 8'b00100000; //PART0
-       #10 reg_i_rx_done = 1'b1;
-       #10 reg_i_rx_done = 1'b0;
-
-
-#10 reg_i_data_rx = 8'b00001000; // PART3
-       #10 reg_i_rx_done = 1'b1;
-       #10 reg_i_rx_done = 1'b0;
+        #10 reg_i_data_rx = 8'b00011000; //PART1
+        #10 reg_i_rx_done = 1'b1;
+        #10 reg_i_rx_done = 1'b0;
 
 
 
-       #10 reg_i_data_rx = 8'b00010000; // PART2
-       #10 reg_i_rx_done = 1'b1;
-       #10 reg_i_rx_done = 1'b0;
+        #10 reg_i_data_rx = 8'b00100000; //PART0
+        #10 reg_i_rx_done = 1'b1;
+        #10 reg_i_rx_done = 1'b0;
+
+
+        #10 reg_i_data_rx = 8'b00001000; // PART3
+        #10 reg_i_rx_done = 1'b1;
+        #10 reg_i_rx_done = 1'b0;
 
 
 
-       #10 reg_i_data_rx = 8'b00011000; //PART1
-       #10 reg_i_rx_done = 1'b1;
-       #10 reg_i_rx_done = 1'b0;
+        #10 reg_i_data_rx = 8'b00010000; // PART2
+        #10 reg_i_rx_done = 1'b1;
+        #10 reg_i_rx_done = 1'b0;
 
 
 
-       #10 reg_i_data_rx = 8'b00100000; //PART0
-       #10 reg_i_rx_done = 1'b1;
-       #10 reg_i_rx_done = 1'b0;
-       
+        #10 reg_i_data_rx = 8'b00011000; //PART1
+        #10 reg_i_rx_done = 1'b1;
+        #10 reg_i_rx_done = 1'b0;
+
+
+
+        #10 reg_i_data_rx = 8'b00100000; //PART0
+        #10 reg_i_rx_done = 1'b1;
+        #10 reg_i_rx_done = 1'b0;
+        
  
 
-#10 reg_i_data_rx = 8'b00001000; // PART3
-       #10 reg_i_rx_done = 1'b1;
-       #10 reg_i_rx_done = 1'b0;
+        #10 reg_i_data_rx = 8'b00001000; // PART3
+        #10 reg_i_rx_done = 1'b1;
+        #10 reg_i_rx_done = 1'b0;
 
 
 
-       #10 reg_i_data_rx = 8'b00010000; // PART2
-       #10 reg_i_rx_done = 1'b1;
-       #10 reg_i_rx_done = 1'b0;
+        #10 reg_i_data_rx = 8'b00010000; // PART2
+        #10 reg_i_rx_done = 1'b1;
+        #10 reg_i_rx_done = 1'b0;
 
 
 
-       #10 reg_i_data_rx = 8'b00011000; //PART1
-       #10 reg_i_rx_done = 1'b1;
-       #10 reg_i_rx_done = 1'b0;
+        #10 reg_i_data_rx = 8'b00011000; //PART1
+        #10 reg_i_rx_done = 1'b1;
+        #10 reg_i_rx_done = 1'b0;
 
 
 
-       #10 reg_i_data_rx = 8'b00100000; //PART0
-       #10 reg_i_rx_done = 1'b1;
-       #10 reg_i_rx_done = 1'b0;
+        #10 reg_i_data_rx = 8'b00100000; //PART0
+        #10 reg_i_rx_done = 1'b1;
+        #10 reg_i_rx_done = 1'b0;
        
        
 
-#10 reg_i_data_rx = 8'b00001000; // PART3
-       #10 reg_i_rx_done = 1'b1;
-       #10 reg_i_rx_done = 1'b0;
+        #10 reg_i_data_rx = 8'b00001000; // PART3
+        #10 reg_i_rx_done = 1'b1;
+        #10 reg_i_rx_done = 1'b0;
 
 
 
-       #10 reg_i_data_rx = 8'b00010000; // PART2
-       #10 reg_i_rx_done = 1'b1;
-       #10 reg_i_rx_done = 1'b0;
+        #10 reg_i_data_rx = 8'b00010000; // PART2
+        #10 reg_i_rx_done = 1'b1;
+        #10 reg_i_rx_done = 1'b0;
 
 
 
-       #10 reg_i_data_rx = 8'b00011000; //PART1
-       #10 reg_i_rx_done = 1'b1;
-       #10 reg_i_rx_done = 1'b0;
+        #10 reg_i_data_rx = 8'b00011000; //PART1
+        #10 reg_i_rx_done = 1'b1;
+        #10 reg_i_rx_done = 1'b0;
 
 
 
-       #10 reg_i_data_rx = 8'b00100000; //PART0
-       #10 reg_i_rx_done = 1'b1;
-       #10 reg_i_rx_done = 1'b0;
-       
-       
-       
-#10 reg_i_data_rx = 8'b00001000; // PART3
-              #10 reg_i_rx_done = 1'b1;
-              #10 reg_i_rx_done = 1'b0;
-       
-       
-       
-              #10 reg_i_data_rx = 8'b00010000; // PART2
-              #10 reg_i_rx_done = 1'b1;
-              #10 reg_i_rx_done = 1'b0;
-       
-       
-       
-              #10 reg_i_data_rx = 8'b00011000; //PART1
-              #10 reg_i_rx_done = 1'b1;
-              #10 reg_i_rx_done = 1'b0;
-       
-       
-       
-              #10 reg_i_data_rx = 8'b00100000; //PART0
-              #10 reg_i_rx_done = 1'b1;
-              #10 reg_i_rx_done = 1'b0;
+        #10 reg_i_data_rx = 8'b00100000; //PART0
+        #10 reg_i_rx_done = 1'b1;
+        #10 reg_i_rx_done = 1'b0;
+        
+        
+        
+        #10 reg_i_data_rx = 8'b00001000; // PART3
+        #10 reg_i_rx_done = 1'b1;
+        #10 reg_i_rx_done = 1'b0;
+  
+  
+  
+        #10 reg_i_data_rx = 8'b00010000; // PART2
+        #10 reg_i_rx_done = 1'b1;
+        #10 reg_i_rx_done = 1'b0;
+  
+  
+  
+        #10 reg_i_data_rx = 8'b00011000; //PART1
+        #10 reg_i_rx_done = 1'b1;
+        #10 reg_i_rx_done = 1'b0;
+  
+  
+  
+        #10 reg_i_data_rx = 8'b00100000; //PART0
+        #10 reg_i_rx_done = 1'b1;
+        #10 reg_i_rx_done = 1'b0;
             
             
             
             
-#10 reg_i_data_rx = 8'b00001000; // PART3
-                     #10 reg_i_rx_done = 1'b1;
-                     #10 reg_i_rx_done = 1'b0;
-              
-              
-              
-                     #10 reg_i_data_rx = 8'b00010000; // PART2
-                     #10 reg_i_rx_done = 1'b1;
-                     #10 reg_i_rx_done = 1'b0;
-              
-              
-              
-                     #10 reg_i_data_rx = 8'b00011000; //PART1
-                     #10 reg_i_rx_done = 1'b1;
-                     #10 reg_i_rx_done = 1'b0;
-              
-              
-              
-                     #10 reg_i_data_rx = 8'b00100000; //PART0
-                     #10 reg_i_rx_done = 1'b1;
-                     #10 reg_i_rx_done = 1'b0;
+          #10 reg_i_data_rx = 8'b00001000; // PART3
+          #10 reg_i_rx_done = 1'b1;
+          #10 reg_i_rx_done = 1'b0;
+  
+  
+  
+          #10 reg_i_data_rx = 8'b00010000; // PART2
+          #10 reg_i_rx_done = 1'b1;
+          #10 reg_i_rx_done = 1'b0;
+  
+  
+  
+          #10 reg_i_data_rx = 8'b00011000; //PART1
+          #10 reg_i_rx_done = 1'b1;
+          #10 reg_i_rx_done = 1'b0;
+  
+  
+  
+          #10 reg_i_data_rx = 8'b00100000; //PART0
+          #10 reg_i_rx_done = 1'b1;
+          #10 reg_i_rx_done = 1'b0;
                      
                      
                      
                      
-#10 reg_i_data_rx = 8'b00001000; // PART3
-                            #10 reg_i_rx_done = 1'b1;
-                            #10 reg_i_rx_done = 1'b0;
-                     
-                     
-                     
-                            #10 reg_i_data_rx = 8'b00010000; // PART2
-                            #10 reg_i_rx_done = 1'b1;
-                            #10 reg_i_rx_done = 1'b0;
-                     
-                     
-                     
-                            #10 reg_i_data_rx = 8'b00011000; //PART1
-                            #10 reg_i_rx_done = 1'b1;
-                            #10 reg_i_rx_done = 1'b0;
-                     
-                     
-                     
-                            #10 reg_i_data_rx = 8'b00100000; //PART0
-                            #10 reg_i_rx_done = 1'b1;
-                            #10 reg_i_rx_done = 1'b0;
+          #10 reg_i_data_rx = 8'b00001000; // PART3
+          #10 reg_i_rx_done = 1'b1;
+          #10 reg_i_rx_done = 1'b0;
+    
+    
+    
+          #10 reg_i_data_rx = 8'b00010000; // PART2
+          #10 reg_i_rx_done = 1'b1;
+          #10 reg_i_rx_done = 1'b0;
+    
+    
+    
+          #10 reg_i_data_rx = 8'b00011000; //PART1
+          #10 reg_i_rx_done = 1'b1;
+          #10 reg_i_rx_done = 1'b0;
+    
+    
+    
+          #10 reg_i_data_rx = 8'b00100000; //PART0
+          #10 reg_i_rx_done = 1'b1;
+          #10 reg_i_rx_done = 1'b0;
                             
                             
                             
                             
-#10 reg_i_data_rx = 8'b00001000; // PART3
-                                   #10 reg_i_rx_done = 1'b1;
-                                   #10 reg_i_rx_done = 1'b0;
-                            
-                            
-                            
-                                   #10 reg_i_data_rx = 8'b00010000; // PART2
-                                   #10 reg_i_rx_done = 1'b1;
-                                   #10 reg_i_rx_done = 1'b0;
-                            
-                            
-                            
-                                   #10 reg_i_data_rx = 8'b00011000; //PART1
-                                   #10 reg_i_rx_done = 1'b1;
-                                   #10 reg_i_rx_done = 1'b0;
-                            
-                            
-                            
-                                   #10 reg_i_data_rx = 8'b00100000; //PART0
-                                   #10 reg_i_rx_done = 1'b1;
-                                   #10 reg_i_rx_done = 1'b0;
+          #10 reg_i_data_rx = 8'b00001000; // PART3
+          #10 reg_i_rx_done = 1'b1;
+          #10 reg_i_rx_done = 1'b0;
+  
+  
+  
+          #10 reg_i_data_rx = 8'b00010000; // PART2
+          #10 reg_i_rx_done = 1'b1;
+          #10 reg_i_rx_done = 1'b0;
+  
+  
+  
+          #10 reg_i_data_rx = 8'b00011000; //PART1
+          #10 reg_i_rx_done = 1'b1;
+          #10 reg_i_rx_done = 1'b0;
+  
+  
+  
+          #10 reg_i_data_rx = 8'b00100000; //PART0
+          #10 reg_i_rx_done = 1'b1;
+          #10 reg_i_rx_done = 1'b0;
 
 
-#10 reg_i_data_rx = 8'b00001000; // PART3
-       #10 reg_i_rx_done = 1'b1;
-       #10 reg_i_rx_done = 1'b0;
-
-
-
-       #10 reg_i_data_rx = 8'b00010000; // PART2
-       #10 reg_i_rx_done = 1'b1;
-       #10 reg_i_rx_done = 1'b0;
+        #10 reg_i_data_rx = 8'b00001000; // PART3
+        #10 reg_i_rx_done = 1'b1;
+        #10 reg_i_rx_done = 1'b0;
 
 
 
-       #10 reg_i_data_rx = 8'b00011000; //PART1
-       #10 reg_i_rx_done = 1'b1;
-       #10 reg_i_rx_done = 1'b0;
+        #10 reg_i_data_rx = 8'b00010000; // PART2
+        #10 reg_i_rx_done = 1'b1;
+        #10 reg_i_rx_done = 1'b0;
 
 
 
-       #10 reg_i_data_rx = 8'b00100000; //PART0
-       #10 reg_i_rx_done = 1'b1;
-       #10 reg_i_rx_done = 1'b0;
+        #10 reg_i_data_rx = 8'b00011000; //PART1
+        #10 reg_i_rx_done = 1'b1;
+        #10 reg_i_rx_done = 1'b0;
+
+
+
+        #10 reg_i_data_rx = 8'b00100000; //PART0
+        #10 reg_i_rx_done = 1'b1;
+        #10 reg_i_rx_done = 1'b0;
 
        
        
@@ -442,11 +456,13 @@ module test_bench_debug_unit();
 debug_unit
    #(
         .OUTPUT_WORD_LENGTH (OUTPUT_WORD_LENGTH),
-        .HALT_OPCODE (HALT_OPCODE),
-        .ADDR_MEM_LENGTH (ADDR_MEM_LENGTH),
+        .HALT_INSTRUCTION (HALT_INSTRUCTION),
+        .ADDR_MEM_PROG_LENGTH (ADDR_MEM_PROG_LENGTH),
+        .ADDR_MEM_DATOS_LENGTH (ADDR_MEM_DATOS_LENGTH),
         .CANTIDAD_ESTADOS (CANTIDAD_ESTADOS),
         .LONGITUD_INSTRUCCION (LONGITUD_INSTRUCCION),
-        .CANT_DATOS_DATABASE (CANT_DATOS_DATABASE)
+        .CANT_DATOS_DATABASE (CANT_DATOS_DATABASE),
+        .CANT_BITS_REGISTRO (CANT_BITS_REGISTRO)
     ) 
    u_debug_unit_1    // Una sola instancia de este modulo.
    (
@@ -458,6 +474,8 @@ debug_unit
        .i_soft_reset_ack (reg_i_soft_reset_ack),
        .i_flag_halt (reg_flag_halt),
        .i_dato_database (reg_dato_database),
+       .i_dato_mem_datos (reg_dato_mem_datos),
+       .i_bit_sucio (reg_bit_sucio),
        .o_tx_start (wire_o_tx_start),
        .o_data_tx (wire_o_data_tx),
        .o_soft_reset (wire_o_soft_reset),
@@ -465,13 +483,17 @@ debug_unit
        .o_addr_mem_programa (wire_o_addr_mem_programa),
        .o_dato_mem_programa (wire_o_dato_mem_programa),
        .o_modo_ejecucion (wire_modo_ejecucion),
-       .o_enable_mem (wire_enable_mem),
+       .o_enable_mem_programa (wire_enable_mem),
        .o_rsta_mem (wire_rsta_mem),
        .o_regcea_mem (wire_regcea_mem),
        .o_enable_PC (wire_enable_pc),
        .o_control_mux_addr_mem_top_if (wire_control_mux_addr_mem_top_if),
        .o_control_database (wire_control_database),
        .o_enable_pipeline (wire_enable_pipeline),
+       .o_control_write_read_mem_datos (wire_control_write_read_mem_datos),
+       .o_control_address_mem_datos (wire_control_address_mem_datos),
+       .o_enable_mem_datos (wire_enable_mem_datos),
+       .o_address_debug_unit (wire_address_debug_unit),
        .o_led (wire_led)
    );
   
