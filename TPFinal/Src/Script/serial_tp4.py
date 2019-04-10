@@ -22,16 +22,16 @@ WIDTH_WORD = 8
 CANT_BITS_INSTRUCCION = 32
 CANT_STOP_BITS = 2
 FILE_NAME = "init_ram_file.txt"
-FLAG_TEST = False
+FLAG_TEST = True
 CANT_BITS_ADDRESS_MEM_PROGRAMA = 10
-CANT_REGSITROS = 32
+CANT_REGISTROS = 32
 CANT_BITS_REGISTROS = 32
-CANT_BITS_ADDR_REGISTROS = int (math.log(CANT_REGSITROS, 2))
+CANT_BITS_ADDR_REGISTROS = int (math.log(CANT_REGISTROS, 2))
 CANT_BITS_ALU_CTRL = 4
 CANT_BITS_ALU_OP = 2
 HALT_INSTRUCTION = '1' * CANT_BITS_INSTRUCCION
 CANT_BITS_SELECT_BYTES_MEM_DATA = 3
-CANT_DATOS_DB = 10
+CANT_DATOS_DB = 12
 
 # Variables globales
 
@@ -72,6 +72,13 @@ etiqueta_mem_to_reg_EX_to_MEM = ""
 etiqueta_select_bytes_mem_datos_EX_to_MEM = "" 
 etiqueta_halt_detected_EX_to_MEM = "" 
 etiqueta_registro_destino_EX_to_MEM = ""
+etiqueta_data_ALU_MEM_WB = ""
+etiqueta_data_read_mem = ""
+etiqueta_halt_detected_MEM_to_WB = ""
+etiqueta_mem_to_reg_MEM_to_WB = ""
+etiqueta_reg_write_MEM_TO_WB = ""
+etiqueta_mem_to_reg_MEM_to_WB = ""
+etiqueta_registro_destino_MEM_to_WB = ""
 
 lock = threading.Lock()
 modo_ejecucion = 0 #0: continuo - 1: debug
@@ -381,6 +388,13 @@ def recibirDatosFromFPGA ():
 	global etiqueta_select_bytes_mem_datos_EX_to_MEM 
 	global etiqueta_halt_detected_EX_to_MEM 
 	global etiqueta_registro_destino_EX_to_MEM
+	global etiqueta_data_ALU_MEM_WB
+	global etiqueta_data_read_mem
+	global etiqueta_halt_detected_MEM_to_WB
+	global etiqueta_mem_to_reg_MEM_to_WB
+	global etiqueta_reg_write_MEM_TO_WB
+	global etiqueta_mem_to_reg_MEM_to_WB
+	global etiqueta_registro_destino_MEM_to_WB
 	
 	flag_receive = True
 	bytes_recibidos = ""
@@ -568,7 +582,7 @@ def recibirDatosFromFPGA ():
 			etiqueta_data_write_mem = getHexadecimal (bytes_recibidos)
 			etiquetaDataWriteMemValorMIPS.config (text = etiqueta_data_write_mem)
 
-		elif (contador_etapas == 9): # Seniales de control etapa EX
+		elif (contador_etapas == 9): # Seniales de control etapa EX y MEM.
 			base = 2
 			if (str (bytes_recibidos [-CANT_BITS_SELECT_BYTES_MEM_DATA - CANT_BITS_ADDR_REGISTROS - base - 2]) == '1'):
 				etiqueta_mem_read_EX_to_MEM = 'Si'
@@ -626,6 +640,41 @@ def recibirDatosFromFPGA ():
 			
 			etiqueta_registro_destino_EX_to_MEM = 'R' + str (int (bytes_recibidos [-CANT_BITS_ADDR_REGISTROS : ], 2))
 			etiquetaRegistroDestinoEXtoMEMValorMIPS.config (text = etiqueta_registro_destino_EX_to_MEM)
+
+
+			# Memoria datos
+
+			bytes_recibidos_mem = bytes_recibidos [0 : WIDTH_WORD * 2]	
+			etiqueta_registro_destino_MEM_to_WB = 'R' + str (int (bytes_recibidos_mem [- CANT_BITS_ADDR_REGISTROS : ], 2))
+			etiquetaRegistroDestinoMEMtoWBValorMIPS.config (text = etiqueta_registro_destino_MEM_to_WB)
+
+			etiqueta_halt_detected_MEM_to_WB = bytes_recibidos_mem [- CANT_BITS_ADDR_REGISTROS - 1]
+			etiquetaHaltDetectedMEMtoWBValorMIPS.config (text = etiqueta_halt_detected_MEM_to_WB)
+
+			if (str (bytes_recibidos_mem [- CANT_BITS_ADDR_REGISTROS - 3]) == '1'):
+				etiqueta_reg_write_MEM_TO_WB = 'Si'
+			else:
+				etiqueta_reg_write_MEM_TO_WB = 'No' 
+
+			if (str (bytes_recibidos_mem [- CANT_BITS_ADDR_REGISTROS - 2]) == '1'):
+				etiqueta_mem_to_reg_MEM_to_WB = 'Si'
+			else:
+				etiqueta_mem_to_reg_MEM_to_WB = 'No'
+			
+			etiquetaRegWriteMEMtoWBValorMIPS.config (text = etiqueta_reg_write_MEM_TO_WB)
+						
+			etiquetaMemtoRegMEMtoWBValorMIPS.config (text = etiqueta_mem_to_reg_MEM_to_WB)
+
+		
+		
+		elif (contador_etapas == 10): #Data MEM
+			etiqueta_data_read_mem = getHexadecimal (bytes_recibidos)
+			etiquetaDataReadMemValorMIPS.config (text = etiqueta_data_read_mem)
+		
+		elif (contador_etapas == 11): #Data ALU de top memoria de datos
+			etiqueta_data_ALU_MEM_WB = getHexadecimal (bytes_recibidos)
+			etiquetaDataALUMemWbValorMIPS.config (text = etiqueta_data_ALU_MEM_WB)
+		
 		
 
 		if (contador_etapas == (CANT_DATOS_DB - 1)):
@@ -814,9 +863,9 @@ def salir():
 #Ventana principal - Configuracion
 
 root = Tk() 
-root.geometry ("560x1830+0+0") #Tamanio
-root.minsize (height=560, width=1830)
-root.maxsize (height=560, width=1830)
+root.geometry ("600x1840+0+0") #Tamanio
+root.minsize (height=600, width=1840)
+root.maxsize (height=600, width=1840)
 
 # Rectangulos divisorios
 
@@ -841,8 +890,8 @@ canvasResultado.place (x=1, y=420)
 
 
 canvasValoresMIPS = Canvas (root)
-canvasValoresMIPS.config (width = 1440, height = 530)
-canvasValoresMIPS.create_rectangle (5, 5, 1440, 530, outline='gray60')
+canvasValoresMIPS.config (width = 1450, height = 570)
+canvasValoresMIPS.create_rectangle (5, 5, 1450, 570, outline='gray60')
 canvasValoresMIPS.place (x=380, y=2)
 
 
@@ -874,7 +923,7 @@ botonDesconectarFPGA.place (x = 250, y = 40, width = 80, height = 30)
 
 ### Boton - Finalizar programa
 botonSalir = Button (root, text = "Exit", command = lambda: salir(), state = ACTIVE)
-botonSalir.place (x = 100, y = 510, width = 150, height = 30)
+botonSalir.place (x = 100, y = 530, width = 150, height = 30)
 
 
 
@@ -1140,6 +1189,55 @@ etiquetaRegistroDestinoEXtoMEMValorMIPS= Label (root, text = etiqueta_registro_d
 	 fg = "black", font = "TkDefaultFont 12")
 etiquetaRegistroDestinoEXtoMEMValorMIPS.place (x = 1700,  y = 310)
 
+
+
+# Memoria
+
+etiquetaLatchMEMWB = Label (root, text = "LATCH MEM/WB: ", fg = "dark green", font = "TkDefaultFont 12")
+etiquetaLatchMEMWB.place (x = 1400,  y = 360)
+
+etiquetaDataAluMemWb = Label (root, text = "Data ALU: ", fg = "brown", font = "TkDefaultFont 12")
+etiquetaDataAluMemWb.place (x = 1400,  y = 390)
+etiquetaDataALUMemWbValorMIPS = Label (root, text = etiqueta_data_ALU_MEM_WB,\
+	 fg = "black", font = "TkDefaultFont 12")
+etiquetaDataALUMemWbValorMIPS.place (x = 1700,  y = 390)
+
+
+etiquetaDataReadMemData = Label (root, text = "Dato de memoria: ", fg = "brown", font = "TkDefaultFont 12")
+etiquetaDataReadMemData.place (x = 1400,  y = 420)
+etiquetaDataReadMemValorMIPS = Label (root, text = etiqueta_data_read_mem,\
+	 fg = "black", font = "TkDefaultFont 12")
+etiquetaDataReadMemValorMIPS.place (x = 1700,  y = 420)
+
+
+etiquetaRegWriteMEMtoWB = Label (root, text = "Escribir registro: ", fg = "brown", font = "TkDefaultFont 12")
+etiquetaRegWriteMEMtoWB.place (x = 1400,  y = 450)
+etiquetaRegWriteMEMtoWBValorMIPS = Label (root, text = etiqueta_reg_write_MEM_TO_WB,\
+	 fg = "black", font = "TkDefaultFont 12")
+etiquetaRegWriteMEMtoWBValorMIPS.place (x = 1700,  y = 450)
+
+
+
+etiquetaMemtoRegMEMtoWB = Label (root, text = "Datos de memoria a registros: ", fg = "brown", font = "TkDefaultFont 12")
+etiquetaMemtoRegMEMtoWB.place (x = 1400,  y = 480)
+etiquetaMemtoRegMEMtoWBValorMIPS = Label (root, text = etiqueta_mem_to_reg_MEM_to_WB,\
+	 fg = "black", font = "TkDefaultFont 12")
+etiquetaMemtoRegMEMtoWBValorMIPS.place (x = 1700,  y = 480)
+
+
+
+etiquetaHaltDetectedMEMtoWB = Label (root, text = "Flag HALT: ", fg = "brown", font = "TkDefaultFont 12")
+etiquetaHaltDetectedMEMtoWB.place (x = 1400,  y = 510)
+etiquetaHaltDetectedMEMtoWBValorMIPS= Label (root, text = etiqueta_halt_detected_MEM_to_WB,\
+	 fg = "black", font = "TkDefaultFont 12")
+etiquetaHaltDetectedMEMtoWBValorMIPS.place (x = 1700,  y = 510)
+
+
+etiquetaRegistroDestinoMEMtoWB = Label (root, text = "Registro destino: ", fg = "brown", font = "TkDefaultFont 12")
+etiquetaRegistroDestinoMEMtoWB.place (x = 1400,  y = 540)
+etiquetaRegistroDestinoMEMtoWBValorMIPS= Label (root, text = etiqueta_registro_destino_MEM_to_WB,\
+	 fg = "black", font = "TkDefaultFont 12")
+etiquetaRegistroDestinoMEMtoWBValorMIPS.place (x = 1700,  y = 540)
 
 
 

@@ -337,9 +337,9 @@ for comando in arreglo_parseo:
 				pointer_array = argumento[1].split("{")
 				pointer_array[1]=pointer_array[1][:len(pointer_array[1])-1]
 				number_bin = acondicionarArgumentos (pointer_array[0], "signed", CANT_BITS_OFFSET)
-				if ((number_bin[-2:]) != "00"):
-					print ('Direccion no alineada. Fin.')
-					exit (1)
+				#if ((number_bin[-2:]) != "00"):
+				#	print ('Direccion no alineada. Fin.')
+				#	exit (1)
 				cadena_binaria = cadena_binaria + getNumeroRegistro (pointer_array[1]) + getNumeroRegistro (argumento[0]) +\
 					number_bin
 

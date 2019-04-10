@@ -83,7 +83,7 @@ module test_bench_database();
     reg reg_RegWrite_MEM_to_WB;
     reg reg_MemtoReg_MEM_to_WB;
     reg reg_halt_detected_MEM_to_WB;
-    reg reg_registro_destino_MEM_to_WB;
+    reg [clogb2 (CANT_REGISTROS - 1) - 1 : 0] reg_registro_destino_MEM_to_WB;
     reg [CANT_BITS_REGISTROS - 1 : 0] reg_data_alu_MEM_to_WB;
     reg [CANT_BITS_REGISTROS - 1 : 0] reg_data_mem_MEM_to_WB;
 
