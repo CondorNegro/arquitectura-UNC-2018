@@ -302,7 +302,7 @@ module database
             o_dato <= reg_data_write_to_mem;
         end
         else if (i_control == 11) begin // Se devuelven señales de control y el registro destino de la etapa EX.
-            o_dato <= {reg_RegWrite_MEM_to_WB, reg_MemtoReg_MEM_to_WB, reg_halt_detected_MEM_to_WB, reg_registro_destino_MEM_to_WB, {((CANT_BITS_REGISTROS / 2) - CANT_BITS_SELECT_BYTES_MEM_DATA - clogb2 (CANT_BITS_REGISTROS - 1) - base - 3) {1'b0}},reg_RegWrite_EX_to_MEM, reg_MemRead_EX_to_MEM, reg_MemWrite_EX_to_MEM, reg_MemtoReg_EX_to_MEM, reg_select_bytes_mem_datos_EX_to_MEM, reg_halt_detected_EX_to_MEM, reg_registro_destino_EX_to_MEM};
+            o_dato <= {reg_RegWrite_MEM_to_WB, reg_MemtoReg_MEM_to_WB, reg_halt_detected_MEM_to_WB, reg_registro_destino_MEM_to_WB, {((CANT_BITS_REGISTROS / 2) - CANT_BITS_SELECT_BYTES_MEM_DATA - clogb2 (CANT_BITS_REGISTROS - 1) - 5) {1'b0}},reg_RegWrite_EX_to_MEM, reg_MemRead_EX_to_MEM, reg_MemWrite_EX_to_MEM, reg_MemtoReg_EX_to_MEM, reg_select_bytes_mem_datos_EX_to_MEM, reg_halt_detected_EX_to_MEM, reg_registro_destino_EX_to_MEM};
         end
         else if (i_control == 12) begin
             o_dato <= reg_data_mem_MEM_to_WB;
