@@ -41,7 +41,7 @@ module memoria_datos
 
   reg [(NB_COL *COL_WIDTH) -1 : 0] BRAM [RAM_DEPTH - 1 : 0];
   reg [(NB_COL *COL_WIDTH) -1 : 0] ram_data = {(NB_COL * COL_WIDTH){1'b0}};
-  reg [clogb2(RAM_DEPTH-1)-1 : 0] reg_contador;
+  reg [31 : 0] reg_contador;
 
   // The following code either initializes the memory values to a specified file or to all zeros to match hardware
   generate
@@ -52,27 +52,33 @@ module memoria_datos
       integer ram_index;
       initial
         for (ram_index = 0; ram_index < RAM_DEPTH; ram_index = ram_index + 1)
-          BRAM[ram_index] = ram_index;
+          BRAM[ram_index] = {(COL_WIDTH * NB_COL) {1'b0}};
     end
   endgenerate
 
-  always @(posedge i_clk)
+  always @(posedge i_clk) begin
     if (~i_soft_reset) begin // Reset de memoria.
-      BRAM [reg_contador] <= reg_contador;
-      if (reg_contador == (RAM_DEPTH - 1)) begin
-        reg_contador <= reg_contador;
-        o_soft_reset_ack <= 0;
-      end
-      else begin
-        reg_contador <= reg_contador + 1;
-        o_soft_reset_ack <= 1;
-      end
+          BRAM [reg_contador] <= {(COL_WIDTH * NB_COL) {1'b0}};
+          ram_data <= 0;
+          if (reg_contador == (RAM_DEPTH - 1)) begin
+            reg_contador <= reg_contador;
+            o_soft_reset_ack <= 0;
+          end
+          else begin
+            reg_contador <= reg_contador + 1;
+            o_soft_reset_ack <= 1;
+          end
     end
     else begin
-        reg_contador <= 0;
-        o_soft_reset_ack <= 1;
-        if (i_ena) begin
-            ram_data <= BRAM[i_addr];
+            reg_contador <= 0;
+            o_soft_reset_ack <= 1;
+            
+            if (i_ena) begin
+                ram_data <= BRAM[i_addr];
+            end
+            else begin
+                ram_data <= ram_data;
+            end
     end
   end
 
