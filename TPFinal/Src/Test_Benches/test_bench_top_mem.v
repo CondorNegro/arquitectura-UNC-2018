@@ -84,14 +84,50 @@ module test_bench_top_mem();
         reg_enable_pipeline = 1'b1;
         reg_halt_detected = 1'b0;
         reg_control_write_read_mem = 1'b0;
-        reg_control_address_mem //Completar
+        reg_control_address_mem = 1'b0;
+        
+        reg_enable_mem_datos = 1'b1;
+        reg_rsta = 1'b0;
+        reg_regcea = 1'b0;
+        reg_address_ALU = 8;
+        reg_address_debug_unit = 2;
+        reg_data_write_mem = 32'hFFDECBAA;    
+        reg_RegWrite = 1;
+        reg_MemRead = 0;
+        reg_MemWrite = 0;
+        reg_MemtoReg = 0;
+        reg_select_bytes_mem_datos = 0;
+        reg_registro_destino = 5;
 
 		#10 reg_soft_reset = 1'b0; // Reset.
 		#30000 reg_soft_reset = 1'b1; // Desactivo el reset.
 		
+        #10 reg_MemWrite = 1;
+        #10 reg_select_bytes_mem_datos = 3;
         #10 reg_control_write_read_mem = 1'b1;
+        #10 reg_MemWrite = 0;
+        #10 reg_select_bytes_mem_datos = 0;
         #50 reg_control_write_read_mem = 1'b0;
 
+        #10 reg_control_address_mem = 1'b1;
+        #10 reg_control_address_mem = 1'b0;
+
+
+        #10 reg_MemRead = 1'b1;
+        #10 reg_MemRead = 1'b0;
+
+        #10 reg_MemWrite = 1; 
+        
+
+        #10 reg_select_bytes_mem_datos = 3; 
+        #10 reg_address_ALU = 9;
+        #10 reg_select_bytes_mem_datos = 2;
+
+        #10 reg_select_bytes_mem_datos = 1;
+
+ 
+        #10 reg_MemWrite = 0;    
+        
 
 
 		#10 reg_soft_reset = 1'b0; // Reset.

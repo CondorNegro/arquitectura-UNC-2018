@@ -90,6 +90,7 @@ module top_mem
     wire [RAM_WIDTH - 1 : 0] wire_output_data_write_mem_to_mem_data;
 
     assign o_bit_sucio_to_debug_unit = wire_bit_sucio;
+    assign o_dato_mem_to_debug_unit = wire_dato_mem_output;
     assign o_soft_reset_ack = wire_soft_reset_ack_mem_datos;
 
 
@@ -193,7 +194,7 @@ memoria_datos
    (
         .i_clk (i_clock),     
         .i_soft_reset (i_soft_reset),
-        .i_addr (wire_address_mem),  
+        .i_addr (wire_address_mem [CANT_BITS_ADDR - 1 : clogb2 (CANT_COLUMNAS_MEM_DATOS - 1)]),  
         .i_data (wire_output_data_write_mem_to_mem_data),                                   
         .i_wea (wire_wea_mem),                  
         .i_ena (i_enable_mem_datos),                                      

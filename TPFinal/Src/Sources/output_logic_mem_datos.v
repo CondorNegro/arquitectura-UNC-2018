@@ -66,13 +66,13 @@ module output_logic_mem_datos
             case (i_select_op [CANT_BITS_SELECT_BYTES_MEM_DATA - 2 : 0]) 
                 1://Byte
                     begin
-                      reg_dato_mem_shifted = i_dato_mem >> (i_address_mem_LSB  * (INPUT_OUTPUT_LENGTH / CANT_COLUMNAS_MEM_DATOS));
-                      o_resultado = reg_dato_mem_shifted;
+                      reg_dato_mem_shifted = i_dato_mem >> (i_address_mem_LSB * (INPUT_OUTPUT_LENGTH / CANT_COLUMNAS_MEM_DATOS));
+                      o_resultado = reg_dato_mem_shifted & 32'h000000FF;
                     end
                 2: //Halfword
                     begin
                         reg_dato_mem_shifted = i_dato_mem >> (i_address_mem_LSB [clogb2 (CANT_COLUMNAS_MEM_DATOS - 1) - 1] * (INPUT_OUTPUT_LENGTH / (CANT_COLUMNAS_MEM_DATOS / 2))); 
-                        o_resultado = reg_dato_mem_shifted;
+                        o_resultado =  reg_dato_mem_shifted & 32'h0000FFFF;
                     end
                 3: //Word
                     begin
