@@ -593,6 +593,12 @@ database
         .i_registro_destino_EX_to_MEM (wire_EX_to_MEM_registro_destino),
         .i_result_alu (wire_resultado_ALU),
         .i_data_write_to_mem (wire_EX_to_MEM_data_write_mem),
+        .i_RegWrite_MEM_to_WB (wire_MEM_to_WB_RegWrite),
+        .i_MemtoReg_MEM_to_WB (wire_MEM_to_WB_MemtoReg),
+        .i_halt_detected_MEM_to_WB (wire_halt_detected_MEM_to_WB),
+        .i_registro_destino_MEM_to_WB (wire_MEM_to_WB_registro_destino),
+        .i_data_alu_MEM_to_WB (wire_MEM_to_WB_data_alu),
+        .i_data_mem_MEM_to_WB (wire_MEM_to_WB_data_mem),
         .o_dato (wire_dato_database)
     );
 

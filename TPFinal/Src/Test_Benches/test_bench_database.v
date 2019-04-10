@@ -78,6 +78,16 @@ module test_bench_database();
     reg [WIDTH_DATA_MEM - 1 : 0] reg_data_write_to_mem;
 
 
+    // Memoria
+
+    reg reg_RegWrite_MEM_to_WB;
+    reg reg_MemtoReg_MEM_to_WB;
+    reg reg_halt_detected_MEM_to_WB;
+    reg reg_registro_destino_MEM_to_WB;
+    reg [CANT_BITS_REGISTROS - 1 : 0] reg_data_alu_MEM_to_WB;
+    reg [CANT_BITS_REGISTROS - 1 : 0] reg_data_mem_MEM_to_WB;
+
+
     wire [LONGITUD_INSTRUCCION - 1 : 0] wire_dato;
     
     //  The following function calculates the address width based on specified RAM depth
@@ -125,6 +135,14 @@ module test_bench_database();
         reg_registro_destino_EX_to_MEM = 1;
         reg_result_alu = 5;
         reg_data_write_to_mem = 6;
+
+
+        reg_RegWrite_MEM_to_WB = 0;
+        reg_MemtoReg_MEM_to_WB = 0;
+        reg_halt_detected_MEM_to_WB = 0;
+        reg_registro_destino_MEM_to_WB = 0;
+        reg_data_alu_MEM_to_WB = 0;
+        reg_data_mem_MEM_to_WB = 0;
 
 
 	   
@@ -217,6 +235,12 @@ database
         .i_registro_destino_EX_to_MEM (reg_registro_destino_EX_to_MEM),
         .i_result_alu (reg_result_alu),
         .i_data_write_to_mem (reg_data_write_to_mem),
+        .i_RegWrite_MEM_to_WB (reg_RegWrite_MEM_to_WB),
+        .i_MemtoReg_MEM_to_WB (reg_MemtoReg_MEM_to_WB),
+        .i_halt_detected_MEM_to_WB (reg_halt_detected_MEM_to_WB),
+        .i_registro_destino_MEM_to_WB (reg_registro_destino_MEM_to_WB),
+        .i_data_alu_MEM_to_WB (reg_data_alu_MEM_to_WB),
+        .i_data_mem_MEM_to_WB (reg_data_mem_MEM_to_WB),
         .o_dato (wire_dato)
     );
 
