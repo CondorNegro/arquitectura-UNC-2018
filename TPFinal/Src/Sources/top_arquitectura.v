@@ -43,6 +43,7 @@
 `define HALT_INSTRUCTION_TOP                    32'hFFFFFFFF
 `define CANT_BITS_SELECT_BYTES_MEM_DATA_TOP     3
 `define CANT_DATOS_DATABASE_TOP                 10
+`define CANT_COLUMNAS_MEM_DATOS_TOP             4
 
 module top_arquitectura(
   i_clock_top, 
@@ -89,6 +90,7 @@ parameter CANT_BITS_FLAG_BRANCH_TOP = `CANT_BITS_FLAG_BRANCH_TOP;
 parameter CANT_BITS_ADDR_REGISTROS  = `CANT_BITS_ADDR_REGISTROS;
 parameter CANT_BITS_SELECT_BYTES_MEM_DATA_TOP    = `CANT_BITS_SELECT_BYTES_MEM_DATA_TOP; 
 parameter CANT_DATOS_DATABASE_TOP   = `CANT_DATOS_DATABASE_TOP;
+parameter CANT_COLUMNAS_MEM_DATOS_TOP = `CANT_COLUMNAS_MEM_DATOS_TOP;
 
 // Entradas - Salidas
 input i_clock_top;                              // Clock.
@@ -99,7 +101,12 @@ output uart_rxd_out;                            // Receptor de PC.
 output [3 : 0] o_leds;                          // Leds.
 //output [7:0] jc;
 
-
+//  The following function calculates the address width based on specified RAM depth
+function integer clogb2;
+    input integer depth;
+        for (clogb2=0; depth>0; clogb2=clogb2+1)
+            depth = depth >> 1;
+endfunction
 
 // Wires.
 wire i_clock;
@@ -188,6 +195,8 @@ wire wire_MEM_to_WB_RegWrite;
 wire wire_MEM_to_WB_MemtoReg;
 wire [CANT_BITS_ADDR_REGISTROS - 1 : 0] wire_MEM_to_WB_registro_destino;
 wire wire_halt_detected_MEM_to_WB;
+wire [CANT_BITS_REGISTROS_TOP - 1 : 0] wire_MEM_to_WB_data_alu;
+wire [CANT_BITS_REGISTROS_TOP - 1 : 0] wire_MEM_to_WB_data_mem;
 
 
 // WB 
@@ -199,8 +208,8 @@ wire wire_halt_detected_WB_to_DEBUG_UNIT;
 // Asignaciones de wires.
 
 //Borrar y dejar el segundo 
-assign wire_soft_reset_ack = wire_soft_reset_ack_prog;
-//assign wire_soft_reset_ack = wire_soft_reset_ack_prog | wire_soft_reset_ack_datos;
+//assign wire_soft_reset_ack = wire_soft_reset_ack_prog;
+assign wire_soft_reset_ack = wire_soft_reset_ack_prog | wire_soft_reset_ack_datos;
 
 
  
@@ -244,7 +253,7 @@ debug_unit
     .i_rx_done (wire_rx_done),
     .i_data_rx (wire_data_rx),
     .i_soft_reset_ack (wire_soft_reset_ack),
-    .i_flag_halt (wire_halt_detected_EX_to_MEM),//CAMBIAR por wire_halt_detected_WB_to_DEBUG_UNIT
+    .i_flag_halt (wire_halt_detected_WB_to_DEBUG_UNIT), //wire_halt_detected_WB_to_DEBUG_UNIT
     .i_dato_database (wire_dato_database),
     .o_tx_start (wire_tx_start),
     .o_data_tx (wire_data_tx),
@@ -447,7 +456,7 @@ top_ejecucion
     );
 
 
-/**
+
 // Modulo top de la etapa de memoria de datos de la instruccion.
 top_mem
     #(
@@ -455,32 +464,46 @@ top_mem
         .RAM_PERFORMANCE (RAM_PERFORMANCE_DATOS),
         .INIT_FILE (INIT_FILE_DATOS),
         .RAM_DEPTH (RAM_DEPTH_DATOS),
+        .CANT_COLUMNAS_MEM_DATOS (CANT_COLUMNAS_MEM_DATOS_TOP),
         .CANT_REGISTROS (CANT_REGISTROS_TOP),
-        .CANT_BITS_ADDR (ADDR_MEM_DATOS_LENGTH),
+        .CANT_BITS_ADDR (ADDR_MEM_DATOS_LENGTH + clogb2 (CANT_COLUMNAS_MEM_DATOS_TOP - 1)), // Los dos bits LSB direccionan a nivel de byte.
         .CANT_BITS_REGISTROS (CANT_BITS_REGISTROS_TOP),
-        .CANT_BITS_SELECT_BYTES_MEM_DATA (CANT_BITS_SELECT_BYTES_MEM_DATA_TOP) 
-    )
-    u_top_mem_1
+        .CANT_BITS_SELECT_BYTES_MEM_DATA (CANT_BITS_SELECT_BYTES_MEM_DATA_TOP)
+     ) 
+    u_top_mem_1    
     (
         .i_clock (i_clock),
         .i_soft_reset (wire_soft_reset),
         .i_enable_pipeline (wire_enable_pipeline),
+        .i_halt_detected (wire_halt_detected_EX_to_MEM),
+        .i_control_write_read_mem (),
+        .i_control_address_mem (),
+        .i_enable_mem_datos (),
+        .i_rsta (wire_rsta_mem),
+        .i_regcea (wire_regcea_mem),
+        .i_address_ALU (wire_resultado_ALU),
+        .i_address_debug_unit (),
+        .i_data_write_mem (wire_EX_to_MEM_data_write_mem),
         .i_RegWrite (wire_EX_to_MEM_RegWrite),
         .i_MemRead (wire_EX_to_MEM_MemRead),
         .i_MemWrite (wire_EX_to_MEM_MemWrite),
         .i_MemtoReg (wire_EX_to_MEM_MemtoReg),
-        .i_registro_destino (wire_EX_to_MEM_registro_destino),
         .i_select_bytes_mem_datos (wire_select_bytes_mem_datos_EX_to_MEM),
-        .i_halt_detected (wire_halt_detected_EX_to_MEM),
+        .i_registro_destino (wire_EX_to_MEM_registro_destino),
         .o_RegWrite (wire_MEM_to_WB_RegWrite),
         .o_MemtoReg (wire_MEM_to_WB_MemtoReg),
         .o_registro_destino (wire_MEM_to_WB_registro_destino),
         .o_halt_detected (wire_halt_detected_MEM_to_WB),
-        .o_led (o_leds [3])
+        .o_data_alu (wire_MEM_to_WB_data_alu),
+        .o_data_mem (wire_MEM_to_WB_data_mem),
+        .o_soft_reset_ack (wire_soft_reset_ack_datos),
+        .o_dato_mem_to_debug_unit (),
+        .o_bit_sucio_to_debug_unit (),
+        .o_led ()
     );
-**/
+
 // Modulo top de la etapa write back de la instruccion.
-/**
+
 
 top_write_back
     #(
@@ -490,8 +513,8 @@ top_write_back
     u_top_write_back_1
     (
         .i_registro_destino (wire_MEM_to_WB_registro_destino),
-        .i_data_mem (),
-        .i_data_alu (),
+        .i_data_mem (wire_MEM_to_WB_data_mem),
+        .i_data_alu (wire_MEM_to_WB_data_alu),
         .i_RegWrite (wire_MEM_to_WB_RegWrite),
         .i_MemtoReg (wire_MEM_to_WB_MemtoReg),
         .i_halt_detected (wire_halt_detected_MEM_to_WB),
@@ -503,8 +526,6 @@ top_write_back
     );
 
 
-
-**/  
 
 
 // Modulo contador de ciclos.
