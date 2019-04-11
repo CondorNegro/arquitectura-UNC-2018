@@ -23,7 +23,7 @@
 `define INIT_FILE_PROGRAMA                      ""
 `define RAM_DEPTH_DATOS                         1024
 `define RAM_DEPTH_PROGRAMA                      1024
-`define CANT_ESTADOS_DEBUG_UNIT                 10
+`define CANT_ESTADOS_DEBUG_UNIT                 12
 `define ADDR_MEM_PROGRAMA_LENGTH                10
 `define ADDR_MEM_DATOS_LENGTH_TOP               10
 `define LONG_INSTRUCCION                        32
@@ -253,7 +253,8 @@ debug_unit
         .CANT_DATOS_DATABASE (CANT_DATOS_DATABASE_TOP),
         .CANT_BITS_REGISTRO (CANT_BITS_REGISTROS_TOP),
         .CANT_COLUMNAS_MEM_DATOS (CANT_COLUMNAS_MEM_DATOS_TOP),
-        .ADDR_MEM_DATOS_LENGTH (ADDR_MEM_DATOS_LENGTH_TOP)          
+        .ADDR_MEM_DATOS_LENGTH (ADDR_MEM_DATOS_LENGTH_TOP),
+        .RAM_DATOS_DEPTH (RAM_DEPTH_DATOS)          
      ) 
    u_debug_unit1    // Una sola instancia de este modulo
    (
@@ -498,7 +499,7 @@ top_mem
         .i_rsta (wire_rsta_mem),
         .i_regcea (wire_regcea_mem),
         .i_address_ALU (wire_resultado_ALU),
-        .i_address_debug_unit (0), //(wire_address_mem_data_from_debug_unit),
+        .i_address_debug_unit (wire_address_mem_data_from_debug_unit),
         .i_data_write_mem (wire_EX_to_MEM_data_write_mem),
         .i_RegWrite (wire_EX_to_MEM_RegWrite),
         .i_MemRead (wire_EX_to_MEM_MemRead),
