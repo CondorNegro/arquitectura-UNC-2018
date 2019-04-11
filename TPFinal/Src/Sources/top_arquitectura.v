@@ -45,6 +45,7 @@
 `define CANT_DATOS_DATABASE_TOP                 12
 `define CANT_COLUMNAS_MEM_DATOS_TOP             4
 `define CANT_BITS_SELECCION_COLUMNAS_MEM_DATOS  2
+`define CANT_BITS_SELECTOR_MUX_FORWARD          2
 
 module top_arquitectura(
   i_clock_top, 
@@ -93,6 +94,7 @@ parameter CANT_BITS_SELECT_BYTES_MEM_DATA_TOP    = `CANT_BITS_SELECT_BYTES_MEM_D
 parameter CANT_DATOS_DATABASE_TOP   = `CANT_DATOS_DATABASE_TOP;
 parameter CANT_COLUMNAS_MEM_DATOS_TOP = `CANT_COLUMNAS_MEM_DATOS_TOP;
 parameter CANT_BITS_SELECCION_COLUMNAS_MEM_DATOS = `CANT_BITS_SELECCION_COLUMNAS_MEM_DATOS;
+parameter CANT_BITS_SELECTOR_MUX_FORWARD  = `CANT_BITS_SELECTOR_MUX_FORWARD;
 
 // Entradas - Salidas
 input i_clock_top;                              // Clock.
@@ -158,8 +160,8 @@ wire [ADDR_MEM_PROGRAMA_LENGTH - 1 : 0] wire_branch_dir_to_database;
 wire [CANT_BITS_REGISTROS_TOP - 1 : 0] wire_data_A;
 wire [CANT_BITS_REGISTROS_TOP - 1 : 0] wire_data_B;
 wire [CANT_BITS_REGISTROS_TOP - 1 : 0] wire_extension_signo_constante;
-wire [CANT_BITS_ADDR_REGISTROS - 1 : 0] wire_reg_rs;
-wire [CANT_BITS_ADDR_REGISTROS - 1 : 0] wire_reg_rt;
+wire [CANT_BITS_ADDR_REGISTROS - 1 : 0] wire_reg_rs_ID_to_EX;
+wire [CANT_BITS_ADDR_REGISTROS - 1 : 0] wire_reg_rt_ID_to_EX;
 wire [CANT_BITS_ADDR_REGISTROS - 1 : 0] wire_reg_rd;
 wire wire_RegDst;
 wire wire_RegWrite_ID_to_EX;
@@ -186,6 +188,7 @@ wire [CANT_BITS_ADDR_REGISTROS - 1 : 0] wire_EX_to_MEM_registro_destino;
 wire [CANT_BITS_SELECT_BYTES_MEM_DATA_TOP - 1 : 0] wire_select_bytes_mem_datos_EX_to_MEM;
 wire wire_halt_detected_EX_to_MEM;
 
+
 // MEM.
 
 wire wire_MEM_to_WB_RegWrite;
@@ -211,6 +214,13 @@ wire [ADDR_MEM_DATOS_LENGTH_TOP + CANT_BITS_SELECCION_COLUMNAS_MEM_DATOS - 1 : 0
 
 wire [CANT_BITS_REGISTROS_TOP - 1 : 0] wire_output_mem_datos;
 wire wire_bit_sucio;
+
+
+// Forwarding unit
+
+wire [CANT_BITS_SELECTOR_MUX_FORWARD - 1 : 0] wire_selector_mux_A_forward;
+wire [CANT_BITS_SELECTOR_MUX_FORWARD - 1 : 0] wire_selector_mux_B_forward;
+
 
 // Asignaciones de wires.
 
@@ -409,8 +419,8 @@ top_id
         .o_data_A (wire_data_A),
         .o_data_B (wire_data_B),
         .o_extension_signo_constante (wire_extension_signo_constante),
-        .o_reg_rs (wire_reg_rs),
-        .o_reg_rt (wire_reg_rt),
+        .o_reg_rs (wire_reg_rs_ID_to_EX),
+        .o_reg_rt (wire_reg_rt_ID_to_EX),
         .o_reg_rd (wire_reg_rd),
 
         .o_RegDst (wire_RegDst),
@@ -448,8 +458,8 @@ top_ejecucion
         .i_data_A (wire_data_A),
         .i_data_B (wire_data_B),
         .i_extension_signo_constante (wire_extension_signo_constante),
-        .i_reg_rs (wire_reg_rs),
-        .i_reg_rt (wire_reg_rt),
+        .i_reg_rs (wire_reg_rs_ID_to_EX),
+        .i_reg_rt (wire_reg_rt_ID_to_EX),
         .i_reg_rd (wire_reg_rd),
         .i_RegDst (wire_RegDst),
         .i_RegWrite (wire_RegWrite_ID_to_EX),
@@ -459,7 +469,11 @@ top_ejecucion
         .i_MemtoReg (wire_MemtoReg_ID_to_EX),
         .i_ALUCtrl (wire_ALUCtrl),
         .i_halt_detected (wire_halt_detected_ID_to_EX),
-        .i_select_bytes_mem_datos (wire_select_bytes_mem_datos_ID_to_EX), 
+        .i_select_bytes_mem_datos (wire_select_bytes_mem_datos_ID_to_EX),
+        .i_selector_mux_A_forward (wire_selector_mux_A_forward),
+        .i_selector_mux_B_forward (wire_selector_mux_B_forward),
+        .i_data_forward_WB (wire_MEM_to_WB_data_mem),
+        .i_data_forward_MEM (wire_resultado_ALU), 
         .o_RegWrite (wire_EX_to_MEM_RegWrite),
         .o_MemRead (wire_EX_to_MEM_MemRead),
         .o_MemWrite (wire_EX_to_MEM_MemWrite),
@@ -588,8 +602,8 @@ database
         .i_data_A (wire_data_A),
         .i_data_B (wire_data_B),
         .i_extension_signo_constante (wire_extension_signo_constante),
-        .i_reg_rs (wire_reg_rs),
-        .i_reg_rt (wire_reg_rt),
+        .i_reg_rs (wire_reg_rs_ID_to_EX),
+        .i_reg_rt (wire_reg_rt_ID_to_EX),
         .i_reg_rd (wire_reg_rd),
         .i_RegDst (wire_RegDst),
         .i_RegWrite_ID_to_EX (wire_RegWrite_ID_to_EX),
@@ -618,6 +632,26 @@ database
         .i_data_mem_MEM_to_WB (wire_MEM_to_WB_data_mem),
         .o_dato (wire_dato_database)
     );
+
+forwarding_unit
+    #(
+        .CANT_BITS_ADDR_REGISTROS (CANT_BITS_ADDR_REGISTROS),
+        .CANT_BITS_SELECTOR_MUX (CANT_BITS_SELECTOR_MUX_FORWARD)
+    )
+    u_forwarding_unit_1
+    (
+        .i_rs_ex (wire_reg_rs_ID_to_EX),
+        .i_rt_ex (wire_reg_rs_ID_to_EX),
+        .i_registro_destino_mem (wire_EX_to_MEM_registro_destino),
+        .i_registro_destino_wb (wire_MEM_to_WB_registro_destino),
+        .i_reg_write_mem (wire_EX_to_MEM_RegWrite),
+        .i_reg_write_wb (wire_MEM_to_WB_RegWrite),
+        .o_selector_mux_A (wire_selector_mux_A_forward),
+        .o_selector_mux_B (wire_selector_mux_B_forward)     
+    );
+
+
+
 
 
 
