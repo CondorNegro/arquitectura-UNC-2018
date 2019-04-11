@@ -222,6 +222,14 @@ wire [CANT_BITS_SELECTOR_MUX_FORWARD - 1 : 0] wire_selector_mux_A_forward;
 wire [CANT_BITS_SELECTOR_MUX_FORWARD - 1 : 0] wire_selector_mux_B_forward;
 
 
+
+// Hazard detection unit
+wire wire_bit_burbuja;
+wire [CANT_BITS_ADDR_REGISTROS - 1 : 0] wire_reg_rs_to_hazard;
+wire [CANT_BITS_ADDR_REGISTROS - 1 : 0] wire_reg_rt_to_hazard;
+
+
+
 // Asignaciones de wires.
 
 //Borrar y dejar el segundo 
@@ -372,6 +380,7 @@ top_if
     .i_control_mux_addr_mem (wire_control_mux_addr_mem_IF),
     .i_branch_dir (wire_branch_dir),
     .i_enable_pipeline (wire_enable_pipeline),
+    .i_bit_burbuja_hazard (wire_bit_burbuja),
     .o_instruction (wire_instruction_fetch),
     .o_direccion_adder_pc (wire_adder_contador_programa),
     .o_contador_programa (wire_contador_programa),
@@ -411,6 +420,11 @@ top_id
         .i_data_write (wire_data_write_ID),
         .i_enable_pipeline (wire_enable_pipeline),
         .i_enable_etapa (wire_enable_PC),
+
+        .i_bit_burbuja_hazard (wire_bit_burbuja),
+        .o_reg_rs_to_hazard (wire_reg_rs_to_hazard),
+        .o_reg_rt_to_hazard (wire_reg_rt_to_hazard),
+
         .o_out_adder_pc (wire_out_adder_pc_ID_to_EX),
         .o_branch_dir (wire_branch_dir),
         .o_branch_control (wire_control_mux_PC),
@@ -650,6 +664,23 @@ forwarding_unit
         .o_selector_mux_A (wire_selector_mux_A_forward),
         .o_selector_mux_B (wire_selector_mux_B_forward)     
     );
+
+hazard_detection_unit
+    #(
+        .CANT_BITS_ADDR_REGISTROS (CANT_BITS_ADDR_REGISTROS)
+    )
+    u_hazard_detection_unit_1
+    (
+        .i_rs_id (wire_reg_rs_to_hazard),
+        .i_rt_id (wire_reg_rt_to_hazard),
+        .i_registro_destino_ex (wire_reg_rt_ID_to_EX),
+        .i_read_mem_ex (wire_MemRead_ID_to_EX),
+
+        .o_bit_burbuja (wire_bit_burbuja) 
+    );
+
+
+
 
 
 
