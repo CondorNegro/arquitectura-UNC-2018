@@ -19,6 +19,7 @@ module test_bench_top_ejecucion();
     parameter CANT_BITS_REGISTROS = 32;
     parameter CANT_BITS_ALU_CONTROL = 4;
     parameter CANT_BITS_SELECT_BYTES_MEM_DATA = 3;
+    parameter CANT_BITS_SELECTOR_MUX_FORWARD = 2;
 	
 	//Todo puerto de salida del modulo es un cable.
 	//Todo puerto de estimulo o generacion de entrada es un registro.
@@ -50,7 +51,14 @@ module test_bench_top_ejecucion();
     reg reg_i_MemWrite;
     reg reg_i_MemtoReg;
     reg [CANT_BITS_ALU_CONTROL - 1 : 0] reg_i_ALUCtrl;
-    reg [CANT_BITS_SELECT_BYTES_MEM_DATA - 1 : 0] reg_i_select_bytes_mem_datos;                             
+    reg [CANT_BITS_SELECT_BYTES_MEM_DATA - 1 : 0] reg_i_select_bytes_mem_datos;      
+
+
+    // Forwarding Unit
+    reg [CANT_BITS_SELECTOR_MUX_FORWARD - 1 : 0] reg_selector_mux_A_forward;
+    reg [CANT_BITS_SELECTOR_MUX_FORWARD - 1 : 0] reg_selector_mux_B_forward;
+    reg [CANT_BITS_REGISTROS - 1 : 0] reg_data_forward_WB;
+    reg [CANT_BITS_REGISTROS - 1 : 0] reg_data_forward_MEM;                        
     
     //SALIDAS.
     wire wire_o_RegWrite;
@@ -92,6 +100,11 @@ module test_bench_top_ejecucion();
         reg_i_halt_detected = 1'b0;
         reg_i_select_bytes_mem_datos = 2;
 
+        reg_selector_mux_A_forward = 0;
+        reg_selector_mux_B_forward = 0;
+        reg_data_forward_WB = 5;
+        reg_data_forward_MEM = 7;   
+
 
         #20 reg_i_soft_reset = 1'b0;
         #20 reg_i_soft_reset = 1'b1;
@@ -115,6 +128,15 @@ module test_bench_top_ejecucion();
         #20 reg_i_halt_detected = 1'b1;
         #20 reg_i_select_bytes_mem_datos = 1;
 
+
+        #50 reg_selector_mux_A_forward = 2;
+        #10 reg_selector_mux_A_forward = 1;
+
+        #50 reg_selector_mux_B_forward = 2;
+        #10 reg_selector_mux_B_forward = 1;
+
+
+
 		#10000 reg_i_soft_reset = 1'b0; // Reset.
 		#10000 reg_i_soft_reset = 1'b1; // Desactivo el reset.
 		
@@ -134,7 +156,8 @@ top_ejecucion
         .CANT_BITS_ADDR (CANT_BITS_ADDR),
         .CANT_BITS_REGISTROS (CANT_BITS_REGISTROS),
         .CANT_BITS_ALU_CONTROL (CANT_BITS_ALU_CONTROL),
-        .CANT_BITS_SELECT_BYTES_MEM_DATA (CANT_BITS_SELECT_BYTES_MEM_DATA)
+        .CANT_BITS_SELECT_BYTES_MEM_DATA (CANT_BITS_SELECT_BYTES_MEM_DATA),
+        .CANT_BITS_SELECTOR_MUX_FORWARD (CANT_BITS_SELECTOR_MUX_FORWARD)
      ) 
     u_top_ejecucion_1    
     (
@@ -159,7 +182,10 @@ top_ejecucion
         .i_halt_detected (reg_i_halt_detected),
         .i_select_bytes_mem_datos (reg_i_select_bytes_mem_datos), 
 
-
+        .i_selector_mux_A_forward (reg_selector_mux_A_forward),
+        .i_selector_mux_B_forward (reg_selector_mux_B_forward),
+        .i_data_forward_WB (reg_data_forward_WB),
+        .i_data_forward_MEM (reg_data_forward_MEM), 
         .o_RegWrite (wire_o_RegWrite),
         .o_MemRead (wire_o_MemRead),
         .o_MemWrite (wire_o_MemWrite),

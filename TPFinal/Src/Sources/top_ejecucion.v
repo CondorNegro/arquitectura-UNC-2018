@@ -18,7 +18,8 @@ module top_ejecucion
        parameter CANT_BITS_ADDR = 11,
        parameter CANT_BITS_REGISTROS = 32,
        parameter CANT_BITS_ALU_CONTROL = 4,
-       parameter CANT_BITS_SELECT_BYTES_MEM_DATA = 3  
+       parameter CANT_BITS_SELECT_BYTES_MEM_DATA = 3,
+       parameter CANT_BITS_SELECTOR_MUX_FORWARD = 2  
    )
    (
        input i_clock,
@@ -49,6 +50,11 @@ module top_ejecucion
        input [CANT_BITS_ALU_CONTROL - 1 : 0] i_ALUCtrl,
        input [CANT_BITS_SELECT_BYTES_MEM_DATA - 1 : 0] i_select_bytes_mem_datos,
       
+       // Forwarding unit
+       input [CANT_BITS_SELECTOR_MUX_FORWARD - 1 : 0] i_selector_mux_A_forward,
+       input [CANT_BITS_SELECTOR_MUX_FORWARD - 1 : 0] i_selector_mux_B_forward,
+       input [CANT_BITS_REGISTROS - 1 : 0] i_data_forward_WB,
+       input [CANT_BITS_REGISTROS - 1 : 0] i_data_forward_MEM, 
 
 
        output reg o_RegWrite,
@@ -84,9 +90,12 @@ module top_ejecucion
 
     wire wire_control_mux_primer_operando_alu;
 
+    wire [CANT_BITS_REGISTROS - 1 : 0] wire_output_mux_forward_A;
+    wire [CANT_BITS_REGISTROS - 1 : 0] wire_output_mux_forward_B;
+
     assign wire_control_mux_primer_operando_alu = (i_ALUCtrl == 14); // Es un salto o no.
 
-    assign wire_data_write_to_mem = i_data_B;
+    assign wire_data_write_to_mem = wire_output_mux_forward_B;
 
 
     always@(negedge i_clock) begin
@@ -144,13 +153,39 @@ mux
     );
 
 
+mux_forward
+    #(
+       .INPUT_OUTPUT_LENGTH (CANT_BITS_REGISTROS)
+    )
+    u_mux_forward_A_1
+   (
+       .i_data_normal (i_data_A),
+       .i_data_forward_mem (i_data_forward_MEM),
+       .i_data_forward_wb (i_data_forward_WB),
+       .i_selector (i_selector_mux_A_forward),
+       .o_result (wire_output_mux_forward_A)
+    );
+
+mux_forward 
+    #(
+       .INPUT_OUTPUT_LENGTH (CANT_BITS_REGISTROS)
+    )
+    u_mux_forward_B_1
+   (
+       .i_data_normal (i_data_B),
+       .i_data_forward_mem (i_data_forward_MEM),
+       .i_data_forward_wb (i_data_forward_WB),
+       .i_selector (i_selector_mux_B_forward),
+       .o_result (wire_output_mux_forward_B)
+    );
+
 mux
    #(
        .INPUT_OUTPUT_LENGTH (CANT_BITS_REGISTROS)
     )
     u_mux_second_operand_alu_1
    (
-       .i_data_A (i_data_B),
+       .i_data_A (wire_output_mux_forward_B),
        .i_data_B (i_extension_signo_constante),
        .i_selector (i_ALUSrc),
        .o_result (wire_segundo_operando_alu)
@@ -162,11 +197,14 @@ mux
     )
     u_mux_first_operand_alu_1
    (
-       .i_data_A (i_data_A),
+       .i_data_A (wire_output_mux_forward_A),
        .i_data_B ({ { (CANT_BITS_REGISTROS - CANT_BITS_ADDR) {1'b0}}, i_adder_pc}),
        .i_selector (wire_control_mux_primer_operando_alu),
        .o_result (wire_primer_operando_alu)
     );
+
+
+
 
 
 alu 
