@@ -86,6 +86,8 @@ lock = threading.Lock()
 modo_ejecucion = 0 #0: continuo - 1: debug
 
 
+
+
 # Funcion que efectua la lectura de un archivo y devuelve su contenido.
 def fileReader (file_name):
 	cadena_linea = ""
@@ -409,7 +411,6 @@ def recibirDatosFromFPGA ():
 	global etiqueta_reg_write_MEM_TO_WB
 	global etiqueta_mem_to_reg_MEM_to_WB
 	global etiqueta_registro_destino_MEM_to_WB
-	
 	flag_receive = True
 	bytes_recibidos = ""
 	bytes_recibidos_aux = ""
@@ -424,7 +425,7 @@ def recibirDatosFromFPGA ():
 	
 	contador_datos_mem = 0
 	dato_memoria = ""
-
+	contador_primer_dato = 0
 
 	while (flag_receive):
 
@@ -693,38 +694,43 @@ def recibirDatosFromFPGA ():
 		elif (contador_etapas == 11): #Data ALU de top memoria de datos
 			etiqueta_data_ALU_MEM_WB = getHexadecimal (bytes_recibidos)
 			etiquetaDataALUMemWbValorMIPS.config (text = etiqueta_data_ALU_MEM_WB)
+			ser.flushInput ()
 		
 		
 
 		if (contador_etapas >= (CANT_DATOS_DB - 1)):
-			
-			dato_memoria = bytes_recibidos
-			if (contador_datos_mem == 0):
-				cadena_valores_memoria = cadena_valores_memoria + getHexadecimal (dato_memoria) + "\t"
-			elif (contador_datos_mem == 1):
-				cadena_valores_memoria = cadena_valores_memoria + getHexadecimal (dato_memoria) + "\n"
-			
-
-			contador_datos_mem = contador_datos_mem + 1
-			
-			if ((contador_datos_mem == 2) and (dato_memoria [- CANT_BITS_ADDRESS_MEM_DATOS :] == ('1' * CANT_BITS_ADDRESS_MEM_DATOS))):
+			if (contador_primer_dato != 0):
+				dato_memoria = bytes_recibidos
+				if (contador_datos_mem == 0):
+					cadena_valores_memoria = cadena_valores_memoria + getHexadecimal (dato_memoria) + "\t"
+				elif (contador_datos_mem == 1):
+					cadena_valores_memoria = cadena_valores_memoria + getHexadecimal (dato_memoria) + "\n"
 				
-				code_error = writeSerial (getCode('Mem-Read-Fin-Ack'))
-				if (code_error < 0):
-					activarBotones (1)
-					flag_receive = False
-				else:
-					ser.flushInput()
-					flag_receive = False
-					fileWriter (FILE_NAME_WRITE, cadena_valores_memoria)
-					etiquetaResultado.config (text = "WRITE OK", fg = "dark green")
-					if ((modo_ejecucion == '0') or (etiqueta_halt_detected_MEM_to_WB == ('1'))): #Continuo o Debug con halt
-						activarBotones (1)
-					else: #Debug
-						activarBotones (4)
 
-			if (contador_datos_mem == 2):
-				contador_datos_mem = 0
+				contador_datos_mem = contador_datos_mem + 1
+				
+				if ((contador_datos_mem == 2) and (dato_memoria [- CANT_BITS_ADDRESS_MEM_DATOS :] == ('1' * CANT_BITS_ADDRESS_MEM_DATOS))):
+					
+					code_error = writeSerial (getCode('Mem-Read-Fin-Ack'))
+					if (code_error < 0):
+						activarBotones (1)
+						flag_receive = False
+					else:
+						contador_primer_dato = 0
+						ser.flushInput()
+						flag_receive = False
+						fileWriter (FILE_NAME_WRITE, cadena_valores_memoria)
+						etiquetaResultado.config (text = "WRITE OK", fg = "dark green")
+						if ((modo_ejecucion == '0') or (etiqueta_halt_detected_MEM_to_WB == ('1'))): #Continuo o Debug con halt
+							activarBotones (1)
+						else: #Debug
+							activarBotones (4)
+
+				if (contador_datos_mem == 2):
+					contador_datos_mem = 0
+			
+			else:
+				contador_primer_dato = contador_primer_dato + 1
 
 
 
