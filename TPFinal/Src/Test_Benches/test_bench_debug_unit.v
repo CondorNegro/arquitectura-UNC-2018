@@ -273,7 +273,7 @@ module test_bench_debug_unit();
         
 
         #5 reg_bit_sucio = 1'b1;
-        #50 reg_bit_sucio = 1'b0;
+        
 
 
         #10 reg_i_data_rx = 8'b00001000; // PART3
@@ -296,7 +296,70 @@ module test_bench_debug_unit();
         #10 reg_i_rx_done = 1'b1;
         #10 reg_i_rx_done = 1'b0;
 
-        #250000 reg_i_data_rx = 8'b00101000; //Salgo de FIN MEM CHECK
+        #10 reg_i_data_rx = 8'b00001000; // PART3
+        #10 reg_i_rx_done = 1'b1;
+        #10 reg_i_rx_done = 1'b0;
+
+        
+        #10 reg_i_data_rx = 8'b00010000; // PART2
+        #10 reg_i_rx_done = 1'b1;
+        #10 reg_i_rx_done = 1'b0;
+
+        
+        #10 reg_i_data_rx = 8'b00011000; // PART1
+        #10 reg_i_rx_done = 1'b1;
+        #10 reg_i_rx_done = 1'b0;
+
+        #50 reg_bit_sucio = 1'b0;
+
+        #10 reg_i_data_rx = 8'b00100000; // PART0
+        #10 reg_i_rx_done = 1'b1;
+        #10 reg_i_rx_done = 1'b0;
+
+        
+        
+        // Envio fin de memoria.
+        #250000 reg_i_data_rx = 8'b00001000; // PART3
+        #10 reg_i_rx_done = 1'b1;
+        #10 reg_i_rx_done = 1'b0;
+
+        
+        #10 reg_i_data_rx = 8'b00010000; // PART2
+        #10 reg_i_rx_done = 1'b1;
+        #10 reg_i_rx_done = 1'b0;
+
+        
+        #10 reg_i_data_rx = 8'b00011000; // PART1
+        #10 reg_i_rx_done = 1'b1;
+        #10 reg_i_rx_done = 1'b0;
+
+
+
+        #10 reg_i_data_rx = 8'b00100000; // PART0
+        #10 reg_i_rx_done = 1'b1;
+        #10 reg_i_rx_done = 1'b0;
+
+        #10 reg_i_data_rx = 8'b00001000; // PART3
+        #10 reg_i_rx_done = 1'b1;
+        #10 reg_i_rx_done = 1'b0;
+
+        
+        #10 reg_i_data_rx = 8'b00010000; // PART2
+        #10 reg_i_rx_done = 1'b1;
+        #10 reg_i_rx_done = 1'b0;
+
+        
+        #10 reg_i_data_rx = 8'b00011000; // PART1
+        #10 reg_i_rx_done = 1'b1;
+        #10 reg_i_rx_done = 1'b0;
+
+
+
+        #10 reg_i_data_rx = 8'b00100000; // PART0
+        #10 reg_i_rx_done = 1'b1;
+        #10 reg_i_rx_done = 1'b0;
+
+        #300000 reg_i_data_rx = 8'b00101000; //Salgo de FIN MEM CHECK
         #10 reg_i_rx_done = 1'b1;
         #10 reg_i_rx_done = 1'b0;
         

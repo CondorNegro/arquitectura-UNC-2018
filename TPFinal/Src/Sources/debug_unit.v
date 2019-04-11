@@ -70,18 +70,18 @@ localparam CANT_BITS_CONTROL_DATABASE = clogb2 (CANT_DATOS_DATABASE - 1);
 localparam CANT_BITS_CONTADOR_DATOS = clogb2 (LONGITUD_INSTRUCCION / OUTPUT_WORD_LENGTH - 1);
 
 // Estados
-localparam ESPERA                   = 12'b000000000001;
-localparam SOFT_RESET               = 12'b000000000010;    
-localparam ESPERA_PC_ACK            = 12'b000000000100;
-localparam READ_PROGRAMA            = 12'b000000001000;
-localparam ESPERA_START             = 12'b000000010000;
-localparam EJECUCION                = 12'b000000100000;
-localparam SEND_PART3               = 12'b000001000000;
-localparam SEND_PART2               = 12'b000010000000;
-localparam SEND_PART1               = 12'b000100000000;
-localparam SEND_PART0               = 12'b001000000000;
-localparam MEM_DATOS_CHECK          = 12'b010000000000;
-localparam SEND_MEM_DATOS_CHECK_FIN = 12'b100000000000;
+localparam ESPERA                       = 12'b000000000001;
+localparam SOFT_RESET                   = 12'b000000000010;    
+localparam ESPERA_PC_ACK                = 12'b000000000100;
+localparam READ_PROGRAMA                = 12'b000000001000;
+localparam ESPERA_START                 = 12'b000000010000;
+localparam EJECUCION                    = 12'b000000100000;
+localparam SEND_PART3                   = 12'b000001000000;
+localparam SEND_PART2                   = 12'b000010000000;
+localparam SEND_PART1                   = 12'b000100000000;
+localparam SEND_PART0                   = 12'b001000000000;
+localparam MEM_DATOS_CHECK              = 12'b010000000000;
+localparam ESPERA_MEM_DATOS_CHECK_ACK   = 12'b100000000000;
 
 
 
@@ -188,7 +188,7 @@ always @ ( posedge i_clock ) begin //Memory
         end
 
         if (reg_state == MEM_DATOS_CHECK) begin
-            if (i_bit_sucio && reg_contador_send_datos_mem_datos <= 2) begin
+            if ((i_bit_sucio | (reg_contador_address_mem_datos == (RAM_DATOS_DEPTH - 1))) && reg_contador_send_datos_mem_datos <= 2) begin
                 reg_contador_send_datos_mem_datos <= reg_contador_send_datos_mem_datos + 1;
             end
             else begin
@@ -345,18 +345,22 @@ always@( * ) begin //NEXT - STATE logic
        end
 
        MEM_DATOS_CHECK : begin
-            if ((reg_contador_address_mem_datos == (RAM_DATOS_DEPTH - 1)) && (reg_contador_send_datos_mem_datos > 2 | ~i_bit_sucio)) begin
-                reg_next_state = SEND_MEM_DATOS_CHECK_FIN;             
+            if ((reg_contador_address_mem_datos == (RAM_DATOS_DEPTH - 1)) && (reg_contador_send_datos_mem_datos == 2)) begin
+                reg_next_state = ESPERA_MEM_DATOS_CHECK_ACK;             
             end
-            else if (~i_bit_sucio) begin
-                reg_next_state = MEM_DATOS_CHECK;
-            end
-            else begin 
+            else if (reg_contador_address_mem_datos == (RAM_DATOS_DEPTH - 1)) begin 
                 reg_next_state = SEND_PART3;
             end
+            else if (~i_bit_sucio && (reg_contador_address_mem_datos < (RAM_DATOS_DEPTH - 1))) begin
+                reg_next_state = MEM_DATOS_CHECK;
+            end
+            else begin
+                reg_next_state = SEND_PART3; 
+            end
+            
        end
 
-       SEND_MEM_DATOS_CHECK_FIN : begin
+       ESPERA_MEM_DATOS_CHECK_ACK : begin
             if ((~i_rx_done & registro_rx_done) && (i_data_rx == 8'b00101000)) begin
                 if (reg_next_modo_ejecucion == 1'b0) begin // Modo continuo.
                     reg_next_state = ESPERA;
@@ -369,7 +373,7 @@ always@( * ) begin //NEXT - STATE logic
                 end
             end
             else begin
-                reg_next_state = SEND_MEM_DATOS_CHECK_FIN;
+                reg_next_state = ESPERA_MEM_DATOS_CHECK_ACK;
             end
        end
       
@@ -720,7 +724,7 @@ always @ ( * ) begin //Output logic
             o_enable_mem_datos = 1;
         end
 
-        SEND_MEM_DATOS_CHECK_FIN : begin // Envia a PC el fin de envio de datos a memoria.
+        ESPERA_MEM_DATOS_CHECK_ACK : begin // Envia a PC el fin de envio de datos a memoria.
             o_tx_start = 1;
             o_control_database = 0;
             o_data_tx = 8'b00001011;
