@@ -725,7 +725,7 @@ always @ ( * ) begin //Output logic
         end
 
         ESPERA_MEM_DATOS_CHECK_ACK : begin // Envia a PC el fin de envio de datos a memoria.
-            o_tx_start = 1;
+            o_tx_start = 0;
             o_control_database = 0;
             o_data_tx = 8'b00001011;
             o_soft_reset = 1; //Logica por nivel bajo.

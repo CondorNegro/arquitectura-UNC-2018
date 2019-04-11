@@ -22,8 +22,10 @@ WIDTH_WORD = 8
 CANT_BITS_INSTRUCCION = 32
 CANT_STOP_BITS = 2
 FILE_NAME = "init_ram_file.txt"
-FLAG_TEST = False
+FILE_NAME_WRITE = "datamem.txt"
+FLAG_TEST = True
 CANT_BITS_ADDRESS_MEM_PROGRAMA = 10
+CANT_BITS_ADDRESS_MEM_DATOS = 10
 CANT_REGISTROS = 32
 CANT_BITS_REGISTROS = 32
 CANT_BITS_ADDR_REGISTROS = int (math.log(CANT_REGISTROS, 2))
@@ -96,6 +98,17 @@ def fileReader (file_name):
 		print ('Error en el manejo del archivo.')
 		print ('Fin.')
 		exit(1)
+
+def fileWriter (file_name, texto):
+	try:
+		file = open (file_name, 'w')
+		file.write (texto)
+		file.close()
+		print 'Se escribio correctamente el archivo.'
+	except:
+		print ('Error en el manejo del archivo.')
+		print ('Fin.')
+		exit(1)
 	
 
 # Funcion de traduccion del nombre de la operacion a su binario correspondiente.
@@ -108,7 +121,8 @@ def getCode (x):
 		'Send-Part-3' : '00010000',
 		'Send-Part-2' : '00001000',
 		'Send-Part-1' : '00011000',
-		'Send-Part-0' : '00000100'
+		'Send-Part-0' : '00000100',
+		'Mem-Read-Fin-Ack' : '00010100'
     }.get (x, '11111111')  #11111111 es el por defecto
 
 
@@ -346,7 +360,7 @@ def readResultadoEjecucion (cantBytes):
 		
 	else:
 		contador_bytes = cantBytes
-		resultado = "11010010"
+		resultado = "11111111"
 	
 	return [resultado, contador_bytes]
 
@@ -405,6 +419,11 @@ def recibirDatosFromFPGA ():
 	contador_etapas = -1
 	contador_etapas_send = 0
 	cantidad_bytes_control = 0
+	
+	cadena_valores_memoria = "Dato \t    Direccion \n"
+	
+	contador_datos_mem = 0
+	dato_memoria = ""
 
 
 	while (flag_receive):
@@ -677,12 +696,35 @@ def recibirDatosFromFPGA ():
 		
 		
 
-		if (contador_etapas == (CANT_DATOS_DB - 1)):
-			flag_receive = False
-			if ((modo_ejecucion == '0') or (etiqueta_halt_detected_MEM_to_WB == ('1'))): #Continuo o Debug con halt
-				activarBotones (1)
-			else: #Debug
-				activarBotones (4)
+		if (contador_etapas >= (CANT_DATOS_DB - 1)):
+			
+			dato_memoria = bytes_recibidos
+			if (contador_datos_mem == 0):
+				cadena_valores_memoria = cadena_valores_memoria + getHexadecimal (dato_memoria) + "\t"
+			elif (contador_datos_mem == 1):
+				cadena_valores_memoria = cadena_valores_memoria + getHexadecimal (dato_memoria) + "\n"
+			
+
+			contador_datos_mem = contador_datos_mem + 1
+			
+			if ((contador_datos_mem == 2) and (dato_memoria [- CANT_BITS_ADDRESS_MEM_DATOS :] == ('1' * CANT_BITS_ADDRESS_MEM_DATOS))):
+				
+				code_error = writeSerial (getCode('Mem-Read-Fin-Ack'))
+				if (code_error < 0):
+					activarBotones (1)
+					flag_receive = False
+				else:
+					ser.flushInput()
+					flag_receive = False
+					fileWriter (FILE_NAME_WRITE, cadena_valores_memoria)
+					etiquetaResultado.config (text = "WRITE OK", fg = "dark green")
+					if ((modo_ejecucion == '0') or (etiqueta_halt_detected_MEM_to_WB == ('1'))): #Continuo o Debug con halt
+						activarBotones (1)
+					else: #Debug
+						activarBotones (4)
+
+			if (contador_datos_mem == 2):
+				contador_datos_mem = 0
 
 
 
