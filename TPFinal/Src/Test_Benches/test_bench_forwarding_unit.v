@@ -17,59 +17,83 @@ module test_bench_forwarding_unit();
     parameter CANT_BITS_SELECTOR_MUX = 2;
 
 
+    reg [CANT_BITS_ADDR_REGISTROS - 1 : 0] reg_i_rs_ex;
+    reg [CANT_BITS_ADDR_REGISTROS - 1 : 0] reg_i_rt_ex;
+    reg [CANT_BITS_ADDR_REGISTROS - 1 : 0] reg_i_registro_destino_mem;
+    reg [CANT_BITS_ADDR_REGISTROS - 1 : 0] reg_i_registro_destino_wb;
+    reg reg_i_reg_write_mem;
+    reg reg_i_reg_write_wb;
+    
+    wire [CANT_BITS_SELECTOR_MUX - 1 : 0] wire_o_selector_mux_A;
+    wire [CANT_BITS_SELECTOR_MUX - 1 : 0] wire_o_selector_mux_B;   
     
 
 	initial	begin
-	   reg_clock = 1'b0;
-       reg_soft_reset = 1'b0; // Reset en 0. 
-	   reg_A = 2;
-	   reg_B = 0;
-       reg_reg_write = 0;
-       reg_data_write = 5;
-       reg_control_write = 0;
-	   
-       #100 reg_soft_reset = 1'b1; // Desactivo la accion del reset.
+	reg_i_rs_ex = 0;
+    reg_i_rt_ex = 0;
+    reg_i_registro_destino_mem = 0;
+    reg_i_registro_destino_wb = 0;
+    reg_i_reg_write_mem = 0;
+    reg_i_reg_write_wb = 0;
+    
+    #10 reg_i_reg_write_wb = 1'b1;
+    
+    
+    #10 reg_i_reg_write_mem = 1'b1;
+    #10 reg_i_registro_destino_mem = 5;
+    #10 reg_i_rs_ex = 5;
+    //o_selector_mux_A = 2 Forwarding from MEM
+    
+    #10 reg_i_registro_destino_wb = 5;
+    //o_selector_mux_A = 2 Forwarding from MEM (SIGO)
+    
+    #10 reg_i_registro_destino_mem = 3; 
+    //o_selector_mux_A = 1 Forwarding from MEM YA NO SIGO
+    
+    #10 reg_i_registro_destino_wb = 2;
+    //o_selector_mux_A = 0 Forwarding from MEM
+    
+    
+    
+    #10 reg_i_rt_ex = 5;
+    #10 reg_i_reg_write_mem = 1'b1;
+    #10 reg_i_registro_destino_mem = 5;
+    //o_selector_mux_B = 2 Forwarding from MEM
+    
+    #10 reg_i_registro_destino_wb = 5;
+    //o_selector_mux_B = 2 Forwarding from MEM (SIGO)
+    
+    #10 reg_i_registro_destino_mem = 3; 
+    //o_selector_mux_B = 1 Forwarding from MEM YA NO SIGO
+    
+    #10 reg_i_registro_destino_wb = 2;
+    //o_selector_mux_B = 0 Forwarding from MEM (SIGO)
+    
+    
 
-       
-       #200 reg_control_write = 1'b1; //Escribo R1. Led se prende.
-       #10  reg_control_write = 1'b0;
-
-       #100 reg_A = 3; // Cambio seleccion de registro.
-       #100 reg_B = 4; // Cambio seleccion de registro.
-
-       #100 reg_A = 31; // Cambio seleccion de registro.
-       #100 reg_B = 31; // Cambio seleccion de registro.
-	   
-	   // Test 4: Prueba reset.
-	   #1000 reg_soft_reset = 1'b0; // Reset.
-	   #1000 reg_soft_reset = 1'b1; // Desactivo el reset.
-
-
-		#500000 $finish;
+		#5000 $finish;
 	end
 
-	always #2.5 reg_clock = ~reg_clock;  // Simulacion de clock.
+
 
 
 // Modulo para pasarle los estimulos del banco de pruebas.
 forwarding_unit
     #(
-        .CANTIDAD_REGISTROS (CANTIDAD_REGISTROS),
-        .CANTIDAD_BITS_REGISTROS (CANTIDAD_BITS_REGISTROS),
-        .CANTIDAD_BITS_ADDRESS_REGISTROS (CANTIDAD_BITS_ADDRESS_REGISTROS)
+        .CANT_BITS_ADDR_REGISTROS (CANT_BITS_ADDR_REGISTROS),
+        .CANT_BITS_SELECTOR_MUX (CANT_BITS_SELECTOR_MUX)
     )
     u_forwarding_unit_1
     (
-        .i_clock (reg_clock),
-        .i_soft_reset (reg_soft_reset),
-        .i_reg_A (reg_A),
-        .i_reg_B (reg_B),
-        .i_reg_Write (reg_reg_write),
-        .i_data_write (reg_data_write),
-        .i_control_write (reg_control_write),
-        .o_data_A (wire_data_A),
-        .o_data_B (wire_data_B),
-        .o_led (wire_led)
+        .i_rs_ex (reg_i_rs_ex),
+        .i_rt_ex (reg_i_rt_ex),
+        .i_registro_destino_mem (reg_i_registro_destino_mem),
+        .i_registro_destino_wb (reg_i_registro_destino_wb),
+        .i_reg_write_mem (reg_i_reg_write_mem),
+        .i_reg_write_wb (reg_i_reg_write_wb),
+
+        .o_selector_mux_A (wire_o_selector_mux_A),
+        .o_selector_mux_B (wire_o_selector_mux_B)   
     );
 
 endmodule
