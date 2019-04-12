@@ -214,6 +214,8 @@ wire [ADDR_MEM_DATOS_LENGTH_TOP + CANT_BITS_SELECCION_COLUMNAS_MEM_DATOS - 1 : 0
 
 wire [CANT_BITS_REGISTROS_TOP - 1 : 0] wire_output_mem_datos;
 wire wire_bit_sucio;
+wire [CANT_BITS_REGISTROS_TOP - 1 : 0] wire_reg_data_from_register_file_to_debug_unit;
+wire [CANT_BITS_ADDR_REGISTROS - 1 : 0] wire_reg_read_from_debug_unit_to_register_file;
 
 
 // Forwarding unit
@@ -286,6 +288,8 @@ debug_unit
     .i_dato_database (wire_dato_database),
     .i_dato_mem_datos (wire_output_mem_datos),
     .i_bit_sucio (wire_bit_sucio),
+    .i_reg_data_from_register_file (wire_reg_data_from_register_file_to_debug_unit),
+    .o_reg_read_to_register_file (wire_reg_read_from_debug_unit_to_register_file),
     .o_tx_start (wire_tx_start),
     .o_data_tx (wire_data_tx),
     .o_soft_reset (wire_soft_reset),
@@ -420,7 +424,7 @@ top_id
         .i_data_write (wire_data_write_ID),
         .i_enable_pipeline (wire_enable_pipeline),
         .i_enable_etapa (wire_enable_PC),
-
+        .i_reg_read_from_debug_unit (wire_reg_read_from_debug_unit_to_register_file),
         .i_bit_burbuja_hazard (wire_bit_burbuja),
         .o_reg_rs_to_hazard (wire_reg_rs_to_hazard),
         .o_reg_rt_to_hazard (wire_reg_rt_to_hazard),
@@ -447,6 +451,7 @@ top_id
         .o_ALUCtrl (wire_ALUCtrl),   
         .o_halt_detected (wire_halt_detected_ID_to_EX),
         .o_select_bytes_mem_datos (wire_select_bytes_mem_datos_ID_to_EX),
+        .o_reg_data_to_debug_unit (wire_reg_data_from_register_file_to_debug_unit),
         .o_led (o_leds[2])
     );
 
