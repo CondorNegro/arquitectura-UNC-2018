@@ -54,6 +54,7 @@ module test_bench_top_id();
 
     reg reg_enable_pipeline;
     reg reg_enable_etapa;
+    reg [clogb2 (CANT_REGISTROS - 1) - 1 : 0] reg_reg_read_from_debug_unit;
 
     reg reg_bit_burbuja_hazard;
     wire [clogb2 (CANT_REGISTROS - 1) - 1 : 0] wire_reg_rs_to_hazard;
@@ -87,6 +88,7 @@ module test_bench_top_id();
     wire wire_halt_detected;
 	wire [CANT_BITS_ADDR - 1 : 0] wire_out_adder_pc;
     wire [CANT_BITS_SELECT_BYTES_MEM_DATA - 1 : 0] wire_select_bytes_mem_datos;
+    wire [CANT_BITS_REGISTROS - 1 : 0] wire_reg_data_to_debug_unit;
 	
 	initial	begin
 		reg_i_clock = 1'b0;
@@ -99,6 +101,7 @@ module test_bench_top_id();
         reg_enable_pipeline = 1'b1;
         reg_enable_etapa = 1'b1;
         reg_bit_burbuja_hazard = 1'b0;
+        reg_reg_read_from_debug_unit = 0;
 
 		#10 reg_i_soft_reset = 1'b1; // Desactivo la accion del reset.
         
@@ -164,7 +167,7 @@ top_id
         .i_data_write (reg_i_data_write),
         .i_enable_pipeline (reg_enable_pipeline),
         .i_enable_etapa (reg_enable_etapa),
-        
+        .i_reg_read_from_debug_unit (reg_reg_read_from_debug_unit),
         .i_bit_burbuja_hazard (reg_bit_burbuja_hazard),
         .o_reg_rs_to_hazard (wire_reg_rs_to_hazard),
         .o_reg_rt_to_hazard (wire_reg_rt_to_hazard),
@@ -191,6 +194,7 @@ top_id
         .o_ALUCtrl (wire_o_ALUCtrl),   
         .o_halt_detected (wire_halt_detected),
         .o_select_bytes_mem_datos (wire_select_bytes_mem_datos),
+        .o_reg_data_to_debug_unit (wire_reg_data_to_debug_unit),
         .o_led(wire_o_led)
     );
    

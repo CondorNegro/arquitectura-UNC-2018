@@ -41,6 +41,7 @@ module top_id
 
        input i_enable_pipeline,
        input i_enable_etapa, 
+       input [clogb2 (CANT_REGISTROS - 1) - 1 : 0] i_reg_read_from_debug_unit,
 
        input i_bit_burbuja_hazard,
        output [clogb2 (CANT_REGISTROS - 1) - 1 : 0] o_reg_rs_to_hazard,
@@ -74,6 +75,7 @@ module top_id
        output reg [CANT_BITS_ALU_CONTROL - 1 : 0] o_ALUCtrl,   
        output reg [CANT_BITS_SELECT_BYTES_MEM_DATA - 1 : 0] o_select_bytes_mem_datos,
        
+       output [CANT_BITS_REGISTROS - 1 : 0] o_reg_data_to_debug_unit,
        output o_led
    );
 
@@ -280,6 +282,8 @@ register_file
         .i_reg_Write (i_reg_write),
         .i_data_write (i_data_write),
         .i_control_write (i_control_write_reg),
+        .i_reg_read_from_debug_unit (i_reg_read_from_debug_unit),
+        .o_reg_data_to_debug_unit (o_reg_data_to_debug_unit),
         .o_data_A (wire_o_data_A),
         .o_data_B (wire_o_data_B),
         .o_led (o_led)
