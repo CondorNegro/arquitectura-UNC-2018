@@ -155,23 +155,28 @@ def controlIgualdadRegistros (registro1, registro2):
 #es teniendo en cuenta el valor de cant_bits pasado como parametro. 
 def complementoADos (argumento, cant_bits):
 	numero = ""
+	numero_copy = ""
 	try:
 		numero = bin(int(argumento) * (-1))[2:] #Obtengo binario
 	except:
 		print ("Error en obtener binario. (Funcion complementoADos). Fin ")
 		exit(1)
 	flag_once = False #Variable para detectar leyendo desde la derecha el primer uno.
-	for i in range (-1, - len(numero), -1): #Recorro el binario desde derecha a izquierda
+	for i in range (-1, - len(numero) - 1, -1): #Recorro el binario desde derecha a izquierda
 		if (flag_once): #Despues del uno menos significativos, todos los demas bits MSB se invierten.
 			if (numero[i] == '0'):
-				numero[i] = '1'
+				numero_copy = '1' + numero_copy
 			else:
-				numero [i] = '0' 
+				numero_copy = '0' + numero_copy
 		if ((not flag_once) and (numero[i] == '1')): # Detecta el uno menos significativo.
 			flag_once = True
+			numero_copy = '1' + numero_copy
+		if ((not flag_once) and (numero[i] == '0')):
+			numero_copy = '0' + numero_copy
 	for i in range(0, cant_bits - len(numero)): #Agrega los unos a la izq
-				numero = '1' + numero
-	return numero
+				numero_copy = '1' + numero_copy
+	
+	return numero_copy
 
 
 #Funcion que acondiciona el argumento (encuentra el valor de una etiqueta, reconoce valores binarios
