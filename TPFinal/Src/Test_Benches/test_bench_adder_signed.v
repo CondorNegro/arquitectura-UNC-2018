@@ -32,11 +32,11 @@ module test_bench_adder_signado();
 	
 
 // Modulo para pasarle los estimulos del banco de pruebas.
-adder_signado
+adder_signed
    #(
        .INPUT_OUTPUT_LENGTH (INPUT_OUTPUT_LENGTH)
    )
-   u_adder_signado_1
+   u_adder_signed_1
    (
        .i_data_A (dato_A),
        .i_data_B (dato_B),
