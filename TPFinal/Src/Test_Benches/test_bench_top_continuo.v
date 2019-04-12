@@ -22,7 +22,7 @@
 `define INIT_FILE_PROGRAMA                      ""
 `define RAM_DEPTH_DATOS                         1024
 `define RAM_DEPTH_PROGRAMA                      1024
-`define CANT_ESTADOS_DEBUG_UNIT                 10
+`define CANT_ESTADOS_DEBUG_UNIT                 12
 `define ADDR_MEM_PROGRAMA_LENGTH                10
 `define ADDR_MEM_DATOS_LENGTH                   10
 `define LONG_INSTRUCCION                        32

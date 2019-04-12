@@ -4,9 +4,7 @@
 #D -4
 #E b101
 LWU R1,B{R2}
-LWU R3,C{R2}
-ADDU R4,R1,R3
-SW R4,A{R2}
+J 8
 HLT
 //Programa que carga un 2 en R1 y un 5 en R3. Los suma y pone un 7 en R4. Luego lo pone en memoria en la direccion 16 (5ta fila).
 
