@@ -55,6 +55,9 @@ module test_bench_top_id();
     reg reg_enable_pipeline;
     reg reg_enable_etapa;
 
+    reg reg_bit_burbuja_hazard;
+    wire [clogb2 (CANT_REGISTROS - 1) - 1 : 0] wire_reg_rs_to_hazard;
+    wire [clogb2 (CANT_REGISTROS - 1) - 1 : 0] wire_reg_rt_to_hazard;
 
     wire [CANT_BITS_ADDR - 1 : 0] wire_o_branch_dir;
     wire wire_o_branch_control;
@@ -95,6 +98,7 @@ module test_bench_top_id();
         reg_i_data_write = 4;
         reg_enable_pipeline = 1'b1;
         reg_enable_etapa = 1'b1;
+        reg_bit_burbuja_hazard = 1'b0;
 
 		#10 reg_i_soft_reset = 1'b1; // Desactivo la accion del reset.
         
@@ -114,6 +118,9 @@ module test_bench_top_id();
         #50 reg_i_instruction = 32'b00000011111000011000000000101010; //SLT R16,R31,R1
         #50 reg_i_instruction = 32'b00000000000000000000000000000000; //HALT.
 		
+        #20 reg_bit_burbuja_hazard = 1'b1;
+        #10 reg_bit_burbuja_hazard = 1'b0;
+
 		// Test 1: Prueba reset.
 		#10000 reg_i_soft_reset = 1'b0; // Reset.
 		#10 reg_i_soft_reset = 1'b1; // Desactivo el reset.
@@ -157,6 +164,11 @@ top_id
         .i_data_write (reg_i_data_write),
         .i_enable_pipeline (reg_enable_pipeline),
         .i_enable_etapa (reg_enable_etapa),
+        
+        .i_bit_burbuja_hazard (reg_bit_burbuja_hazard),
+        .o_reg_rs_to_hazard (wire_reg_rs_to_hazard),
+        .o_reg_rt_to_hazard (wire_reg_rt_to_hazard),
+
         .o_out_adder_pc (wire_out_adder_pc),
         .o_branch_dir (wire_o_branch_dir),
         .o_branch_control (wire_o_branch_control),

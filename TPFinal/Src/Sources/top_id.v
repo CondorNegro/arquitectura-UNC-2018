@@ -41,6 +41,11 @@ module top_id
 
        input i_enable_pipeline,
        input i_enable_etapa, 
+
+       input i_bit_burbuja_hazard,
+       output [clogb2 (CANT_REGISTROS - 1) - 1 : 0] o_reg_rs_to_hazard,
+       output [clogb2 (CANT_REGISTROS - 1) - 1 : 0] o_reg_rt_to_hazard,
+
        output reg [CANT_BITS_ADDR - 1 : 0] o_out_adder_pc,
        output  [CANT_BITS_ADDR - 1 : 0] o_branch_dir,
        output  o_branch_control,
@@ -116,73 +121,97 @@ module top_id
 
     wire [CANT_BITS_SELECT_BYTES_MEM_DATA - 1 : 0] wire_select_bytes_mem_datos;
 
-    
+    assign o_reg_rs_to_hazard = wire_o_reg_rs;
+    assign o_reg_rt_to_hazard = wire_o_reg_rt;
+
+
     always@(negedge i_clock) begin
-      if (~i_soft_reset) begin
-            o_data_A <= 0;
-            o_data_B <= 0;
-            o_extension_signo_constante <= 0;
-            o_reg_rs <= 0;
-            o_reg_rt <= 0;
-            o_reg_rd <= 0;       
-            o_RegDst <= 0;
-            o_RegWrite <= 0;
-            o_ALUSrc <= 0;
-            o_ALUOp <= 0;
-            o_MemRead <= 0;
-            o_MemWrite <= 0;
-            o_MemtoReg <= 0;
-            o_ALUCtrl <= 0;
-            o_branch_dir_to_database <= 0;
-            o_branch_control_to_database <= 0; 
-            o_out_adder_pc <= 0;  
-            o_halt_detected <= 1'b0;
-            o_select_bytes_mem_datos <= 0;
-      end
-      else begin
-            if (i_enable_pipeline) begin
-                o_data_A <= wire_o_data_A;
-                o_data_B <= wire_o_data_B;
-                o_extension_signo_constante <= wire_o_extension_signo_constante;
-                o_reg_rs <= wire_o_reg_rs;
-                o_reg_rt <= wire_o_reg_rt;
-                o_reg_rd <= wire_o_reg_rd;       
-                o_RegDst <= wire_o_RegDst;
-                o_RegWrite <= wire_o_RegWrite;
-                o_ALUSrc <= wire_o_ALUSrc;
-                o_ALUOp <= wire_o_ALUOp;
-                o_MemRead <= wire_o_MemRead;
-                o_MemWrite <= wire_o_MemWrite;
-                o_MemtoReg <= wire_o_MemtoReg;
-                o_ALUCtrl <= wire_o_ALUCtrl;
-                o_branch_dir_to_database <= o_branch_dir;
-                o_branch_control_to_database <= o_branch_control;
-                o_out_adder_pc <= i_out_adder_pc;  
-                o_halt_detected <= wire_halt_detected_ID_TO_EX;
-                o_select_bytes_mem_datos <= wire_select_bytes_mem_datos;
-            end
-            else begin
-                o_data_A <= o_data_A;
-                o_data_B <= o_data_B;
-                o_extension_signo_constante <= o_extension_signo_constante;
-                o_reg_rs <= o_reg_rs;
-                o_reg_rt <= o_reg_rt;
-                o_reg_rd <= o_reg_rd;       
-                o_RegDst <= o_RegDst;
-                o_RegWrite <= o_RegWrite;
-                o_ALUSrc <= o_ALUSrc;
-                o_ALUOp <= o_ALUOp;
-                o_MemRead <= o_MemRead;
-                o_MemWrite <= o_MemWrite;
-                o_MemtoReg <= o_MemtoReg;
-                o_ALUCtrl <= o_ALUCtrl;
-                o_branch_dir_to_database <= o_branch_dir_to_database;
-                o_branch_control_to_database <= o_branch_control_to_database;
-                o_out_adder_pc <= o_out_adder_pc; 
-                o_halt_detected <= o_halt_detected;
-                o_select_bytes_mem_datos <= o_select_bytes_mem_datos; 
-            end 
-    end
+        if (~i_soft_reset) begin
+                o_data_A <= 0;
+                o_data_B <= 0;
+                o_extension_signo_constante <= 0;
+                o_reg_rs <= 0;
+                o_reg_rt <= 0;
+                o_reg_rd <= 0;       
+                o_RegDst <= 0;
+                o_RegWrite <= 0;
+                o_ALUSrc <= 0;
+                o_ALUOp <= 0;
+                o_MemRead <= 0;
+                o_MemWrite <= 0;
+                o_MemtoReg <= 0;
+                o_ALUCtrl <= 0;
+                o_branch_dir_to_database <= 0;
+                o_branch_control_to_database <= 0; 
+                o_out_adder_pc <= 0;  
+                o_halt_detected <= 1'b0;
+                o_select_bytes_mem_datos <= 0;
+        end
+        else begin
+                if (i_enable_pipeline & ~i_bit_burbuja_hazard) begin
+                    o_data_A <= wire_o_data_A;
+                    o_data_B <= wire_o_data_B;
+                    o_extension_signo_constante <= wire_o_extension_signo_constante;
+                    o_reg_rs <= wire_o_reg_rs;
+                    o_reg_rt <= wire_o_reg_rt;
+                    o_reg_rd <= wire_o_reg_rd;       
+                    o_RegDst <= wire_o_RegDst;
+                    o_RegWrite <= wire_o_RegWrite;
+                    o_ALUSrc <= wire_o_ALUSrc;
+                    o_ALUOp <= wire_o_ALUOp;
+                    o_MemRead <= wire_o_MemRead;
+                    o_MemWrite <= wire_o_MemWrite;
+                    o_MemtoReg <= wire_o_MemtoReg;
+                    o_ALUCtrl <= wire_o_ALUCtrl;
+                    o_branch_dir_to_database <= o_branch_dir;
+                    o_branch_control_to_database <= o_branch_control;
+                    o_out_adder_pc <= i_out_adder_pc;  
+                    o_halt_detected <= wire_halt_detected_ID_TO_EX;
+                    o_select_bytes_mem_datos <= wire_select_bytes_mem_datos;
+                end
+                else if (i_bit_burbuja_hazard) begin
+                    o_data_A <= o_data_A;
+                    o_data_B <= o_data_B;
+                    o_extension_signo_constante <= o_extension_signo_constante;
+                    o_reg_rs <= o_reg_rs;
+                    o_reg_rt <= o_reg_rt;
+                    o_reg_rd <= o_reg_rd;       
+                    o_RegDst <= 0;
+                    o_RegWrite <= 0;
+                    o_ALUSrc <= 0;
+                    o_ALUOp <= 0;
+                    o_MemRead <= 0;
+                    o_MemWrite <= 0;
+                    o_MemtoReg <= 0;
+                    o_ALUCtrl <= 4'b0010;
+                    o_branch_dir_to_database <= o_branch_dir_to_database;
+                    o_branch_control_to_database <= o_branch_control_to_database;
+                    o_out_adder_pc <= o_out_adder_pc; 
+                    o_halt_detected <= o_halt_detected;
+                    o_select_bytes_mem_datos <= 0; 
+                end
+                else begin
+                    o_data_A <= o_data_A;
+                    o_data_B <= o_data_B;
+                    o_extension_signo_constante <= o_extension_signo_constante;
+                    o_reg_rs <= o_reg_rs;
+                    o_reg_rt <= o_reg_rt;
+                    o_reg_rd <= o_reg_rd;       
+                    o_RegDst <= o_RegDst;
+                    o_RegWrite <= o_RegWrite;
+                    o_ALUSrc <= o_ALUSrc;
+                    o_ALUOp <= o_ALUOp;
+                    o_MemRead <= o_MemRead;
+                    o_MemWrite <= o_MemWrite;
+                    o_MemtoReg <= o_MemtoReg;
+                    o_ALUCtrl <= o_ALUCtrl;
+                    o_branch_dir_to_database <= o_branch_dir_to_database;
+                    o_branch_control_to_database <= o_branch_control_to_database;
+                    o_out_adder_pc <= o_out_adder_pc; 
+                    o_halt_detected <= o_halt_detected;
+                    o_select_bytes_mem_datos <= o_select_bytes_mem_datos; 
+                end 
+        end
     end
 
    
