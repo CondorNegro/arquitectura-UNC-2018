@@ -103,11 +103,11 @@ module branch_address_calculator
     end
 
 
-adder
+adder_signed
    #(
        .INPUT_OUTPUT_LENGTH (CANT_BITS_ADDR)
    )
-   u_adder_1
+   u_adder_signed_1
    (
        .i_data_A (i_adder_pc),
        .i_data_B (i_immediate_address[CANT_BITS_ADDR - 1 : 0]), //No se realiza un desplazamiento de dos (<<2) porque el PC suma de a uno.
