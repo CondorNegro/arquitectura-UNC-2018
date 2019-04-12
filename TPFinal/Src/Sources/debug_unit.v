@@ -16,11 +16,12 @@ module debug_unit
   parameter HALT_INSTRUCTION = 32'hFFFFFFFF, //  Opcode de la instruccion HALT.
   parameter ADDR_MEM_PROG_LENGTH = 10,      //  Cantidad de bits del bus de direcciones de la memoria de programa.
   parameter ADDR_MEM_DATOS_LENGTH = 10,     //  Cantidad de bits del bus de direcciones de la memoria de datos.
-  parameter CANTIDAD_ESTADOS = 12,      //  Cantidad de estados
+  parameter CANTIDAD_ESTADOS = 13,      //  Cantidad de estados
   parameter LONGITUD_INSTRUCCION = 32,  //  Cantidad de bits de la instruccion
   parameter CANT_BITS_REGISTRO = 32,
   parameter CANT_COLUMNAS_MEM_DATOS = 4,
   parameter CANT_DATOS_DATABASE = 12, // Cantidad de datos a traer del database
+  parameter CANT_REGISTROS = 32,
   parameter RAM_DATOS_DEPTH = 1024
 
 )
@@ -35,6 +36,8 @@ module debug_unit
     input [CANT_BITS_REGISTRO - 1 : 0] i_dato_database,
     input [CANT_BITS_REGISTRO - 1 : 0] i_dato_mem_datos,
     input i_bit_sucio,
+    input [CANT_BITS_REGISTRO - 1 : 0] i_reg_data_from_register_file,
+    output [clogb2 (CANT_BITS_REGISTRO - 1) - 1 : 0] o_reg_read_to_register_file,
     output reg o_tx_start,
     output reg [OUTPUT_WORD_LENGTH - 1 : 0] o_data_tx,
     output reg o_soft_reset,
@@ -70,18 +73,19 @@ localparam CANT_BITS_CONTROL_DATABASE = clogb2 (CANT_DATOS_DATABASE - 1);
 localparam CANT_BITS_CONTADOR_DATOS = clogb2 (LONGITUD_INSTRUCCION / OUTPUT_WORD_LENGTH - 1);
 
 // Estados
-localparam ESPERA                       = 12'b000000000001;
-localparam SOFT_RESET                   = 12'b000000000010;    
-localparam ESPERA_PC_ACK                = 12'b000000000100;
-localparam READ_PROGRAMA                = 12'b000000001000;
-localparam ESPERA_START                 = 12'b000000010000;
-localparam EJECUCION                    = 12'b000000100000;
-localparam SEND_PART3                   = 12'b000001000000;
-localparam SEND_PART2                   = 12'b000010000000;
-localparam SEND_PART1                   = 12'b000100000000;
-localparam SEND_PART0                   = 12'b001000000000;
-localparam MEM_DATOS_CHECK              = 12'b010000000000;
-localparam ESPERA_MEM_DATOS_CHECK_ACK   = 12'b100000000000;
+localparam ESPERA                       = 13'b0000000000001;
+localparam SOFT_RESET                   = 13'b0000000000010;    
+localparam ESPERA_PC_ACK                = 13'b0000000000100;
+localparam READ_PROGRAMA                = 13'b0000000001000;
+localparam ESPERA_START                 = 13'b0000000010000;
+localparam EJECUCION                    = 13'b0000000100000;
+localparam SEND_PART3                   = 13'b0000001000000;
+localparam SEND_PART2                   = 13'b0000010000000;
+localparam SEND_PART1                   = 13'b0000100000000;
+localparam SEND_PART0                   = 13'b0001000000000;
+localparam REGISTROS_DATA_CHECK         = 13'b0010000000000;
+localparam MEM_DATOS_CHECK              = 13'b0100000000000;
+localparam ESPERA_MEM_DATOS_CHECK_ACK   = 13'b1000000000000;
 
 
 
@@ -98,6 +102,7 @@ reg [ADDR_MEM_PROG_LENGTH - 1 : 0] reg_contador_addr_mem;
 reg [LONGITUD_INSTRUCCION - 1 : 0] o_next_dato_mem_programa;
 reg reg_next_modo_ejecucion;
 reg [CANT_BITS_CONTROL_DATABASE - 1 : 0] reg_contador_datos_database;
+reg [clogb2 (CANT_BITS_REGISTRO - 1) - 1 : 0] reg_contador_send_registros;
 
 //reg [OUTPUT_WORD_LENGTH - 1 : 0] o_data_tx_next;
 
@@ -130,6 +135,7 @@ always @ ( posedge i_clock ) begin //Memory
         reg_contador_datos_database <= 0;
         reg_contador_address_mem_datos <= 0;
         reg_contador_send_datos_mem_datos <= 0;
+        reg_contador_send_registros <= 0;
     end
 
     else begin
@@ -210,6 +216,15 @@ always @ ( posedge i_clock ) begin //Memory
         else begin
             reg_contador_address_mem_datos <= reg_contador_address_mem_datos;
             reg_contador_send_datos_mem_datos <= reg_contador_send_datos_mem_datos;
+        end
+
+        if (reg_state == REGISTROS_DATA_CHECK) begin
+            reg_contador_send_registros <= 0;// Completar
+        end
+        else if ((reg_state == ESPERA_START) || (reg_state == ESPERA)) begin
+        end
+        else begin
+          reg_
         end
 
     end
@@ -336,13 +351,23 @@ always@( * ) begin //NEXT - STATE logic
                     reg_next_state = SEND_PART3;
                 end
                 else begin // Se enviaron todos los datos de los latches.
-                    reg_next_state = MEM_DATOS_CHECK;
+                    reg_next_state = REGISTROS_DATA_CHECK;
                 end
             end
             else begin
                 reg_next_state = SEND_PART0;
             end     
        end
+
+       
+        REGISTROS_DATA_CHECK : begin
+            if (reg_contador_send_registros == (CANT_REGISTROS - 1)) begin
+                reg_next_state = MEM_DATOS_CHECK;
+            end
+            else begin
+                reg_next_state = SEND_PART3;
+            end
+        end
 
        MEM_DATOS_CHECK : begin
             if ((reg_contador_address_mem_datos == (RAM_DATOS_DEPTH - 1)) && (reg_contador_send_datos_mem_datos == 2)) begin
@@ -699,6 +724,28 @@ always @ ( * ) begin //Output logic
             o_control_mux_addr_mem_top_if = 0;
          
          
+       end
+
+       REGISTROS_DATA_CHECK : begin
+            o_tx_start = 0;
+            o_control_database = 0;
+            o_data_tx = i_reg_data_from_register_file;
+            o_soft_reset = 1; //Logica por nivel bajo.
+            o_write_mem_programa = 0; //Write es en 1.
+            o_addr_mem_programa = 0;
+            o_next_dato_mem_programa = 0;
+            reg_next_modo_ejecucion = o_modo_ejecucion;// Continuo en cero, paso a paso en 1.
+            o_enable_mem_programa = 0;
+            o_rsta_mem = 0;
+            o_regcea_mem = 0;
+            o_led = 0;
+            o_enable_PC = 0;
+            o_enable_pipeline = 0;
+            o_control_mux_addr_mem_top_if = 0;
+            
+            o_control_write_read_mem_datos = 1;
+            o_control_address_mem_datos = 1;
+            o_enable_mem_datos = 0;
        end
 
 
