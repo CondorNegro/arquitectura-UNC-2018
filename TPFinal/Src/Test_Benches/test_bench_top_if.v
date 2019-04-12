@@ -13,8 +13,8 @@
 `define RAM_WIDTH_PROGRAMA     32
 `define RAM_PERFORMANCE_PROGRAMA "LOW_LATENCY"
 `define INIT_FILE_PROGRAMA     ""
-`define RAM_DEPTH_PROGRAMA   2048
-`define ADDR_MEM_PROGRAMA_LENGTH 11
+`define RAM_DEPTH_PROGRAMA   1024
+`define ADDR_MEM_PROGRAMA_LENGTH 10
 
 module test_bench_top_if();
 
@@ -48,8 +48,11 @@ module test_bench_top_if();
 
   reg enable_pipeline;
 
+  reg reg_bit_burbuja;
+  
+
   wire [RAM_WIDTH_PROGRAMA - 1 : 0] wire_instruction;
-  wire [ADDR_MEM_PROGRAMA_LENGTH - 1 : 0] wire_direccion_PC_PLUS_4;
+  wire [ADDR_MEM_PROGRAMA_LENGTH - 1 : 0] wire_direccion_adder_pc;
   wire [ADDR_MEM_PROGRAMA_LENGTH - 1 : 0] wire_contador_programa;
   wire wire_led_mem;
   wire wire_reset_ack_mem;
@@ -70,6 +73,7 @@ module test_bench_top_if();
             control_mux_addr_mem = 0;
             branch_dir = 0;
             enable_pipeline = 1'b1;
+            reg_bit_burbuja = 1'b0;
 
             /* Primera prueba, pruebo contador de programa (Resultado esperado: el PC debe contar hasta que el enable sea cero.
             Ademas despues de la instruccion cinco la salida de memoria debe ser halt). */
@@ -77,7 +81,11 @@ module test_bench_top_if();
             #5 soft_reset = 1'b0;
             #100 soft_reset = 1'b1;
             #200  enable_mem = 1'b1;
+            #50 reg_bit_burbuja = 1'b1;
+            #10 control_mux_PC = 1'b1;
             #10 enable_contador_PC = 1'b1;
+            #10 reg_bit_burbuja = 1'b0;
+            #10 control_mux_PC = 1'b0;
             #10 enable_contador_PC = 1'b0;
 
             /// de mem_programa
@@ -177,10 +185,12 @@ top_if
     .i_data_mem_programa (data_mem_programa),
     .i_control_mux_PC (control_mux_PC),
     .i_control_mux_addr_mem (control_mux_addr_mem),
+
     .i_branch_dir (branch_dir),
     .i_enable_pipeline (enable_pipeline),
+    .i_bit_burbuja_hazard (reg_bit_burbuja),
     .o_instruction (wire_instruction),
-    .o_direccion_PC_PLUS_4 (wire_direccion_PC_PLUS_4),
+    .o_direccion_adder_pc (wire_direccion_adder_pc),
     .o_contador_programa (wire_contador_programa),
     .o_led_mem (wire_led_mem),
     .o_reset_ack_mem (wire_reset_ack_mem)

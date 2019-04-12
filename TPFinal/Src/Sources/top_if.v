@@ -40,6 +40,8 @@ module top_if
 
        input i_enable_pipeline,
 
+       input i_bit_burbuja_hazard,
+
        output [RAM_WIDTH_PROGRAMA - 1 : 0] o_instruction,
        output [CANT_BITS_ADDR - 1 : 0] o_direccion_adder_pc,
        output [CANT_BITS_ADDR - 1 : 0] o_contador_programa,
@@ -68,7 +70,7 @@ always@(negedge i_clock) begin
     reg_direccion_adder_pc <= 1;
   end
   else begin
-    if (i_enable_pipeline) begin
+    if (i_enable_pipeline & ~i_bit_burbuja_hazard) begin
         reg_intruction_register <= wire_output_mux3_TO_IR;
         reg_direccion_adder_pc <= wire_direccion_adder_pc;
     end
@@ -157,7 +159,7 @@ adder
       (
           .i_clock (i_clock),
           .i_soft_reset (i_soft_reset),
-          .i_enable (i_enable_contador_PC),
+          .i_enable (i_enable_contador_PC & ~i_bit_burbuja_hazard),
           .i_direccion (wire_output_mux1_TO_idata_pc),
           .o_direccion (o_contador_programa)
       );
