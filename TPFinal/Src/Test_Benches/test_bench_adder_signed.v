@@ -2,7 +2,7 @@
 
 //////////////////////////////////////////////////////////////////////////////////
 // Trabajo Practico Nro. 4. MIPS.
-// Test bench del modulo adder signado.
+// Test bench del modulo adder signed.
 // Integrantes: Kleiner Matias, Lopez Gaston.
 // Materia: Arquitectura de Computadoras.
 // FCEFyN. UNC.
@@ -10,7 +10,7 @@
 //////////////////////////////////////////////////////////////////////////////////
 
 
-module test_bench_adder_signado();
+module test_bench_adder_signed();
 
     parameter INPUT_OUTPUT_LENGTH = 11;
 

@@ -29,6 +29,7 @@ module test_bench_branch_address_calculator();
     reg [CANT_BITS_REGISTROS - 1 : 0] reg_i_dato_reg_A;
     reg [CANT_BITS_REGISTROS - 1 : 0] reg_i_dato_reg_B;
     reg reg_enable_etapa;
+    
 
     wire wire_o_branch_control;
     wire [CANT_BITS_ADDR - 1 : 0] wire_o_branch_dir;
@@ -82,9 +83,12 @@ module test_bench_branch_address_calculator();
                                    //o_branch_control = 1'b1;
                                    //o_branch_dir =  0;
                             
-         #20 reg_i_flag_branch = 6; //salida esperada : pruebo default
+        #20 reg_i_flag_branch = 6; //salida esperada : pruebo default
                                    //o_branch_control = 1'b0;
                                    //o_branch_dir =  1;
+        #20 reg_i_flag_branch = 0;
+        #20 reg_i_immediate_address = 11'b11111111100; // -4
+        #20 reg_i_adder_pc          = 11'b11111111110;
 
 		
 		#5000 $finish;
