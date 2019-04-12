@@ -29,6 +29,8 @@ module test_bench_register_file();
     reg [CANTIDAD_BITS_ADDRESS_REGISTROS - 1 : 0] reg_reg_write; 
     reg [CANTIDAD_BITS_REGISTROS - 1 : 0] reg_data_write;
     reg reg_control_write;
+    reg [CANTIDAD_BITS_ADDRESS_REGISTROS - 1 : 0] reg_reg_read_from_debug_unit;
+    wire [CANTIDAD_BITS_REGISTROS - 1 : 0] wire_reg_data_to_debug_unit;
     wire [CANTIDAD_BITS_REGISTROS - 1 : 0] wire_data_A;
     wire [CANTIDAD_BITS_REGISTROS - 1 : 0] wire_data_B;
     wire wire_led;
@@ -41,11 +43,12 @@ module test_bench_register_file();
        reg_reg_write = 0;
        reg_data_write = 5;
        reg_control_write = 0;
+       reg_reg_read_from_debug_unit = 0;
 	   
        #100 reg_soft_reset = 1'b1; // Desactivo la accion del reset.
 
        
-       #200 reg_control_write = 1'b1; //Escribo R1. Led se prende.
+       #200 reg_control_write = 1'b1; //Escribo R0. Led se prende.
        #10  reg_control_write = 1'b0;
 
        #100 reg_A = 3; // Cambio seleccion de registro.
@@ -53,6 +56,8 @@ module test_bench_register_file();
 
        #100 reg_A = 31; // Cambio seleccion de registro.
        #100 reg_B = 31; // Cambio seleccion de registro.
+
+       #10 reg_reg_read_from_debug_unit = 1; // Leo R1 desde debug unit
 	   
 	   // Test 4: Prueba reset.
 	   #1000 reg_soft_reset = 1'b0; // Reset.
@@ -81,6 +86,8 @@ register_file
         .i_reg_Write (reg_reg_write),
         .i_data_write (reg_data_write),
         .i_control_write (reg_control_write),
+        .i_reg_read_from_debug_unit (reg_reg_read_from_debug_unit),
+        .o_reg_data_to_debug_unit (wire_reg_data_to_debug_unit),
         .o_data_A (wire_data_A),
         .o_data_B (wire_data_B),
         .o_led (wire_led)

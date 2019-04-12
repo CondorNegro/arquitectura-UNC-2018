@@ -24,6 +24,8 @@ module register_file
         input [CANTIDAD_BITS_ADDRESS_REGISTROS - 1 : 0] i_reg_Write,
         input [CANTIDAD_BITS_REGISTROS - 1 : 0] i_data_write,
         input i_control_write,
+        input [CANTIDAD_BITS_ADDRESS_REGISTROS - 1 : 0] i_reg_read_from_debug_unit,
+        output reg [CANTIDAD_BITS_REGISTROS - 1 : 0] o_reg_data_to_debug_unit,
         output reg [CANTIDAD_BITS_REGISTROS - 1 : 0] o_data_A,
         output reg [CANTIDAD_BITS_REGISTROS - 1 : 0] o_data_B,
         output reg o_led
@@ -49,8 +51,10 @@ always@( posedge i_clock) begin
        o_led <= 0;
        o_data_A <= 0;
        o_data_B <= 0;
+       o_reg_data_to_debug_unit <= 0;
    end
    else begin
+        o_reg_data_to_debug_unit <= registros [i_reg_read_from_debug_unit];
         o_data_A <= registros [i_reg_A];
         o_data_B <= registros [i_reg_B];
         if (registros[0] != 0) begin // Valor en R1 modificado.
