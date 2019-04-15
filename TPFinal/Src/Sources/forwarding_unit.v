@@ -36,7 +36,7 @@ module forwarding_unit
         if ((i_registro_destino_mem == i_rs_ex) && (i_reg_write_mem == 1'b1)) begin
             o_selector_mux_A = 2;  // Forwarding from MEM        
         end
-        else if ((i_registro_destino_wb == i_rs_ex) && (i_reg_write_mem == 1'b1)) begin
+        else if ((i_registro_destino_wb == i_rs_ex) && (i_reg_write_wb == 1'b1)) begin
             o_selector_mux_A = 1;  // Forwarding from WB
         end
         else begin
@@ -47,7 +47,7 @@ module forwarding_unit
         if ((i_registro_destino_mem == i_rt_ex) && (i_reg_write_mem == 1'b1)) begin
             o_selector_mux_B = 2;  // Forwarding from MEM      
         end
-        else if ((i_registro_destino_wb == i_rt_ex) && (i_reg_write_mem == 1'b1)) begin
+        else if ((i_registro_destino_wb == i_rt_ex) && (i_reg_write_wb == 1'b1)) begin
             o_selector_mux_B = 1; // Forwarding from WB 
         end
         else begin
