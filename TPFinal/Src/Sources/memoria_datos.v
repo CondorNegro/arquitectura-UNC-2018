@@ -41,7 +41,7 @@ module memoria_datos
 
   reg [(NB_COL *COL_WIDTH) -1 : 0] BRAM [RAM_DEPTH - 1 : 0];
   reg [(NB_COL *COL_WIDTH) -1 : 0] ram_data = {(NB_COL * COL_WIDTH){1'b0}};
-  reg [31 : 0] reg_contador;
+  reg [clogb2 (RAM_DEPTH - 1) - 1 : 0] reg_contador;
 
   // The following code either initializes the memory values to a specified file or to all zeros to match hardware
   generate
