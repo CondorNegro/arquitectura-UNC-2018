@@ -274,7 +274,8 @@ debug_unit
         .CANT_BITS_REGISTRO (CANT_BITS_REGISTROS_TOP),
         .CANT_COLUMNAS_MEM_DATOS (CANT_COLUMNAS_MEM_DATOS_TOP),
         .ADDR_MEM_DATOS_LENGTH (ADDR_MEM_DATOS_LENGTH_TOP),
-        .RAM_DATOS_DEPTH (RAM_DEPTH_DATOS)          
+        .RAM_DATOS_DEPTH (RAM_DEPTH_DATOS),
+        .CANT_REGISTROS (CANT_REGISTROS_TOP)           
      ) 
    u_debug_unit1    // Una sola instancia de este modulo
    (

@@ -37,7 +37,7 @@ module debug_unit
     input [CANT_BITS_REGISTRO - 1 : 0] i_dato_mem_datos,
     input i_bit_sucio,
     input [CANT_BITS_REGISTRO - 1 : 0] i_reg_data_from_register_file,
-    output [clogb2 (CANT_BITS_REGISTRO - 1) - 1 : 0] o_reg_read_to_register_file,
+    output reg [clogb2 (CANT_REGISTROS - 1) - 1 : 0] o_reg_read_to_register_file,
     output reg o_tx_start,
     output reg [OUTPUT_WORD_LENGTH - 1 : 0] o_data_tx,
     output reg o_soft_reset,
@@ -102,7 +102,7 @@ reg [ADDR_MEM_PROG_LENGTH - 1 : 0] reg_contador_addr_mem;
 reg [LONGITUD_INSTRUCCION - 1 : 0] o_next_dato_mem_programa;
 reg reg_next_modo_ejecucion;
 reg [CANT_BITS_CONTROL_DATABASE - 1 : 0] reg_contador_datos_database;
-reg [clogb2 (CANT_BITS_REGISTRO - 1) - 1 : 0] reg_contador_send_registros;
+reg [clogb2 (CANT_REGISTROS - 1) - 1 : 0] reg_contador_send_registros;
 
 //reg [OUTPUT_WORD_LENGTH - 1 : 0] o_data_tx_next;
 
@@ -219,12 +219,18 @@ always @ ( posedge i_clock ) begin //Memory
         end
 
         if (reg_state == REGISTROS_DATA_CHECK) begin
-            reg_contador_send_registros <= 0;// Completar
+            if (reg_contador_send_registros <= (clogb2 (CANT_BITS_REGISTRO - 1) - 1)) begin
+                reg_contador_send_registros <= reg_contador_send_registros + 1;
+            end
+            else begin
+                reg_contador_send_registros <= reg_contador_send_registros;
+            end
         end
         else if ((reg_state == ESPERA_START) || (reg_state == ESPERA)) begin
+            reg_contador_send_registros <= 0;
         end
         else begin
-          reg_
+            reg_contador_send_registros <= reg_contador_send_registros;
         end
 
     end
@@ -350,8 +356,11 @@ always@( * ) begin //NEXT - STATE logic
                 if (reg_contador_datos_database != (CANT_DATOS_DATABASE - 1)) begin
                     reg_next_state = SEND_PART3;
                 end
-                else begin // Se enviaron todos los datos de los latches.
+                else if (reg_contador_send_registros < (CANT_REGISTROS - 1)) begin // Se enviaron todos los datos de los latches.
                     reg_next_state = REGISTROS_DATA_CHECK;
+                end
+                else begin
+                    reg_next_state = MEM_DATOS_CHECK;
                 end
             end
             else begin
@@ -361,12 +370,7 @@ always@( * ) begin //NEXT - STATE logic
 
        
         REGISTROS_DATA_CHECK : begin
-            if (reg_contador_send_registros == (CANT_REGISTROS - 1)) begin
-                reg_next_state = MEM_DATOS_CHECK;
-            end
-            else begin
-                reg_next_state = SEND_PART3;
-            end
+            reg_next_state = SEND_PART3;
         end
 
        MEM_DATOS_CHECK : begin
@@ -432,6 +436,7 @@ always @ ( * ) begin //Output logic
             o_control_write_read_mem_datos = 0;
             o_control_address_mem_datos = 0;
             o_enable_mem_datos = 0;
+            o_reg_read_to_register_file = 0;
         end
 
         SOFT_RESET : begin
@@ -453,6 +458,7 @@ always @ ( * ) begin //Output logic
             o_control_write_read_mem_datos = 0;
             o_control_address_mem_datos = 0;
             o_enable_mem_datos = 0;
+            o_reg_read_to_register_file = 0;
         end
 
         ESPERA_PC_ACK : begin
@@ -474,6 +480,7 @@ always @ ( * ) begin //Output logic
             o_control_write_read_mem_datos = 0;
             o_control_address_mem_datos = 0;
             o_enable_mem_datos = 0;
+            o_reg_read_to_register_file = 0;
         end
 
 //{ CANT_BITS_CONTADOR_DATOS {1'b1} }
@@ -506,6 +513,7 @@ always @ ( * ) begin //Output logic
             o_control_write_read_mem_datos = 0;
             o_control_address_mem_datos = 0;
             o_enable_mem_datos = 0;
+            o_reg_read_to_register_file = 0;
         end
 
         ESPERA_START : begin
@@ -527,6 +535,7 @@ always @ ( * ) begin //Output logic
             o_control_write_read_mem_datos = 0;
             o_control_address_mem_datos = 0;
             o_enable_mem_datos = 0;
+            o_reg_read_to_register_file = 0;
        end
 
         EJECUCION : begin
@@ -562,7 +571,7 @@ always @ ( * ) begin //Output logic
             o_control_database = 1;
             o_control_write_read_mem_datos = 0;
             o_control_address_mem_datos = 0;
-         
+            o_reg_read_to_register_file = 0;         
        end
 
 
@@ -570,9 +579,16 @@ always @ ( * ) begin //Output logic
 
         SEND_PART3 : begin 
             o_tx_start = 1;
-            if (reg_contador_send_datos_mem_datos == 0) begin
+            if ((reg_contador_send_datos_mem_datos == 0) && (reg_contador_send_registros == 0)) begin
                 o_data_tx = (i_dato_database >> 24);
                 o_control_database = reg_contador_datos_database + 2;
+                o_control_write_read_mem_datos = 0;
+                o_control_address_mem_datos = 0;
+                o_enable_mem_datos = 0;
+            end
+            else if ((reg_contador_send_datos_mem_datos == 0) && (reg_contador_send_registros > 0)) begin
+                o_data_tx = (i_reg_data_from_register_file >> 24);
+                o_control_database = 0;
                 o_control_write_read_mem_datos = 0;
                 o_control_address_mem_datos = 0;
                 o_enable_mem_datos = 0;
@@ -603,17 +619,23 @@ always @ ( * ) begin //Output logic
             o_enable_PC = 0;
             o_enable_pipeline = 0;
             o_control_mux_addr_mem_top_if = 0;
-         
-         
+            o_reg_read_to_register_file = reg_contador_send_registros;        
         end
 
 
 
         SEND_PART2 : begin 
             o_tx_start = 1;
-            if (reg_contador_send_datos_mem_datos == 0) begin
+            if ((reg_contador_send_datos_mem_datos == 0) && (reg_contador_send_registros == 0)) begin
                 o_data_tx = (i_dato_database >> 16);
                 o_control_database = reg_contador_datos_database + 2;
+                o_control_write_read_mem_datos = 0;
+                o_control_address_mem_datos = 0;
+                o_enable_mem_datos = 0;
+            end
+            else if ((reg_contador_send_datos_mem_datos == 0) && (reg_contador_send_registros > 0)) begin
+                o_data_tx = (i_reg_data_from_register_file >> 16);
+                o_control_database = 0;
                 o_control_write_read_mem_datos = 0;
                 o_control_address_mem_datos = 0;
                 o_enable_mem_datos = 0;
@@ -644,16 +666,22 @@ always @ ( * ) begin //Output logic
             o_enable_PC = 0;
             o_enable_pipeline = 0;
             o_control_mux_addr_mem_top_if = 0;
-         
-        
+            o_reg_read_to_register_file = reg_contador_send_registros;         
         end
 
 
         SEND_PART1 : begin 
             o_tx_start = 1;
-            if (reg_contador_send_datos_mem_datos == 0) begin
+            if ((reg_contador_send_datos_mem_datos == 0) && (reg_contador_send_registros == 0)) begin
                 o_data_tx = (i_dato_database >> 8);
                 o_control_database = reg_contador_datos_database + 2;
+                o_control_write_read_mem_datos = 0;
+                o_control_address_mem_datos = 0;
+                o_enable_mem_datos = 0;
+            end
+            else if ((reg_contador_send_datos_mem_datos == 0) && (reg_contador_send_registros > 0)) begin
+                o_data_tx = (i_reg_data_from_register_file >> 8);
+                o_control_database = 0;
                 o_control_write_read_mem_datos = 0;
                 o_control_address_mem_datos = 0;
                 o_enable_mem_datos = 0;
@@ -684,14 +712,21 @@ always @ ( * ) begin //Output logic
             o_enable_PC = 0;
             o_enable_pipeline = 0;
             o_control_mux_addr_mem_top_if = 0;
-         
+            o_reg_read_to_register_file = reg_contador_send_registros;  
        end
 
         SEND_PART0 : begin 
             o_tx_start = 1;
-            if (reg_contador_send_datos_mem_datos == 0) begin
+            if ((reg_contador_send_datos_mem_datos == 0) && (reg_contador_send_registros == 0)) begin
                 o_data_tx = (i_dato_database);
                 o_control_database = reg_contador_datos_database + 2;
+                o_control_write_read_mem_datos = 0;
+                o_control_address_mem_datos = 0;
+                o_enable_mem_datos = 0;
+            end
+            else if ((reg_contador_send_datos_mem_datos == 0) && (reg_contador_send_registros > 0)) begin
+                o_data_tx = (i_reg_data_from_register_file);
+                o_control_database = 0;
                 o_control_write_read_mem_datos = 0;
                 o_control_address_mem_datos = 0;
                 o_enable_mem_datos = 0;
@@ -722,8 +757,7 @@ always @ ( * ) begin //Output logic
             o_enable_PC = 0;
             o_enable_pipeline = 0;
             o_control_mux_addr_mem_top_if = 0;
-         
-         
+            o_reg_read_to_register_file = reg_contador_send_registros;          
        end
 
        REGISTROS_DATA_CHECK : begin
@@ -746,6 +780,7 @@ always @ ( * ) begin //Output logic
             o_control_write_read_mem_datos = 1;
             o_control_address_mem_datos = 1;
             o_enable_mem_datos = 0;
+            o_reg_read_to_register_file = reg_contador_send_registros;  
        end
 
 
@@ -769,6 +804,7 @@ always @ ( * ) begin //Output logic
             o_control_write_read_mem_datos = 1;
             o_control_address_mem_datos = 1;
             o_enable_mem_datos = 1;
+            o_reg_read_to_register_file = 0;  
         end
 
         ESPERA_MEM_DATOS_CHECK_ACK : begin // Envia a PC el fin de envio de datos a memoria.
@@ -791,6 +827,7 @@ always @ ( * ) begin //Output logic
             o_control_write_read_mem_datos = 1;
             o_control_address_mem_datos = 1;
             o_enable_mem_datos = 0;
+            o_reg_read_to_register_file = 0;  
         end
 
 
@@ -813,6 +850,7 @@ always @ ( * ) begin //Output logic
             o_control_write_read_mem_datos = 0;
             o_control_address_mem_datos = 0;
             o_enable_mem_datos = 0;
+            o_reg_read_to_register_file = 0;  
        end
 
  endcase

@@ -24,6 +24,7 @@ module test_bench_debug_unit();
   parameter CANT_DATOS_DATABASE = 3; // Cantidad de datos a traer del database
   parameter CANT_COLUMNAS_MEM_DATOS = 4;
   parameter RAM_DATOS_DEPTH = 1024;
+  parameter CANT_REGISTROS = 3;
    
    //Todo puerto de salida del modulo es un cable.
    //Todo puerto de estimulo o generacion de entrada es un registro.
@@ -38,7 +39,9 @@ module test_bench_debug_unit();
    reg reg_flag_halt;
    reg [LONGITUD_INSTRUCCION - 1 : 0] reg_dato_database;
    reg [CANT_BITS_REGISTRO - 1 : 0] reg_dato_mem_datos;
-   reg reg_bit_sucio; 
+   reg reg_bit_sucio;
+   reg [CANT_BITS_REGISTRO - 1 : 0] reg_reg_data_from_register_file;
+    
 
    // Salidas.
    wire wire_o_tx_start;
@@ -60,6 +63,7 @@ module test_bench_debug_unit();
    wire wire_control_address_mem_datos;
    wire wire_enable_mem_datos;
    wire [ADDR_MEM_DATOS_LENGTH + clogb2 (CANT_COLUMNAS_MEM_DATOS - 1) - 1 : 0] wire_address_debug_unit;
+   wire [clogb2 (CANT_REGISTROS - 1) - 1 : 0] wire_reg_read_to_register_file;
                           
    
    
@@ -80,7 +84,8 @@ module test_bench_debug_unit();
         reg_flag_halt = 0;
         reg_dato_database = 32'b10101010111111110000000011110000;
         reg_dato_mem_datos = 10;
-        reg_bit_sucio = 0; 
+        reg_bit_sucio = 0;
+        reg_reg_data_from_register_file = 4;
 
         
         #10 reg_i_reset = 1'b0;
@@ -272,6 +277,100 @@ module test_bench_debug_unit();
         #10 reg_flag_halt = 1;
         
 
+        
+        // Contenido R0
+        #10 reg_i_data_rx = 8'b00001000; // PART3
+        #10 reg_i_rx_done = 1'b1;
+        #10 reg_i_rx_done = 1'b0;
+
+
+
+        #10 reg_i_data_rx = 8'b00010000; // PART2
+        #10 reg_i_rx_done = 1'b1;
+        #10 reg_i_rx_done = 1'b0;
+
+
+
+        #10 reg_i_data_rx = 8'b00011000; //PART1
+        #10 reg_i_rx_done = 1'b1;
+        #10 reg_i_rx_done = 1'b0;
+
+
+
+        #10 reg_i_data_rx = 8'b00100000; //PART0
+        #10 reg_i_rx_done = 1'b1;
+        #10 reg_i_rx_done = 1'b0;
+
+        #10 reg_reg_data_from_register_file = 5;
+
+        // Contenido R1
+        #10 reg_i_data_rx = 8'b00001000; // PART3
+        #10 reg_i_rx_done = 1'b1;
+        #10 reg_i_rx_done = 1'b0;
+
+
+
+        #10 reg_i_data_rx = 8'b00010000; // PART2
+        #10 reg_i_rx_done = 1'b1;
+        #10 reg_i_rx_done = 1'b0;
+
+
+
+        #10 reg_i_data_rx = 8'b00011000; //PART1
+        #10 reg_i_rx_done = 1'b1;
+        #10 reg_i_rx_done = 1'b0;
+
+
+
+        #10 reg_i_data_rx = 8'b00100000; //PART0
+        #10 reg_i_rx_done = 1'b1;
+        #10 reg_i_rx_done = 1'b0;
+
+
+        #10 reg_reg_data_from_register_file = 6;
+
+        // Contenido R2
+        #10 reg_i_data_rx = 8'b00001000; // PART3
+        #10 reg_i_rx_done = 1'b1;
+        #10 reg_i_rx_done = 1'b0;
+
+
+
+        #10 reg_i_data_rx = 8'b00010000; // PART2
+        #10 reg_i_rx_done = 1'b1;
+        #10 reg_i_rx_done = 1'b0;
+
+
+
+        #10 reg_i_data_rx = 8'b00011000; //PART1
+        #10 reg_i_rx_done = 1'b1;
+        #10 reg_i_rx_done = 1'b0;
+
+
+
+        #10 reg_i_data_rx = 8'b00100000; //PART0
+        #10 reg_i_rx_done = 1'b1;
+        #10 reg_i_rx_done = 1'b0;
+
+
+
+
+
+
+
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
         #5 reg_bit_sucio = 1'b1;
         
 
@@ -390,7 +489,8 @@ debug_unit
         .CANT_DATOS_DATABASE (CANT_DATOS_DATABASE),
         .CANT_COLUMNAS_MEM_DATOS (CANT_COLUMNAS_MEM_DATOS),
         .CANT_BITS_REGISTRO (CANT_BITS_REGISTRO),
-        .RAM_DATOS_DEPTH (RAM_DATOS_DEPTH)
+        .RAM_DATOS_DEPTH (RAM_DATOS_DEPTH),
+        .CANT_REGISTROS (CANT_REGISTROS)
     ) 
    u_debug_unit_1    // Una sola instancia de este modulo.
    (
@@ -404,6 +504,8 @@ debug_unit
        .i_dato_database (reg_dato_database),
        .i_dato_mem_datos (reg_dato_mem_datos),
        .i_bit_sucio (reg_bit_sucio),
+       .i_reg_data_from_register_file (reg_reg_data_from_register_file),
+       .o_reg_read_to_register_file (wire_reg_read_to_register_file),
        .o_tx_start (wire_o_tx_start),
        .o_data_tx (wire_o_data_tx),
        .o_soft_reset (wire_o_soft_reset),
