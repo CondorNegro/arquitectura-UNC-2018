@@ -103,6 +103,7 @@ reg [LONGITUD_INSTRUCCION - 1 : 0] o_next_dato_mem_programa;
 reg reg_next_modo_ejecucion;
 reg [CANT_BITS_CONTROL_DATABASE - 1 : 0] reg_contador_datos_database;
 reg [clogb2 (CANT_REGISTROS - 1) - 1 : 0] reg_contador_send_registros;
+reg flag_send_registro_R0;
 
 //reg [OUTPUT_WORD_LENGTH - 1 : 0] o_data_tx_next;
 
@@ -136,6 +137,7 @@ always @ ( posedge i_clock ) begin //Memory
         reg_contador_address_mem_datos <= 0;
         reg_contador_send_datos_mem_datos <= 0;
         reg_contador_send_registros <= 0;
+        flag_send_registro_R0 <= 0;
     end
 
     else begin
@@ -220,16 +222,26 @@ always @ ( posedge i_clock ) begin //Memory
 
         if (reg_state == REGISTROS_DATA_CHECK) begin
             if (reg_contador_send_registros <= (clogb2 (CANT_BITS_REGISTRO - 1) - 1)) begin
-                reg_contador_send_registros <= reg_contador_send_registros + 1;
+                flag_send_registro_R0 <= 1;
+                if (flag_send_registro_R0) begin
+                    reg_contador_send_registros <= reg_contador_send_registros + 1;
+                end
+                else begin
+                    reg_contador_send_registros <= reg_contador_send_registros;
+                end
+                
             end
             else begin
+                flag_send_registro_R0 <= flag_send_registro_R0;
                 reg_contador_send_registros <= reg_contador_send_registros;
             end
         end
         else if ((reg_state == ESPERA_START) || (reg_state == ESPERA)) begin
             reg_contador_send_registros <= 0;
+            flag_send_registro_R0 <= 0;
         end
         else begin
+            flag_send_registro_R0 <= flag_send_registro_R0;
             reg_contador_send_registros <= reg_contador_send_registros;
         end
 
@@ -579,14 +591,14 @@ always @ ( * ) begin //Output logic
 
         SEND_PART3 : begin 
             o_tx_start = 1;
-            if ((reg_contador_send_datos_mem_datos == 0) && (reg_contador_send_registros == 0)) begin
+            if ((reg_contador_send_datos_mem_datos == 0) && (~flag_send_registro_R0)) begin
                 o_data_tx = (i_dato_database >> 24);
                 o_control_database = reg_contador_datos_database + 2;
                 o_control_write_read_mem_datos = 0;
                 o_control_address_mem_datos = 0;
                 o_enable_mem_datos = 0;
             end
-            else if ((reg_contador_send_datos_mem_datos == 0) && (reg_contador_send_registros > 0)) begin
+            else if ((reg_contador_send_datos_mem_datos == 0) && (flag_send_registro_R0)) begin
                 o_data_tx = (i_reg_data_from_register_file >> 24);
                 o_control_database = 0;
                 o_control_write_read_mem_datos = 0;
@@ -626,14 +638,14 @@ always @ ( * ) begin //Output logic
 
         SEND_PART2 : begin 
             o_tx_start = 1;
-            if ((reg_contador_send_datos_mem_datos == 0) && (reg_contador_send_registros == 0)) begin
+            if ((reg_contador_send_datos_mem_datos == 0) && (~flag_send_registro_R0)) begin
                 o_data_tx = (i_dato_database >> 16);
                 o_control_database = reg_contador_datos_database + 2;
                 o_control_write_read_mem_datos = 0;
                 o_control_address_mem_datos = 0;
                 o_enable_mem_datos = 0;
             end
-            else if ((reg_contador_send_datos_mem_datos == 0) && (reg_contador_send_registros > 0)) begin
+            else if ((reg_contador_send_datos_mem_datos == 0) && (flag_send_registro_R0)) begin
                 o_data_tx = (i_reg_data_from_register_file >> 16);
                 o_control_database = 0;
                 o_control_write_read_mem_datos = 0;
@@ -672,14 +684,14 @@ always @ ( * ) begin //Output logic
 
         SEND_PART1 : begin 
             o_tx_start = 1;
-            if ((reg_contador_send_datos_mem_datos == 0) && (reg_contador_send_registros == 0)) begin
+            if ((reg_contador_send_datos_mem_datos == 0) && (~flag_send_registro_R0)) begin
                 o_data_tx = (i_dato_database >> 8);
                 o_control_database = reg_contador_datos_database + 2;
                 o_control_write_read_mem_datos = 0;
                 o_control_address_mem_datos = 0;
                 o_enable_mem_datos = 0;
             end
-            else if ((reg_contador_send_datos_mem_datos == 0) && (reg_contador_send_registros > 0)) begin
+            else if ((reg_contador_send_datos_mem_datos == 0) && (flag_send_registro_R0)) begin
                 o_data_tx = (i_reg_data_from_register_file >> 8);
                 o_control_database = 0;
                 o_control_write_read_mem_datos = 0;
@@ -717,14 +729,14 @@ always @ ( * ) begin //Output logic
 
         SEND_PART0 : begin 
             o_tx_start = 1;
-            if ((reg_contador_send_datos_mem_datos == 0) && (reg_contador_send_registros == 0)) begin
+            if ((reg_contador_send_datos_mem_datos == 0) && (~flag_send_registro_R0)) begin
                 o_data_tx = (i_dato_database);
                 o_control_database = reg_contador_datos_database + 2;
                 o_control_write_read_mem_datos = 0;
                 o_control_address_mem_datos = 0;
                 o_enable_mem_datos = 0;
             end
-            else if ((reg_contador_send_datos_mem_datos == 0) && (reg_contador_send_registros > 0)) begin
+            else if ((reg_contador_send_datos_mem_datos == 0) && (flag_send_registro_R0)) begin
                 o_data_tx = (i_reg_data_from_register_file);
                 o_control_database = 0;
                 o_control_write_read_mem_datos = 0;
