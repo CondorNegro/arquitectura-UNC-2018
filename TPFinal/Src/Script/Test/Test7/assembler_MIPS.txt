@@ -7,9 +7,9 @@
 #G -1
 //Cargo en R1 un 10
 ADDI R1,R1,A
-//Cargo en R2 un 8
+//Cargo en R2 un 20024
 ADDI R2,R2,C
-//Cargo en R3 un 5
+//Cargo en R3 un 1024
 ADDI R3,R3,B
 //Cargo en R4 un -1
 ADDI R4,R4,G
