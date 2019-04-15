@@ -13,6 +13,7 @@
 module top_if
    #(
        parameter RAM_WIDTH_PROGRAMA = 32,
+       parameter NB_COL_PROGRAMA = 4,
        parameter RAM_PERFORMANCE_PROGRAMA= "LOW_LATENCY",
        parameter INIT_FILE_PROGRAMA = "",
        parameter RAM_DEPTH_PROGRAMA = 2048,
@@ -83,7 +84,8 @@ end
 
 memoria_programa
    #(
-       .RAM_WIDTH (RAM_WIDTH_PROGRAMA),
+       .NB_COL (NB_COL_PROGRAMA),                       
+       .COL_WIDTH (RAM_WIDTH_PROGRAMA / NB_COL_PROGRAMA),
        .RAM_PERFORMANCE (RAM_PERFORMANCE_PROGRAMA),
        .INIT_FILE (INIT_FILE_PROGRAMA),
        .RAM_DEPTH (RAM_DEPTH_PROGRAMA)
@@ -93,7 +95,7 @@ memoria_programa
        .i_clk (i_clock),
        .i_addr (wire_output_mux2_TO_addr_memoria_programa),
        .i_data (i_data_mem_programa),
-       .i_wea (i_write_read_mem),
+       .i_wea ({NB_COL_PROGRAMA {i_write_read_mem}}),
        .i_ena (i_enable_mem),
        .i_rsta (i_rsta_mem),
        .i_regcea (i_regcea_mem),

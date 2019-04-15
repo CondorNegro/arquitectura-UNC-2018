@@ -11,50 +11,44 @@
 
 
 
-  //  Xilinx Single Port No Change RAM
-  //  This code implements a parameterizable single-port no-change memory where when data is written
-  //  to the memory, the output remains unchanged.  This is the most power efficient write mode.
-  //  If a reset or enable is not necessary, it may be tied off or removed from the code.
+//  Xilinx Single Port Byte-Write Read First RAM
+//  This code implements a parameterizable single-port byte-write read-first memory where when data
+//  is written to the memory, the output reflects the prior contents of the memory location.
+//  If a reset or enable is not necessary, it may be tied off or removed from the code.
+//  Modify the parameters for the desired RAM characteristics.
 module memoria_programa
+    #(
+    parameter NB_COL = 4,                           // Specify number of columns (number of bytes)
+    parameter COL_WIDTH = 8,                        // Specify column width (byte width, typically 8 or 9)
+    parameter RAM_DEPTH = 1024,                     // Specify RAM depth (number of entries)
+    parameter RAM_PERFORMANCE = "LOW_LATENCY",      // Select "HIGH_PERFORMANCE" or "LOW_LATENCY" 
+    parameter INIT_FILE = ""                        // Specify name/location of RAM initialization file if using one (leave blank if not)
+    )
     (
-    i_addr,           // Address bus, width determined from RAM_DEPTH
-    i_data,           // RAM input data
-    i_clk,            // Clock
-    i_wea,              // Write enable
-    i_ena,              // RAM Enable, for additional power savings, disable port when not in use (1)
-    i_rsta,             // Output reset (does not affect memory contents) (0)
-    i_regcea,           // Output register enable (0)
-    i_soft_reset,       // Reset via software for MIPS
-    o_data,           // RAM output data
-    o_reset_ack,       // Ack from memories when they complete their resets.
-    o_led
+    input [clogb2 (RAM_DEPTH - 1) - 1 : 0] i_addr,  // Address bus, width determined from RAM_DEPTH
+    input [(NB_COL * COL_WIDTH) - 1 : 0] i_data,    // RAM input data
+    input i_clk,                                    // Clock
+    input [NB_COL - 1 : 0] i_wea,                   // Byte-write enable
+    input i_ena,                                    // RAM Enable, for additional power savings, disable port when not in use
+    input i_rsta,                                   // Output reset (does not affect memory contents)
+    input i_regcea,                                 // Output register enable
+    input i_soft_reset,
+    output reg o_reset_ack,
+    output [(NB_COL * COL_WIDTH) - 1 : 0] o_data,    // RAM output data
+    output reg o_led
     );
+    
   
   
-  parameter RAM_WIDTH = 32;                       // Specify RAM data width
-  parameter RAM_DEPTH = 2048;                     // Specify RAM depth (number of entries)
-  parameter RAM_PERFORMANCE = "LOW_LATENCY"; // Select "HIGH_PERFORMANCE" or "LOW_LATENCY"
-  parameter INIT_FILE = "";                       // Specify name/location of RAM initialization file if using one (leave blank if not)  
-  
-  localparam CANT_BIT_RAM_DEPTH = clogb2(RAM_DEPTH);  
+    
   
   
-  input [CANT_BIT_RAM_DEPTH-2:0] i_addr;  // Address bus, width determined from RAM_DEPTH
-  input [RAM_WIDTH-1:0] i_data;           // RAM input data
-  input i_clk;                            // Clock
-  input i_wea;                              // Write enable
-  input i_ena;                              // RAM Enable, for additional power savings, disable port when not in use (1)
-  input i_rsta;                             // Output reset (does not affect memory contents) (0)
-  input i_regcea;                           // Output register enable (0)
-  input i_soft_reset;                       // Reset via software for MIPS
-  output [RAM_WIDTH-1:0] o_data;          // RAM output data
-  output reg o_reset_ack;                 // Ack from memories when they complete their resets.
-  output reg o_led;
   
   
-  reg [RAM_WIDTH - 1 : 0] BRAM [RAM_DEPTH - 1 : 0];
-  reg [RAM_WIDTH - 1 : 0] ram_data = {RAM_WIDTH {1'b0}};
-  reg [clogb2(RAM_DEPTH-1)-1 : 0] reg_contador;
+  
+  reg [(NB_COL *COL_WIDTH) -1 : 0] BRAM [RAM_DEPTH - 1 : 0];
+  reg [(NB_COL *COL_WIDTH) -1 : 0] ram_data = {(NB_COL * COL_WIDTH){1'b0}};
+  reg [clogb2 (RAM_DEPTH - 1) - 1 : 0] reg_contador;
   
   
   // The following code either initializes the memory values to a specified file or to all zeros to match hardware
@@ -66,53 +60,46 @@ module memoria_programa
       integer ram_index;
       initial
         for (ram_index = 0; ram_index < RAM_DEPTH; ram_index = ram_index + 1)
-           BRAM[ram_index] = {RAM_WIDTH{1'b1}};
+           BRAM[ram_index] = {(COL_WIDTH * NB_COL) {1'b1}};
     end
   endgenerate
 
   always @(posedge i_clk) begin
-    if (~i_soft_reset) begin
-      ram_data <= 0;
-      BRAM [reg_contador] <= {RAM_WIDTH{1'b1}};
-      o_led <= 0;
-      if ( reg_contador == (RAM_DEPTH-1) ||  (BRAM [reg_contador]=={RAM_WIDTH{1'b1}}) ) begin
-        reg_contador <= reg_contador;
-        o_reset_ack <= 0;
-      end
-      else begin
-        reg_contador <= reg_contador + 1;
-        o_reset_ack <= 1;
-      end
-    end
-    else begin
-      reg_contador <= 0;
-      o_reset_ack <= 1;
-      if (i_ena) begin
-        if (i_wea)begin
-          BRAM [i_addr] <= i_data;
-          ram_data <= ram_data;
-          if (BRAM [i_addr] != 32'hFFFFFFFF) begin
-            o_led <= 1;
+    if (~i_soft_reset) begin // Reset de memoria.
+          BRAM [reg_contador] <= {(COL_WIDTH * NB_COL) {1'b1}};
+          ram_data <= 0;
+          if (reg_contador == (RAM_DEPTH - 1)) begin
+            reg_contador <= reg_contador;
+            o_reset_ack <= 0;
           end
           else begin
-            o_led <= o_led;
+            reg_contador <= reg_contador + 1;
+            o_reset_ack <= 1;
           end
-        end
-        else begin
-          ram_data <= BRAM [i_addr];
-          BRAM [i_addr] <= BRAM [i_addr];
-          o_led <= o_led;
-         end
-     end
-     else begin
-        o_led <= 0;
-        reg_contador <= 0;
-        o_reset_ack <= 1;
-        ram_data <= ram_data;
-        BRAM [i_addr] <= BRAM [i_addr];
-     end
+    end
+    else begin
+            reg_contador <= 0;
+            o_reset_ack <= 1;
+            
+            if (i_ena) begin
+                ram_data <= BRAM[i_addr];
+            end
+            else begin
+                ram_data <= ram_data;
+            end
     end
   end
+
+  generate
+  genvar i;
+     for (i = 0; i < NB_COL; i = i+1) begin: byte_write
+       always @(posedge i_clk)
+            if (i_ena && i_soft_reset) // Habilitada y sin reset.
+                if (i_wea[i])
+                    BRAM[i_addr][(i+1)*COL_WIDTH-1:i*COL_WIDTH] <= i_data[(i+1)*COL_WIDTH-1:i*COL_WIDTH];
+      end
+  endgenerate
+
   //  The following code generates HIGH_PERFORMANCE (use output register) or LOW_LATENCY (no output register)
   generate
     if (RAM_PERFORMANCE == "LOW_LATENCY") begin: no_output_register
@@ -124,15 +111,15 @@ module memoria_programa
 
       // The following is a 2 clock cycle read latency with improve clock-to-out timing
 
-      reg [RAM_WIDTH-1:0] reg_data_out = {RAM_WIDTH{1'b1}};
+      reg [(NB_COL*COL_WIDTH)-1:0] o_data_reg = {(NB_COL*COL_WIDTH){1'b1}};
 
       always @(posedge i_clk)
         if (i_rsta)
-          reg_data_out <= {RAM_WIDTH {1'b1}};
+          o_data_reg <= {(NB_COL*COL_WIDTH){1'b1}};
         else if (i_regcea)
-          reg_data_out <= ram_data;
+          o_data_reg <= ram_data;
 
-      assign o_data = reg_data_out;
+      assign o_data = o_data_reg;
 
     end
   endgenerate
@@ -143,4 +130,8 @@ module memoria_programa
       for (clogb2=0; depth>0; clogb2=clogb2+1)
         depth = depth >> 1;
   endfunction
+
+
+
+
 endmodule

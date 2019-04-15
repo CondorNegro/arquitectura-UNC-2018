@@ -15,6 +15,7 @@
 `define INIT_FILE_PROGRAMA     ""
 `define RAM_DEPTH_PROGRAMA   1024
 `define ADDR_MEM_PROGRAMA_LENGTH 10
+`define CANT_COL_MEM_PROG       4 
 
 module test_bench_top_if();
 
@@ -25,7 +26,7 @@ module test_bench_top_if();
    parameter INIT_FILE_PROGRAMA        =  `INIT_FILE_PROGRAMA;
    parameter RAM_DEPTH_PROGRAMA        =  `RAM_DEPTH_PROGRAMA;
    parameter ADDR_MEM_PROGRAMA_LENGTH  =  `ADDR_MEM_PROGRAMA_LENGTH;
-
+   parameter CANT_COL_MEM_PROG         =  `CANT_COL_MEM_PROG; 
 
   //Todo puerto de salida del modulo es un cable.
   //Todo puerto de estimulo o generacion de entrada es un registro.
@@ -167,6 +168,7 @@ module test_bench_top_if();
 top_if
   #(
       .RAM_WIDTH_PROGRAMA (RAM_WIDTH_PROGRAMA),
+      .NB_COL_PROGRAMA (CANT_COL_MEM_PROG),
       .RAM_PERFORMANCE_PROGRAMA (RAM_PERFORMANCE_PROGRAMA),
       .INIT_FILE_PROGRAMA (INIT_FILE_PROGRAMA),
       .RAM_DEPTH_PROGRAMA (RAM_DEPTH_PROGRAMA),

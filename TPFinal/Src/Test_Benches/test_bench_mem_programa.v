@@ -16,6 +16,8 @@ module test_bench_memoria_programa();
        
    // Parametros
    parameter RAM_WIDTH = 32;                       // Specify RAM data width
+   parameter COL_WIDTH = 8;
+   parameter NB_COL = 4;
    parameter RAM_DEPTH = 2048;                     // Specify RAM depth (number of entries)
    parameter RAM_PERFORMANCE = "LOW_LATENCY";      // Select "HIGH_PERFORMANCE" or "LOW_LATENCY"
    parameter INIT_FILE = "";                        // Specify name/location of RAM initialization file if using one (leave blank if not)
@@ -28,7 +30,7 @@ module test_bench_memoria_programa();
    reg clock;                                  // Clock.
    reg [CANT_BIT_RAM_DEPTH - 2 : 0] reg_i_addr;
    reg [RAM_WIDTH-1:0] data_in;                                 
-   reg reg_wea;
+   reg [NB_COL - 1 : 0] reg_wea;
    reg reg_ena;
    reg reg_rsta;
    reg reg_regcea;
@@ -47,7 +49,7 @@ module test_bench_memoria_programa();
    initial    begin
        
        clock = 1'b0;
-       reg_wea = 1'b0;
+       reg_wea = 15;
        reg_regcea = 1'b1;
        data_in = 8'b11011011;
        reg_i_addr = 11'b0000000;
@@ -60,20 +62,20 @@ module test_bench_memoria_programa();
        //#100 reg_regcea = 1'b1; // Lectura de posicion 0, tiene que haber un FFFF FFFF porque no se guardo nada todavia.
        
        //#100 data_in = 8'b00001111; // Dato a guardar.
-       #20 reg_wea = 1'b1; // Ahora se guarda el dato.
+       #20 reg_wea = 15; // Ahora se guarda el dato.
        
-       #20 reg_wea = 1'b0; 
+       #20 reg_wea = 0; 
        
        #20 data_in = 8'b00000101; // Dato a guardar.
        #20 reg_i_addr = 11'b0000001; // Seteo de direccion de mem.
-       #20 reg_wea = 1'b1; // Ahora se guarda el dato.
-       #20 reg_wea = 1'b0; 
+       #20 reg_wea = 15; // Ahora se guarda el dato.
+       #20 reg_wea = 0; 
        
        
        
        #20 data_in = 8'b00000010; // Dato a guardar.
        #20 reg_i_addr = 11'b0000010; // Seteo de direccion de mem.
-       #20 reg_wea = 1'b0; // Ahora se guarda el dato.
+       #20 reg_wea = 0; // Ahora se guarda el dato.
        
        
        #20 reg_i_addr = 11'b0000011; // Lectura del 1 que se guardo.
@@ -82,8 +84,8 @@ module test_bench_memoria_programa();
        
        #20 data_in = 8'b00000101; // Dato a guardar.
        #20 reg_i_addr = 11'b0000111; // Seteo de direccion de mem.
-       #20 reg_wea = 1'b1; // Ahora se guarda el dato.
-       #20 reg_wea = 1'b0; 
+       #20 reg_wea = 15; // Ahora se guarda el dato.
+       #20 reg_wea = 0; 
        
        
        #100 reg_soft_reset = 1'b0;
@@ -101,7 +103,8 @@ module test_bench_memoria_programa();
 // Modulo para pasarle los estimulos del banco de pruebas.
 memoria_programa
    #(
-        .RAM_WIDTH (RAM_WIDTH),
+        .NB_COL (NB_COL),
+        .COL_WIDTH (COL_WIDTH),
         .RAM_PERFORMANCE (RAM_PERFORMANCE),
         .INIT_FILE (INIT_FILE),
         .RAM_DEPTH (RAM_DEPTH)
