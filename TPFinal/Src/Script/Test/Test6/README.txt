@@ -1,1 +1,1 @@
-Prueba general de operaciones tipo R
+Prueba general de instrucciones tipo R

@@ -1,1 +1,1 @@
-Prueba general de operaciones de salto.
+Prueba general de instrucciones de salto.

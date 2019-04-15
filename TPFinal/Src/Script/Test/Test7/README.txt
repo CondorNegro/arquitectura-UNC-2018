@@ -1,1 +1,1 @@
-Prueba general de operaciones tipo Load y Store.
+Prueba general de instrucciones tipo Load y Store.
