@@ -22,7 +22,8 @@ WIDTH_WORD = 8
 CANT_BITS_INSTRUCCION = 32
 CANT_STOP_BITS = 2
 FILE_NAME = "init_ram_file.txt"
-FILE_NAME_WRITE = "datamem.txt"
+FILE_NAME_WRITE_MEM = "datamem.txt"
+FILE_NAME_WRITE_REG = "datareg.txt"
 FLAG_TEST = False
 CANT_BITS_ADDRESS_MEM_PROGRAMA = 10
 CANT_BITS_ADDRESS_MEM_DATOS = 10
@@ -420,12 +421,16 @@ def recibirDatosFromFPGA ():
 	contador_etapas = -1
 	contador_etapas_send = 0
 	cantidad_bytes_control = 0
-	
-	cadena_valores_memoria = "Dato \t    Direccion \n"
+
+	contador_registros = 0
+	cadena_valores_registros = "Registro\tValor \n"
+	contador_primer_dato_reg = 0
+
+	cadena_valores_memoria = "Dato \t        Direccion \n"
 	
 	contador_datos_mem = 0
 	dato_memoria = ""
-	contador_primer_dato = 0
+	contador_primer_dato_mem = 0
 
 	while (flag_receive):
 
@@ -696,10 +701,27 @@ def recibirDatosFromFPGA ():
 			etiquetaDataALUMemWbValorMIPS.config (text = etiqueta_data_ALU_MEM_WB)
 			ser.flushInput ()
 		
-		
+		if ((contador_etapas >= (CANT_DATOS_DB - 1)) and (contador_registros < CANT_REGISTROS)):
+			if (contador_primer_dato_reg != 0):
+				valor_registro = bytes_recibidos
+				cadena_valores_registros = cadena_valores_registros + "R" + str(contador_registros) + "\t\t" + getHexadecimal (valor_registro) + "\n"
+				
+				if (contador_registros <= CANT_REGISTROS):
+					contador_registros = contador_registros + 1
+					
+					
+				if (contador_registros == CANT_REGISTROS):
+					fileWriter (FILE_NAME_WRITE_REG, cadena_valores_registros)
+				
+				
+			else:
+				contador_primer_dato_reg = contador_primer_dato_reg + 1
 
-		if (contador_etapas >= (CANT_DATOS_DB - 1)):
-			if (contador_primer_dato != 0):
+
+
+
+		elif (contador_etapas >= (CANT_DATOS_DB - 1 + CANT_REGISTROS)):
+			if (contador_primer_dato_mem != 0):
 				dato_memoria = bytes_recibidos
 				if (contador_datos_mem == 0):
 					cadena_valores_memoria = cadena_valores_memoria + getHexadecimal (dato_memoria) + "\t"
@@ -716,10 +738,10 @@ def recibirDatosFromFPGA ():
 						activarBotones (1)
 						flag_receive = False
 					else:
-						contador_primer_dato = 0
+						contador_primer_dato_mem = 0
 						ser.flushInput()
 						flag_receive = False
-						fileWriter (FILE_NAME_WRITE, cadena_valores_memoria)
+						fileWriter (FILE_NAME_WRITE_MEM, cadena_valores_memoria)
 						etiquetaResultado.config (text = "WRITE OK", fg = "dark green")
 						if ((modo_ejecucion == '0') or (etiqueta_halt_detected_MEM_to_WB == ('1'))): #Continuo o Debug con halt
 							activarBotones (1)
@@ -730,7 +752,7 @@ def recibirDatosFromFPGA ():
 					contador_datos_mem = 0
 			
 			else:
-				contador_primer_dato = contador_primer_dato + 1
+				contador_primer_dato_mem = contador_primer_dato_mem + 1
 
 
 
