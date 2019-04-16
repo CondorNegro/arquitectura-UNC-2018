@@ -42,7 +42,7 @@
 `define CANT_BITS_ADDR_REGISTROS                5
 `define HALT_INSTRUCTION_TOP                    32'hFFFFFFFF
 `define CANT_BITS_SELECT_BYTES_MEM_DATA_TOP     3
-`define CANT_DATOS_DATABASE_TOP                 12
+`define CANT_DATOS_DATABASE_TOP                 13
 `define CANT_COLUMNAS_MEM_DATOS_TOP             4
 `define CANT_BITS_SELECCION_COLUMNAS_MEM_DATOS  2
 `define CANT_BITS_SELECTOR_MUX_FORWARD          2

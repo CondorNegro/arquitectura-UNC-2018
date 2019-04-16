@@ -20,7 +20,7 @@ module debug_unit
   parameter LONGITUD_INSTRUCCION = 32,  //  Cantidad de bits de la instruccion
   parameter CANT_BITS_REGISTRO = 32,
   parameter CANT_COLUMNAS_MEM_DATOS = 4,
-  parameter CANT_DATOS_DATABASE = 12, // Cantidad de datos a traer del database
+  parameter CANT_DATOS_DATABASE = 13, // Cantidad de datos a traer del database
   parameter CANT_REGISTROS = 32,
   parameter RAM_DATOS_DEPTH = 1024
 
@@ -185,7 +185,7 @@ always @ ( posedge i_clock ) begin //Memory
         end
         
         
-        if (reg_state == SEND_PART0 && reg_next_state == SEND_PART3) begin
+        if (reg_state == SEND_PART0 && reg_next_state == SEND_PART3 && reg_contador_datos_database < (CANT_DATOS_DATABASE - 1)) begin
         reg_contador_datos_database <= reg_contador_datos_database + 1;
         end
         else if (reg_state == EJECUCION) begin
@@ -365,7 +365,7 @@ always@( * ) begin //NEXT - STATE logic
 
        SEND_PART0  : begin
             if ((~i_rx_done & registro_rx_done) && (i_data_rx == 8'b00100000)) begin
-                if (reg_contador_datos_database != (CANT_DATOS_DATABASE - 1)) begin
+                if (reg_contador_datos_database < (CANT_DATOS_DATABASE - 2)) begin
                     reg_next_state = SEND_PART3;
                 end
                 else if (reg_contador_send_registros < (CANT_REGISTROS - 1)) begin // Se enviaron todos los datos de los latches.
