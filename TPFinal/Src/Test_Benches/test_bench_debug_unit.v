@@ -18,7 +18,7 @@ module test_bench_debug_unit();
   parameter HALT_INSTRUCTION = 32'hFFFFFFFF; //  Opcode de la instruccion HALT.
   parameter ADDR_MEM_PROG_LENGTH = 10;      //  Cantidad de bits del bus de direcciones de la memoria de programa.
   parameter ADDR_MEM_DATOS_LENGTH = 10;     //  Cantidad de bits del bus de direcciones de la memoria de datos.
-  parameter CANTIDAD_ESTADOS = 12;      //  Cantidad de estados
+  parameter CANTIDAD_ESTADOS = 13;      //  Cantidad de estados
   parameter LONGITUD_INSTRUCCION = 32;  //  Cantidad de bits de la instruccion
   parameter CANT_BITS_REGISTRO = 32;
   parameter CANT_DATOS_DATABASE = 3; // Cantidad de datos a traer del database

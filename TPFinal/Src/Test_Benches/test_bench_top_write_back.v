@@ -28,7 +28,9 @@ module test_bench_top_write_back();
     endfunction
     
 	// ENTRADAS.
-    
+    reg reg_clock;
+    reg reg_soft_reset;
+    reg reg_enable_pipeline;
     reg reg_RegWrite;
     reg reg_MemtoReg;
     reg [clogb2 (CANT_REGISTROS - 1) - 1 : 0] reg_registro_destino;
@@ -46,7 +48,9 @@ module test_bench_top_write_back();
 	
 	
 	initial	begin
-        
+        reg_clock = 0;
+        reg_soft_reset = 0;
+        reg_enable_pipeline = 1;
         reg_RegWrite = 0;
         reg_MemtoReg = 0;
         reg_registro_destino = 0;
@@ -54,7 +58,7 @@ module test_bench_top_write_back();
 		reg_data_alu = 0;
         reg_i_halt_detected = 1'b1;
 
-
+        #10 reg_soft_reset = 1; 
         #20 reg_registro_destino = 1;
         #20 reg_RegWrite = 1;
         #20 reg_data_mem = 2;
@@ -65,6 +69,8 @@ module test_bench_top_write_back();
 		
 		#500000 $finish;
 	end
+
+    always #2.5 reg_clock = ~reg_clock;  // Simulacion de clock.
 	
 	
 
@@ -76,6 +82,9 @@ top_write_back
     )
     u_top_write_back_1
     (
+        .i_clock (reg_clock),
+        .i_soft_reset (reg_soft_reset),
+        .i_enable_pipeline (reg_enable_pipeline),
         .i_registro_destino (reg_registro_destino),
         .i_data_mem (reg_data_mem),
         .i_data_alu (reg_data_alu),
