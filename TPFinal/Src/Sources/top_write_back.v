@@ -21,7 +21,7 @@ module top_write_back
        input i_soft_reset,
        input i_clock,
        input i_enable_pipeline,
-       
+
        input [clogb2 (CANT_REGISTROS - 1) - 1 : 0] i_registro_destino,
        
        input [CANT_BITS_REGISTROS - 1 : 0] i_data_mem,
@@ -36,7 +36,7 @@ module top_write_back
        output [clogb2 (CANT_REGISTROS - 1) - 1 : 0] o_registro_destino,
        output o_RegWrite,
        output [CANT_BITS_REGISTROS - 1 : 0] o_data_write,
-       output o_halt_detected,
+       output reg o_halt_detected,
 
 
        output o_led
