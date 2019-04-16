@@ -23,7 +23,7 @@
 `define INIT_FILE_PROGRAMA                      ""
 `define RAM_DEPTH_DATOS                         1024
 `define RAM_DEPTH_PROGRAMA                      1024
-`define CANT_ESTADOS_DEBUG_UNIT                 12
+`define CANT_ESTADOS_DEBUG_UNIT                 13
 `define ADDR_MEM_PROGRAMA_LENGTH                10
 `define ADDR_MEM_DATOS_LENGTH_TOP               10
 `define LONG_INSTRUCCION                        32
@@ -567,6 +567,9 @@ top_write_back
     )
     u_top_write_back_1
     (
+        .i_clock (i_clock),
+        .i_enable_pipeline (wire_enable_pipeline),
+        .i_soft_reset (wire_soft_reset),
         .i_registro_destino (wire_MEM_to_WB_registro_destino),
         .i_data_mem (wire_MEM_to_WB_data_mem),
         .i_data_alu (wire_MEM_to_WB_data_alu),

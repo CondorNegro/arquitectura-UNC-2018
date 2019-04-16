@@ -18,6 +18,9 @@ module top_write_back
        
    )
    (
+       input i_soft_reset,
+       input i_clock,
+       input i_enable_pipeline,
        
        input [clogb2 (CANT_REGISTROS - 1) - 1 : 0] i_registro_destino,
        
@@ -51,7 +54,21 @@ module top_write_back
 
     assign o_registro_destino = i_registro_destino;
     assign o_RegWrite = i_RegWrite;
-    assign o_halt_detected = i_halt_detected;
+    
+
+    always@(negedge i_clock) begin
+        if (~i_soft_reset) begin   
+            o_halt_detected <= 1'b0;   
+        end
+        else begin
+            if (i_enable_pipeline) begin
+                o_halt_detected <= i_halt_detected;
+            end
+            else begin
+                o_halt_detected <= o_halt_detected;
+            end 
+        end
+    end
 
 
 
