@@ -87,6 +87,9 @@ module test_bench_database();
     reg [CANT_BITS_REGISTROS - 1 : 0] reg_data_alu_MEM_to_WB;
     reg [CANT_BITS_REGISTROS - 1 : 0] reg_data_mem_MEM_to_WB;
 
+    // Write Back
+    reg reg_halt_detected_WB_to_Debug_Unit;
+
 
     wire [LONGITUD_INSTRUCCION - 1 : 0] wire_dato;
     
@@ -122,6 +125,7 @@ module test_bench_database();
         reg_MemtoReg_ID_to_EX = 0;
         reg_select_bytes_mem_data_ID_to_EX = 2;
         reg_halt_detected_ID_to_EX = 1;
+        reg_halt_detected_WB_to_Debug_Unit = 0;
 
         
         reg_ALUCtrl = 4;
@@ -241,6 +245,7 @@ database
         .i_registro_destino_MEM_to_WB (reg_registro_destino_MEM_to_WB),
         .i_data_alu_MEM_to_WB (reg_data_alu_MEM_to_WB),
         .i_data_mem_MEM_to_WB (reg_data_mem_MEM_to_WB),
+        .i_halt_detected_WB_to_Debug_Unit (reg_halt_detected_WB_to_Debug_Unit),
         .o_dato (wire_dato)
     );
 

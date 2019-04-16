@@ -657,6 +657,7 @@ database
         .i_registro_destino_MEM_to_WB (wire_MEM_to_WB_registro_destino),
         .i_data_alu_MEM_to_WB (wire_MEM_to_WB_data_alu),
         .i_data_mem_MEM_to_WB (wire_MEM_to_WB_data_mem),
+        .i_halt_detected_WB_to_Debug_Unit (wire_halt_detected_WB_to_DEBUG_UNIT), 
         .o_dato (wire_dato_database)
     );
 

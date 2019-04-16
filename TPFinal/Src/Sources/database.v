@@ -84,6 +84,10 @@ module database
         input [CANT_BITS_REGISTROS - 1 : 0] i_data_alu_MEM_to_WB,
         input [CANT_BITS_REGISTROS - 1 : 0] i_data_mem_MEM_to_WB,
 
+        // Write Back
+
+        input i_halt_detected_WB_to_Debug_Unit,
+
         output reg [LONGITUD_INSTRUCCION - 1 : 0] o_dato
 
    );
@@ -142,6 +146,9 @@ module database
     reg [CANT_BITS_REGISTROS - 1 : 0] reg_data_alu_MEM_to_WB;
     reg [CANT_BITS_REGISTROS - 1 : 0] reg_data_mem_MEM_to_WB;
 
+    // Write Back
+    reg reg_halt_detected_WB_to_Debug_Unit;
+
    //  The following function calculates the address width based on specified RAM depth
     function integer clogb2;
         input integer depth;
@@ -189,6 +196,7 @@ module database
         reg_registro_destino_MEM_to_WB <= 0;
         reg_data_alu_MEM_to_WB <= 0;
         reg_data_mem_MEM_to_WB <= 0;
+        reg_halt_detected_WB_to_Debug_Unit <= 0;
     end
     else begin
         if (i_control == 0) begin // No se hace nada, se mantienen los valores.
@@ -230,6 +238,7 @@ module database
             reg_registro_destino_MEM_to_WB <= reg_registro_destino_MEM_to_WB;
             reg_data_alu_MEM_to_WB <= reg_data_alu_MEM_to_WB;
             reg_data_mem_MEM_to_WB <= reg_data_mem_MEM_to_WB;
+            reg_halt_detected_WB_to_Debug_Unit <= reg_halt_detected_WB_to_Debug_Unit;
         end 
         if (i_control == 1) begin // Se guardan los valores de las entradas en los registros.
             reg_pc <= i_pc;
@@ -269,7 +278,8 @@ module database
             reg_halt_detected_MEM_to_WB <= i_halt_detected_MEM_to_WB;
             reg_registro_destino_MEM_to_WB <= i_registro_destino_MEM_to_WB;
             reg_data_alu_MEM_to_WB <= i_data_alu_MEM_to_WB;
-            reg_data_mem_MEM_to_WB <= i_data_mem_MEM_to_WB;            
+            reg_data_mem_MEM_to_WB <= i_data_mem_MEM_to_WB;
+            reg_halt_detected_WB_to_Debug_Unit <= i_halt_detected_WB_to_Debug_Unit;            
         end
         else if (i_control == 2) begin // Se devuelve el contador de programa y el contador de ciclos a la salida.
             o_dato <= {reg_pc, {((CANT_BITS_REGISTROS/2) - ADDR_LENGTH){1'b0}}, reg_contador_ciclos};
@@ -302,7 +312,7 @@ module database
             o_dato <= reg_data_write_to_mem;
         end
         else if (i_control == 11) begin // Se devuelven señales de control y el registro destino de la etapa EX.
-            o_dato <= {reg_RegWrite_MEM_to_WB, reg_MemtoReg_MEM_to_WB, reg_halt_detected_MEM_to_WB, reg_registro_destino_MEM_to_WB, {((CANT_BITS_REGISTROS / 2) - CANT_BITS_SELECT_BYTES_MEM_DATA - clogb2 (CANT_BITS_REGISTROS - 1) - 5) {1'b0}},reg_RegWrite_EX_to_MEM, reg_MemRead_EX_to_MEM, reg_MemWrite_EX_to_MEM, reg_MemtoReg_EX_to_MEM, reg_select_bytes_mem_datos_EX_to_MEM, reg_halt_detected_EX_to_MEM, reg_registro_destino_EX_to_MEM};
+            o_dato <= {reg_halt_detected_WB_to_Debug_Unit, reg_RegWrite_MEM_to_WB, reg_MemtoReg_MEM_to_WB, reg_halt_detected_MEM_to_WB, reg_registro_destino_MEM_to_WB, {((CANT_BITS_REGISTROS / 2) - CANT_BITS_SELECT_BYTES_MEM_DATA - clogb2 (CANT_BITS_REGISTROS - 1) - 5) {1'b0}},reg_RegWrite_EX_to_MEM, reg_MemRead_EX_to_MEM, reg_MemWrite_EX_to_MEM, reg_MemtoReg_EX_to_MEM, reg_select_bytes_mem_datos_EX_to_MEM, reg_halt_detected_EX_to_MEM, reg_registro_destino_EX_to_MEM};
         end
         else if (i_control == 12) begin
             o_dato <= reg_data_mem_MEM_to_WB;
