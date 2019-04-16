@@ -24,7 +24,7 @@ CANT_STOP_BITS = 2
 FILE_NAME = "init_ram_file.txt"
 FILE_NAME_WRITE_MEM = "datamem.txt"
 FILE_NAME_WRITE_REG = "datareg.txt"
-FLAG_TEST = False
+FLAG_TEST = True
 CANT_BITS_ADDRESS_MEM_PROGRAMA = 10
 CANT_BITS_ADDRESS_MEM_DATOS = 10
 CANT_REGISTROS = 32
@@ -82,6 +82,7 @@ etiqueta_mem_to_reg_MEM_to_WB = ""
 etiqueta_reg_write_MEM_TO_WB = ""
 etiqueta_mem_to_reg_MEM_to_WB = ""
 etiqueta_registro_destino_MEM_to_WB = ""
+etiqueta_flag_HALT_WB_to_Debug_Unit = ""
 
 lock = threading.Lock()
 modo_ejecucion = 0 #0: continuo - 1: debug
@@ -412,6 +413,7 @@ def recibirDatosFromFPGA ():
 	global etiqueta_reg_write_MEM_TO_WB
 	global etiqueta_mem_to_reg_MEM_to_WB
 	global etiqueta_registro_destino_MEM_to_WB
+	global etiqueta_flag_HALT_WB_to_Debug_Unit
 	flag_receive = True
 	bytes_recibidos = ""
 	bytes_recibidos_aux = ""
@@ -690,6 +692,10 @@ def recibirDatosFromFPGA ():
 						
 			etiquetaMemtoRegMEMtoWBValorMIPS.config (text = etiqueta_mem_to_reg_MEM_to_WB)
 
+
+			#Halt WB to Debug Unit
+			etiqueta_flag_HALT_WB_to_Debug_Unit = bytes_recibidos_mem [- CANT_BITS_ADDR_REGISTROS - 4]
+			etiquetaFlagHALTWBtoDebugUnitValorMIPS.config (text = etiqueta_flag_HALT_WB_to_Debug_Unit)
 		
 		
 		elif (contador_etapas == 10): #Data MEM
@@ -801,7 +807,8 @@ def sendInstructionsViaThread():
 	desactivarBotones()
 	print 'Thread de send instructions OK.'
 	global etiqueta_resultado_impresion
-	try:
+	#try:
+	if (True):
 		data_send = getCode('Send instructions')
 		if (len (data_send) == 8):
 			code_error = writeSerial (data_send)
@@ -832,10 +839,10 @@ def sendInstructionsViaThread():
 			print 'Warning: Deben ser 8 bits.'
 			etiquetaResultado.config (text = "Warning: Deben ser 8 bits", fg = "red")
 			activarBotones (0)
-	except: 
-		print 'Error en send instructions.'
-		etiquetaResultado.config (text = "ERROR_LOG", fg = "red")
-		activarBotones(0)
+	#except: 
+	#	print 'Error en send instructions.'
+	#	etiquetaResultado.config (text = "ERROR_LOG", fg = "red")
+	#	activarBotones(0)
 
 # Funcion que genera un thread que permite comenzar la ejecucion del MIPS.
 def iniciarMIPS():
@@ -1308,7 +1315,11 @@ etiquetaRegistroDestinoMEMtoWBValorMIPS= Label (root, text = etiqueta_registro_d
 etiquetaRegistroDestinoMEMtoWBValorMIPS.place (x = 1700,  y = 540)
 
 
-
+etiquetaFlagHaltWBDebugUnit = Label (root, text = "Flag HALT WB/Debug Unit: ", fg = "dark green", font = "TkDefaultFont 12")
+etiquetaFlagHaltWBDebugUnit.place (x = 900,  y = 500)
+etiquetaFlagHALTWBtoDebugUnitValorMIPS= Label (root, text = etiqueta_flag_HALT_WB_to_Debug_Unit,\
+	 fg = "dark green", font = "TkDefaultFont 12")
+etiquetaFlagHALTWBtoDebugUnitValorMIPS.place (x = 1150,  y = 500)
 
 # Titulo de la GUI 
 
