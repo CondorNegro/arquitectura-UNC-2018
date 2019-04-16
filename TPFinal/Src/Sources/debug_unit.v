@@ -221,7 +221,7 @@ always @ ( posedge i_clock ) begin //Memory
         end
 
         if (reg_state == REGISTROS_DATA_CHECK) begin
-            if (reg_contador_send_registros <= (clogb2 (CANT_REGISTROS - 1) - 1)) begin
+            if (reg_contador_send_registros < (CANT_REGISTROS - 1)) begin
                 flag_send_registro_R0 <= 1;
                 if (flag_send_registro_R0) begin
                     reg_contador_send_registros <= reg_contador_send_registros + 1;
