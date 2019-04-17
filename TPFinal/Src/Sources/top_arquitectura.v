@@ -55,7 +55,8 @@ module top_arquitectura(
   uart_txd_in,
   uart_rxd_out,
   //jc
-  o_leds 
+  o_leds,
+  led0 //RGB 0 
   );
 
 
@@ -105,6 +106,7 @@ input [CANT_SWITCHES - 1 : 0] i_switches;       // Switches.
 input uart_txd_in;                              // Transmisor de PC.
 output uart_rxd_out;                            // Receptor de PC.
 output [3 : 0] o_leds;                          // Leds.
+output [2 : 0] led0;                            // Led RGB.
 //output [7:0] jc;
 
 
@@ -555,7 +557,7 @@ top_mem
         .o_soft_reset_ack (wire_soft_reset_ack_datos),
         .o_dato_mem_to_debug_unit (wire_output_mem_datos),
         .o_bit_sucio_to_debug_unit (wire_bit_sucio),
-        .o_led ()
+        .o_led (led0)
     );
 
 // Modulo top de la etapa write back de la instruccion.

@@ -88,6 +88,7 @@ module test_bench_top_arquitectura_continuo();
    reg uart_txd_in_reg;                        // Tx de PC.
    wire uart_rxd_out_wire;                     // Rx de PC.
    wire [3:0] wire_leds;                       // Leds de la placa.
+   wire [2:0] wire_led_rgb;                    // Led RGB.
    
    
    initial    begin
@@ -1708,7 +1709,8 @@ top_arquitectura
      .i_switches (reg_switches),
      .uart_txd_in (uart_txd_in_reg),
      .uart_rxd_out (uart_rxd_out_wire),
-     .o_leds (wire_leds)
+     .o_leds (wire_leds),
+     .led0 (wire_led_rgb)
    );
   
 endmodule

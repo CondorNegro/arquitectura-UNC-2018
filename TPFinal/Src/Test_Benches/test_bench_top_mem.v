@@ -74,7 +74,7 @@ module test_bench_top_mem();
     wire [CANT_BITS_REGISTROS - 1 : 0] wire_dato_mem_to_debug_unit;
     wire wire_bit_sucio_to_debug_unit;
 
-    wire wire_led;
+    wire [2 : 0] wire_led;
 
 	
 	

@@ -66,7 +66,7 @@ module top_mem
        output [CANT_BITS_REGISTROS - 1 : 0] o_dato_mem_to_debug_unit,
        output o_bit_sucio_to_debug_unit,
 
-       output o_led
+       output [2 : 0] o_led
    );
 
 
