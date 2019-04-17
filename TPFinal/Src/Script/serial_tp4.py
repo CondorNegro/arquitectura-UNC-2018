@@ -152,7 +152,7 @@ def getHexadecimal (binario):
 
 	else:
 		print 'Binario incompleto en getHexadecimal.'
-		return binario
+		exit (1)
 	
 	return resultado
 		
