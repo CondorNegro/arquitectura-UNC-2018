@@ -692,6 +692,7 @@ hazard_detection_unit
         .i_registro_destino_ex (wire_reg_rt_ID_to_EX),
         .i_read_mem_ex (wire_MemRead_ID_to_EX),
         .i_disable_for_exception (wire_exception),
+        .i_enable_etapa (wire_enable_PC),
         .o_led (o_leds[1]),
         .o_bit_burbuja (wire_bit_burbuja) 
     );
