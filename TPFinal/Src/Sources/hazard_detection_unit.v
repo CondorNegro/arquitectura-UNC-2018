@@ -20,16 +20,18 @@ module hazard_detection_unit
        input [CANT_BITS_ADDR_REGISTROS - 1 : 0]  i_rt_id,
        input [CANT_BITS_ADDR_REGISTROS - 1 : 0]  i_registro_destino_ex,
        input i_read_mem_ex,
+       input i_disable_for_exception, 
 
 
-       output reg o_bit_burbuja     
+       output reg o_bit_burbuja    
    );
 
+    
    
 
     always@(*) begin
         if (i_read_mem_ex) begin // Es load
-            if ((i_registro_destino_ex == i_rs_id) || (i_registro_destino_ex == i_rt_id)) begin
+            if (((i_registro_destino_ex == i_rs_id) || (i_registro_destino_ex == i_rt_id)) && (~i_disable_for_exception)) begin
                 o_bit_burbuja = 1'b1;
             end
             else begin

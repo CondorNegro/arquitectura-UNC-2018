@@ -28,7 +28,8 @@ module branch_address_calculator
        input [CANT_BITS_REGISTROS - 1 : 0] i_dato_reg_B,
        input i_enable_etapa,
        output reg o_branch_control,
-       output reg [CANT_BITS_ADDR - 1 : 0] o_branch_dir
+       output reg [CANT_BITS_ADDR - 1 : 0] o_branch_dir,
+       output reg o_disable_for_exception_to_hazard_detection_unit
       
    );
 
@@ -44,6 +45,7 @@ module branch_address_calculator
                 begin
                   o_branch_control = 1'b0;
                   o_branch_dir = wire_resultado_sumador;
+                  o_disable_for_exception_to_hazard_detection_unit = 1'b0;
                   
                 end
 
@@ -51,16 +53,19 @@ module branch_address_calculator
                 begin
                   o_branch_control = 1'b1;
                   o_branch_dir = i_dato_reg_A;
+                  o_disable_for_exception_to_hazard_detection_unit = 1'b0;
                 end
 
             2://JALR
                 begin
                   o_branch_control = 1'b1;
                   o_branch_dir = i_dato_reg_A;
+                  o_disable_for_exception_to_hazard_detection_unit = 1'b0;
                 end
 
             3://BEQ
                 begin
+                  o_disable_for_exception_to_hazard_detection_unit = 1'b0;
                   if ((i_dato_reg_A - i_dato_reg_B) == 0) begin
                     o_branch_control = 1'b1;
                   end
@@ -72,6 +77,7 @@ module branch_address_calculator
 
             4://BNE
                 begin
+                  o_disable_for_exception_to_hazard_detection_unit = 1'b0;
                   if ((i_dato_reg_A - i_dato_reg_B) != 0) begin
                     o_branch_control = 1'b1;
                   end
@@ -85,6 +91,7 @@ module branch_address_calculator
                 begin
                   o_branch_control = 1'b1;
                   o_branch_dir = i_instruction_index_branch [CANT_BITS_ADDR - 1 : 0];
+                  o_disable_for_exception_to_hazard_detection_unit = 1'b1;
                   //en MIPS se deberia concatenar con BITS MSB del PC, 
                 end
 
@@ -92,6 +99,7 @@ module branch_address_calculator
                 begin
                   o_branch_control = 1'b0;
                   o_branch_dir = wire_resultado_sumador;
+                  o_disable_for_exception_to_hazard_detection_unit = 1'b0;
                 end
 
           endcase
@@ -99,6 +107,7 @@ module branch_address_calculator
       else begin
             o_branch_control = o_branch_control;
             o_branch_dir = o_branch_dir;
+            o_disable_for_exception_to_hazard_detection_unit = 1'b0;
       end
     end
 

@@ -33,6 +33,7 @@ module test_bench_branch_address_calculator();
 
     wire wire_o_branch_control;
     wire [CANT_BITS_ADDR - 1 : 0] wire_o_branch_dir;
+    wire wire_disable_for_exception_to_hazard_detection_unit;
 	
     
 	
@@ -116,7 +117,8 @@ branch_address_calculator
         .i_dato_reg_B (reg_i_dato_reg_B),
         .i_enable_etapa (reg_enable_etapa),
         .o_branch_control (wire_o_branch_control),
-        .o_branch_dir (wire_o_branch_dir)
+        .o_branch_dir (wire_o_branch_dir),
+        .o_disable_for_exception_to_hazard_detection_unit (wire_disable_for_exception_to_hazard_detection_unit)
     );
    
 endmodule

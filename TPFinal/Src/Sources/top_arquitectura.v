@@ -456,6 +456,7 @@ top_id
         .o_halt_detected (wire_halt_detected_ID_to_EX),
         .o_select_bytes_mem_datos (wire_select_bytes_mem_datos_ID_to_EX),
         .o_reg_data_to_debug_unit (wire_reg_data_from_register_file_to_debug_unit),
+        .o_disable_for_exception_to_hazard_detection_unit (wire_exception),
         .o_led (o_leds[2])
     );
 
@@ -688,7 +689,7 @@ hazard_detection_unit
         .i_rt_id (wire_reg_rt_to_hazard),
         .i_registro_destino_ex (wire_reg_rt_ID_to_EX),
         .i_read_mem_ex (wire_MemRead_ID_to_EX),
-
+        .i_disable_for_exception (wire_exception),
         .o_bit_burbuja (wire_bit_burbuja) 
     );
 
