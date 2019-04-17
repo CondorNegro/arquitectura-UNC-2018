@@ -21,6 +21,7 @@ module test_bench_hazard_detection_unit();
     reg [CANT_BITS_ADDR_REGISTROS - 1 : 0] reg_registro_destino_ex;
     
     reg reg_read_mem_ex;
+    reg reg_disable_for_exception;
     
     wire wire_bit_burbuja;   
     
@@ -30,12 +31,15 @@ module test_bench_hazard_detection_unit();
         reg_rs_id = 1;
         reg_rt_id = 2;
         reg_registro_destino_ex = 0;
+        reg_disable_for_exception = 0;
 
         #10 reg_registro_destino_ex = 1;
         #20 reg_read_mem_ex = 1;
+        #10 reg_disable_for_exception = 1;
+        #10 reg_disable_for_exception = 0;
         #30 reg_registro_destino_ex = 2;
         #10 reg_registro_destino_ex = 3;
-    
+       
 
 		#50 $finish;
 	end
@@ -54,6 +58,7 @@ hazard_detection_unit
         .i_rt_id (reg_rt_id),
         .i_registro_destino_ex (reg_registro_destino_ex),
         .i_read_mem_ex (reg_read_mem_ex),
+        .i_disable_for_exception (reg_disable_for_exception),
 
         .o_bit_burbuja (wire_bit_burbuja) 
     );

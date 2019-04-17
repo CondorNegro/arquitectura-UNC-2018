@@ -76,6 +76,7 @@ module top_id
        output reg [CANT_BITS_SELECT_BYTES_MEM_DATA - 1 : 0] o_select_bytes_mem_datos,
        
        output [CANT_BITS_REGISTROS - 1 : 0] o_reg_data_to_debug_unit,
+       output o_disable_for_exception_to_hazard_detection_unit,
        output o_led
    );
 
@@ -263,7 +264,8 @@ branch_address_calculator
         .i_instruction_index_branch (wire_output_instruction_index_branch_decoder_TO_instruction_index_branch_branch_address_calculator),
         .i_enable_etapa (i_enable_etapa),
         .o_branch_control (o_branch_control),
-        .o_branch_dir (o_branch_dir)
+        .o_branch_dir (o_branch_dir),
+        .o_disable_for_exception_to_hazard_detection_unit (o_disable_for_exception_to_hazard_detection_unit)
     );
 
 
