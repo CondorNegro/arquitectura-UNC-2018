@@ -29,6 +29,7 @@ module top_mem
        input i_soft_reset,
        
        input i_enable_pipeline,
+       input i_enable_etapa,
        
        input i_halt_detected,
        input i_control_write_read_mem,
@@ -66,7 +67,7 @@ module top_mem
        output [CANT_BITS_REGISTROS - 1 : 0] o_dato_mem_to_debug_unit,
        output o_bit_sucio_to_debug_unit,
 
-       output [2 : 0] o_led
+       output reg [2 : 0] o_led
    );
 
 
@@ -102,6 +103,7 @@ module top_mem
             o_halt_detected <= 1'b0;
             o_data_alu <= 0;
             o_data_mem <= 0;
+            o_led <= 4;
       end
       else begin
             if (i_enable_pipeline) begin
@@ -111,6 +113,12 @@ module top_mem
                 o_halt_detected <= i_halt_detected;
                 o_data_alu <= i_address_ALU;
                 o_data_mem <= wire_dato_mem_acondicionado;
+                if (wire_bit_sucio == 1) begin
+                    o_led <= 1;
+                end
+                else begin
+                    o_led <= o_led;
+                end
             end
             else begin
                 o_RegWrite <= o_RegWrite;
@@ -119,6 +127,7 @@ module top_mem
                 o_halt_detected <= o_halt_detected;
                 o_data_alu <= o_data_alu;
                 o_data_mem <= o_data_mem;
+                o_led <= o_led;
             end 
     end
     end
@@ -160,6 +169,7 @@ output_logic_mem_datos
         .i_dato_mem (wire_dato_mem_output),
         .i_select_op (i_select_bytes_mem_datos),
         .i_address_mem_LSB (wire_address_mem [clogb2 (CANT_COLUMNAS_MEM_DATOS - 1) - 1 : 0]),
+        .i_enable_etapa (i_enable_etapa),
         .o_resultado (wire_dato_mem_acondicionado)
     );
 
@@ -177,6 +187,7 @@ input_logic_mem_datos
         .i_read_mem (i_MemRead),
         .i_address_mem_LSB (wire_address_mem [clogb2 (CANT_COLUMNAS_MEM_DATOS - 1) - 1 : 0]),
         .i_dato_mem (i_data_write_mem),
+        .i_enable_etapa (i_enable_etapa),
         .o_dato_mem (wire_output_data_write_mem_to_mem_data),
         .o_write_read_mem (wire_wea_input_logic_to_mux)
 

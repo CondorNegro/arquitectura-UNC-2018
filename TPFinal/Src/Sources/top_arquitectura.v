@@ -548,6 +548,7 @@ top_mem
         .i_MemtoReg (wire_EX_to_MEM_MemtoReg),
         .i_select_bytes_mem_datos (wire_select_bytes_mem_datos_EX_to_MEM),
         .i_registro_destino (wire_EX_to_MEM_registro_destino),
+        .i_enable_etapa (wire_enable_PC),
         .o_RegWrite (wire_MEM_to_WB_RegWrite),
         .o_MemtoReg (wire_MEM_to_WB_MemtoReg),
         .o_registro_destino (wire_MEM_to_WB_registro_destino),

@@ -117,7 +117,7 @@ reg flag_enable_pipeline; //Flag para habilitar o no el enable_pipeline.
 reg [ADDR_MEM_DATOS_LENGTH - 1 : 0] reg_contador_address_mem_datos;
 reg [1 : 0] reg_contador_send_datos_mem_datos;
 
-assign o_address_debug_unit = reg_contador_address_mem_datos;
+assign o_address_debug_unit = reg_contador_address_mem_datos << 2;
 
 
 always @ ( posedge i_clock ) begin //Memory

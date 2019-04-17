@@ -48,7 +48,7 @@ module test_bench_top_mem();
     reg [CANT_BITS_REGISTROS - 1 : 0] reg_address_ALU;
     reg [CANT_BITS_ADDR - 1 : 0] reg_address_debug_unit;
     reg [CANT_BITS_REGISTROS - 1 : 0] reg_data_write_mem;
-    
+    reg reg_enable_etapa;
     
     // Control
 
@@ -85,6 +85,7 @@ module test_bench_top_mem();
         reg_halt_detected = 1'b0;
         reg_control_write_read_mem = 1'b0;
         reg_control_address_mem = 1'b0;
+        reg_enable_etapa = 1'b1;
         
         reg_enable_mem_datos = 1'b1;
         reg_rsta = 1'b0;
@@ -159,7 +160,7 @@ top_mem
         .i_soft_reset (reg_soft_reset),
         
         .i_enable_pipeline (reg_enable_pipeline),
-        
+        .i_enable_etapa (reg_enable_etapa),
         .i_halt_detected (reg_halt_detected),
         .i_control_write_read_mem (reg_control_write_read_mem),
         .i_control_address_mem (reg_control_address_mem),

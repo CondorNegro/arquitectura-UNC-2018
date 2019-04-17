@@ -22,6 +22,7 @@ module output_logic_mem_datos
         input [INPUT_OUTPUT_LENGTH - 1 : 0] i_dato_mem,
         input [CANT_BITS_SELECT_BYTES_MEM_DATA - 1 : 0] i_select_op,
         input [clogb2 (CANT_COLUMNAS_MEM_DATOS - 1) - 1 : 0] i_address_mem_LSB,
+        input i_enable_etapa,
         output reg [INPUT_OUTPUT_LENGTH - 1 : 0] o_resultado
    );
 
@@ -37,54 +38,60 @@ module output_logic_mem_datos
     
 
     always@(*) begin
-        if (i_select_op [CANT_BITS_SELECT_BYTES_MEM_DATA - 1]) begin // Signado
-           case (i_select_op [CANT_BITS_SELECT_BYTES_MEM_DATA - 2 : 0]) 
-                1://Byte
-                    begin
-                        reg_dato_mem_shifted = i_dato_mem >> (i_address_mem_LSB * (INPUT_OUTPUT_LENGTH / CANT_COLUMNAS_MEM_DATOS));
-                        o_resultado = { { ((INPUT_OUTPUT_LENGTH / 4) * 3) {reg_dato_mem_shifted [INPUT_OUTPUT_LENGTH / 4 - 1] } }, reg_dato_mem_shifted [INPUT_OUTPUT_LENGTH / 4 - 1 : 0] };
-                    end
-                2: //Halfword
-                    begin
-                        reg_dato_mem_shifted = i_dato_mem >> (i_address_mem_LSB [clogb2 (CANT_COLUMNAS_MEM_DATOS - 1) - 1] * (INPUT_OUTPUT_LENGTH / (CANT_COLUMNAS_MEM_DATOS / 2))); 
-                        o_resultado = { { (INPUT_OUTPUT_LENGTH / 2) {reg_dato_mem_shifted [INPUT_OUTPUT_LENGTH / 2 - 1] } }, reg_dato_mem_shifted [INPUT_OUTPUT_LENGTH / 2 - 1 : 0] };
-                        
-                    end
-                3: //Word
-                    begin
-                        reg_dato_mem_shifted = i_dato_mem;
-                        o_resultado = reg_dato_mem_shifted;
-                    end
-                default:
-                    begin
-                        reg_dato_mem_shifted = i_dato_mem;
-                        o_resultado = reg_dato_mem_shifted;
-                    end
-           endcase
-        end
-        else begin // Unsigned
+        if (i_enable_etapa) begin
+            if (i_select_op [CANT_BITS_SELECT_BYTES_MEM_DATA - 1]) begin // Signado
             case (i_select_op [CANT_BITS_SELECT_BYTES_MEM_DATA - 2 : 0]) 
-                1://Byte
-                    begin
-                      reg_dato_mem_shifted = i_dato_mem >> (i_address_mem_LSB * (INPUT_OUTPUT_LENGTH / CANT_COLUMNAS_MEM_DATOS));
-                      o_resultado = reg_dato_mem_shifted & 32'h000000FF;
-                    end
-                2: //Halfword
-                    begin
-                        reg_dato_mem_shifted = i_dato_mem >> (i_address_mem_LSB [clogb2 (CANT_COLUMNAS_MEM_DATOS - 1) - 1] * (INPUT_OUTPUT_LENGTH / (CANT_COLUMNAS_MEM_DATOS / 2))); 
-                        o_resultado =  reg_dato_mem_shifted & 32'h0000FFFF;
-                    end
-                3: //Word
-                    begin
-                        reg_dato_mem_shifted = i_dato_mem;
-                        o_resultado = reg_dato_mem_shifted;
-                    end
-                default:
-                    begin
-                        reg_dato_mem_shifted = i_dato_mem;
-                        o_resultado = reg_dato_mem_shifted;
-                    end
+                    1://Byte
+                        begin
+                            reg_dato_mem_shifted = i_dato_mem >> (i_address_mem_LSB * (INPUT_OUTPUT_LENGTH / CANT_COLUMNAS_MEM_DATOS));
+                            o_resultado = { { ((INPUT_OUTPUT_LENGTH / 4) * 3) {reg_dato_mem_shifted [INPUT_OUTPUT_LENGTH / 4 - 1] } }, reg_dato_mem_shifted [INPUT_OUTPUT_LENGTH / 4 - 1 : 0] };
+                        end
+                    2: //Halfword
+                        begin
+                            reg_dato_mem_shifted = i_dato_mem >> (i_address_mem_LSB [clogb2 (CANT_COLUMNAS_MEM_DATOS - 1) - 1] * (INPUT_OUTPUT_LENGTH / (CANT_COLUMNAS_MEM_DATOS / 2))); 
+                            o_resultado = { { (INPUT_OUTPUT_LENGTH / 2) {reg_dato_mem_shifted [INPUT_OUTPUT_LENGTH / 2 - 1] } }, reg_dato_mem_shifted [INPUT_OUTPUT_LENGTH / 2 - 1 : 0] };
+                            
+                        end
+                    3: //Word
+                        begin
+                            reg_dato_mem_shifted = i_dato_mem;
+                            o_resultado = reg_dato_mem_shifted;
+                        end
+                    default:
+                        begin
+                            reg_dato_mem_shifted = i_dato_mem;
+                            o_resultado = reg_dato_mem_shifted;
+                        end
             endcase
+            end
+            else begin // Unsigned
+                case (i_select_op [CANT_BITS_SELECT_BYTES_MEM_DATA - 2 : 0]) 
+                    1://Byte
+                        begin
+                        reg_dato_mem_shifted = i_dato_mem >> (i_address_mem_LSB * (INPUT_OUTPUT_LENGTH / CANT_COLUMNAS_MEM_DATOS));
+                        o_resultado = reg_dato_mem_shifted & 32'h000000FF;
+                        end
+                    2: //Halfword
+                        begin
+                            reg_dato_mem_shifted = i_dato_mem >> (i_address_mem_LSB [clogb2 (CANT_COLUMNAS_MEM_DATOS - 1) - 1] * (INPUT_OUTPUT_LENGTH / (CANT_COLUMNAS_MEM_DATOS / 2))); 
+                            o_resultado =  reg_dato_mem_shifted & 32'h0000FFFF;
+                        end
+                    3: //Word
+                        begin
+                            reg_dato_mem_shifted = i_dato_mem;
+                            o_resultado = reg_dato_mem_shifted;
+                        end
+                    default:
+                        begin
+                            reg_dato_mem_shifted = i_dato_mem;
+                            o_resultado = reg_dato_mem_shifted;
+                        end
+                endcase
+            end
+        end
+        else begin
+            reg_dato_mem_shifted = reg_dato_mem_shifted;
+            o_resultado = o_resultado;
         end
     end
 
