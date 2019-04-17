@@ -497,7 +497,7 @@ top_ejecucion
         .i_select_bytes_mem_datos (wire_select_bytes_mem_datos_ID_to_EX),
         .i_selector_mux_A_forward (wire_selector_mux_A_forward),
         .i_selector_mux_B_forward (wire_selector_mux_B_forward),
-        .i_data_forward_WB (wire_MEM_to_WB_data_mem),
+        .i_data_forward_WB (wire_data_write_ID),
         .i_data_forward_MEM (wire_resultado_ALU), 
         .o_RegWrite (wire_EX_to_MEM_RegWrite),
         .o_MemRead (wire_EX_to_MEM_MemRead),
