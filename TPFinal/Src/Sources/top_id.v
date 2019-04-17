@@ -172,7 +172,7 @@ module top_id
                     o_halt_detected <= wire_halt_detected_ID_TO_EX;
                     o_select_bytes_mem_datos <= wire_select_bytes_mem_datos;
                 end
-                else if (i_bit_burbuja_hazard) begin
+                else if (i_enable_pipeline & i_bit_burbuja_hazard) begin
                     o_data_A <= o_data_A;
                     o_data_B <= o_data_B;
                     o_extension_signo_constante <= o_extension_signo_constante;

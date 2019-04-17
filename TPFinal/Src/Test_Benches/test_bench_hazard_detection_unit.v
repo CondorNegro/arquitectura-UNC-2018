@@ -23,7 +23,8 @@ module test_bench_hazard_detection_unit();
     reg reg_read_mem_ex;
     reg reg_disable_for_exception;
     
-    wire wire_bit_burbuja;   
+    wire wire_bit_burbuja; 
+    wire wire_led;  
     
 
 	initial	begin
@@ -59,6 +60,7 @@ hazard_detection_unit
         .i_registro_destino_ex (reg_registro_destino_ex),
         .i_read_mem_ex (reg_read_mem_ex),
         .i_disable_for_exception (reg_disable_for_exception),
+        .o_led (wire_led),
 
         .o_bit_burbuja (wire_bit_burbuja) 
     );

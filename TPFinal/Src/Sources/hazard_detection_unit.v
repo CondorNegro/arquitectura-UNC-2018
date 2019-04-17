@@ -22,7 +22,7 @@ module hazard_detection_unit
        input i_read_mem_ex,
        input i_disable_for_exception, 
 
-
+       output reg o_led, 
        output reg o_bit_burbuja    
    );
 
@@ -33,13 +33,16 @@ module hazard_detection_unit
         if (i_read_mem_ex) begin // Es load
             if (((i_registro_destino_ex == i_rs_id) || (i_registro_destino_ex == i_rt_id)) && (~i_disable_for_exception)) begin
                 o_bit_burbuja = 1'b1;
+                o_led = 0;
             end
             else begin
                 o_bit_burbuja = 1'b0;
+                o_led = 1;
             end
         end
         else begin
           o_bit_burbuja = 1'b0;
+          o_led = 1;
         end
     end
     
