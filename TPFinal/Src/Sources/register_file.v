@@ -25,6 +25,7 @@ module register_file
         input [CANTIDAD_BITS_REGISTROS - 1 : 0] i_data_write,
         input i_control_write,
         input [CANTIDAD_BITS_ADDRESS_REGISTROS - 1 : 0] i_reg_read_from_debug_unit,
+        input i_enable_etapa,
         output reg [CANTIDAD_BITS_REGISTROS - 1 : 0] o_reg_data_to_debug_unit,
         output reg [CANTIDAD_BITS_REGISTROS - 1 : 0] o_data_A,
         output reg [CANTIDAD_BITS_REGISTROS - 1 : 0] o_data_B,
@@ -33,6 +34,7 @@ module register_file
 
 
 reg [CANTIDAD_REGISTROS -  1 : 0] registros [CANTIDAD_BITS_REGISTROS - 1 : 0];
+reg [CANTIDAD_BITS_ADDRESS_REGISTROS - 1 : 0] reg_contador_reset;
 
 // Inicializo registros.
 generate
@@ -67,12 +69,26 @@ always@( posedge i_clock) begin
 end
 
 always@( negedge i_clock) begin // Escritura de registros.
-    if ((i_soft_reset == 1'b1) && (i_control_write == 1'b1)) begin
-       registros [i_reg_Write] <= i_data_write;
+    if (~i_soft_reset) begin
+        registros[reg_contador_reset] <= 0;
+        if (reg_contador_reset < CANTIDAD_REGISTROS -  1) begin
+            reg_contador_reset <= reg_contador_reset + 1;
+        end
+        else begin
+            reg_contador_reset <= reg_contador_reset;
+        end
     end
     else begin
-        registros [i_reg_Write] <= registros [i_reg_Write];
+        reg_contador_reset <= 0;
+        
+        if ((i_control_write == 1'b1) && i_enable_etapa) begin
+            registros [i_reg_Write] <= i_data_write;
+        end
+        else begin
+            registros [i_reg_Write] <= registros [i_reg_Write];
+        end
     end
+    
 end
 
 endmodule
