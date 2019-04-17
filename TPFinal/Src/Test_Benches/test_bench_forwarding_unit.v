@@ -23,9 +23,11 @@ module test_bench_forwarding_unit();
     reg [CANT_BITS_ADDR_REGISTROS - 1 : 0] reg_i_registro_destino_wb;
     reg reg_i_reg_write_mem;
     reg reg_i_reg_write_wb;
+    reg reg_enable_etapa;
     
     wire [CANT_BITS_SELECTOR_MUX - 1 : 0] wire_o_selector_mux_A;
-    wire [CANT_BITS_SELECTOR_MUX - 1 : 0] wire_o_selector_mux_B;   
+    wire [CANT_BITS_SELECTOR_MUX - 1 : 0] wire_o_selector_mux_B;  
+    wire [1 : 0] wire_leds; 
     
 
 	initial	begin
@@ -35,6 +37,7 @@ module test_bench_forwarding_unit();
     reg_i_registro_destino_wb = 0;
     reg_i_reg_write_mem = 0;
     reg_i_reg_write_wb = 0;
+    reg_enable_etapa = 1;
     
     #10 reg_i_reg_write_wb = 1'b1;
     
@@ -91,6 +94,8 @@ forwarding_unit
         .i_registro_destino_wb (reg_i_registro_destino_wb),
         .i_reg_write_mem (reg_i_reg_write_mem),
         .i_reg_write_wb (reg_i_reg_write_wb),
+        .i_enable_etapa (reg_enable_etapa),
+        .o_led (wire_leds),
 
         .o_selector_mux_A (wire_o_selector_mux_A),
         .o_selector_mux_B (wire_o_selector_mux_B)   

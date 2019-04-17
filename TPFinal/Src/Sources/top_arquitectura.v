@@ -231,7 +231,7 @@ wire [CANT_BITS_SELECTOR_MUX_FORWARD - 1 : 0] wire_selector_mux_B_forward;
 wire wire_bit_burbuja;
 wire [CANT_BITS_ADDR_REGISTROS - 1 : 0] wire_reg_rs_to_hazard;
 wire [CANT_BITS_ADDR_REGISTROS - 1 : 0] wire_reg_rt_to_hazard;
-
+wire wire_exception;
 
 
 // Asignaciones de wires.
@@ -248,7 +248,7 @@ assign wire_soft_reset_ack = wire_soft_reset_ack_prog | wire_soft_reset_ack_dato
 //assign uart_rxd_out = prueba;
 //assign o_leds[1] = 1'b0;
 //assign o_leds[2] = 1'b0;
-assign o_leds[3] = 1'b0;
+//assign o_leds[3] = 1'b0;
 
 
 // Modulo clock_wizard.
@@ -457,7 +457,7 @@ top_id
         .o_select_bytes_mem_datos (wire_select_bytes_mem_datos_ID_to_EX),
         .o_reg_data_to_debug_unit (wire_reg_data_from_register_file_to_debug_unit),
         .o_disable_for_exception_to_hazard_detection_unit (wire_exception),
-        .o_led (o_leds[2])
+        .o_led ()
     );
 
 
@@ -675,6 +675,8 @@ forwarding_unit
         .i_registro_destino_wb (wire_MEM_to_WB_registro_destino),
         .i_reg_write_mem (wire_EX_to_MEM_RegWrite),
         .i_reg_write_wb (wire_MEM_to_WB_RegWrite),
+        .i_enable_etapa (wire_enable_PC),
+        .o_led (o_leds [3:2]),
         .o_selector_mux_A (wire_selector_mux_A_forward),
         .o_selector_mux_B (wire_selector_mux_B_forward)     
     );
