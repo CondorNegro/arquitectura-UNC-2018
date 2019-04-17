@@ -81,7 +81,7 @@ mux
    (
        .i_data_A (i_data_mem),
        .i_data_B (i_data_alu),
-       .i_selector (i_MemtoReg),
+       .i_selector (~i_MemtoReg),
        .o_result (o_data_write)
     );
 
