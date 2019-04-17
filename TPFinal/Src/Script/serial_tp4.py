@@ -749,7 +749,7 @@ def recibirDatosFromFPGA ():
 					flag_receive = False
 					fileWriter (FILE_NAME_WRITE_MEM, cadena_valores_memoria)
 					etiquetaResultado.config (text = "WRITE OK", fg = "dark green")
-					if ((modo_ejecucion == '0') or (etiqueta_halt_detected_MEM_to_WB == ('1'))): #Continuo o Debug con halt
+					if ((modo_ejecucion == '0') or (etiqueta_flag_HALT_WB_to_Debug_Unit == ('1'))): #Continuo o Debug con halt
 						activarBotones (1)
 					else: #Debug
 						activarBotones (4)
@@ -807,8 +807,7 @@ def sendInstructionsViaThread():
 	desactivarBotones()
 	print 'Thread de send instructions OK.'
 	global etiqueta_resultado_impresion
-	#try:
-	if (True):
+	try:
 		data_send = getCode('Send instructions')
 		if (len (data_send) == 8):
 			code_error = writeSerial (data_send)
@@ -839,10 +838,10 @@ def sendInstructionsViaThread():
 			print 'Warning: Deben ser 8 bits.'
 			etiquetaResultado.config (text = "Warning: Deben ser 8 bits", fg = "red")
 			activarBotones (0)
-	#except: 
-	#	print 'Error en send instructions.'
-	#	etiquetaResultado.config (text = "ERROR_LOG", fg = "red")
-	#	activarBotones(0)
+	except: 
+		print 'Error en send instructions.'
+		etiquetaResultado.config (text = "ERROR_LOG", fg = "red")
+		activarBotones(0)
 
 # Funcion que genera un thread que permite comenzar la ejecucion del MIPS.
 def iniciarMIPS():
