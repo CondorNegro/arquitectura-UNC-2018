@@ -51,8 +51,8 @@ SLL R21,R1,F
 SRLV R22,R1,R4
 //Cargo en R23 el resultado de R1 << R4
 SLLV R23,R1,R4
-//Cargo en R24 el resultado de R1 >>> 5
-SRA R24,R1,B
+//Cargo en R24 el resultado de R1 >>> 1
+SRA R24,R1,E
 //Cargo en R25 el resultado de R13 >>> R4
 SRAV R25,R13,R4
 //Almaceno datos en memoria

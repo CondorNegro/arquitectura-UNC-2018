@@ -20,7 +20,7 @@ module alu
        input [CANT_BITS_ALU_CONTROL - 1 : 0]  i_ALUCtrl,
        input [CANT_BITS_DATO - 1 : 0]  i_datoA,
        input [CANT_BITS_DATO - 1 : 0]  i_datoB,
-       output reg [CANT_BITS_DATO - 1 : 0] o_resultado     
+       output reg [CANT_BITS_DATO - 1 : 0] o_resultado
    );
 
    reg signed [CANT_BITS_DATO - 1 : 0]  reg_signed_datoA;
@@ -46,7 +46,7 @@ module alu
                 end
             4'b1101://SRA //SRAV
                 begin
-                    o_resultado = i_datoA >>> i_datoB;
+                    o_resultado = reg_signed_datoA >>> i_datoB;
                 end
             4'b0010://ADDU //ADDI //LOAD
                 begin
