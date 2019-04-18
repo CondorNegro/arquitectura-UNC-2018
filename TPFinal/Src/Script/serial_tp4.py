@@ -432,6 +432,7 @@ def recibirDatosFromFPGA ():
 	
 	contador_datos_mem = 0
 	dato_memoria = ""
+	contador_primer_dato_mem = 1
 	
 
 	while (flag_receive):
@@ -728,34 +729,40 @@ def recibirDatosFromFPGA ():
 
 		#Memoria
 		elif (contador_etapas >= (CANT_DATOS_DB - 1 + CANT_REGISTROS)):
-
-			dato_memoria = bytes_recibidos
-			if (contador_datos_mem == 0):
-				cadena_valores_memoria = cadena_valores_memoria + getHexadecimal (dato_memoria) + "\t"
-			elif (contador_datos_mem == 1):
-				cadena_valores_memoria = cadena_valores_memoria + getHexadecimal (dato_memoria) + "\n"
-			
-
-			contador_datos_mem = contador_datos_mem + 1
-			
-			if ((contador_datos_mem == 2) and (dato_memoria [- CANT_BITS_ADDRESS_MEM_DATOS :] == ('1' * CANT_BITS_ADDRESS_MEM_DATOS))):
+			if ((contador_primer_dato_mem % 3) != 0):
+				contador_primer_dato_mem = contador_primer_dato_mem + 1
+				dato_memoria = bytes_recibidos
+				if (contador_datos_mem == 0):
+					cadena_valores_memoria = cadena_valores_memoria + getHexadecimal (dato_memoria) + "\t"
+				elif (contador_datos_mem == 1):
+					cadena_valores_memoria = cadena_valores_memoria + getHexadecimal (dato_memoria) + "\n"
 				
-				code_error = writeSerial (getCode('Mem-Read-Fin-Ack'))
-				if (code_error < 0):
-					activarBotones (1)
-					flag_receive = False
-				else:
-					ser.flushInput()
-					flag_receive = False
-					fileWriter (FILE_NAME_WRITE_MEM, cadena_valores_memoria)
-					etiquetaResultado.config (text = "WRITE OK", fg = "dark green")
-					if ((modo_ejecucion == '0') or (etiqueta_flag_HALT_WB_to_Debug_Unit == ('1'))): #Continuo o Debug con halt
-						activarBotones (1)
-					else: #Debug
-						activarBotones (4)
 
-			if (contador_datos_mem == 2):
-				contador_datos_mem = 0
+				contador_datos_mem = contador_datos_mem + 1
+				
+				if ((contador_datos_mem == 2) and (dato_memoria [- CANT_BITS_ADDRESS_MEM_DATOS :] == ('1' * CANT_BITS_ADDRESS_MEM_DATOS))):
+					
+					code_error = writeSerial (getCode('Mem-Read-Fin-Ack'))
+					if (code_error < 0):
+						activarBotones (1)
+						flag_receive = False
+					else:
+						ser.flushInput()
+						flag_receive = False
+						fileWriter (FILE_NAME_WRITE_MEM, cadena_valores_memoria)
+						etiquetaResultado.config (text = "WRITE OK", fg = "dark green")
+						if ((modo_ejecucion == '0') or (etiqueta_flag_HALT_WB_to_Debug_Unit == ('1'))): #Continuo o Debug con halt
+							activarBotones (1)
+						else: #Debug
+							activarBotones (4)
+
+				if (contador_datos_mem == 2):
+					contador_datos_mem = 0
+			
+			else:
+				contador_primer_dato_mem = 1
+				
+
 			
 
 
