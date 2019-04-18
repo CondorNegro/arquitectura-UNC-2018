@@ -673,7 +673,7 @@ forwarding_unit
     u_forwarding_unit_1
     (
         .i_rs_ex (wire_reg_rs_ID_to_EX),
-        .i_rt_ex (wire_reg_rs_ID_to_EX),
+        .i_rt_ex (wire_reg_rt_ID_to_EX),
         .i_registro_destino_mem (wire_EX_to_MEM_registro_destino),
         .i_registro_destino_wb (wire_MEM_to_WB_registro_destino),
         .i_reg_write_mem (wire_EX_to_MEM_RegWrite),
