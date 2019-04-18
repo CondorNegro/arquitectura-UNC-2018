@@ -117,6 +117,7 @@ reg flag_enable_pipeline; //Flag para habilitar o no el enable_pipeline.
 reg [ADDR_MEM_DATOS_LENGTH - 1 : 0] reg_contador_address_mem_datos;
 reg [1 : 0] reg_contador_send_datos_mem_datos;
 
+
 assign o_address_debug_unit = reg_contador_address_mem_datos << 2;
 
 
@@ -196,13 +197,13 @@ always @ ( posedge i_clock ) begin //Memory
         end
 
         if (reg_state == MEM_DATOS_CHECK) begin
-            if ((i_bit_sucio | (reg_contador_address_mem_datos == (RAM_DATOS_DEPTH - 1))) && reg_contador_send_datos_mem_datos <= 2) begin
+            if ((i_bit_sucio | (reg_contador_address_mem_datos == (RAM_DATOS_DEPTH - 1))) && reg_contador_send_datos_mem_datos < 2) begin
                 reg_contador_send_datos_mem_datos <= reg_contador_send_datos_mem_datos + 1;
             end
             else begin
                reg_contador_send_datos_mem_datos <= 0;
             end
-            if ((reg_contador_address_mem_datos == (RAM_DATOS_DEPTH - 1)) | (reg_contador_send_datos_mem_datos > 0)) begin
+            if ((reg_contador_address_mem_datos == (RAM_DATOS_DEPTH - 1)) |  (i_bit_sucio && reg_contador_send_datos_mem_datos < 2)) begin
                 reg_contador_address_mem_datos <= reg_contador_address_mem_datos;
             end
             else begin
@@ -395,10 +396,12 @@ always@( * ) begin //NEXT - STATE logic
             else if (~i_bit_sucio && (reg_contador_address_mem_datos < (RAM_DATOS_DEPTH - 1))) begin
                 reg_next_state = MEM_DATOS_CHECK;
             end
-            else begin
+            else if (reg_contador_send_datos_mem_datos <= 2 && i_bit_sucio) begin
                 reg_next_state = SEND_PART3; 
             end
-            
+            else begin
+                reg_next_state = MEM_DATOS_CHECK;
+            end            
        end
 
        ESPERA_MEM_DATOS_CHECK_ACK : begin
