@@ -54,8 +54,8 @@ module top_id
        output  reg [CANT_BITS_ADDR - 1 : 0] o_branch_dir_to_database, //Para guardar coherencia de datos almacenados en database.
        output  reg o_branch_control_to_database, //Para guardar coherencia de datos almacenados en database.
 
-       output reg [CANT_BITS_REGISTROS - 1 : 0] o_data_A,
-       output reg [CANT_BITS_REGISTROS - 1 : 0] o_data_B,
+       output  [CANT_BITS_REGISTROS - 1 : 0] o_data_A,
+       output  [CANT_BITS_REGISTROS - 1 : 0] o_data_B,
 
        output reg [CANT_BITS_REGISTROS - 1 : 0] o_extension_signo_constante,
        output reg [clogb2 (CANT_REGISTROS - 1) - 1 : 0] o_reg_rs,
@@ -127,11 +127,12 @@ module top_id
     assign o_reg_rs_to_hazard = wire_o_reg_rs;
     assign o_reg_rt_to_hazard = wire_o_reg_rt;
 
+    assign o_data_A = wire_o_data_A;
+    assign o_data_B = wire_o_data_B;
+
 
     always@(negedge i_clock) begin
         if (~i_soft_reset) begin
-                o_data_A <= 0;
-                o_data_B <= 0;
                 o_extension_signo_constante <= 0;
                 o_reg_rs <= 0;
                 o_reg_rt <= 0;
@@ -152,8 +153,7 @@ module top_id
         end
         else begin
                 if (i_enable_pipeline & ~i_bit_burbuja_hazard) begin
-                    o_data_A <= wire_o_data_A;
-                    o_data_B <= wire_o_data_B;
+                    
                     o_extension_signo_constante <= wire_o_extension_signo_constante;
                     o_reg_rs <= wire_o_reg_rs;
                     o_reg_rt <= wire_o_reg_rt;
@@ -173,8 +173,6 @@ module top_id
                     o_select_bytes_mem_datos <= wire_select_bytes_mem_datos;
                 end
                 else if (i_enable_pipeline & i_bit_burbuja_hazard) begin
-                    o_data_A <= o_data_A;
-                    o_data_B <= o_data_B;
                     o_extension_signo_constante <= o_extension_signo_constante;
                     o_reg_rs <= o_reg_rs;
                     o_reg_rt <= o_reg_rt;
@@ -194,8 +192,6 @@ module top_id
                     o_select_bytes_mem_datos <= 0; 
                 end
                 else begin
-                    o_data_A <= o_data_A;
-                    o_data_B <= o_data_B;
                     o_extension_signo_constante <= o_extension_signo_constante;
                     o_reg_rs <= o_reg_rs;
                     o_reg_rt <= o_reg_rt;
@@ -285,6 +281,7 @@ register_file
         .i_data_write (i_data_write),
         .i_control_write (i_control_write_reg),
         .i_reg_read_from_debug_unit (i_reg_read_from_debug_unit),
+        .i_enable_etapa (i_enable_etapa),
         .i_enable_pipeline (i_enable_pipeline),
         .o_reg_data_to_debug_unit (o_reg_data_to_debug_unit),
         .o_data_A (wire_o_data_A),

@@ -25,6 +25,7 @@ module register_file
         input [CANTIDAD_BITS_REGISTROS - 1 : 0] i_data_write,
         input i_control_write,
         input [CANTIDAD_BITS_ADDRESS_REGISTROS - 1 : 0] i_reg_read_from_debug_unit,
+        input i_enable_etapa,
         input i_enable_pipeline,
         output reg [CANTIDAD_BITS_REGISTROS - 1 : 0] o_reg_data_to_debug_unit,
         output reg [CANTIDAD_BITS_REGISTROS - 1 : 0] o_data_A,
@@ -47,7 +48,7 @@ endgenerate
 
 
 
-always@( posedge i_clock) begin
+always@( negedge i_clock) begin
     // Se resetean los registros.
    if (~ i_soft_reset) begin
        o_led <= 0;
@@ -57,8 +58,14 @@ always@( posedge i_clock) begin
    end
    else begin
         o_reg_data_to_debug_unit <= registros [i_reg_read_from_debug_unit];
-        o_data_A <= registros [i_reg_A];
-        o_data_B <= registros [i_reg_B];
+        if (i_enable_pipeline) begin  
+            o_data_A <= registros [i_reg_A];
+            o_data_B <= registros [i_reg_B];
+        end
+        else begin
+            o_data_A <= o_data_A;
+            o_data_B <= o_data_B;
+        end
         if (registros[0] != 0) begin // Valor en R1 modificado.
             o_led <= 1'b1;
         end
@@ -68,7 +75,7 @@ always@( posedge i_clock) begin
     end
 end
 
-always@( negedge i_clock) begin // Escritura de registros.
+always@( posedge i_clock) begin // Escritura de registros.
     if (~i_soft_reset) begin
         registros[reg_contador_reset] <= 0;
         if (reg_contador_reset < CANTIDAD_REGISTROS -  1) begin
@@ -81,7 +88,7 @@ always@( negedge i_clock) begin // Escritura de registros.
     else begin
         reg_contador_reset <= 0;
         
-        if ((i_control_write == 1'b1) && i_enable_pipeline) begin
+        if ((i_control_write == 1'b1) && i_enable_etapa) begin
             registros [i_reg_Write] <= i_data_write;
         end
         else begin
