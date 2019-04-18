@@ -2,8 +2,8 @@
 #B 5
 #C 8
 #D 0
-#E 1
-#F 2
+#E 4
+#F 8
 //Cargo en R1 un 10
 ADDI R1,R2,A
 //Cargo en R2 un 5
