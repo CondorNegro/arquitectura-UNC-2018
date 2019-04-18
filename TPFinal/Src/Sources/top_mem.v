@@ -103,7 +103,7 @@ module top_mem
             o_halt_detected <= 1'b0;
             o_data_alu <= 0;
             o_data_mem <= 0;
-            o_led <= 4;
+            o_led <= 0;
       end
       else begin
             if (i_enable_pipeline) begin
@@ -113,7 +113,7 @@ module top_mem
                 o_halt_detected <= i_halt_detected;
                 o_data_alu <= i_address_ALU;
                 o_data_mem <= wire_dato_mem_acondicionado;
-                if (wire_bit_sucio == 1) begin
+                if (o_dato_mem_to_debug_unit != 0) begin
                     o_led <= 1;
                 end
                 else begin

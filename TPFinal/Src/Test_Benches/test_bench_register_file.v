@@ -29,7 +29,7 @@ module test_bench_register_file();
     reg [CANTIDAD_BITS_ADDRESS_REGISTROS - 1 : 0] reg_reg_write; 
     reg [CANTIDAD_BITS_REGISTROS - 1 : 0] reg_data_write;
     reg reg_control_write;
-    reg reg_enable_etapa;
+    reg reg_enable_pipeline;
     reg [CANTIDAD_BITS_ADDRESS_REGISTROS - 1 : 0] reg_reg_read_from_debug_unit;
     wire [CANTIDAD_BITS_REGISTROS - 1 : 0] wire_reg_data_to_debug_unit;
     wire [CANTIDAD_BITS_REGISTROS - 1 : 0] wire_data_A;
@@ -45,7 +45,7 @@ module test_bench_register_file();
        reg_data_write = 5;
        reg_control_write = 0;
        reg_reg_read_from_debug_unit = 0;
-       reg_enable_etapa = 1;
+       reg_enable_pipeline = 1;
 	   
        #100 reg_soft_reset = 1'b1; // Desactivo la accion del reset.
 
@@ -89,7 +89,7 @@ register_file
         .i_data_write (reg_data_write),
         .i_control_write (reg_control_write),
         .i_reg_read_from_debug_unit (reg_reg_read_from_debug_unit),
-        .i_enable_etapa (reg_enable_etapa),
+        .i_enable_pipeline (reg_enable_pipeline),
         .o_reg_data_to_debug_unit (wire_reg_data_to_debug_unit),
         .o_data_A (wire_data_A),
         .o_data_B (wire_data_B),

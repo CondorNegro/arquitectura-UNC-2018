@@ -285,7 +285,7 @@ register_file
         .i_data_write (i_data_write),
         .i_control_write (i_control_write_reg),
         .i_reg_read_from_debug_unit (i_reg_read_from_debug_unit),
-        .i_enable_etapa (i_enable_etapa),
+        .i_enable_pipeline (i_enable_pipeline),
         .o_reg_data_to_debug_unit (o_reg_data_to_debug_unit),
         .o_data_A (wire_o_data_A),
         .o_data_B (wire_o_data_B),
