@@ -391,7 +391,7 @@ module control
                             end
                         3://JAL
                             begin
-                                o_RegDst = 0;
+                                o_RegDst = 1;
                                 o_RegWrite = 1;
                                 o_ALUSrc = 0;
                                 o_MemRead = 0;
