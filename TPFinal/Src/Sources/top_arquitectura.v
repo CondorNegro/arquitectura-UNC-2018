@@ -145,22 +145,25 @@ wire [CANT_BITS_CONTROL_DATABASE_TOP - 1 : 0] wire_control_database;
 wire wire_enable_PC;
 wire wire_control_mux_output_IF;
 wire wire_control_mux_addr_mem_IF;
-wire wire_control_mux_PC;
+
 wire [LONG_INSTRUCCION - 1 : 0] wire_dato_database;
-wire [ADDR_MEM_PROGRAMA_LENGTH - 1 : 0] wire_branch_dir;
 wire [ADDR_MEM_PROGRAMA_LENGTH - 1 : 0] wire_contador_ciclos;
 wire [ADDR_MEM_PROGRAMA_LENGTH - 1 : 0] wire_contador_programa;
 wire [ADDR_MEM_PROGRAMA_LENGTH - 1 : 0] wire_adder_contador_programa;
+wire wire_control_mux_PC;
+wire [ADDR_MEM_PROGRAMA_LENGTH - 1 : 0] wire_branch_dir;
+
+
 
 // Instruction decode.
-
+wire wire_control_mux_PC_ID;
 wire wire_enable_pipeline;
-
+wire [ADDR_MEM_PROGRAMA_LENGTH - 1 : 0] wire_branch_dir_ID;
 wire wire_control_write_reg_ID;
 wire [CANT_BITS_REGISTROS_TOP - 1 : 0] wire_data_write_ID;
 wire [CANT_BITS_ADDR_REGISTROS - 1 : 0] wire_reg_write_ID;
-wire wire_control_mux_PC_to_database;
-wire [ADDR_MEM_PROGRAMA_LENGTH - 1 : 0] wire_branch_dir_to_database;
+wire wire_control_mux_PC_ID_to_database;
+wire [ADDR_MEM_PROGRAMA_LENGTH - 1 : 0] wire_branch_dir_ID_to_database;
 wire [CANT_BITS_REGISTROS_TOP - 1 : 0] wire_data_A;
 wire [CANT_BITS_REGISTROS_TOP - 1 : 0] wire_data_B;
 wire [CANT_BITS_REGISTROS_TOP - 1 : 0] wire_extension_signo_constante;
@@ -180,6 +183,7 @@ wire [ADDR_MEM_PROGRAMA_LENGTH - 1 : 0] wire_out_adder_pc_ID_to_EX;
 wire wire_halt_detected_ID_to_EX;
 wire [CANT_BITS_SELECT_BYTES_MEM_DATA_TOP - 1 : 0] wire_select_bytes_mem_datos_ID_to_EX;
 
+
 // Ejecucion.
 
 wire wire_EX_to_MEM_RegWrite;
@@ -191,6 +195,10 @@ wire [CANT_BITS_REGISTROS_TOP - 1 : 0] wire_EX_to_MEM_data_write_mem;
 wire [CANT_BITS_ADDR_REGISTROS - 1 : 0] wire_EX_to_MEM_registro_destino;
 wire [CANT_BITS_SELECT_BYTES_MEM_DATA_TOP - 1 : 0] wire_select_bytes_mem_datos_EX_to_MEM;
 wire wire_halt_detected_EX_to_MEM;
+wire wire_control_mux_PC_EX_to_database;
+wire [ADDR_MEM_PROGRAMA_LENGTH - 1 : 0] wire_branch_dir_EX_to_database;
+wire wire_control_mux_PC_EX;
+wire [ADDR_MEM_PROGRAMA_LENGTH - 1 : 0] wire_branch_dir_EX;
 
 
 // MEM.
@@ -238,10 +246,10 @@ wire wire_exception;
 
 // Asignaciones de wires.
 
-//Borrar y dejar el segundo 
-//assign wire_soft_reset_ack = wire_soft_reset_ack_prog;
-assign wire_soft_reset_ack = wire_soft_reset_ack_prog | wire_soft_reset_ack_datos;
 
+assign wire_soft_reset_ack = wire_soft_reset_ack_prog | wire_soft_reset_ack_datos;
+assign wire_control_mux_PC = wire_control_mux_PC_EX [1] | wire_control_mux_PC_ID;
+assign wire_branch_dir = (wire_control_mux_PC_EX [0]) ? wire_branch_dir_EX : wire_branch_dir_ID;
 
  
 
@@ -432,15 +440,15 @@ top_id
         .i_enable_etapa (wire_enable_PC),
         .i_reg_read_from_debug_unit (wire_reg_read_from_debug_unit_to_register_file),
         .i_bit_burbuja_hazard (wire_bit_burbuja),
-        .i_bit_branch_control_high_performance (),
+        .i_bit_branch_control_high_performance (wire_control_mux_PC_EX [0]),
         .o_reg_rs_to_hazard (wire_reg_rs_to_hazard),
         .o_reg_rt_to_hazard (wire_reg_rt_to_hazard),
 
         .o_out_adder_pc (wire_out_adder_pc_ID_to_EX),
-        .o_branch_dir (wire_branch_dir),
-        .o_branch_control (wire_control_mux_PC),
-        .o_branch_dir_to_database (wire_branch_dir_to_database),
-        .o_branch_control_to_database (wire_control_mux_PC_to_database),
+        .o_branch_dir (wire_branch_dir_ID),
+        .o_branch_control (wire_control_mux_PC_ID),
+        .o_branch_dir_to_database (wire_branch_dir_ID_to_database),
+        .o_branch_control_to_database (wire_control_mux_PC_ID_to_database),
         .o_data_A (wire_data_A),
         .o_data_B (wire_data_B),
         .o_extension_signo_constante (wire_extension_signo_constante),
@@ -460,6 +468,7 @@ top_id
         .o_select_bytes_mem_datos (wire_select_bytes_mem_datos_ID_to_EX),
         .o_reg_data_to_debug_unit (wire_reg_data_from_register_file_to_debug_unit),
         .o_disable_for_exception_to_hazard_detection_unit (wire_exception),
+        .o_flag_branch (wire_flag_branch),
         .o_led ()
     );
 
@@ -474,7 +483,9 @@ top_ejecucion
         .CANT_BITS_REGISTROS (CANT_BITS_REGISTROS_TOP),
         .CANT_BITS_ALU_CONTROL (CANT_BITS_ALU_CONTROL_TOP),
         .CANT_BITS_SELECT_BYTES_MEM_DATA (CANT_BITS_SELECT_BYTES_MEM_DATA_TOP),
-        .CANT_BITS_SELECTOR_MUX_FORWARD (CANT_BITS_SELECTOR_MUX_FORWARD) 
+        .CANT_BITS_SELECTOR_MUX_FORWARD (CANT_BITS_SELECTOR_MUX_FORWARD),
+        .CANT_BITS_IMMEDIATE (CANT_BITS_IMMEDIATE_TOP),
+        .CANT_BITS_FLAG_BRANCH (CANT_BITS_FLAG_BRANCH_TOP) 
         
      ) 
     u_top_ejecucion_1    // Una sola instancia de este modulo.
@@ -502,6 +513,12 @@ top_ejecucion
         .i_selector_mux_B_forward (wire_selector_mux_B_forward),
         .i_data_forward_WB (wire_data_write_ID),
         .i_data_forward_MEM (wire_resultado_ALU), 
+        .i_flag_branch (wire_flag_branch),
+        .i_enable_etapa (wire_enable_PC),
+        .o_branch_control (wire_control_mux_PC_EX),
+        .o_branch_dir (wire_branch_dir_EX),
+        .o_branch_dir_to_database (wire_branch_dir_EX_to_database),
+        .o_branch_control_to_database (wire_control_mux_PC_EX_to_database),
         .o_RegWrite (wire_EX_to_MEM_RegWrite),
         .o_MemRead (wire_EX_to_MEM_MemRead),
         .o_MemWrite (wire_EX_to_MEM_MemWrite),
@@ -629,8 +646,8 @@ database
         .i_contador_ciclos (wire_contador_ciclos),
 		.i_adder_pc (wire_adder_contador_programa),
 		.i_instruction_fetch (wire_instruction_fetch),
-        .i_branch_dir (wire_branch_dir_to_database),
-        .i_branch_control (wire_control_mux_PC_to_database),
+        .i_branch_dir (wire_branch_dir_ID_to_database),
+        .i_branch_control (wire_control_mux_PC_ID_to_database),
         .i_data_A (wire_data_A),
         .i_data_B (wire_data_B),
         .i_extension_signo_constante (wire_extension_signo_constante),
