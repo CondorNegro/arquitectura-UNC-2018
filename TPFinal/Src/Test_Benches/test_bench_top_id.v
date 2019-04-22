@@ -90,6 +90,7 @@ module test_bench_top_id();
     wire [CANT_BITS_SELECT_BYTES_MEM_DATA - 1 : 0] wire_select_bytes_mem_datos;
     wire [CANT_BITS_REGISTROS - 1 : 0] wire_reg_data_to_debug_unit;
     wire wire_disable_for_exception_to_hazard_detection_unit;
+    wire [CANT_BITS_FLAG_BRANCH - 1 : 0] wire_flag_branch;
 
 	
 	initial	begin
@@ -202,6 +203,7 @@ top_id
         .o_select_bytes_mem_datos (wire_select_bytes_mem_datos),
         .o_reg_data_to_debug_unit (wire_reg_data_to_debug_unit),
         .o_disable_for_exception_to_hazard_detection_unit (wire_disable_for_exception_to_hazard_detection_unit),
+        .o_flag_branch (wire_flag_branch),
         .o_led(wire_o_led)
     );
    

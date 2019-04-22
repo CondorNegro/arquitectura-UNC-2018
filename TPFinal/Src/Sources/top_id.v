@@ -74,6 +74,7 @@ module top_id
        output reg o_MemtoReg,
        output reg [CANT_BITS_ALU_CONTROL - 1 : 0] o_ALUCtrl,   
        output reg [CANT_BITS_SELECT_BYTES_MEM_DATA - 1 : 0] o_select_bytes_mem_datos,
+       output reg [CANT_BITS_FLAG_BRANCH - 1 : 0] o_flag_branch,
        
        output [CANT_BITS_REGISTROS - 1 : 0] o_reg_data_to_debug_unit,
        output o_disable_for_exception_to_hazard_detection_unit,

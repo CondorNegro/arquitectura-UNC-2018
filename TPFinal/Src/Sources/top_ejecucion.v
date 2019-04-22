@@ -15,11 +15,13 @@ module top_ejecucion
        
        parameter WIDTH_DATA_MEM = 32,
        parameter CANT_REGISTROS= 32,
-       parameter CANT_BITS_ADDR = 11,
+       parameter CANT_BITS_ADDR = 10,
        parameter CANT_BITS_REGISTROS = 32,
        parameter CANT_BITS_ALU_CONTROL = 4,
        parameter CANT_BITS_SELECT_BYTES_MEM_DATA = 3,
-       parameter CANT_BITS_SELECTOR_MUX_FORWARD = 2  
+       parameter CANT_BITS_SELECTOR_MUX_FORWARD = 2,
+       parameter CANT_BITS_IMMEDIATE = 16,
+       parameter CANT_BITS_FLAG_BRANCH = 3 
    )
    (
        input i_clock,
@@ -55,6 +57,15 @@ module top_ejecucion
        input [CANT_BITS_SELECTOR_MUX_FORWARD - 1 : 0] i_selector_mux_B_forward,
        input [CANT_BITS_REGISTROS - 1 : 0] i_data_forward_WB,
        input [CANT_BITS_REGISTROS - 1 : 0] i_data_forward_MEM, 
+
+       // Branch address calculator
+
+       input [CANT_BITS_FLAG_BRANCH - 1 : 0] i_flag_branch,
+       input i_enable_etapa,
+       output [1 : 0] o_branch_control,
+       output [CANT_BITS_ADDR - 1 : 0] o_branch_dir,
+       output reg [CANT_BITS_ADDR - 1 : 0] o_branch_dir_to_database,
+       output reg [1 : 0] o_branch_control_to_database,
 
 
        output reg o_RegWrite,
@@ -109,6 +120,8 @@ module top_ejecucion
             o_registro_destino <= 0;
             o_halt_detected <= 1'b0;
             o_select_bytes_mem_datos <= 0;
+            o_branch_dir_to_database <= 0;
+            o_branch_control_to_database <= 0;
       end
       else begin
             if (i_enable_pipeline) begin
@@ -121,6 +134,8 @@ module top_ejecucion
                 o_registro_destino <= wire_registro_destino;
                 o_halt_detected <= i_halt_detected;
                 o_select_bytes_mem_datos <= i_select_bytes_mem_datos;
+                o_branch_control_to_database <= o_branch_control;
+                o_branch_dir_to_database <= o_branch_dir;
             end
             else begin
                 o_RegWrite <= o_RegWrite;
@@ -132,6 +147,8 @@ module top_ejecucion
                 o_registro_destino <= o_registro_destino;
                 o_halt_detected <= o_halt_detected;
                 o_select_bytes_mem_datos <= o_select_bytes_mem_datos;
+                o_branch_dir_to_database <= o_branch_dir_to_database;
+                o_branch_control_to_database <= o_branch_control_to_database;
             end 
     end
     end
@@ -221,7 +238,25 @@ alu
     );
 
 
-
+branch_address_calculator_high_performance
+    #(
+        .CANT_BITS_ADDR (CANT_BITS_ADDR),
+        .CANT_BITS_IMMEDIATE (CANT_BITS_IMMEDIATE),
+        .CANT_BITS_FLAG_BRANCH (CANT_BITS_FLAG_BRANCH),
+        .CANT_BITS_REGISTROS (CANT_BITS_REGISTROS)
+    )
+    u_branch_address_calculator_high_performance_1
+   (
+        .i_flag_branch (i_flag_branch),
+        .i_adder_pc (i_adder_pc),
+        .i_immediate_address (i_extension_signo_constante),
+        .i_dato_reg_A (wire_output_mux_forward_A),
+        .i_dato_reg_B (wire_output_mux_forward_B),
+        .i_enable_etapa (i_enable_etapa),
+        .o_branch_control (o_branch_control),
+        .o_branch_dir (o_branch_dir)
+      
+   );
   
 
 endmodule
