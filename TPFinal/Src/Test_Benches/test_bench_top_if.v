@@ -34,7 +34,7 @@ module test_bench_top_if();
   // Entradas.
   reg clock;                                  // Clock.
   reg soft_reset;                             // Reset.
-  reg enable_contador_PC;
+  
   reg enable_mem;
   reg write_read_mem;
   reg rsta_mem;
@@ -63,7 +63,7 @@ module test_bench_top_if();
             soft_reset = 1'b1; // Reset en 0. (Normal cerrado el boton del reset).
 
 
-            enable_contador_PC = 0;
+            
             enable_mem = 0;
             write_read_mem = 0;
             rsta_mem = 0;
@@ -84,10 +84,10 @@ module test_bench_top_if();
             #200  enable_mem = 1'b1;
             #50 reg_bit_burbuja = 1'b1;
             #10 control_mux_PC = 1'b1;
-            #10 enable_contador_PC = 1'b1;
+           
             #10 reg_bit_burbuja = 1'b0;
             #10 control_mux_PC = 1'b0;
-            #10 enable_contador_PC = 1'b0;
+            
 
             /// de mem_programa
             #10 control_mux_addr_mem= 1'b1; //mem de programa toma la dir de debug unit para escribir las instruc. (no se toma la dir de pc)
@@ -106,8 +106,8 @@ module test_bench_top_if();
             #20 write_read_mem = 1'b0;
             /// de mem programa
             #10 control_mux_addr_mem= 1'b0; //tomo dir de pc y no de debug unit.
-            #10 enable_contador_PC = 1'b1;
-            #20 enable_contador_PC = 1'b0;
+           
+            
 
 
 
@@ -120,8 +120,8 @@ module test_bench_top_if();
             #100 soft_reset = 1'b0;
             #100 soft_reset = 1'b1;
             #10  enable_mem = 1'b1;
-            #10 enable_contador_PC = 1'b1;
-            #10 enable_contador_PC = 1'b0;
+           
+            
             #10 enable_pipeline = 1'b0;
             /// de mem_programa
             #10 control_mux_addr_mem= 1'b1; //mem de programa toma la dir de debug unit para escribir las instruc. (no se toma la dir de pc)
@@ -143,9 +143,9 @@ module test_bench_top_if();
             #10 enable_pipeline = 1'b1;
             #10 branch_dir = 10;
             #10 control_mux_PC = 1'b1;
-            #10 enable_contador_PC = 1'b1;
+           
             
-            #10 enable_contador_PC = 1'b0;
+            
 
 
 
@@ -178,7 +178,6 @@ top_if
   (
     .i_clock (clock),
     .i_soft_reset (soft_reset),
-    .i_enable_contador_PC (enable_contador_PC),
     .i_enable_mem (enable_mem),
     .i_write_read_mem (write_read_mem),
     .i_rsta_mem (rsta_mem),

@@ -55,7 +55,7 @@ module test_bench_debug_unit();
    wire wire_rsta_mem;
    wire wire_regcea_mem;
    wire wire_led;
-   wire wire_enable_pc;
+   wire wire_enable_etapa;
    wire wire_control_mux_addr_mem_top_if;
    wire [clogb2 (CANT_DATOS_DATABASE - 1) - 1 : 0] wire_control_database;
    wire wire_enable_pipeline;
@@ -516,7 +516,7 @@ debug_unit
        .o_enable_mem_programa (wire_enable_mem),
        .o_rsta_mem (wire_rsta_mem),
        .o_regcea_mem (wire_regcea_mem),
-       .o_enable_PC (wire_enable_pc),
+       .o_enable_etapa (wire_enable_etapa),
        .o_control_mux_addr_mem_top_if (wire_control_mux_addr_mem_top_if),
        .o_control_database (wire_control_database),
        .o_enable_pipeline (wire_enable_pipeline),

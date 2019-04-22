@@ -24,7 +24,7 @@ module pc
 
 
 
-always@( posedge i_clock) begin
+always@( negedge i_clock) begin
     // Se resetean los registros.
    if (~ i_soft_reset) begin
        o_direccion <= 0;

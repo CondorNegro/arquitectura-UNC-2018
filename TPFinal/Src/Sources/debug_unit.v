@@ -48,7 +48,7 @@ module debug_unit
     output reg o_enable_mem_programa,
     output reg o_rsta_mem,
     output reg o_regcea_mem,
-    output reg o_enable_PC,
+    output reg o_enable_etapa,
     output reg o_control_mux_addr_mem_top_if,
     output reg [clogb2 (CANT_DATOS_DATABASE - 1) - 1 : 0] o_control_database,
     output reg o_enable_pipeline,
@@ -444,7 +444,7 @@ always @ ( * ) begin //Output logic
             o_rsta_mem = 1;
             o_regcea_mem = 1;
             o_led = 1;
-            o_enable_PC = 0;
+            o_enable_etapa = 0;
             o_enable_pipeline = 0;
             o_control_mux_addr_mem_top_if = 1;
             o_control_database = 0;
@@ -466,7 +466,7 @@ always @ ( * ) begin //Output logic
             o_rsta_mem = 0;
             o_regcea_mem = 0;
             o_led = 0;
-            o_enable_PC = 0;
+            o_enable_etapa = 0;
             o_enable_pipeline = 0;
             o_control_mux_addr_mem_top_if = 1;
             o_control_database = 0;
@@ -488,7 +488,7 @@ always @ ( * ) begin //Output logic
             o_rsta_mem = 0;
             o_regcea_mem = 0;
             o_led = 0;
-            o_enable_PC = 0;
+            o_enable_etapa = 0;
             o_enable_pipeline = 0;
             o_control_mux_addr_mem_top_if = 1; 
             o_control_database = 0;
@@ -521,7 +521,7 @@ always @ ( * ) begin //Output logic
             o_rsta_mem = 0;
             o_regcea_mem = 0; 
             o_led = 0;
-            o_enable_PC = 0;
+            o_enable_etapa = 0;
             o_enable_pipeline = 0;
             o_control_mux_addr_mem_top_if = 1;
             o_control_database = 0;
@@ -543,7 +543,7 @@ always @ ( * ) begin //Output logic
             o_rsta_mem = 0;
             o_regcea_mem = 0;
             o_led = 0;
-            o_enable_PC = 0;
+            o_enable_etapa = 0;
             o_enable_pipeline = 0;
             o_control_mux_addr_mem_top_if = 0;
             o_control_database = 0;
@@ -567,12 +567,12 @@ always @ ( * ) begin //Output logic
             o_led = 0;
             o_enable_pipeline = 1; 
             if (flag_enable_pc == 1'b1) begin
-                o_enable_PC = 0; // Deshabilito el enable pc.
+                o_enable_etapa = 0; // Deshabilito el enable pc.
                 o_enable_mem_programa = 0; // Deshabilito memoria de programa.
                 o_enable_mem_datos = 0;
             end
             else begin
-                o_enable_PC = 1;
+                o_enable_etapa = 1;
                 o_enable_mem_programa = 1;
                 o_enable_mem_datos = 1;
             end
@@ -631,7 +631,7 @@ always @ ( * ) begin //Output logic
             o_rsta_mem = 0;
             o_regcea_mem = 0;
             o_led = 0;
-            o_enable_PC = 0;
+            o_enable_etapa = 0;
             o_enable_pipeline = 0;
             o_control_mux_addr_mem_top_if = 0;
             o_reg_read_to_register_file = reg_contador_send_registros;        
@@ -678,7 +678,7 @@ always @ ( * ) begin //Output logic
             o_rsta_mem = 0;
             o_regcea_mem = 0;
             o_led = 0;
-            o_enable_PC = 0;
+            o_enable_etapa = 0;
             o_enable_pipeline = 0;
             o_control_mux_addr_mem_top_if = 0;
             o_reg_read_to_register_file = reg_contador_send_registros;         
@@ -724,7 +724,7 @@ always @ ( * ) begin //Output logic
             o_rsta_mem = 0;
             o_regcea_mem = 0;
             o_led = 0;
-            o_enable_PC = 0;
+            o_enable_etapa = 0;
             o_enable_pipeline = 0;
             o_control_mux_addr_mem_top_if = 0;
             o_reg_read_to_register_file = reg_contador_send_registros;  
@@ -769,7 +769,7 @@ always @ ( * ) begin //Output logic
             o_rsta_mem = 0;
             o_regcea_mem = 0;
             o_led = 0;
-            o_enable_PC = 0;
+            o_enable_etapa = 0;
             o_enable_pipeline = 0;
             o_control_mux_addr_mem_top_if = 0;
             o_reg_read_to_register_file = reg_contador_send_registros;          
@@ -788,7 +788,7 @@ always @ ( * ) begin //Output logic
             o_rsta_mem = 0;
             o_regcea_mem = 0;
             o_led = 0;
-            o_enable_PC = 0;
+            o_enable_etapa = 0;
             o_enable_pipeline = 0;
             o_control_mux_addr_mem_top_if = 0;
             
@@ -812,7 +812,7 @@ always @ ( * ) begin //Output logic
             o_rsta_mem = 0;
             o_regcea_mem = 0;
             o_led = 0;
-            o_enable_PC = 0;
+            o_enable_etapa = 0;
             o_enable_pipeline = 0;
             o_control_mux_addr_mem_top_if = 0;
             
@@ -835,7 +835,7 @@ always @ ( * ) begin //Output logic
             o_rsta_mem = 0;
             o_regcea_mem = 0;
             o_led = 0;
-            o_enable_PC = 0;
+            o_enable_etapa = 0;
             o_enable_pipeline = 0;
             o_control_mux_addr_mem_top_if = 0;
             
@@ -858,7 +858,7 @@ always @ ( * ) begin //Output logic
             o_rsta_mem = 1;
             o_regcea_mem = 1;
             o_led = 1;
-            o_enable_PC = 0;
+            o_enable_etapa = 0;
             o_enable_pipeline = 0;
             o_control_mux_addr_mem_top_if = 1;
             o_control_database = 0;

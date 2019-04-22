@@ -24,8 +24,6 @@ module top_if
        input i_clock,
        input i_soft_reset,
 
-       input i_enable_contador_PC,
-
        input i_enable_mem,
        input i_write_read_mem,
        input i_rsta_mem,
@@ -44,7 +42,7 @@ module top_if
        input i_bit_burbuja_hazard,
 
        output [RAM_WIDTH_PROGRAMA - 1 : 0] o_instruction,
-       output [CANT_BITS_ADDR - 1 : 0] o_direccion_adder_pc,
+       output reg [CANT_BITS_ADDR - 1 : 0] o_direccion_adder_pc,
        output [CANT_BITS_ADDR - 1 : 0] o_contador_programa,
        output o_led_mem,
        output o_reset_ack_mem
@@ -61,26 +59,28 @@ assign o_instruction = reg_intruction_register;
 
 
 wire [CANT_BITS_ADDR - 1 : 0] wire_direccion_adder_pc;
-reg [RAM_WIDTH_PROGRAMA - 1 : 0] reg_direccion_adder_pc;
-assign o_direccion_adder_pc = reg_direccion_adder_pc;
+
+
 
 
 always@(negedge i_clock) begin
-  if (~i_soft_reset) begin
-    reg_intruction_register <= 32'b00000000001000010000100000100100; // NOP (AND R1,R1,R1)
-    reg_direccion_adder_pc <= 1;
-  end
-  else begin
-    if (i_enable_pipeline & ~i_bit_burbuja_hazard) begin
-        reg_intruction_register <= wire_output_mux3_TO_IR;
-        reg_direccion_adder_pc <= wire_direccion_adder_pc;
+    if (~i_soft_reset) begin
+        reg_intruction_register <= 32'b00000000001000010000100000100100; // NOP (AND R1,R1,R1)
+        o_direccion_adder_pc <= 1;
     end
     else begin
-        reg_intruction_register <= reg_intruction_register;
-        reg_direccion_adder_pc <= reg_direccion_adder_pc;
+        if (i_enable_pipeline & ~i_bit_burbuja_hazard) begin
+            reg_intruction_register <= wire_output_mux3_TO_IR;
+            o_direccion_adder_pc <= wire_direccion_adder_pc;
+        end
+        else begin
+            reg_intruction_register <= reg_intruction_register;
+            o_direccion_adder_pc <= o_direccion_adder_pc;
+        end
     end
-  end
 end
+
+
 
 memoria_programa
    #(
@@ -111,7 +111,7 @@ mux
    )
    u_mux_PC_1
    (
-       .i_data_A (o_direccion_adder_pc),
+       .i_data_A (wire_direccion_adder_pc),
        .i_data_B (i_branch_dir),
        .i_selector (i_control_mux_PC),
        .o_result (wire_output_mux1_TO_idata_pc)
@@ -161,7 +161,7 @@ adder
       (
           .i_clock (i_clock),
           .i_soft_reset (i_soft_reset),
-          .i_enable (i_enable_contador_PC & ~i_bit_burbuja_hazard),
+          .i_enable (i_enable_pipeline & ~i_bit_burbuja_hazard),
           .i_direccion (wire_output_mux1_TO_idata_pc),
           .o_direccion (o_contador_programa)
       );

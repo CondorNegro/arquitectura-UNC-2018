@@ -142,7 +142,7 @@ wire wire_rsta_mem;
 wire wire_regcea_mem;
 wire [LONG_INSTRUCCION - 1 : 0] wire_instruction_fetch;
 wire [CANT_BITS_CONTROL_DATABASE_TOP - 1 : 0] wire_control_database;
-wire wire_enable_PC;
+wire wire_enable_etapa;
 wire wire_control_mux_output_IF;
 wire wire_control_mux_addr_mem_IF;
 
@@ -313,7 +313,7 @@ debug_unit
     .o_enable_mem_programa (wire_enable_mem_programa),
     .o_rsta_mem (wire_rsta_mem),
     .o_regcea_mem (wire_regcea_mem),
-    .o_enable_PC (wire_enable_PC),
+    .o_enable_etapa (wire_enable_etapa),
     .o_control_mux_addr_mem_top_if (wire_control_mux_addr_mem_IF),
     .o_control_database (wire_control_database),
     .o_enable_pipeline (wire_enable_pipeline),
@@ -387,7 +387,6 @@ top_if
   (
     .i_clock (i_clock),
     .i_soft_reset (wire_soft_reset),
-    .i_enable_contador_PC (wire_enable_PC),
     .i_enable_mem (wire_enable_mem_programa),
     .i_write_read_mem (wire_wr_rd_mem_prog),
     .i_rsta_mem (wire_rsta_mem),
@@ -437,7 +436,7 @@ top_id
         .i_reg_write (wire_reg_write_ID),
         .i_data_write (wire_data_write_ID),
         .i_enable_pipeline (wire_enable_pipeline),
-        .i_enable_etapa (wire_enable_PC),
+        .i_enable_etapa (wire_enable_etapa),
         .i_reg_read_from_debug_unit (wire_reg_read_from_debug_unit_to_register_file),
         .i_bit_burbuja_hazard (wire_bit_burbuja),
         .i_bit_branch_control_high_performance (wire_control_mux_PC_EX),
@@ -514,7 +513,7 @@ top_ejecucion
         .i_data_forward_WB (wire_data_write_ID),
         .i_data_forward_MEM (wire_resultado_ALU), 
         .i_flag_branch (wire_flag_branch),
-        .i_enable_etapa (wire_enable_PC),
+        .i_enable_etapa (wire_enable_etapa),
         .o_branch_control (wire_control_mux_PC_EX),
         .o_branch_dir (wire_branch_dir_EX),
         .o_branch_dir_to_database (wire_branch_dir_EX_to_database),
@@ -566,7 +565,7 @@ top_mem
         .i_MemtoReg (wire_EX_to_MEM_MemtoReg),
         .i_select_bytes_mem_datos (wire_select_bytes_mem_datos_EX_to_MEM),
         .i_registro_destino (wire_EX_to_MEM_registro_destino),
-        .i_enable_etapa (wire_enable_PC),
+        .i_enable_etapa (wire_enable_etapa),
         .o_RegWrite (wire_MEM_to_WB_RegWrite),
         .o_MemtoReg (wire_MEM_to_WB_MemtoReg),
         .o_registro_destino (wire_MEM_to_WB_registro_destino),
@@ -617,7 +616,7 @@ contador_ciclos
     (
       .i_clock (i_clock),
       .i_soft_reset (wire_soft_reset),
-      .i_enable (wire_enable_PC),
+      .i_enable (wire_enable_etapa),
       .o_cuenta (wire_contador_ciclos)
     );
 
@@ -700,7 +699,7 @@ forwarding_unit
         .i_registro_destino_wb (wire_MEM_to_WB_registro_destino),
         .i_reg_write_mem (wire_EX_to_MEM_RegWrite),
         .i_reg_write_wb (wire_MEM_to_WB_RegWrite),
-        .i_enable_etapa (wire_enable_PC),
+        .i_enable_etapa (wire_enable_etapa),
         .o_led (o_leds [3:2]),
         .o_selector_mux_A (wire_selector_mux_A_forward),
         .o_selector_mux_B (wire_selector_mux_B_forward)     
@@ -717,7 +716,7 @@ hazard_detection_unit
         .i_registro_destino_ex (wire_reg_rt_ID_to_EX),
         .i_read_mem_ex (wire_MemRead_ID_to_EX),
         .i_disable_for_exception (wire_exception),
-        .i_enable_etapa (wire_enable_PC),
+        .i_enable_etapa (wire_enable_etapa),
         .o_led (o_leds[1]),
         .o_bit_burbuja (wire_bit_burbuja) 
     );
