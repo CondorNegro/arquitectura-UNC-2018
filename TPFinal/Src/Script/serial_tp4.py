@@ -35,6 +35,7 @@ CANT_BITS_ALU_OP = 2
 HALT_INSTRUCTION = '1' * CANT_BITS_INSTRUCCION
 CANT_BITS_SELECT_BYTES_MEM_DATA = 3
 CANT_DATOS_DB = 12
+CANT_BITS_FLAG_BRANCH = 3
 
 # Variables globales
 
@@ -83,6 +84,7 @@ etiqueta_reg_write_MEM_TO_WB = ""
 etiqueta_mem_to_reg_MEM_to_WB = ""
 etiqueta_registro_destino_MEM_to_WB = ""
 etiqueta_flag_HALT_WB_to_Debug_Unit = ""
+etiqueta_flag_branch = ""
 
 lock = threading.Lock()
 modo_ejecucion = 0 #0: continuo - 1: debug
@@ -414,6 +416,7 @@ def recibirDatosFromFPGA ():
 	global etiqueta_mem_to_reg_MEM_to_WB
 	global etiqueta_registro_destino_MEM_to_WB
 	global etiqueta_flag_HALT_WB_to_Debug_Unit
+	global etiqueta_flag_branch
 	flag_receive = True
 	bytes_recibidos = ""
 	bytes_recibidos_aux = ""
@@ -496,14 +499,31 @@ def recibirDatosFromFPGA ():
 			etiqueta_contador_ciclos = bytes_recibidos [WIDTH_WORD * 2 : ] #CC
 			etiquetaContadorCiclosValorMIPS.config (text = etiqueta_contador_ciclos)
 
-		elif (contador_etapas == 1): # Adder PC, branch dir y branch control 
+		elif (contador_etapas == 1): # Adder PC, branch dir, branch control y flag branch 
 			etiqueta_resultado_adder_pc = bytes_recibidos [0 : WIDTH_WORD * 2] #Adder PC
 			etiquetaPCAddValorMIPS.config (text = etiqueta_resultado_adder_pc)	
 			
 			etiqueta_branch_dir = bytes_recibidos [- CANT_BITS_ADDRESS_MEM_PROGRAMA : ]
 			etiqueta_control_salto = bytes_recibidos [- CANT_BITS_ADDRESS_MEM_PROGRAMA - 1]
 			etiquetaBranchDirValorMIPS.config (text = etiqueta_branch_dir)
-			etiquetaBranchControlValorMIPS .config (text = etiqueta_control_salto)		
+			etiquetaBranchControlValorMIPS .config (text = etiqueta_control_salto)
+			
+			etiqueta_flag_branch = bytes_recibidos [- CANT_BITS_ADDRESS_MEM_PROGRAMA - CANT_BITS_FLAG_BRANCH - 1 : - CANT_BITS_ADDRESS_MEM_PROGRAMA - 1]
+			number_etiqueta_flag_branch = int (etiqueta_flag_branch, 2)
+			if ((number_etiqueta_flag_branch > 0) and (number_etiqueta_flag_branch < 6)):
+				if (number_etiqueta_flag_branch == 1):
+					etiqueta_flag_branch = 'JR'
+				elif (number_etiqueta_flag_branch == 2):
+					etiqueta_flag_branch = 'JALR'
+				elif (number_etiqueta_flag_branch == 3):
+					etiqueta_flag_branch = 'BEQ'
+				elif (number_etiqueta_flag_branch == 4):
+					etiqueta_flag_branch = 'BNE'
+				else:
+					etiqueta_flag_branch = 'J, JAL'
+
+			etiquetaFlagBranchValorMIPS.config (text = etiqueta_flag_branch)
+
 
 		elif (contador_etapas == 2): #Instruction
 			etiqueta_instruction_fetch = getHexadecimal (bytes_recibidos)
@@ -1072,53 +1092,55 @@ etiquetaInstructionFetchValorMIPS = Label (root, text = etiqueta_instruction_fet
 etiquetaInstructionFetchValorMIPS.place (x = 620,  y = 250)
 
 
+etiquetaBranchDir = Label (root, text = "Direccion de salto: ", fg = "brown", font = "TkDefaultFont 12")
+etiquetaBranchDir.place (x = 400,  y = 280)
+etiquetaBranchDirValorMIPS = Label (root, text = etiqueta_branch_dir,\
+	 fg = "black", font = "TkDefaultFont 12")
+etiquetaBranchDirValorMIPS.place (x = 620,  y = 280)
+
+etiquetaBranchControl = Label (root, text = "Control del salto: ", fg = "brown", font = "TkDefaultFont 12")
+etiquetaBranchControl.place (x = 400,  y = 310)
+etiquetaBranchControlValorMIPS = Label (root, text = etiqueta_control_salto,\
+	 fg = "black", font = "TkDefaultFont 12")
+etiquetaBranchControlValorMIPS.place (x = 620,  y = 310)
+
 
 # ID
 
 etiquetaLatchIDEX = Label (root, text = "LATCH ID/EX: ", fg = "dark green", font = "TkDefaultFont 12")
-etiquetaLatchIDEX.place (x = 400,  y = 290)
+etiquetaLatchIDEX.place (x = 400,  y = 370)
 
-etiquetaBranchDir = Label (root, text = "Direccion de salto: ", fg = "brown", font = "TkDefaultFont 12")
-etiquetaBranchDir.place (x = 400,  y = 320)
-etiquetaBranchDirValorMIPS = Label (root, text = etiqueta_branch_dir,\
-	 fg = "black", font = "TkDefaultFont 12")
-etiquetaBranchDirValorMIPS.place (x = 620,  y = 320)
 
-etiquetaBranchControl = Label (root, text = "Control del salto: ", fg = "brown", font = "TkDefaultFont 12")
-etiquetaBranchControl.place (x = 400,  y = 350)
-etiquetaBranchControlValorMIPS = Label (root, text = etiqueta_control_salto,\
-	 fg = "black", font = "TkDefaultFont 12")
-etiquetaBranchControlValorMIPS.place (x = 620,  y = 350)
 
 etiquetaDatoRegA = Label (root, text = "Dato de registro A: ", fg = "brown", font = "TkDefaultFont 12")
-etiquetaDatoRegA.place (x = 400,  y = 380)
+etiquetaDatoRegA.place (x = 400,  y = 400)
 etiquetaDatoRegAValorMIPS = Label (root, text = etiqueta_dato_reg_A,\
 	 fg = "black", font = "TkDefaultFont 12")
-etiquetaDatoRegAValorMIPS.place (x = 620,  y = 380)
+etiquetaDatoRegAValorMIPS.place (x = 620,  y = 400)
 
 etiquetaDatoRegB = Label (root, text = "Dato de registro B: ", fg = "brown", font = "TkDefaultFont 12")
-etiquetaDatoRegB.place (x = 400,  y = 410)
+etiquetaDatoRegB.place (x = 400,  y = 430)
 etiquetaDatoRegBValorMIPS = Label (root, text = etiqueta_dato_reg_B,\
 	 fg = "black", font = "TkDefaultFont 12")
-etiquetaDatoRegBValorMIPS.place (x = 620,  y = 410)
+etiquetaDatoRegBValorMIPS.place (x = 620,  y = 430)
 
 etiquetaValorInmediato = Label (root, text = "Valor inmediato: ", fg = "brown", font = "TkDefaultFont 12")
-etiquetaValorInmediato.place (x = 400,  y = 440)
+etiquetaValorInmediato.place (x = 400,  y = 460)
 etiquetaValorInmediatoValorMIPS = Label (root, text = etiqueta_valor_inmediato,\
 	 fg = "black", font = "TkDefaultFont 12")
-etiquetaValorInmediatoValorMIPS.place (x = 620,  y = 440)
+etiquetaValorInmediatoValorMIPS.place (x = 620,  y = 460)
 
 etiquetaRS = Label (root, text = "Direccion rs: ", fg = "brown", font = "TkDefaultFont 12")
-etiquetaRS.place (x = 400,  y = 470)
+etiquetaRS.place (x = 400,  y = 490)
 etiquetaRSValorMIPS = Label (root, text = etiqueta_rs,\
 	 fg = "black", font = "TkDefaultFont 12")
-etiquetaRSValorMIPS.place (x = 620,  y = 470)
+etiquetaRSValorMIPS.place (x = 620,  y = 490)
 
 etiquetaRT = Label (root, text = "Direccion rt: ", fg = "brown", font = "TkDefaultFont 12")
-etiquetaRT.place (x = 400,  y = 500)
+etiquetaRT.place (x = 400,  y = 520)
 etiquetaRTValorMIPS = Label (root, text = etiqueta_rt,\
 	 fg = "black", font = "TkDefaultFont 12")
-etiquetaRTValorMIPS.place (x = 620,  y = 500)
+etiquetaRTValorMIPS.place (x = 620,  y = 520)
 
 etiquetaLatchIDEX2 = Label (root, text = "LATCH ID/EX: ", fg = "dark green", font = "TkDefaultFont 12")
 etiquetaLatchIDEX2.place (x = 900,  y = 20)
@@ -1198,6 +1220,11 @@ etiquetaALUControlValorMIPS = Label (root, text = etiqueta_alu_ctrl,\
 etiquetaALUControlValorMIPS.place (x = 1200,  y = 370)
 
 
+etiquetaFlagBranch = Label (root, text = "Flag Branch: ", fg = "brown", font = "TkDefaultFont 12")
+etiquetaFlagBranch.place (x = 900,  y = 400)
+etiquetaFlagBranchValorMIPS = Label (root, text = etiqueta_flag_branch,\
+	 fg = "black", font = "TkDefaultFont 12")
+etiquetaFlagBranchValorMIPS.place (x = 1200,  y = 400)
 
 
 
