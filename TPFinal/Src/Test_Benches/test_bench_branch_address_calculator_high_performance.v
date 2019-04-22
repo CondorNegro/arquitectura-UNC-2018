@@ -2,11 +2,11 @@
 
 //////////////////////////////////////////////////////////////////////////////////
 // Trabajo Practico Nro. 4. MIPS.
-// Test bench del modulo branch_address_calculator.
+// Test bench del modulo branch_address_calculator_high_performance.
 // Integrantes: Kleiner Matias, Lopez Gaston.
 // Materia: Arquitectura de Computadoras.
 // FCEFyN. UNC.
-// Anio 2018.
+// Anio 2019.
 //////////////////////////////////////////////////////////////////////////////////
 
 
