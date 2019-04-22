@@ -195,7 +195,7 @@ wire [CANT_BITS_REGISTROS_TOP - 1 : 0] wire_EX_to_MEM_data_write_mem;
 wire [CANT_BITS_ADDR_REGISTROS - 1 : 0] wire_EX_to_MEM_registro_destino;
 wire [CANT_BITS_SELECT_BYTES_MEM_DATA_TOP - 1 : 0] wire_select_bytes_mem_datos_EX_to_MEM;
 wire wire_halt_detected_EX_to_MEM;
-wire wire_control_mux_PC_EX_to_database;
+wire [1 : 0] wire_control_mux_PC_EX_to_database;
 wire [ADDR_MEM_PROGRAMA_LENGTH - 1 : 0] wire_branch_dir_EX_to_database;
 wire [1 : 0] wire_control_mux_PC_EX;
 wire [ADDR_MEM_PROGRAMA_LENGTH - 1 : 0] wire_branch_dir_EX;
