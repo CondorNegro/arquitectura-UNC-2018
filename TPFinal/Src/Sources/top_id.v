@@ -151,6 +151,7 @@ module top_id
                 o_out_adder_pc <= 0;  
                 o_halt_detected <= 1'b0;
                 o_select_bytes_mem_datos <= 0;
+                o_flag_branch <= 0;
         end
         else begin
                 if (i_enable_pipeline & ~i_bit_burbuja_hazard & ~i_bit_branch_control_high_performance) begin
@@ -172,6 +173,7 @@ module top_id
                     o_out_adder_pc <= i_out_adder_pc;  
                     o_halt_detected <= wire_halt_detected_ID_TO_EX;
                     o_select_bytes_mem_datos <= wire_select_bytes_mem_datos;
+                    o_flag_branch <= wire_output_flag_branch_decoder_TO_flag_branch_branch_address_calculator;
                 end
                 else if (i_enable_pipeline & (i_bit_burbuja_hazard | i_bit_branch_control_high_performance)) begin
                     o_extension_signo_constante <= o_extension_signo_constante;
@@ -191,6 +193,7 @@ module top_id
                     o_out_adder_pc <= o_out_adder_pc; 
                     o_halt_detected <= o_halt_detected;
                     o_select_bytes_mem_datos <= 0; 
+                    o_flag_branch <= 0;
                 end
                 else begin
                     o_extension_signo_constante <= o_extension_signo_constante;
@@ -209,7 +212,8 @@ module top_id
                     o_branch_control_to_database <= o_branch_control_to_database;
                     o_out_adder_pc <= o_out_adder_pc; 
                     o_halt_detected <= o_halt_detected;
-                    o_select_bytes_mem_datos <= o_select_bytes_mem_datos; 
+                    o_select_bytes_mem_datos <= o_select_bytes_mem_datos;
+                    o_flag_branch <= o_flag_branch;
                 end 
         end
     end
