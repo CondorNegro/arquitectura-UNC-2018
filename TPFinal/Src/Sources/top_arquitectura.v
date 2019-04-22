@@ -635,7 +635,8 @@ database
         .CANT_BITS_ALU_CONTROL (CANT_BITS_ALU_CONTROL_TOP),
         .CANT_REGISTROS (CANT_REGISTROS_TOP),
         .CANT_BITS_SELECT_BYTES_MEM_DATA (CANT_BITS_SELECT_BYTES_MEM_DATA_TOP),
-        .WIDTH_DATA_MEM (RAM_WIDTH_DATOS)
+        .WIDTH_DATA_MEM (RAM_WIDTH_DATOS),
+        .CANT_BITS_FLAG_BRANCH (CANT_BITS_FLAG_BRANCH_TOP)
      )
     u_database_1
     (
@@ -646,8 +647,8 @@ database
         .i_contador_ciclos (wire_contador_ciclos),
 		.i_adder_pc (wire_adder_contador_programa),
 		.i_instruction_fetch (wire_instruction_fetch),
-        .i_branch_dir (wire_branch_dir_ID_to_database),
-        .i_branch_control (wire_control_mux_PC_ID_to_database),
+        .i_branch_dir_ID (wire_branch_dir_ID_to_database),
+        .i_branch_control_ID (wire_control_mux_PC_ID_to_database),
         .i_data_A (wire_data_A),
         .i_data_B (wire_data_B),
         .i_extension_signo_constante (wire_extension_signo_constante),
@@ -658,12 +659,15 @@ database
         .i_RegWrite_ID_to_EX (wire_RegWrite_ID_to_EX),
         .i_ALUSrc (wire_ALUSrc),
         .i_ALUOp (wire_ALUOp),
+        .i_flag_branch (wire_flag_branch),
         .i_MemRead_ID_to_EX (wire_MemRead_ID_to_EX),
         .i_MemWrite_ID_to_EX (wire_MemWrite_ID_to_EX),
         .i_MemtoReg_ID_to_EX (wire_MemtoReg_ID_to_EX),
         .i_ALUCtrl (wire_ALUCtrl),
         .i_select_bytes_mem_data_ID_to_EX (wire_select_bytes_mem_datos_ID_to_EX),
         .i_halt_detected_ID_to_EX (wire_halt_detected_ID_to_EX),
+        .i_branch_dir_EX (wire_branch_dir_EX_to_database),
+        .i_branch_control_EX (wire_control_mux_PC_EX_to_database),
         .i_RegWrite_EX_to_MEM (wire_EX_to_MEM_RegWrite),
         .i_MemRead_EX_to_MEM (wire_EX_to_MEM_MemRead),
         .i_MemWrite_EX_to_MEM (wire_EX_to_MEM_MemWrite), 

@@ -12,7 +12,7 @@
 
 module database
    #(
-        parameter ADDR_LENGTH = 11,
+        parameter ADDR_LENGTH = 10,
         parameter LONGITUD_INSTRUCCION = 32,
         parameter CANT_BITS_CONTROL = 4,
         parameter CANT_BITS_REGISTROS = 32,
@@ -20,7 +20,8 @@ module database
         parameter CANT_BITS_ALU_CONTROL = 4,
         parameter CANT_REGISTROS = 32,
         parameter CANT_BITS_SELECT_BYTES_MEM_DATA = 3,
-        parameter WIDTH_DATA_MEM = 32
+        parameter WIDTH_DATA_MEM = 32,
+        parameter CANT_BITS_FLAG_BRANCH = 3
    )
    (
         input i_clock,
@@ -37,8 +38,8 @@ module database
 
         // Instruction Decode.
 
-        input [ADDR_LENGTH - 1 : 0] i_branch_dir,
-        input i_branch_control,
+        input [ADDR_LENGTH - 1 : 0] i_branch_dir_ID,
+        input i_branch_control_ID,
 
         input [CANT_BITS_REGISTROS - 1 : 0] i_data_A,
         input [CANT_BITS_REGISTROS - 1 : 0] i_data_B,
@@ -48,6 +49,7 @@ module database
         input [clogb2 (CANT_REGISTROS - 1) - 1 : 0] i_reg_rt,
         input [clogb2 (CANT_REGISTROS - 1) - 1 : 0] i_reg_rd,
         input i_halt_detected_ID_to_EX,
+        input [CANT_BITS_FLAG_BRANCH - 1 : 0] i_flag_branch,
        
         // Control de instruction decode.
 
@@ -73,6 +75,8 @@ module database
         input [clogb2 (CANT_REGISTROS - 1) - 1 : 0] i_registro_destino_EX_to_MEM,
         input [CANT_BITS_REGISTROS - 1 : 0] i_result_alu,
         input [WIDTH_DATA_MEM - 1 : 0] i_data_write_to_mem,
+        input [1 : 0] i_branch_control_EX,
+        input [ADDR_LENGTH - 1 : 0] i_branch_dir_EX,
 
 
         // Memoria
@@ -102,6 +106,7 @@ module database
     //Instruction decode.
     reg [ADDR_LENGTH - 1 : 0] reg_branch_dir;
     reg reg_branch_control;
+    reg [CANT_BITS_FLAG_BRANCH - 1 : 0] reg_flag_branch;
 
     reg [CANT_BITS_REGISTROS - 1 : 0] reg_data_A;
     reg [CANT_BITS_REGISTROS - 1 : 0] reg_data_B;
@@ -134,6 +139,7 @@ module database
     reg [clogb2 (CANT_REGISTROS - 1) - 1 : 0] reg_registro_destino_EX_to_MEM;
     reg [CANT_BITS_REGISTROS - 1 : 0] reg_result_alu;
     reg [WIDTH_DATA_MEM - 1 : 0] reg_data_write_to_mem;
+    
 
 
 
@@ -155,6 +161,13 @@ module database
             for (clogb2=0; depth>0; clogb2=clogb2+1)
                 depth = depth >> 1;
     endfunction
+
+
+    // Wires.
+    wire wire_branch_control_IF;
+    assign wire_branch_control_IF = i_branch_control_EX[1] | i_branch_control_ID;
+    wire [ADDR_LENGTH - 1 : 0] wire_branch_dir_IF;
+    assign wire_branch_dir_IF = (i_branch_control_EX[0]) ? i_branch_dir_EX : i_branch_dir_ID;
   
   always @(posedge i_clock) begin
     if (~ i_soft_reset) begin
@@ -197,6 +210,7 @@ module database
         reg_data_alu_MEM_to_WB <= 0;
         reg_data_mem_MEM_to_WB <= 0;
         reg_halt_detected_WB_to_Debug_Unit <= 0;
+        reg_flag_branch <= 0;
     end
     else begin
         if (i_control == 0) begin // No se hace nada, se mantienen los valores.
@@ -239,6 +253,7 @@ module database
             reg_data_alu_MEM_to_WB <= reg_data_alu_MEM_to_WB;
             reg_data_mem_MEM_to_WB <= reg_data_mem_MEM_to_WB;
             reg_halt_detected_WB_to_Debug_Unit <= reg_halt_detected_WB_to_Debug_Unit;
+            reg_flag_branch <= reg_flag_branch;
         end 
         if (i_control == 1) begin // Se guardan los valores de las entradas en los registros.
             reg_pc <= i_pc;
@@ -246,8 +261,9 @@ module database
             reg_instruction_fetch <= i_instruction_fetch;
             reg_contador_ciclos <= i_contador_ciclos;
             o_dato <= 0;
-            reg_branch_dir <= i_branch_dir;
-            reg_branch_control <= i_branch_control;
+            reg_branch_dir <= wire_branch_dir_IF;
+            reg_branch_control <= wire_branch_control_IF;
+            reg_flag_branch <= i_flag_branch;
             reg_data_A <= i_data_A; 
             reg_data_B <= i_data_B;
             reg_extension_signo_constante <= i_extension_signo_constante;
@@ -279,13 +295,14 @@ module database
             reg_registro_destino_MEM_to_WB <= i_registro_destino_MEM_to_WB;
             reg_data_alu_MEM_to_WB <= i_data_alu_MEM_to_WB;
             reg_data_mem_MEM_to_WB <= i_data_mem_MEM_to_WB;
-            reg_halt_detected_WB_to_Debug_Unit <= i_halt_detected_WB_to_Debug_Unit;            
+            reg_halt_detected_WB_to_Debug_Unit <= i_halt_detected_WB_to_Debug_Unit;
+                       
         end
         else if (i_control == 2) begin // Se devuelve el contador de programa y el contador de ciclos a la salida.
             o_dato <= {reg_pc, {((CANT_BITS_REGISTROS/2) - ADDR_LENGTH){1'b0}}, reg_contador_ciclos};
         end
-        else if (i_control == 3) begin // Se devuelve la salida del adder del instruction fetch en la salida de este modulo. Tambien la direccion y el control del salto.
-            o_dato <= {reg_adder_pc, {((CANT_BITS_REGISTROS/2) - ADDR_LENGTH - 1){1'b0}} , reg_branch_control, reg_branch_dir};
+        else if (i_control == 3) begin // Se devuelve la salida del adder del instruction fetch en la salida de este modulo. Tambien la direccion, el control del salto y el flag branch.
+            o_dato <= {reg_adder_pc, {((CANT_BITS_REGISTROS/2) - ADDR_LENGTH - CANT_BITS_FLAG_BRANCH - 1){1'b0}}, reg_flag_branch, reg_branch_control, reg_branch_dir};
         end
         
         else if (i_control == 4) begin // Se devuelve la instruccion que pasa a la etapa de ID en la salida de este modulo. 
@@ -359,6 +376,7 @@ module database
             reg_registro_destino_MEM_to_WB <= 0;
             reg_data_alu_MEM_to_WB <= 0;
             reg_data_mem_MEM_to_WB <= 0;
+            reg_flag_branch <= 0;
         end
     end
 

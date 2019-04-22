@@ -13,7 +13,7 @@
 
 module test_bench_database();
 
-    parameter ADDR_LENGTH = 11;
+    parameter ADDR_LENGTH = 10;
     parameter LONGITUD_INSTRUCCION = 32;
     parameter CANT_BITS_CONTROL = 4;
     parameter CANT_BITS_REGISTROS = 32;
@@ -22,6 +22,7 @@ module test_bench_database();
     parameter CANT_REGISTROS = 32;
     parameter CANT_BITS_SELECT_BYTES_MEM_DATA = 3;
     parameter WIDTH_DATA_MEM = 32;
+    parameter CANT_BITS_FLAG_BRANCH = 3;
     
     //Todo puerto de salida del modulo es un cable.
 	//Todo puerto de estimulo o generacion de entrada es un registro.
@@ -40,8 +41,8 @@ module test_bench_database();
 
     // Instruction decode.
 
-    reg [ADDR_LENGTH - 1 : 0] reg_branch_dir;
-    reg reg_branch_control;
+    reg [ADDR_LENGTH - 1 : 0] reg_branch_dir_ID;
+    reg reg_branch_control_ID;
 
     reg [CANT_BITS_REGISTROS - 1 : 0] reg_data_A;
     reg [CANT_BITS_REGISTROS - 1 : 0] reg_data_B;
@@ -50,6 +51,7 @@ module test_bench_database();
     reg [clogb2 (CANT_REGISTROS - 1) - 1 : 0] reg_rs;
     reg [clogb2 (CANT_REGISTROS - 1) - 1 : 0] reg_rt;
     reg [clogb2 (CANT_REGISTROS - 1) - 1 : 0] reg_rd;
+    reg [CANT_BITS_FLAG_BRANCH - 1 : 0] reg_flag_branch;
        
     // Control de instruction decode.
 
@@ -76,7 +78,8 @@ module test_bench_database();
     reg [clogb2 (CANT_REGISTROS - 1) - 1 : 0] reg_registro_destino_EX_to_MEM;
     reg [CANT_BITS_REGISTROS - 1 : 0] reg_result_alu;
     reg [WIDTH_DATA_MEM - 1 : 0] reg_data_write_to_mem;
-
+    reg [ADDR_LENGTH - 1 : 0] reg_branch_dir_EX;
+    reg [1 : 0] reg_branch_control_EX;
 
     // Memoria
 
@@ -108,8 +111,8 @@ module test_bench_database();
 		adder_pc = 8;
 		instruction_fetch = 2;
         contador_ciclos = 1;
-        reg_branch_dir = 1;
-        reg_branch_control = 1;
+        reg_branch_dir_ID = 1;
+        reg_branch_control_ID = 1;
         reg_data_A = 2;
         reg_data_B = 3; 
         reg_extension_signo_constante = 4;
@@ -126,6 +129,7 @@ module test_bench_database();
         reg_select_bytes_mem_data_ID_to_EX = 2;
         reg_halt_detected_ID_to_EX = 1;
         reg_halt_detected_WB_to_Debug_Unit = 0;
+        reg_flag_branch = 0;
 
         
         reg_ALUCtrl = 4;
@@ -139,6 +143,8 @@ module test_bench_database();
         reg_registro_destino_EX_to_MEM = 1;
         reg_result_alu = 5;
         reg_data_write_to_mem = 6;
+        reg_branch_dir_EX = 4;
+        reg_branch_control_EX = 0;
 
 
         reg_RegWrite_MEM_to_WB = 0;
@@ -200,7 +206,8 @@ database
         .CANT_BITS_ALU_CONTROL (CANT_BITS_ALU_CONTROL),
         .CANT_REGISTROS (CANT_REGISTROS),
         .CANT_BITS_SELECT_BYTES_MEM_DATA (CANT_BITS_SELECT_BYTES_MEM_DATA),
-        .WIDTH_DATA_MEM (WIDTH_DATA_MEM)
+        .WIDTH_DATA_MEM (WIDTH_DATA_MEM),
+        .CANT_BITS_FLAG_BRANCH (CANT_BITS_FLAG_BRANCH)
 
      )
     u_database_1
@@ -212,8 +219,10 @@ database
 		.i_adder_pc (adder_pc),
 		.i_instruction_fetch (instruction_fetch),
         .i_contador_ciclos (contador_ciclos),
-        .i_branch_dir (reg_branch_dir),
-        .i_branch_control (reg_branch_control),
+        .i_branch_dir_ID (reg_branch_dir_ID),
+        .i_branch_control_ID (reg_branch_control_ID),
+        .i_branch_dir_EX (reg_branch_dir_EX),
+        .i_branch_control_EX (reg_branch_control_EX),
         .i_data_A (reg_data_A),
         .i_data_B (reg_data_B),
         .i_extension_signo_constante (reg_extension_signo_constante),
@@ -221,6 +230,7 @@ database
         .i_reg_rt (reg_rt),
         .i_reg_rd (reg_rd),
         .i_RegDst (reg_RegDst),
+        .i_flag_branch (reg_flag_branch),
         .i_RegWrite_ID_to_EX (reg_RegWrite_ID_to_EX),
         .i_ALUSrc (reg_ALUSrc),
         .i_ALUOp (reg_ALUOp),
