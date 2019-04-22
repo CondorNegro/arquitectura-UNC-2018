@@ -432,6 +432,7 @@ top_id
         .i_enable_etapa (wire_enable_PC),
         .i_reg_read_from_debug_unit (wire_reg_read_from_debug_unit_to_register_file),
         .i_bit_burbuja_hazard (wire_bit_burbuja),
+        .i_bit_branch_control_high_performance (),
         .o_reg_rs_to_hazard (wire_reg_rs_to_hazard),
         .o_reg_rt_to_hazard (wire_reg_rt_to_hazard),
 
