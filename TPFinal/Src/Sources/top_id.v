@@ -42,7 +42,7 @@ module top_id
        input i_enable_pipeline,
        input i_enable_etapa, 
        input [clogb2 (CANT_REGISTROS - 1) - 1 : 0] i_reg_read_from_debug_unit,
-
+       input i_bit_branch_control_high_performance,
        input i_bit_burbuja_hazard,
        output [clogb2 (CANT_REGISTROS - 1) - 1 : 0] o_reg_rs_to_hazard,
        output [clogb2 (CANT_REGISTROS - 1) - 1 : 0] o_reg_rt_to_hazard,
@@ -152,7 +152,7 @@ module top_id
                 o_select_bytes_mem_datos <= 0;
         end
         else begin
-                if (i_enable_pipeline & ~i_bit_burbuja_hazard) begin
+                if (i_enable_pipeline & ~i_bit_burbuja_hazard & ~i_bit_branch_control_high_performance) begin
                     
                     o_extension_signo_constante <= wire_o_extension_signo_constante;
                     o_reg_rs <= wire_o_reg_rs;
@@ -172,7 +172,7 @@ module top_id
                     o_halt_detected <= wire_halt_detected_ID_TO_EX;
                     o_select_bytes_mem_datos <= wire_select_bytes_mem_datos;
                 end
-                else if (i_enable_pipeline & i_bit_burbuja_hazard) begin
+                else if (i_enable_pipeline & (i_bit_burbuja_hazard | i_bit_branch_control_high_performance)) begin
                     o_extension_signo_constante <= o_extension_signo_constante;
                     o_reg_rs <= o_reg_rs;
                     o_reg_rt <= o_reg_rt;
@@ -243,22 +243,16 @@ decoder
     );
 
 
-branch_address_calculator 
+branch_address_calculator_low_latency
     #(
         .CANT_BITS_INSTRUCTION_INDEX_BRANCH (CANT_BITS_INSTRUCTION_INDEX_BRANCH),
         .CANT_BITS_FLAG_BRANCH (CANT_BITS_FLAG_BRANCH),
-        .CANT_BITS_ADDR (CANT_BITS_ADDR),
-        .CANT_BITS_REGISTROS (CANT_BITS_REGISTROS)
+        .CANT_BITS_ADDR (CANT_BITS_ADDR)
     )
-    u_branch_address_calculator_1
+    u_branch_address_calculator_low_latency_1
     (
         .i_flag_branch (wire_output_flag_branch_decoder_TO_flag_branch_branch_address_calculator),
-        .i_adder_pc (i_out_adder_pc),
-        .i_dato_reg_A (wire_o_data_A),
-        .i_dato_reg_B (wire_o_data_B),
-        .i_immediate_address (wire_o_extension_signo_constante),
         .i_instruction_index_branch (wire_output_instruction_index_branch_decoder_TO_instruction_index_branch_branch_address_calculator),
-        .i_enable_etapa (i_enable_etapa),
         .o_branch_control (o_branch_control),
         .o_branch_dir (o_branch_dir),
         .o_disable_for_exception_to_hazard_detection_unit (o_disable_for_exception_to_hazard_detection_unit)

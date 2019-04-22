@@ -55,7 +55,7 @@ module test_bench_top_id();
     reg reg_enable_pipeline;
     reg reg_enable_etapa;
     reg [clogb2 (CANT_REGISTROS - 1) - 1 : 0] reg_reg_read_from_debug_unit;
-
+    reg reg_bit_branch_control_high_performance;
     reg reg_bit_burbuja_hazard;
     wire [clogb2 (CANT_REGISTROS - 1) - 1 : 0] wire_reg_rs_to_hazard;
     wire [clogb2 (CANT_REGISTROS - 1) - 1 : 0] wire_reg_rt_to_hazard;
@@ -104,6 +104,7 @@ module test_bench_top_id();
         reg_enable_etapa = 1'b1;
         reg_bit_burbuja_hazard = 1'b0;
         reg_reg_read_from_debug_unit = 0;
+        reg_bit_branch_control_high_performance = 0;
 
 		#10 reg_i_soft_reset = 1'b1; // Desactivo la accion del reset.
         
@@ -125,6 +126,8 @@ module test_bench_top_id();
 		
         #20 reg_bit_burbuja_hazard = 1'b1;
         #10 reg_bit_burbuja_hazard = 1'b0;
+        #20 reg_bit_branch_control_high_performance = 1;
+        #10 reg_bit_branch_control_high_performance = 0;
 
 		// Test 1: Prueba reset.
 		#10000 reg_i_soft_reset = 1'b0; // Reset.
@@ -170,6 +173,7 @@ top_id
         .i_enable_pipeline (reg_enable_pipeline),
         .i_enable_etapa (reg_enable_etapa),
         .i_reg_read_from_debug_unit (reg_reg_read_from_debug_unit),
+        .i_bit_branch_control_high_performance (reg_bit_branch_control_high_performance),
         .i_bit_burbuja_hazard (reg_bit_burbuja_hazard),
         .o_reg_rs_to_hazard (wire_reg_rs_to_hazard),
         .o_reg_rt_to_hazard (wire_reg_rt_to_hazard),
