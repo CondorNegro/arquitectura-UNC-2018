@@ -79,7 +79,7 @@ module test_bench_database();
     reg [CANT_BITS_REGISTROS - 1 : 0] reg_result_alu;
     reg [WIDTH_DATA_MEM - 1 : 0] reg_data_write_to_mem;
     reg [ADDR_LENGTH - 1 : 0] reg_branch_dir_EX;
-    reg [1 : 0] reg_branch_control_EX;
+    reg reg_branch_control_EX;
 
     // Memoria
 

@@ -75,7 +75,7 @@ module database
         input [clogb2 (CANT_REGISTROS - 1) - 1 : 0] i_registro_destino_EX_to_MEM,
         input [CANT_BITS_REGISTROS - 1 : 0] i_result_alu,
         input [WIDTH_DATA_MEM - 1 : 0] i_data_write_to_mem,
-        input [1 : 0] i_branch_control_EX,
+        input i_branch_control_EX,
         input [ADDR_LENGTH - 1 : 0] i_branch_dir_EX,
 
 
@@ -165,9 +165,9 @@ module database
 
     // Wires.
     wire wire_branch_control_IF;
-    assign wire_branch_control_IF = i_branch_control_EX[1] | i_branch_control_ID;
+    assign wire_branch_control_IF = i_branch_control_EX | i_branch_control_ID;
     wire [ADDR_LENGTH - 1 : 0] wire_branch_dir_IF;
-    assign wire_branch_dir_IF = (i_branch_control_EX[0]) ? i_branch_dir_EX : i_branch_dir_ID;
+    assign wire_branch_dir_IF = (i_branch_control_EX) ? i_branch_dir_EX : i_branch_dir_ID;
   
   always @(posedge i_clock) begin
     if (~ i_soft_reset) begin

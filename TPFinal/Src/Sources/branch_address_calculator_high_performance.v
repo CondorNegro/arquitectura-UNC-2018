@@ -25,7 +25,7 @@ module branch_address_calculator_high_performance
        input [CANT_BITS_REGISTROS - 1 : 0] i_dato_reg_A,
        input [CANT_BITS_REGISTROS - 1 : 0] i_dato_reg_B,
        input i_enable_etapa,
-       output reg [1 : 0] o_branch_control,
+       output reg o_branch_control,
        output reg [CANT_BITS_ADDR - 1 : 0] o_branch_dir
       
    );
@@ -46,13 +46,13 @@ module branch_address_calculator_high_performance
 
                 1://JR
                     begin
-                    o_branch_control = 2;
+                    o_branch_control = 1;
                     o_branch_dir = i_dato_reg_A;
                     end
 
                 2://JALR
                     begin
-                    o_branch_control = 2;
+                    o_branch_control = 1;
                     o_branch_dir = i_dato_reg_A;
                     end
 
@@ -60,7 +60,7 @@ module branch_address_calculator_high_performance
                     begin
                         o_branch_dir = wire_resultado_sumador;
                         if ((i_dato_reg_A - i_dato_reg_B) == 0) begin
-                            o_branch_control = 3;
+                            o_branch_control = 1;
                         end
                         else begin
                             o_branch_control = 0;
@@ -72,7 +72,7 @@ module branch_address_calculator_high_performance
                     begin
                         o_branch_dir = wire_resultado_sumador;
                         if ((i_dato_reg_A - i_dato_reg_B) != 0) begin
-                            o_branch_control = 3;
+                            o_branch_control = 1;
                         end
                         else begin
                             o_branch_control = 0;

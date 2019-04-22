@@ -195,9 +195,9 @@ wire [CANT_BITS_REGISTROS_TOP - 1 : 0] wire_EX_to_MEM_data_write_mem;
 wire [CANT_BITS_ADDR_REGISTROS - 1 : 0] wire_EX_to_MEM_registro_destino;
 wire [CANT_BITS_SELECT_BYTES_MEM_DATA_TOP - 1 : 0] wire_select_bytes_mem_datos_EX_to_MEM;
 wire wire_halt_detected_EX_to_MEM;
-wire [1 : 0] wire_control_mux_PC_EX_to_database;
+wire wire_control_mux_PC_EX_to_database;
 wire [ADDR_MEM_PROGRAMA_LENGTH - 1 : 0] wire_branch_dir_EX_to_database;
-wire [1 : 0] wire_control_mux_PC_EX;
+wire wire_control_mux_PC_EX;
 wire [ADDR_MEM_PROGRAMA_LENGTH - 1 : 0] wire_branch_dir_EX;
 
 
@@ -248,8 +248,8 @@ wire wire_exception;
 
 
 assign wire_soft_reset_ack = wire_soft_reset_ack_prog | wire_soft_reset_ack_datos;
-assign wire_control_mux_PC = wire_control_mux_PC_EX [1] | wire_control_mux_PC_ID;
-assign wire_branch_dir = (wire_control_mux_PC_EX [0]) ? wire_branch_dir_EX : wire_branch_dir_ID;
+assign wire_control_mux_PC = wire_control_mux_PC_EX | wire_control_mux_PC_ID;
+assign wire_branch_dir = (wire_control_mux_PC_EX) ? wire_branch_dir_EX : wire_branch_dir_ID;
 
  
 
@@ -440,7 +440,7 @@ top_id
         .i_enable_etapa (wire_enable_PC),
         .i_reg_read_from_debug_unit (wire_reg_read_from_debug_unit_to_register_file),
         .i_bit_burbuja_hazard (wire_bit_burbuja),
-        .i_bit_branch_control_high_performance (wire_control_mux_PC_EX [0]),
+        .i_bit_branch_control_high_performance (wire_control_mux_PC_EX),
         .o_reg_rs_to_hazard (wire_reg_rs_to_hazard),
         .o_reg_rt_to_hazard (wire_reg_rt_to_hazard),
 

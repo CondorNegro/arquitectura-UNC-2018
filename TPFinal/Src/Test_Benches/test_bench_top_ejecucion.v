@@ -82,10 +82,10 @@ module test_bench_top_ejecucion();
 
     reg [CANT_BITS_FLAG_BRANCH - 1 : 0] reg_i_flag_branch;
     reg reg_i_enable_etapa;
-    wire [1 : 0] wire_o_branch_control;
+    wire wire_o_branch_control;
     wire [CANT_BITS_ADDR - 1 : 0] wire_o_branch_dir;
     wire [CANT_BITS_ADDR - 1 : 0] wire_o_branch_dir_to_database;
-    wire [1 : 0] wire_o_branch_control_to_database;
+    wire wire_o_branch_control_to_database;
 	
 	
 	initial	begin

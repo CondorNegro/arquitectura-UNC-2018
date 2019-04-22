@@ -29,7 +29,7 @@ module test_bench_branch_address_calculator_high_performance();
     reg [CANT_BITS_REGISTROS - 1 : 0] reg_i_dato_reg_B;
     reg reg_i_enable_etapa;
 
-    wire [1 : 0] wire_o_branch_control;
+    wire wire_o_branch_control;
     wire [CANT_BITS_ADDR - 1 : 0] wire_o_branch_dir;
 	
     

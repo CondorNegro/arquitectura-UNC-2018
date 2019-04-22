@@ -62,10 +62,10 @@ module top_ejecucion
 
        input [CANT_BITS_FLAG_BRANCH - 1 : 0] i_flag_branch,
        input i_enable_etapa,
-       output [1 : 0] o_branch_control,
+       output o_branch_control,
        output [CANT_BITS_ADDR - 1 : 0] o_branch_dir,
        output reg [CANT_BITS_ADDR - 1 : 0] o_branch_dir_to_database,
-       output reg [1 : 0] o_branch_control_to_database,
+       output reg o_branch_control_to_database,
 
 
        output reg o_RegWrite,
