@@ -253,6 +253,7 @@ branch_address_calculator_low_latency
     (
         .i_flag_branch (wire_output_flag_branch_decoder_TO_flag_branch_branch_address_calculator),
         .i_instruction_index_branch (wire_output_instruction_index_branch_decoder_TO_instruction_index_branch_branch_address_calculator),
+        .i_enable_etapa (i_enable_etapa),
         .o_branch_control (o_branch_control),
         .o_branch_dir (o_branch_dir),
         .o_disable_for_exception_to_hazard_detection_unit (o_disable_for_exception_to_hazard_detection_unit)
