@@ -509,7 +509,13 @@ def recibirDatosFromFPGA ():
 			etiquetaBranchControlValorMIPS .config (text = etiqueta_control_salto)
 			
 			etiqueta_flag_branch = bytes_recibidos [- CANT_BITS_ADDRESS_MEM_PROGRAMA - CANT_BITS_FLAG_BRANCH - 1 : - CANT_BITS_ADDRESS_MEM_PROGRAMA - 1]
-			number_etiqueta_flag_branch = int (etiqueta_flag_branch, 2)
+			try:
+				number_etiqueta_flag_branch = int (etiqueta_flag_branch, 2)
+			except:
+				print 'Etiqueta flag branch invalida: ',
+				print etiqueta_flag_branch
+				exit (1)
+
 			if ((number_etiqueta_flag_branch > 0) and (number_etiqueta_flag_branch < 6)):
 				if (number_etiqueta_flag_branch == 1):
 					etiqueta_flag_branch = 'JR'
