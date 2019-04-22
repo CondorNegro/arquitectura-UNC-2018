@@ -20,6 +20,8 @@ module test_bench_top_ejecucion();
     parameter CANT_BITS_ALU_CONTROL = 4;
     parameter CANT_BITS_SELECT_BYTES_MEM_DATA = 3;
     parameter CANT_BITS_SELECTOR_MUX_FORWARD = 2;
+    parameter CANT_BITS_IMMEDIATE = 16;
+    parameter CANT_BITS_FLAG_BRANCH = 3; 
 	
 	//Todo puerto de salida del modulo es un cable.
 	//Todo puerto de estimulo o generacion de entrada es un registro.
@@ -75,6 +77,15 @@ module test_bench_top_ejecucion();
 
     wire wire_o_led;
     
+
+    // Branch address calculator
+
+    reg [CANT_BITS_FLAG_BRANCH - 1 : 0] reg_i_flag_branch;
+    reg reg_i_enable_etapa;
+    wire [1 : 0] wire_o_branch_control;
+    wire [CANT_BITS_ADDR - 1 : 0] wire_o_branch_dir;
+    wire [CANT_BITS_ADDR - 1 : 0] wire_o_branch_dir_to_database;
+    wire [1 : 0] wire_o_branch_control_to_database;
 	
 	
 	initial	begin
@@ -197,7 +208,22 @@ top_ejecucion
         .o_result (wire_o_result),
         .o_data_write_to_mem (wire_o_data_write_to_mem),
         .o_registro_destino (wire_o_registro_destino),
+        
+        
+        //branch
+        .i_flag_branch (reg_i_flag_branch),
+        .i_enable_etapa (reg_i_enable_etapa),
+        .o_branch_control (wire_o_branch_control),
+        .o_branch_dir (wire_o_branch_dir),
+        .o_branch_dir_to_database (wire_o_branch_dir_to_database),
+        .o_branch_control_to_database (wire_o_branch_control_to_database),
+
+        
+        
+        
         .o_led (wire_o_led)
+
+
     );
    
 endmodule
